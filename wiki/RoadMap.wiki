@@ -1,0 +1,10 @@
+#summary Detailed roadmap for coming releases.
+#labels Phase-Implementation
+
+=Next version=
+
+
+=Up to 1.0=
+
+
+=And beyond 1.0=

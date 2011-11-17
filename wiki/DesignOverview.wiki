@@ -3,6 +3,8 @@
 
 = Vision =
 
+{{{Imperialism: the creation and/or maintenance of an unequal economic, cultural, and territorial relationships, usually between states and often in the form of an empire, based on domination and subordination. (Wikipedia)}}}
+
 General description what the game should be.
 
 

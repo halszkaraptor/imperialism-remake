@@ -1,7 +1,9 @@
 #summary Detailed roadmap for coming releases.
 #labels Phase-Implementation
 
-=Next version=
+=Next release=
+
+=Also in progress=
 
 
 =Up to 1.0=

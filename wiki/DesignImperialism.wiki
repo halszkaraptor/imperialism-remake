@@ -1,0 +1,42 @@
+#summary Design of the original Imperialism game.
+#labels Phase-Design
+
+*Sources*
+
+[http://en.wikipedia.org/wiki/Imperialism_%28video_game%29 Wikipedia]
+
+*Setttings*
+
+Two scenarios: either historical europe at different times (~1815/20-1915) or a fictional, randomly created world.
+
+In the historical setting major powers include: Great Britain, France, Prussia (later Germany), Austria-Hungary, Sardinia (later Italy), Russia, Ottoman Empire. Starting years were 1820, 1848 and 1882 (then the council only happened at the end).
+
+*Goal/Winning*
+
+Voted ruler with two-thirds majority on a 'Council of gouvernors' from all provinces once per decade. Governors of minor powers vote for diplomatic relations, governors of major powers vote for militaric strength(?). At most the game stops 1915 when the largest vote wins.
+
+*Game Score*
+
+Is calculated from how many things you have achieved: military strength, workforce, transportation network, merchant marine, diplomatic standing, number of controlled provinces.
+
+*Gaining economical strength*
+
+  * Exploit resources (wood, ore, ...)
+  * Build up industry to turn raw material into things of higher value (iron+coal=steel)
+  * Trade
+
+*Extending the Empire*
+
+Either by conquest (militaric) or by relations (diplomacy). For both a strong economy is essential.
+
+*Different Screens during one turn*
+
+  * Map: Put specialists to work, Command armies
+  * Transport: Distribute and allocate capacity
+  * Industry: Assign workers to production
+  * Trade: Offers and Bids for next trade session
+  * Diplomacy: Make diplomatic decisions
+
+*Turn-End processing order*
+
+

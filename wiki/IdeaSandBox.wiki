@@ -8,3 +8,9 @@
 *History*
 
   * Great scientists, generals with background info
+
+
+----
+
+Technical hints
+  * http://code.google.com/p/heekscad/wiki/HowtoAddImagesToWiki

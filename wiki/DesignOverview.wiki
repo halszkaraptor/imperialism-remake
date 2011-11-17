@@ -1,0 +1,11 @@
+#summary Starting point for the Design specifications.
+#labels Phase-Design
+
+= Vision =
+
+General description what the game should be.
+
+
+= Content =
+
+The specific parts

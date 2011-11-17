@@ -11,3 +11,4 @@ General description what the game should be.
 = Content =
 
   * Design description [DesignImperialism original Imperialism]
+  * [DesignImperialismReview Review] of the strengths and shortfalls of the original Imperialism

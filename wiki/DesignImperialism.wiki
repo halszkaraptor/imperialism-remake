@@ -23,7 +23,11 @@ Is calculated from how many things you have achieved: military strength, workfor
 
   * Exploit resources (wood, ore, ...)
   * Build up industry to turn raw material into things of higher value (iron+coal=steel)
-  * Trade
+  * Trade (often major powers buy raw material from minor powers and sell refined goods back)
+
+*Economic model*
+
+Mercantilism, state controls production, engages in trade. Raw materials are either bought on the world market or gained by exploiting resources.
 
 *Extending the Empire*
 
@@ -39,4 +43,15 @@ Either by conquest (militaric) or by relations (diplomacy). For both a strong ec
 
 *Turn-End processing order*
 
+In order of processing
+  * Trade resolution
+  * Acceptance/Declining of treaties
+  * Battles either AI/manual
 
+*Difficulty*
+
+5 levels of difficulty. Tutorial scenario available.
+
+*Multiplayer*
+
+At most 7 players over LAN or internet.

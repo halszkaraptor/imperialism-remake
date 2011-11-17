@@ -1,1 +1,10 @@
 #summary Put all your random creative stuff in this page.
+
+*Battles*
+
+  * Should last more than one turn for heavy battles.
+  * Simple Panzer General like mini game on hex tiles.
+
+*History*
+
+  * Great scientists, generals with background info

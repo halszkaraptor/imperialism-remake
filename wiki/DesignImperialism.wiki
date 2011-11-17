@@ -29,9 +29,26 @@ Is calculated from how many things you have achieved: military strength, workfor
 
 Mercantilism, state controls production, engages in trade. Raw materials are either bought on the world market or gained by exploiting resources.
 
+Example: Exploit woods to get timber, transform to lumber with a mill, with that expand transport, increase factory output or produce ships or produce furniture. Furniture can be sold on the market or used to recruit new workers. Timber can also be transformed to paper which is used for training workers and to educate them so they can server in better military units.
+
+Major powers compete to be the favored trade partner of resource-rich minor powers using subsidiaries or other diplomacy.
+
 *Extending the Empire*
 
 Either by conquest (militaric) or by relations (diplomacy). For both a strong economy is essential.
+
+*Diplomacy*
+
+Possible treaties:
+  * Non-agression pact: Only between major and minor power. If the minor power is attacked it will ask all partners of this pact for help and will join the one who agrees to help.
+  * Alliance: Only between major powers. When one member starts a war, the other is asked to join in.
+  * Request to join the empire. Invitation for minor powers who will agree if relations are sufficiently good.
+  * Peace Treaty
+  * Declaration of War
+
+Before trade agreements, major power must build a consulate in a minor power. Before treaties it must build an embassy. The money required for this is significant, especially in the early game.
+
+Major powers have embassies with all other major powers right from the start. If in an alliance, you are expected to join wars, otherwise diplomatic penalties will occur. Also when a separate peace is negotiated.
 
 *Different Screens during one turn*
 

@@ -11,9 +11,15 @@ Two scenarios: either historical europe at different times (~1815/20-1915) or a 
 
 In the historical setting major powers include: Great Britain, France, Prussia (later Germany), Austria-Hungary, Sardinia (later Italy), Russia, Ottoman Empire. Starting years were 1820, 1848 and 1882 (then the council only happened at the end).
 
+Each turn covers one season, i.e. 4 turns per year. Initially you can set your capital (with random world on). Foreign control of the capital eliminates the player.
+
 *Goal/Winning*
 
 Voted ruler with two-thirds majority on a 'Council of gouvernors' from all provinces once per decade. Governors of minor powers vote for diplomatic relations, governors of major powers vote for militaric strength(?). At most the game stops 1915 when the largest vote wins.
+
+*Strategic challenge+
+
+Simultaneously strengthen infrastructure, commercial and military power and negotiate treaties.
 
 *Game Score*
 
@@ -32,6 +38,36 @@ Mercantilism, state controls production, engages in trade. Raw materials are eit
 Example: Exploit woods to get timber, transform to lumber with a mill, with that expand transport, increase factory output or produce ships or produce furniture. Furniture can be sold on the market or used to recruit new workers. Timber can also be transformed to paper which is used for training workers and to educate them so they can server in better military units.
 
 Major powers compete to be the favored trade partner of resource-rich minor powers using subsidiaries or other diplomacy.
+
+Coal and Steel can be found in mountains (and hills?). Oil in dessert, swamp and tundra.
+
+Land: grain, apples, meat, cotton, wood, iron, coal, oil, gold/precious stones (mountains).
+Sea: Fishes
+
+Any land tile adjacent railways which are connected to the capital can be exploited. Transport capacity is represented by wagons, trade capacity by merchant ships.
+
+*Industrial development*
+
+  * Productive capacity of factories can be increased by using steel and wood (except the cannery, central station, warehouse).
+  * Every production requires 2 units of labor.
+  * Provinces develop automatically into a more efficient form (what exactly does this mean)?
+  * 2 grains + 1 meat/fish + 1 apple = 1 can in the cannery
+  * 2 wool or 2 cotton = 1 cloth in the spinning factory
+  * 2 wood = 1 timber or 1 paper in the saw mill
+  * 1 iron + 1 coal = 1 steel in the steel mill
+  * 2 oil = 1 fuel in the rafinery
+  * 2 clothes = 1 garment in the clothing factory
+  * 2 timber = 1 furniture in the furniture factory
+  * 2 steel = 1 weapon or 1 tool in the steel factory
+  * 1 steel + 1 timber = 1 wagon in the train station
+  * 2 fuel = 1 power in the power plant
+
+Workers must be feed with food (grain + meat/fish + fruit) or with cans, otherwise they do not work and starve eventually. They can be trained with paper and money or educated towards the military (need money and weapons and horses).
+
+  * 1 can + 1 garment + 1 furniture = 1 unskilled worker (1 unit of labor)
+  * 1 unskilled worker + 1 paper + 100$ = 1 skilled worker (2 units of labor)
+  * 1 skilled worker + 2 papers + 1000$ = 1 master worker (4 units of labor)
+  * 1 fuel = 6 units of labor
 
 *Extending the Empire*
 

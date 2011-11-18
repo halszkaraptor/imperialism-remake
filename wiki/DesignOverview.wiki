@@ -1,5 +1,5 @@
 #summary Starting point for the Design specifications.
-#labels Phase-Design
+#labels Phase-Design,Featured
 
 = Vision =
 

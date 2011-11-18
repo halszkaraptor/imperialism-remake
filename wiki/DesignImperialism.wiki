@@ -17,7 +17,7 @@ Each turn covers one season, i.e. 4 turns per year. Initially you can set your c
 
 Voted ruler with two-thirds majority on a 'Council of gouvernors' from all provinces once per decade. Governors of minor powers vote for diplomatic relations, governors of major powers vote for militaric strength(?). At most the game stops 1915 when the largest vote wins.
 
-*Strategic challenge+
+*Strategic challenge*
 
 Simultaneously strengthen infrastructure, commercial and military power and negotiate treaties.
 
@@ -68,6 +68,14 @@ Workers must be feed with food (grain + meat/fish + fruit) or with cans, otherwi
   * 1 unskilled worker + 1 paper + 100$ = 1 skilled worker (2 units of labor)
   * 1 skilled worker + 2 papers + 1000$ = 1 master worker (4 units of labor)
   * 1 fuel = 6 units of labor
+
+Experts
+  * Engineers build railways, ports, warehouses, fortifications
+  * explorers look for resources
+  * lumber jacks exploit forests
+  * miners build mines (coal, iron, gold, precious stones)
+  * farmers increase productivity of fertile land and hills
+  * investors buy land in minor nations
 
 *Extending the Empire*
 

@@ -9,3 +9,5 @@ Just some ideas:
   * Tactical battles get boring after the tenth repetition, nothing new about them anymore? (Same kind of forces fighting same kind of forces?)
   * Making money in the late game is difficult, because no minor powers are left for trading with. Better to also collect money from your provinces.
   * There is this huge difference between colonies and occupied minor nations, which is reasonable but affect trade so immensely.
+  * Sending out geologists is boring, it is a repetitive task with not much fun or thinking, also cheating (i.e. exploring beforehand than returning and exploring directly where something is) is temptative. We should abolish or replace this concept with something different.
+  * Counselours a la Civ 2 would be nice (just for the fun of it - a cabinet).

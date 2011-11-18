@@ -3,4 +3,4 @@
 
 
 General guidelines
-  * [CodingStandards Coding standards]
+  * [CodeStandards Coding standards]

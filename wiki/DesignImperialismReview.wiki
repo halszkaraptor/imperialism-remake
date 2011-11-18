@@ -1,4 +1,11 @@
 #summary Review of the strengths and shortfalls of the original Imperialism
 #labels Phase-Design
 
-The most positive things were the nation building part as well as developing infrastructure and industry of your country. The most negative things were in the battles as well as imbalances in the end game.
+The most positive things were the nation building part as well as developing infrastructure and industry of your country. The most negative things were in the battles as well as imbalances in the game or easily defeatable AI.
+
+Just some ideas:
+  * Every turn cycle through all the available screen is boring. Better to set strategies and then program at least makes some reasonable things with it. E.g. not adjusting the transportation every round by hand.
+  * Diplomacy should not end in total war until all enemies are annihilated, favor limited wars more?
+  * Tactical battles get boring after the tenth repetition, nothing new about them anymore? (Same kind of forces fighting same kind of forces?)
+  * Making money in the late game is difficult, because no minor powers are left for trading with. Better to also collect money from your provinces.
+  * There is this huge difference between colonies and occupied minor nations, which is reasonable but affect trade so immensely.

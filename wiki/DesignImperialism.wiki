@@ -94,6 +94,10 @@ Major powers have embassies with all other major powers right from the start. If
   * Trade: Offers and Bids for next trade session
   * Diplomacy: Make diplomatic decisions
 
+*Battle*
+
+Defender was favored, massive superiority of attacker needed (but attackers gain province and can choose aim). An alternative is to block enenmy's ports and disturb trade/starve.
+
 *Turn-End processing order*
 
 In order of processing
@@ -108,3 +112,11 @@ In order of processing
 *Multiplayer*
 
 At most 7 players over LAN or internet.
+
+*Technology*
+
+Was relatively simple. After certain dates (announced in the newspaper), they would become available for purchase. They are in effect the turn after purchase and enable other units or more improvements.
+
+*Screenshots*
+
+  * http://www.gamefaqs.com/pc/197614-imperialism/images/gs_screen-1

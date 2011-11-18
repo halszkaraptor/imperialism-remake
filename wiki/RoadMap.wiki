@@ -1,5 +1,5 @@
 #summary Detailed roadmap for coming releases.
-#labels Phase-Implementation
+#labels Phase-Implementation,Featured
 
 =Next release=
 

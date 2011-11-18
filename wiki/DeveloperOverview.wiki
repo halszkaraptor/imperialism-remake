@@ -1,2 +1,6 @@
 #summary Starting point for the developer/implementation section.
 #labels Phase-Implementation,Featured
+
+
+General guidelines
+  * [CodingStandards Coding standards]

@@ -96,7 +96,8 @@ Major powers have embassies with all other major powers right from the start. If
 
 *Battle*
 
-Defender was favored, massive superiority of attacker needed (but attackers gain province and can choose aim). An alternative is to block enenmy's ports and disturb trade/starve.
+Defender was favored, massive superiority of attacker needed (but attackers gain province and can choose aim). An alternative is to block enenmy's ports and disturb trade/starve. Every province has a permanent garrison (1-4) units, although they were not immobile. Units retreat when their morale is low. Generals can boost morale. Units gain experience with battles won. Troops cost maintenance every turn. Provinces can be fortified (3 levels). Sea units can block, capture merchant ships, fight or embark units.
+
 
 *Turn-End processing order*
 

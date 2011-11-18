@@ -1,0 +1,8 @@
+#summary Libraries or other large code bases that are useful.
+#labels Phase-Implementation,Phase-Design
+
+Other strategy games in Java:
+  * [http://megamek.info/ Megamek]
+  * [http://www.freecol.org/ FreeCol]
+  * [http://triplea.sourceforge.net/mywiki TripleA]
+  * [http://code.google.com/p/open-ig/ Open IG]

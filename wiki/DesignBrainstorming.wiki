@@ -1,0 +1,16 @@
+#summary At the beginning of the design a loose collection of ideas.
+
+*Battles*
+
+  * Should last more than one turn for heavy battles.
+  * Simple Panzer General like mini game on hex tiles.
+  * Terrain is determined from defending province (and specific)
+
+*History*
+
+  * Great scientists, generals with background info
+
+*Industry*
+
+  * Only one type of (lets call them engineers), can do mining, ralways, ..., need time and money to train and comes directly from the worker pool, can be removed to unskilled worker again
+  * Exploration is a nationwide mission, also performed from engineers. Takes some time and will reveal some (random) resources. Indication if there is anything left in the country to explore.

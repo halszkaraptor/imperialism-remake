@@ -10,6 +10,8 @@ Main functionality:
   * Exit (two wings of a door)
   * Help/Credits (click on logo)
 
+[http://imperialism-remake.googlecode.com/svn/wiki/images/DesignGUIMainScreen.png]
+
 Comments:
   * Upon loading the main elements should be made visible only after a certain time, eg. fade in after 2 seconds.
   * Upon change of language, the programm needs to restart, need notification about it.

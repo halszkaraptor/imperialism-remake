@@ -1,2 +1,26 @@
 #summary Generalizes the new design to see if there is a broader application area.
 #labels Phase-Design
+
+Aim: carefully evaluate generalizations and abtractions of the concept to exploit synergy effects and create a bunch of highly interesting strategy games with many different settings on the same plattform easily. Therefore common parts must be identified.
+
+=List of possible generalizations, abstractions=
+
+*Just the battle and provinces part*
+
+Panzer General on a map with provinces
+
+*Battle and provinces and simplified economics, research, diplomacy*
+
+Special historical settings like 2nd worldwar: HoI, Pacific Admiral or ancient world: Carthage, Rom, Greece, Persia
+
+Fantasy settings: Lord of middleearth, Fantasy General
+
+No inherent campaign mode though.
+
+*Extending in direction of Civilization like style*
+
+Extending provinces a lot, expanding research a lot. Exploring the map (now fully explored). (World map would be cool).
+
+*Massive Multiplayer*
+
+For example in a SciFi setting and instead of provinces we have space battles.

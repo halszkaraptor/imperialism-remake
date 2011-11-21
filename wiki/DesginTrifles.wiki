@@ -1,0 +1,5 @@
+#summary Minor things regarding design.
+#labels Phase-Design
+
+  * Do we want to have customized mouse cursors? Easy to implement, but is there any real benefit?
+  * Do we need a newspaper or advisors? Do they add to the game experience?

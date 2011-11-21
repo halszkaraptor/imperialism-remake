@@ -14,16 +14,22 @@
  */
 package org.imperialism;
 
+import org.imperialism.ui.StartFrame;
+
 /**
  *
  * @author Trilarion 2011
  */
 public class Main {
+    
+    private Main() {}    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        StartFrame frame = new StartFrame();
+        frame.setVisible(true);
     }
+
 }

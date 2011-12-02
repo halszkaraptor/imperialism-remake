@@ -1,0 +1,12 @@
+#summary Main document describing the most detailed specification of our Imperialism remake.
+#labels Phase-Design
+
+= How to win =
+
+= Diplomacy =
+
+= Research =
+
+= Industry =
+
+= Military =

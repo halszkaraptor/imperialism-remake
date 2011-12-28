@@ -1,12 +1,17 @@
 #summary Detailed roadmap for coming releases.
 #labels Phase-Implementation,Featured
 
+=Currently working on=
+
+First design of the game (Start November 2011)
+
 =Next release=
 
-=Also in progress=
+Version 0.1 (Expected in 2012)
+
+=Side developments=
+
+=Goal for version 1.0=
 
 
-=Up to 1.0=
-
-
-=And beyond 1.0=
+=And beyond version 1.0=

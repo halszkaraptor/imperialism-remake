@@ -4,7 +4,13 @@
 =Current status=
 
   * [RoadMap Roadmap]
+  * [FeatureMap Feature map]
+
+=GUI Design=
+
+  * [DesignGUIStartScreen Start Screen]
 
 =Guidelines=
 
   * [CodeStandards Coding standards]
+  * Useful [DeveloperLibrarySources Resources]: other java strategy games and libraries

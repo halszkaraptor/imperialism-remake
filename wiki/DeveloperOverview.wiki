@@ -1,6 +1,10 @@
 #summary Starting point for the developer/implementation section.
 #labels Phase-Implementation,Featured
 
+=Current status=
 
-General guidelines
+  * [RoadMap Roadmap]
+
+=Guidelines=
+
   * [CodeStandards Coding standards]

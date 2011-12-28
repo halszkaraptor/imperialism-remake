@@ -5,10 +5,24 @@
 
 {{{Imperialism: the creation and/or maintenance of an unequal economic, cultural, and territorial relationships, usually between states and often in the form of an empire, based on domination and subordination. (Wikipedia)}}}
 
-General description what the game should be.
+_(copied from the start page)_
+
+The aim of this project is to create a free (open source, OS independent) remake of the classic SSI game Imperialism. While the spirit and many concepts of the original should be preserved it should not become a pure copy but advance the concept in a sense that modern elements of strategic games are included as for example of the Civilization series.
+
+Imperialism was a great game at its time, not only known for its strategic challenge but also for a great ambient sound. However running it on modern OS is difficult. Also some parts of the game design (like the battles) were bugged. That's where this remake starts, providing a free, portable variant of the old Imperialism.
+
+The game is written in Java using Swing for the user interface. The philosophy is to keep it as simple as possible, use standard/well tested libraries wherever possible and to demand clean, understandable code always. 
 
 
-= Content =
+= Original Imperialism =
 
   * Design description [DesignImperialism original Imperialism]
   * [DesignImperialismReview Review] of the strengths and shortfalls of the original Imperialism
+
+= Design =
+
+*[DesignOfficialSpecification Official Specification]* of this game.
+
+  * [DesignBrainstorming Brainstorming] - collection of cool ideas
+  * [DesignTrifles Trifles] and minor issues
+  * [DesignGeneralization Generalization] of the game concept

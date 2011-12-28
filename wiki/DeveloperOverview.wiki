@@ -13,4 +13,4 @@
 =Guidelines=
 
   * [CodeStandards Coding standards]
-  * Useful [DeveloperLibrarySources Resources]: other java strategy games and libraries
+  * Useful [DeveloperLibrariesSources Resources]: other java strategy games and libraries

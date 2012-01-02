@@ -7,7 +7,7 @@
   * Is this balanced?
 
 *Philosophy*
-The role of the military in this game is quite large, but not dominant. We should not forget that the battle is also about industrial development and diplomacy, not only about war. Therefore battles must be complex and offer diversifaction, but on a simplified level. The battle and army model of Imperialism 1 needs to be extended without making it too complex. Some ideas from other games (like unit promotions) should be incorporated.
+The role of the military in this game is quite large, but not dominant. We should not forget that the game is also about industrial development and diplomacy, not only about war. Therefore battles must be complex and offer diversifaction, but on a simplified level. The battle and army model of Imperialism 1 needs to be extended without making it too complex. Some ideas from other games (like unit promotions) should be incorporated.
 The main points here:
   * A strong military needs a strong industrial base for large upkeep
   * It can be either defensively or offensively aligned

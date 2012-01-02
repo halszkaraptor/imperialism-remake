@@ -14,3 +14,20 @@ All worker (specialized or not) belong to the worker pool. We have the following
   * Fish, Grain, Apples - Food
   * Sheep, Cotton - Clothing
   * Silver, Gold - Direct Money
+
+*Production*
+  * 2 wood = 1 timber or 1 paper in the paper mill/factory
+  * 2 timber = 1 furniture in the furniture factory
+
+  * 1 ore + 1 coal = 1 steel in the steel mill/factory
+  * 2 steel = 1 weapon or 1 tool in the tool factory
+
+  * 2 wool or 2 cotton = 1 cloth in the spinning factory
+  * 2 cloth = 1 garment in the clothing factory
+
+  * 2 oil = 1 fuel in the rafinery
+  * 2 fuel = 1 power in the power plant
+
+  * 2 grains + 1 meat or fish + 1 apple = 1 can of food in the cannery
+
+  * 

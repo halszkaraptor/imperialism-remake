@@ -1,0 +1,54 @@
+#summary First consistent blueprint for armies, battles, ...
+#labels Phase-Design
+
+*4 types of units*
+  * Infantry units (good in defense and city attack and cheap, not too strong, short distance, slow)
+  * Artillery units (distance attack, weak defense, slow)
+  * Cavallery units (fast, strong, expensive, weak against cities)
+  * Officers (only one per army, increase moral and attack of surrounding units)
+
+*Properties of units*
+  * Attack strength (integer number 0-20)
+  * Strength (percentage 0-100%)
+  * Range (integer number 1-5)
+  * Movement (integer number 1-10)
+  * Morale (percentage 0-100%)
+  * Creating cost ($)
+  * Upkeep ($)
+
+*Terrain influence*
+  * Hills, mountains, cities and over a river give (cumulative) a +1 bonus on defense (on the attack value in a defending situation)
+
+*Promotion of units*
+  * Veteran (with a certain chance after each kill) attack +2, morale +10
+
+*Specialisation of units*
+  * Entrenchment (attack +2 if stationed in this province, if defending, if not moved, only for infantry)
+  * City attack (attack +2 if attacking a city, only for infantry)
+  * Slow down (only artillery, every attack slows down movement -1 (not cumulative))
+  * Blitz (attack +2 on first attack, can attack two times per turn, only cavallery)
+  * Fallback(certain chance to withdrawel instead of fighting, can sneak beyond neighoured hostile forces, only cavallery)
+
+*Time of introduction*
+  * Militia, Infantry 1, Artillery 1, Cavallery 1 available from 1814 on
+  * Infantry 2, Artillery 2, Cavallery 2 available from 1850 on
+  * Infantry 3, Artillery 3, Cavallery 3 available from 1880 on
+
+*Officers*
+  * No attack, very low defense
+  * Base is lieutenant (attack +1, morale +10 for all neighoured units)
+  * Promotion to Colonel (attack +1, morale +10 for all with distance up to 3)
+  * Promotion to General (attack +2, morale +20 for all with distance up to 5)
+
+*Healing of units*
+  * Not for free, costs some money and can come from manpower pool
+  * Only if remaining strength after battle >= 30%, otherwise liquidation to manpower pool
+
+*Overview of unit values*
+
+
+*Battlefield*
+  * Hexagon of hex fields with 15 fields diagonal distance, city in the middle
+
+*Time*
+  * 3 battle turns per game turn, if not resolved (city not occupied yet) continuation next round or abortion of fight if combat took place

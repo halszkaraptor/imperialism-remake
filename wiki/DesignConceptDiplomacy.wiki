@@ -1,0 +1,6 @@
+#summary First consistent blueprint of diplomacy, minor nations, ...
+#labels Phase-Design
+
+*Possible treaties*
+  * Peace treaty (5/10 years fixed)
+  * Any side can always offer/demand additional money to each proposal

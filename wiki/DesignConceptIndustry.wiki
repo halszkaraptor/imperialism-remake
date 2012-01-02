@@ -1,0 +1,16 @@
+#summary First consistent blueprint for the industrial model.
+#labels Phase-Design
+
+*Worker pool*
+All worker (specialized or not) belong to the worker pool. We have the following types:
+  * Unskilled workers (can work in factories, every other type can always be reduced to unskilled workers)
+  * Skilled workers (can work in factories, work more efficiently)
+  * Scientists (work in university, explore the country or techs)
+  * Engineers (can improve the country, rails, mines, ...)
+  * Trained military (go to military soldier pool, aka reserve)
+
+*Natural resources*
+  * Wood, Coal, copper, ore, oil - Heavy industries (tools, weapons, railways)
+  * Fish, Grain, Apples - Food
+  * Sheep, Cotton - Clothing
+  * Silver, Gold - Direct Money

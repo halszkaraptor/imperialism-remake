@@ -1,6 +1,20 @@
 #summary First consistent blueprint for armies, battles, ...
 #labels Phase-Design
 
+*Critical points*
+  * Do we need it that complex?
+  * Is morale really adding?
+  * Is this balanced?
+
+*Philosophy*
+The role of the military in this game is quite large, but not dominant. We should not forget that the battle is also about industrial development and diplomacy, not only about war. Therefore battles must be complex and offer diversifaction, but on a simplified level. The battle and army model of Imperialism 1 needs to be extended without making it too complex. Some ideas from other games (like unit promotions) should be incorporated.
+The main points here:
+  * A strong military needs a strong industrial base for large upkeep
+  * It can be either defensively or offensively aligned
+  * Battles can take more than a turn, delaying action and allowing reinforcement.
+  * Healing is not for free.
+  * Battles are carried out on a detailed hex map.
+
 *4 types of units*
   * Infantry units (good in defense and city attack and cheap, not too strong, short distance, slow)
   * Artillery units (distance attack, weak defense, slow)
@@ -15,6 +29,10 @@
   * Morale (percentage 0-100%)
   * Creating cost ($)
   * Upkeep ($)
+
+*Unit actions*
+  * Move and/or attack. Attack ends movement.
+  * Defend max two times (artillery doesn't count)
 
 *Terrain influence*
   * Hills, mountains, cities and over a river give (cumulative) a +1 bonus on defense (on the attack value in a defending situation)
@@ -62,4 +80,10 @@
 
 *Damage model*
   * Unit 1 attacks unit 2 with attack values of *a1* and *a2*
-  * 
+  * Strength of units are *s1* and *s2* respectively
+  * Damages to both units are *d1* and *d2*
+  * Formula: dy = sx `*` ax / ay `*` c +/- delta
+  * With constant modifier c ~ 0.5
+  * Gaussian random modifier +/- delta (which is adjustable)
+  * Damage cannot be higher than strength dx <= sx
+  * Damage is calculated and then substracted from strength, also morale is adjusted

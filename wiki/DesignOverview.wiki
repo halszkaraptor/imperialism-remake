@@ -26,5 +26,6 @@ Final *[DesignOfficialSpecification Official Specification]* of this game.
   * [DesignBrainstorming Brainstorming] - collection of cool ideas
   * [DesignConceptMilitary Military] concept
   * [DesignConceptIndustry Industrial] concept
+  * [DesignConceptDiplomacy Diplomacy] concept
   * [DesignTrifles Trifles] and minor issues
   * [DesignGeneralization Generalization] of the game concept

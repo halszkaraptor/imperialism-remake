@@ -24,6 +24,7 @@ The game is written in Java using Swing for the user interface. The philosophy i
 Final *[DesignOfficialSpecification Official Specification]* of this game.
 
   * [DesignBrainstorming Brainstorming] - collection of cool ideas
+  * [DesignPhilosophy Philosophy] of the design
   * [DesignConceptMilitary Military] concept
   * [DesignConceptIndustry Industrial] concept
   * [DesignConceptDiplomacy Diplomacy] concept

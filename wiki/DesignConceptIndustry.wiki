@@ -30,4 +30,23 @@ All worker (specialized or not) belong to the worker pool. We have the following
 
   * 2 grains + 1 meat or fish + 1 apple = 1 can of food in the cannery
 
-  * 
+  * timber + steel = 1 transport (wagon)
+  * timber + cloth (+ steel + coal) = ships
+
+*Trade*
+  * Wood, ore, coal, wool/cotton (same symbol), oil are basic tradeable resources
+  * Timber, furniture, steel, tools, weapons, cloth, garment, paper, fuel, cans of food are advanced tradeable resources
+
+*Education*
+  * Paper + unskilled worker = skilled Worker
+  * Paper + skilled worker + garment + furniture = expert worker
+  * Paper + skilled worker + garment + furniture + tool = scientist or engineer
+  * Paper + skilled worker + garment + furniture + weapon = soldier in reserve
+  * maybe also money
+
+* Trade flow, Consumption flow*
+  * Your people can consume some of the things you produce, they will pay for it. They have a certain demand for paper, furniture, tools, garments and will pay for it. You can sell them a bit more (10-20%) and they will pay you, but less than the ordinary price. They will also buy imports, reducing your market share.
+  * They produce more than they consume (otherwise it would be kind of meaningless, wouldn't it), so we can export the excess.
+  * For export/trade we should specify the target nations and what amount we want to keep in store for later. The actual transactions are then made in a clever automatic way by the program.
+  * If for some reason the global demand for food and luxury items cannot be fullfilled then starvation or reduced productivity will follow.
+  * Basically the productivity will increase ever more in the game, giving rise to an ever greater army or other things.

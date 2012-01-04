@@ -3,9 +3,9 @@
 
 = Vision =
 
-{{{Imperialism: the creation and/or maintenance of an unequal economic, cultural, and territorial relationships, usually between states and often in the form of an empire, based on domination and subordination. (Wikipedia)}}}
+ _Imperialism: the creation and/or maintenance of an unequal economic, cultural, and territorial relationships, usually between states and often in the form of an empire, based on domination and subordination. (Wikipedia)_
 
-_(copied from the start page)_
+From the start page:
 
 The aim of this project is to create a free (open source, OS independent) remake of the classic SSI game Imperialism. While the spirit and many concepts of the original should be preserved it should not become a pure copy but advance the concept in a sense that modern elements of strategic games are included as for example of the Civilization series.
 

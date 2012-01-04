@@ -28,5 +28,6 @@ Final *[DesignOfficialSpecification Official Specification]* of this game.
   * [DesignConceptMilitary Military] concept
   * [DesignConceptIndustry Industrial] concept
   * [DesignConceptDiplomacy Diplomacy] concept
+  * [DesignConceptStatistics Statistics display] concept
   * [DesignTrifles Trifles] and minor issues
   * [DesignGeneralization Generalization] of the game concept

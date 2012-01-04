@@ -1,6 +1,9 @@
 #summary Main document describing the most detailed specification of our Imperialism remake.
 #labels Phase-Design
 
+*Imperialism remake - Official Specification v1 (2012 January)*
+<wiki:toc max_depth="1" />
+
 = How to win =
 
 = Diplomacy =

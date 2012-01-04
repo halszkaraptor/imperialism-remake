@@ -87,3 +87,16 @@ The main points here:
   * Gaussian random modifier +/- delta (which is adjustable)
   * Damage cannot be higher than strength dx <= sx
   * Damage is calculated and then substracted from strength, also morale is adjusted
+
+*Ships*
+  * Fregates are medium sized warships (upgrade once), best for defending or hunting trade ships
+  * Trade vessels (upgrade often (two or three times)) with ever increasing cargo size and speed at constant upkeep
+  * Warships/ships of the line are for combat, blocking ports, disembarkements
+
+*Possible actions*
+  * Guard trade in a certain area (defensive)
+  * Interfere trade in a certain area (offensive)
+  * Engage enemy fleet (offensive)
+  * Block ports (offensive)
+  * Secure landing operation (defensive)
+  * Default operation: Guard

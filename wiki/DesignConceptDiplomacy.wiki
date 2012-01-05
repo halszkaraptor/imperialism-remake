@@ -1,6 +1,18 @@
 #summary First consistent blueprint of diplomacy, minor nations, ...
 #labels Phase-Design
 
-*Possible treaties*
-  * Peace treaty (5/10 years fixed)
-  * Any side can always offer/demand additional money to each proposal
+*Diplomatic philosophy*
+
+The idea is that while you trade with minor nations and develop their infrastructure you fullfill their demands and also gain their trust. But you make them also dependent on you. They will know that their success depends on your power. A large military and hostile actions in the past can let you seem as a potential threat to their independence. However they want to keep their independence in a world that doesn't let them keep it, less and less and less. So they either end up conquered or they flee in the arms of a defender, someone who is sympathetic towards and wants them. Who will this be? Of course someone with a peaceful reputation, a large enough army to protect and many investments in the past.
+
+Now for major nations, they all have the same goal, being the sole winner. So if one of them gets and advantage, they will start forming alliances. Alliances mean that they kind of either fight together against a common foe or that they agree to not fight each other or that they somehow adjust their plans on each other. How to make meaningful actions out of this... Difficult.
+
+*Possible Diplomatic Goals*
+  * Open up new markets to make more profit
+  * Win the friendship of minor nations and invite them to your empire (need to defend them)
+  * Declare war and seek peace (peace with fixed 5/10 years period)
+  * Seek reassurance through non-agression treaties
+  * Seek alliances (commong goals)
+  * Just influence nations (just offer money?)
+  * Bully others around
+

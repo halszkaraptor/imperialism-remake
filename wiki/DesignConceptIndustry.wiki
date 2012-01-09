@@ -52,3 +52,11 @@ All worker (specialized or not) belong to the worker pool. We have the following
   * Basically the productivity will increase ever more in the game, giving rise to an ever greater army or other things.
   * The demand of minor nation is slowly increasing with time, higher if the infrastructure is increased.
   * Export-subventions or priority lists (for import, export) or diplomatic trade limit treaties (only import x tons, export y tons...) might all be legimitate means to dominate a minor nation.
+
+*Improve Trade/Relations to minor Nations*
+  * Make them favored trade partner
+  * Help them with their infrastructure (also increases their export)
+  * Peace Treaty (with fixed cancellation period)
+  * Give discount to some products (specific for each product up to 50%)
+  * Finance friendly organisations
+  * Fullfill wishes of them

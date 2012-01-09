@@ -16,3 +16,18 @@ Now for major nations, they all have the same goal, being the sole winner. So if
   * Just influence nations (just offer money?)
   * Bully others around
 
+*Relation to minor Nations*
+  * improve when extending their infrastructure
+  * improve when trading (effectively not only offering)
+  * improve upon fullfillment of wishes
+  * improve for peace treaty
+  * worsen if military is large enough and common border or many ships
+
+*Peaceful assimilation of minor Nation*
+  * Relation must be very good
+  * Become status of close friend (public visible)
+  * Have a strong enough military
+  * Defend upon aggression of others
+  * Trade and fullfill all demands wishes
+  * Buy any excess exports
+  * After certain time is gone -> assimilation festivities

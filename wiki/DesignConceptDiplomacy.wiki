@@ -31,3 +31,4 @@ Now for major nations, they all have the same goal, being the sole winner. So if
   * Trade and fullfill all demands wishes
   * Buy any excess exports
   * After certain time is gone -> assimilation festivities
+  * Secrete turnaround should be possible to pursue (not see with whom they trade maybe?)

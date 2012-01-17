@@ -19,5 +19,10 @@ General
 
 ----
 
+  * Need a kanban board. (make suggestions here)
+  * Positions for a good open source project: Project manager, Chief artist graphics, Chief artist music, Lead programmer, Community manager, Programmer, Artist/designer, Translator, Tester, Supporter
+
+----
+
 Technical hints
   * http://code.google.com/p/heekscad/wiki/HowtoAddImagesToWiki

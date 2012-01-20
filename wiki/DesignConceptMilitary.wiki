@@ -30,6 +30,10 @@ The main points here:
   * Creating cost ($)
   * Upkeep ($)
 
+*Production of units*
+  * Will take a certain time (so you have to plan ahead)
+  * Take from soldier pool
+
 *Unit actions*
   * Move and/or attack. Attack ends movement.
   * Defend max two times (artillery doesn't count)

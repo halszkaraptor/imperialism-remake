@@ -3,15 +3,27 @@
 See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecification?show=content html].
 
 *Imperialism remake - Official Specification v1 (2012 January)*
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="2" />
 
 
-= How to win =
+= Settings =
+
+== General settings ==
+
+== How to win ==
 
 = Diplomacy =
 
 = Research =
 
-= Industry =
+= Economics =
+
+== Industry and Infrastructure ==
+
+=== Worker pool ===
+
+The worker pool (_W integer_) contains workers (employed and unemployed, skilled and unskilled), all scientists and all engineers. 
 
 = Military =
+
+= User interface =

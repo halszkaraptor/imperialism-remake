@@ -22,7 +22,7 @@ See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecifica
 
 === Worker pool ===
 
-The worker pool (_W integer_) contains workers (employed and unemployed, skilled and unskilled), all scientists and all engineers. Without cost all specialists can always be reduced to unskilled workers.
+The worker pool (_W: integer_) contains workers (employed and unemployed, skilled and unskilled), all scientists and all engineers. Without cost all specialists can always be reduced to unskilled workers.
 
 We have the following types:
   * Unskilled workers (can work in factories, need food, basic type)
@@ -31,6 +31,8 @@ We have the following types:
   * Engineers (can improve the country, your own, also minor nations)
 
 === Natural resources ===
+
+  * Wood, Coal, 
 
 = Military =
 

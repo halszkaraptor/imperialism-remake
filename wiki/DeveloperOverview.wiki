@@ -5,10 +5,7 @@
 
   * [RoadMap Roadmap]
   * [FeatureMap Feature map]
-
-=GUI Design=
-
-  * [DesignGUIStartScreen Start Screen]
+  * [CodingOfficialSpecification Official specification]
 
 =Guidelines=
 

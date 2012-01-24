@@ -11,9 +11,9 @@ Ever game data is stored in xml files. We have scenarios. Also saved games are s
 
 = Scenarios =
 
-Can be edited completely with the _Scenario Editor_. Paramters should be softcoded.
+Can be edited completely with the _Scenario Editor_. Paramters should be softcoded. During development, need to update between versions.
 
-During development, need to update between versions.
+If a scenario file refers to subfiles, store a hash value to make sure the referred file is the valid one.
 
 ==Scenario parameters==
   * Name of scenario

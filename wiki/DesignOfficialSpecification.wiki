@@ -10,6 +10,8 @@ See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecifica
 
 == General settings ==
 
+  * 4 turns per year (the seasons), earliest start 1814, end 1914 (~400 turns)
+
 == How to win ==
 
 = Diplomacy =
@@ -45,7 +47,7 @@ Rules
 
 === Production ===
 
-*Resources to raw material*
+*Resources to raw material (level x to x units per turn)*
   * wood to wood
   * coal to coal
   * ore to ore
@@ -62,7 +64,11 @@ Rules
   * _Spinning factory_: 2 wool to 1 cloth
   * _Clothing factory_: 2 cloth to 1 garment
   * _Cannery_: 1 grain + 1 meat to 1 can of food
+  * _Rafinery_: 2 oil to 1 fuel
+  * _Power plant_: 2 fuel to 1 power
+  * _Train station_: 1 timber + 1 steel to 1 transport
 
+These products can also be used to buy ships and to trade or to extend the factories and are also consumed by the workers.
 
 = Military =
 

@@ -31,3 +31,7 @@ Final *[DesignOfficialSpecification Official Specification]* of this game.
   * [DesignConceptStatistics Statistics display] concept
   * [DesignTrifles Trifles] and minor issues
   * [DesignGeneralization Generalization] of the game concept
+
+=GUI Design=
+
+  * [DesignGUIStartScreen Start Screen]

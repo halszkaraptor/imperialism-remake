@@ -32,8 +32,43 @@ We have the following types:
 
 === Natural resources ===
 
-  * Wood, Coal, 
+Resources
+  * Wood, Coal, Ore, Oil - heavy
+  * Fish, Grain, Fruits, Meat - food
+  * Sheep/Cotton - cloth
+  * Silver - money
+
+Rules
+  * Except fish, everything has to be developed by an engineer
+  * Everything can be developed up to third level
+  * Everything must be connected by rail (or fish by lighthouse) in at least a neighoring map tile
+
+=== Production ===
+
+*Resources to raw material*
+  * wood to wood
+  * coal to coal
+  * ore to ore
+  * oil to oil
+  * grain to grain (side dish)
+  * fish, fruits, meat to meat (main dish)
+  * sheep, cotton to wool
+  * silver to money
+
+*Raw material to advanced material*
+  * _Paper mill_: 2 wood to 1 timber, 2 wood to 1 paper
+  * _Steel mill_: 1 ore + 1 coal to 1 steel
+  * _Tool factory_: 2 steel to 1 tool, 2 steel to 1 weapon
+  * _Spinning factory_: 2 wool to 1 cloth
+  * _Clothing factory_: 2 cloth to 1 garment
+  * _Cannery_: 1 grain + 1 meat to 1 can of food
+
 
 = Military =
 
 = User interface =
+
+== Main map screen ==
+
+Minor
+  * There will be a real time clock in one corner of the screen, can be turned off in the options

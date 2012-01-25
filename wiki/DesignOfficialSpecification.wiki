@@ -2,9 +2,9 @@
 #labels Phase-Design
 See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecification?show=content html].
 
-*Imperialism remake - Official Specification v1 (2012 January)*
+*Imperialism remake*
+*Official Design Specification - v1 January 2012*
 <wiki:toc max_depth="2" />
-
 
 = Settings =
 
@@ -69,6 +69,10 @@ Rules
   * _Train station_: 1 timber + 1 steel to 1 transport
 
 These products can also be used to buy ships and to trade or to extend the factories and are also consumed by the workers.
+
+=== Trade ===
+
+Tradable are are resources and products.
 
 = Military =
 

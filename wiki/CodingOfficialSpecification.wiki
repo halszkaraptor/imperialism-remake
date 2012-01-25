@@ -1,6 +1,10 @@
 #summary Main document describing the code specification.
 #labels Phase-Implementation
 
+*Imperialism remake*
+*Coding Official Specification - v1 January 2012*
+<wiki:toc max_depth="2" />
+
 = Load/Save =
 
 Ever game data is stored in xml files. We have scenarios. Also saved games are scenarios. There is autosaving of course. Upon load some parameters can be changed, but not many.

@@ -6,7 +6,9 @@ See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecifica
 *Official Design Specification - v1 January 2012*
 <wiki:toc max_depth="2" />
 
-= Settings =
+----
+
+= 1. Settings =
 
 == General settings ==
 
@@ -14,13 +16,21 @@ See as [http://code.google.com/p/imperialism-remake/wiki/DesignOfficialSpecifica
 
 == How to win ==
 
-= Diplomacy =
+----
 
-= Research =
+= 2. Diplomacy =
 
-= Economics =
+----
 
-== Industry and Infrastructure ==
+= 3. Research =
+
+----
+
+= 4. Economics =
+
+----
+
+== 5. Industry and Infrastructure ==
 
 === Worker pool ===
 
@@ -74,11 +84,33 @@ These products can also be used to buy ships and to trade or to extend the facto
 
 Tradable are are resources and products.
 
-= Military =
+----
 
-= User interface =
+= 6. Military =
+
+----
+
+= 7. User interface =
+
+== Start screen ==
+
+Purpose:
+  * New random scenario (picture of a globe)
+  * New historical scenario (european map)
+  * Load game (image of documents)
+  * MP joing a game (map with differently colored figure)
+  * Languages (speech ballong with flags and names)
+  * Exit (two wings of a door)
+  * Help/Credits (click on logo)
+
+[http://imperialism-remake.googlecode.com/svn/wiki/images/DesignGUIMainScreen.png]
+
+Comments:
+  * Upon loading the main elements should be made visible only after a certain time, eg. fade in after 2 seconds.
+  * Upon change of language, the programm needs to restart, need notification about it.
+  * We start fullscreen and expect at least 1024 x 768.
 
 == Main map screen ==
 
-Minor
+== Minor ==
   * There will be a real time clock in one corner of the screen, can be turned off in the options

@@ -90,6 +90,18 @@ Tradable are are resources and products.
 
 ----
 
+= 7. Artificial Intelligence
+
+Requirements:
+  * Should come in different difficulty levels (3 or 5)
+  * Should not take too long to think
+  * Should be predictable
+  * Should memorize past actions (make it human, tit for tat)
+  * Should display reasons for it's actions
+  * Should have optional a personal flavor for each grand nation, definable by some sort of sliders (peacefulness, greedyness, ...)
+
+----
+
 = 7. User interface =
 
 == Start screen ==

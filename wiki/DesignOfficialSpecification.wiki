@@ -102,7 +102,7 @@ Requirements:
 
 ----
 
-= 7. User interface =
+= 8. User interface =
 
 == Start screen ==
 

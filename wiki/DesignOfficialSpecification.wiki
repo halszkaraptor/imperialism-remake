@@ -90,7 +90,7 @@ Tradable are are resources and products.
 
 ----
 
-= 7. Artificial Intelligence
+= 7. Artificial Intelligence =
 
 Requirements:
   * Should come in different difficulty levels (3 or 5)

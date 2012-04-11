@@ -1,6 +1,0 @@
-#summary Minor things regarding design.
-#labels Phase-Design
-
-  * Do we want to have customized mouse cursors? Easy to implement, but is there any real benefit? Mouse cursors should indicate possible actions.
-  * Do we need a newspaper or advisors? Do they add to the game experience? Should not be only text, but also lots of graphical information. 
-  * A clock (turned on by default) to inform you about the time in RL.

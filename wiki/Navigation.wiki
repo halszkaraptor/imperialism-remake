@@ -1,7 +1,0 @@
-#summary Links to everything important
-
-Content
-  * [DesignOverview Design] 
-  * [DeveloperOverview Programming]
-  * [FeatureMap Features]
-  * [RoadMap Roadmap]

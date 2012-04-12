@@ -1,6 +1,0 @@
-#summary Status of the current release in terms of completed features.
-#labels Phase-Implementation,Featured
-
-=Version 0.1=
-
-Not yet.

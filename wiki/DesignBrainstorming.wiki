@@ -22,28 +22,7 @@
 
   * Great scientists, generals with background info, historical background info
 
-*Diplomacy*
-
-  * Treaties with 10 years/rounds fixed peace possible
-
 *Industry*
 
   * Only one type of (lets call them engineers), can do mining, railways, ..., need time and money to train and comes directly from the worker pool, can be removed to unskilled worker again
   * Exploration is a nationwide mission, also performed from engineers or from scientists. Takes some time and will reveal some (random) resources. Indication if there is anything left in the country to explore.
-
-*Research*
-
-  * Only minor aspect of the game, not too much concentration 10% of working force should be enough
-  * A chained map of researchable technologies as in Civilization
-  * Scientists can either explore country
-  * Different independent strands: economical strand, militaristic strand, cultural (technological strand)?
-
-  * Typical militaristic techs: More ground experience, kind of refuelling after battle, higher morale
-  * Typical economical techs: Higher taxes, ...
-  * Typical cultural techs: Higher tech efficiency, higher cultural ranking, more diplomatic influence
-
-*Victory conditions*
-
-  * Military victory: 66% of provinces conquered
-  * Diplomatic victory: 66% of votes in governor council
-  * Cultural victory: First to achieve a certain number of culture points and builds a special wonder(?)

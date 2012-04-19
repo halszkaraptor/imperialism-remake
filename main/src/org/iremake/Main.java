@@ -12,9 +12,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.imperialism;
+package org.iremake;
 
-import org.imperialism.ui.StartFrame;
+import org.iremake.ui.StartFrame;
 
 /**
  *

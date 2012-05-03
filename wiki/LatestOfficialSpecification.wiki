@@ -1,0 +1,3 @@
+#summary Latest Official Specification as PDF
+
+*Official Specification rev. 58 - [http://imperialism-remake.googlecode.com/files/OfficialSpecifications_rev58.pdf Download]*

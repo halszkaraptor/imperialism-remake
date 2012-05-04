@@ -1,3 +1,5 @@
 #summary Latest Official Specification as PDF
 
+*[http://remake.twelvepm.de/ Imperialism remake]*
+
 *Official Specification rev. 58 - [http://imperialism-remake.googlecode.com/files/OfficialSpecifications_rev58.pdf Download]*

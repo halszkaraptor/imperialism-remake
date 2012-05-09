@@ -1,9 +1,0 @@
-#summary Points to the most actual downloads.
-#labels Featured,Phase-Deploy
-
-=[http://remake.twelvepm.de/ Imperialism remake]=
-
-Links to the most actual downloads.
-
-== Official Specifications ==
-  * Official Specification rev. 58 *[http://imperialism-remake.googlecode.com/files/OfficialSpecifications_rev58.pdf download]* (250Kb)

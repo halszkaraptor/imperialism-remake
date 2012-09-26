@@ -15,5 +15,3 @@ GameSpecifications.odt - All game mechanics rules
 ProgrammingSpecifications.odt - AI, user interface and general programming specifications
 
 Credits.odt - Credits by version
-
-Roadmap.odt - Roadmap by version (also list of completed features for "what has changed?" files)

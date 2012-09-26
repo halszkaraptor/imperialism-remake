@@ -1,0 +1,14 @@
+﻿/*
+Description: Style for Imperialism remake help content
+Author: Trilarion
+License: GPL v3
+*/
+
+/* GENERAL */
+body {
+	color: #A31313;
+	margin: 0px;
+	padding: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+}

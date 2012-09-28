@@ -33,8 +33,10 @@ import org.iremake.client.Main;
  * @author Trilarion 2012
  */
 public class StartFrame extends JFrame {
-
+    
     private static final long serialVersionUID = 1L;
+    
+    private static final String resources = "/data/game/art/graphics/ui/startup/";
 
     public StartFrame() {
         initComponents();
@@ -44,7 +46,7 @@ public class StartFrame extends JFrame {
 
         // frame specific
         setTitle("Title");  // set title
-        setIconImage(new ImageIcon(getClass().getResource("/data/images/gui/icons/app_icon.png")).getImage());  // set icon
+        setIconImage(new ImageIcon(getClass().getResource(resources + "icon.app.png")).getImage());  // set icon
         setUndecorated(true);   // undecorated
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // turn of usual exiting mechanisms
         setAlwaysOnTop(true);   // always on top (?)
@@ -76,7 +78,7 @@ public class StartFrame extends JFrame {
 
         // exit button
         JButton exitButton = new JButton();
-        exitButton.setIcon(new ImageIcon(getClass().getResource("/data/images/gui/icons/start_new_world.png")));    // set icon
+        exitButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.exit.png")));    // set icon
         exitButton.setFocusable(false);     // not focusable (?)
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override

@@ -12,11 +12,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake;
+package org.iremake.client;
 
 import java.awt.EventQueue;
-import org.iremake.ui.StartFrame;
-import org.iremake.ui.StartFrameTest;
+import org.iremake.client.ui.StartFrame;
 import org.tools.ui.LookAndFeel;
 
 /**

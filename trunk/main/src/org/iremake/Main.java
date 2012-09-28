@@ -14,11 +14,14 @@
  */
 package org.iremake;
 
+import java.awt.EventQueue;
 import org.iremake.ui.StartFrame;
+import org.iremake.ui.StartFrameTest;
+import org.tools.ui.LookAndFeel;
 
 /**
  *
- * @author Trilarion 2011
+ * @author Trilarion 2012
  */
 public class Main {
     
@@ -28,8 +31,24 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        StartFrame frame = new StartFrame();
-        frame.setVisible(true);
+        
+        // set look and feel
+        LookAndFeel.setSystemLookAndFeel();
+        
+        
+        // fire up start frame
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                StartFrame frame = new StartFrame();
+                frame.setVisible(true);
+            }
+        });        
+
+    }
+    
+    public static void shutDown() {
+        
     }
 
 }

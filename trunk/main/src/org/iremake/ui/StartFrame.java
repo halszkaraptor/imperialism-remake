@@ -14,36 +14,89 @@
  */
 package org.iremake.ui;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import org.iremake.Main;
 
 /**
  *
- * @author Trilarion 2011
+ * @author Trilarion 2012
  */
 public class StartFrame extends JFrame {
+
     private static final long serialVersionUID = 1L;
-    
+
     public StartFrame() {
         initComponents();
     }
-    
+
     private void initComponents() {
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // set title
         setTitle("Title");
+
+        // set icon
+        setIconImage(new ImageIcon(getClass().getResource("/data/images/gui/icons/app_icon.png")).getImage());
+
+        // undecorated
         setUndecorated(true);
-        setIconImage(new ImageIcon(getClass().getResource("/data/images/gui/icons/app_icon.png")).getImage());        
-        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
+        // turn of usual exiting mechanisms
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // always on top (?)
         setAlwaysOnTop(true);
+
+        // start maximized
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
+        // not resizable
+        setResizable(false);
+
+        // minimal size = 1024x768 (not needed because not resizable)
+        setMinimumSize(new Dimension(1024, 768));
+
+        // black background
+        setBackground(new Color(0, 0, 0));
         
-        JToolBar toolBar = new JToolBar();
-        JButton buttonNewWorld = new JButton(new ImageIcon(getClass().getResource("/data/images/gui/icons/start_new_world.png")));
-        toolBar.add(buttonNewWorld);
+        // toolbar
+        JToolBar menuBar = new JToolBar();
         
-        add(toolBar);
+        // non floatable
+        menuBar.setFloatable(false);
+        
+        // no border
+        menuBar.setBorder(null);
+        
+        // set roll over
+        menuBar.setRollover(true);
+        
+        // exit button
+        JButton exitButton = new JButton();
+        
+        // set icon
+        exitButton.setIcon(new ImageIcon(getClass().getResource("/data/images/gui/icons/start_new_world.png")));
+        
+        // add action listener
+        exitButton.addActionListener(new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Main.shutDown();
+            }
+        });
+        
+        // add buttons to toolbar
+        menuBar.add(exitButton);
+        
+        // add toolbar to frame
+        add(menuBar);
     }
-    
 }

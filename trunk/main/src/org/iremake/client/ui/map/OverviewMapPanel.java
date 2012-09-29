@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion 2012
  */
 public class OverviewMapPanel  extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public OverviewMapPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

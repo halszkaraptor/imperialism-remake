@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion
  */
 public class ScenarioSavePanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public ScenarioSavePanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

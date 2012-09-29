@@ -23,5 +23,14 @@ import javax.swing.JPanel;
  * @author Trilarion 2012
  */
 public class BattleMapPanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public BattleMapPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+    }
+
 }

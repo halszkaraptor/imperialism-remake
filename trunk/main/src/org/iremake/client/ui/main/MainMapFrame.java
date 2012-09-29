@@ -23,14 +23,13 @@ import javax.swing.JFrame;
  * @author Trilarion 2012
  */
 public class MainMapFrame extends JFrame {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     public MainMapFrame() {
         initComponents();
     }
 
-    private void initComponents() {    
-        
+    private void initComponents() {
     }
 }

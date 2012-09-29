@@ -23,5 +23,13 @@ import javax.swing.JDialog;
  * @author Trilarion 2012
  */
 public class BattleMapDialog extends JDialog {
-    
+    private static final long serialVersionUID = 1L;
+
+    public BattleMapDialog() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+    }
 }

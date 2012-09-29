@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion
  */
 public class ScenarioLoadPanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public ScenarioLoadPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

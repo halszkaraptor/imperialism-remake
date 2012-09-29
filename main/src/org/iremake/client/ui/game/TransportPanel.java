@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion 2012
  */
 public class TransportPanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public TransportPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

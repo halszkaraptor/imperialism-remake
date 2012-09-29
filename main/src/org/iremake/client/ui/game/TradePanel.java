@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion 2012
  */
 public class TradePanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public TradePanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

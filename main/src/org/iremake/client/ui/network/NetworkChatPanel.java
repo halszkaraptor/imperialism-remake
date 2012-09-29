@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion
  */
 public class NetworkChatPanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public NetworkChatPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

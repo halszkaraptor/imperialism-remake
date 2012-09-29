@@ -23,5 +23,12 @@ import javax.swing.JDialog;
  * @author Trilarion extends JDialog
  */
 public class GameDialog extends JDialog {
-    
+    private static final long serialVersionUID = 1L;
+
+    public GameDialog() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

@@ -23,5 +23,12 @@ import javax.swing.JPanel;
  * @author Trilarion
  */
 public class MiniMapPanel extends JPanel {
-    
+    private static final long serialVersionUID = 1L;
+
+    public MiniMapPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+    }
 }

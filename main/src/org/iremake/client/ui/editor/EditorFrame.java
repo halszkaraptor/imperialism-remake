@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import org.iremake.client.ui.StartFrame;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.UITools;
@@ -38,8 +39,8 @@ import org.tools.ui.UITools;
  * @author Trilarion 2012
  */
 public class EditorFrame extends ScreenFrame {
+
     private static final long serialVersionUID = 1L;
-    private static final String resources = "/data/game/art/graphics/ui/";
 
     public EditorFrame() {
         initComponents();
@@ -50,45 +51,45 @@ public class EditorFrame extends ScreenFrame {
         JToolBar menuBar = new JToolBar();
         menuBar.setFloatable(false);  // non floatable
         menuBar.setOpaque(false);     // transparent
-        
+
         // exit button
         JButton exitButton = new JButton();
-        exitButton.setIcon(Resources.getAsIcon(resources + "button.exit.png"));
+        exitButton.setIcon(Resources.getAsIcon(Resources.fromEditor("button.exit.png")));
         exitButton.setFocusable(false);
-        exitButton.addActionListener(new ActionListener () {
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // TODO restart StartFrame
+                StartFrame frame = new StartFrame();
+                frame.setVisible(true);
             }
         });
-        
+
         // add buttons to toolbar
         menuBar.add(exitButton);
-        
+
         // tabbed pane
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        
+
         // panels in the tabbed pane
         JPanel mapPanel = new JPanel();
         JPanel nationPanel = new JPanel();
-        
+
         // add panels to tabbed pane
         tabPane.addTab("Map", mapPanel);
         tabPane.addTab("Nation", nationPanel);
 
         // set background of content pane (which is also included in layered pane
         Container content = getContentPane();
-        content.setBackground(Color.WHITE);    // white color        
-        
+        content.setBackground(Color.WHITE);    // white color
+
         // layout
         GroupLayout layout = new GroupLayout(content);
         content.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(menuBar).addComponent(tabPane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));        
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
     }
-
 }

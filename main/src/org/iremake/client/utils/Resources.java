@@ -23,13 +23,13 @@ import javax.swing.ImageIcon;
 
 /**
  * Loads from within the application jar file.
- * 
+ *
  * @author Trilarion 2012
  */
 public class Resources {
-    
-    public static final String UI = "/data/game/art/graphics/ui";
-    
+
+    private static final String ui_base = "/data/game/art/graphics/ui/";
+
     private Resources() {}
 
     public static Icon getAsIcon(String resource) {
@@ -45,7 +45,7 @@ public class Resources {
         URL url = Resources.getAsURL(resource);
         if (url == null) {
             return null;
-        }        
+        }
         ImageIcon icon = new ImageIcon(url);
         return icon.getImage();
     }
@@ -57,5 +57,17 @@ public class Resources {
      */
     public static URL getAsURL(String resource) {
         return Resources.class.getResource(resource);
+    }
+
+    public static String fromUI(String name) {
+        return ui_base + name;
+    }
+
+    public static String fromStartup(String name) {
+        return ui_base + "startup/" + name;
+    }
+
+    public static String fromEditor(String name) {
+        return ui_base + "editor/" + name;
     }
 }

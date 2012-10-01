@@ -29,20 +29,20 @@ import org.tools.ui.UITools;
 public class ScreenFrame extends JFrame {
 
     public ScreenFrame() {
-        // undecorated        
+        // undecorated
         setUndecorated(true);
 
-        // turn of usual exiting mechanisms                
+        // turn of usual exiting mechanisms
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-        // not resizable                
+        // not resizable
         setResizable(false);
 
-        // set title        
+        // set title
         setTitle("Title");
 
-        // set icon        
-        setIconImage(Resources.getAsImage(Resources.UI + "icon.app.png"));
+        // set icon
+        setIconImage(Resources.getAsImage(Resources.fromUI("icon.app.png")));
 
         // maximize (without setting the window maximized setting)
         Dimension s = UITools.getScreenSize();

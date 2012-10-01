@@ -28,6 +28,8 @@ import javax.swing.ImageIcon;
  */
 public class Resources {
     
+    public static final String UI = "/data/game/art/graphics/ui";
+    
     private Resources() {}
 
     public static Icon getAsIcon(String resource) {

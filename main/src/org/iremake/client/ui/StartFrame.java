@@ -20,19 +20,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
 import org.iremake.client.Main;
+import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
-import org.tools.ui.UITools;
 
 /**
  *
@@ -43,7 +40,7 @@ import org.tools.ui.UITools;
  *
  * @author Trilarion 2012
  */
-public class StartFrame extends JFrame {
+public class StartFrame extends ScreenFrame {
 
     private static final long serialVersionUID = 1L;
     private static final String resources = "/data/game/art/graphics/ui/startup/";
@@ -53,15 +50,6 @@ public class StartFrame extends JFrame {
     }
 
     private void initComponents() {
-
-        // frame specific
-        setTitle("Title");  // set title
-        setIconImage(Resources.getAsImage(resources + "icon.app.png"));  // set icon
-        setUndecorated(true);   // undecorated
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // turn of usual exiting mechanisms
-        // setAlwaysOnTop(true);   // always on top (?)
-        // setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);   // start maximized
-        setResizable(false);    // not resizable
 
         // toolbar
         JToolBar menuBar = new JToolBar();
@@ -149,8 +137,8 @@ public class StartFrame extends JFrame {
         menuBar.add(exitButton);
 
         // language drop down menu
-        JComboBox languageComboBox = new JComboBox();
-        languageComboBox.setModel(new DefaultComboBoxModel(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
+        JComboBox<String> languageComboBox = new JComboBox<String>();
+        languageComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
         languageComboBox.setToolTipText("Select language");     // tooltip
 
         // background image
@@ -164,9 +152,8 @@ public class StartFrame extends JFrame {
         // get layered pane
         JLayeredPane pane = getLayeredPane();
 
-        // adding each component with correct depth and correct position, depending on screen size
-        Dimension s = UITools.getScreenSize();
-        setBounds(0, 0, s.width, s.height);
+        // adding each component with correct depth and correct position, depending on frame size
+        Dimension s = getSize();
         Dimension d;
 
         // add background image (centered)

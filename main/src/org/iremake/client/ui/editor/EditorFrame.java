@@ -17,10 +17,19 @@
 package org.iremake.client.ui.editor;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import org.iremake.client.utils.Resources;
 import org.tools.ui.UITools;
 
 /**
@@ -38,16 +47,57 @@ public class EditorFrame extends JFrame {
     private void initComponents() {
         // frame specific
         setTitle("Title");  // set title
-        setIconImage(new ImageIcon(getClass().getResource(resources + "icon.app.png")).getImage());  // set icon
+        setIconImage(Resources.getAsImage(resources + "icon.app.png"));  // set icon
         setUndecorated(true);   // undecorated
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // turn of usual exiting mechanisms
         setResizable(false);    // not resizable
 
         Dimension s = UITools.getScreenSize();
         setBounds(0, 0, s.width, s.height);
+        
+        // toolbar
+        JToolBar menuBar = new JToolBar();
+        menuBar.setFloatable(false);  // non floatable
+        menuBar.setOpaque(false);     // transparent
+        
+        // exit button
+        JButton exitButton = new JButton();
+        exitButton.setIcon(Resources.getAsIcon(resources + "button.exit.png"));
+        exitButton.setFocusable(false);
+        exitButton.addActionListener(new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                // TODO restart StartFrame
+            }
+        });
+        
+        // add buttons to toolbar
+        menuBar.add(exitButton);
+        
+        // tabbed pane
+        JTabbedPane tabPane = new JTabbedPane();
+        tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        
+        // panels in the tabbed pane
+        JPanel mapPanel = new JPanel();
+        JPanel nationPanel = new JPanel();
+        
+        // add panels to tabbed pane
+        tabPane.addTab("Map", mapPanel);
+        tabPane.addTab("Nation", nationPanel);
 
         // set background of content pane (which is also included in layered pane
-        getContentPane().setBackground(Color.WHITE);    // white color
+        Container content = getContentPane();
+        content.setBackground(Color.WHITE);    // white color        
+        
+        // layout
+        GroupLayout layout = new GroupLayout(content);
+        content.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(menuBar).addComponent(tabPane));
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));        
     }
 
 }

@@ -30,6 +30,7 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import org.iremake.client.Main;
 import org.iremake.client.ui.editor.EditorFrame;
+import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
 import org.tools.ui.UITools;
 
@@ -55,7 +56,7 @@ public class StartFrame extends JFrame {
 
         // frame specific
         setTitle("Title");  // set title
-        setIconImage(new ImageIcon(getClass().getResource(resources + "icon.app.png")).getImage());  // set icon
+        setIconImage(Resources.getAsImage(resources + "icon.app.png"));  // set icon
         setUndecorated(true);   // undecorated
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // turn of usual exiting mechanisms
         // setAlwaysOnTop(true);   // always on top (?)
@@ -69,7 +70,7 @@ public class StartFrame extends JFrame {
 
         // scenario button
         JButton scenarioButton = new JButton();
-        scenarioButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.scenario.png")));    // set icon
+        scenarioButton.setIcon(Resources.getAsIcon(resources + "button.scenario.png"));    // set icon
         scenarioButton.setFocusable(false);     // not focusable (?)
         scenarioButton.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +81,7 @@ public class StartFrame extends JFrame {
 
         // network button
         JButton networkButton = new JButton();
-        networkButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.network.png")));    // set icon
+        networkButton.setIcon(Resources.getAsIcon(resources + "button.network.png"));    // set icon
         networkButton.setFocusable(false);     // not focusable (?)
         networkButton.addActionListener(new ActionListener() {
             @Override
@@ -91,7 +92,7 @@ public class StartFrame extends JFrame {
 
         // options button
         JButton optionsButton = new JButton();
-        optionsButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.options.png")));    // set icon
+        optionsButton.setIcon(Resources.getAsIcon(resources + "button.options.png"));    // set icon
         optionsButton.setFocusable(false);     // not focusable (?)
         optionsButton.addActionListener(new ActionListener() {
             @Override
@@ -102,12 +103,12 @@ public class StartFrame extends JFrame {
 
         // help button
         JButton helpButton = new JButton();
-        helpButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.help.png")));    // set icon
+        helpButton.setIcon(Resources.getAsIcon(resources + "button.help.png"));    // set icon
         helpButton.setFocusable(false);     // not focusable (?)
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                URL index = this.getClass().getResource("/help/en_index.html");
+                URL index = Resources.getAsURL("/help/en_index.html");
                 BrowserDlg dlg = new BrowserDlg(StartFrame.this, "Help", false, index, index);
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
@@ -116,7 +117,7 @@ public class StartFrame extends JFrame {
 
         // editor button
         JButton editorButton = new JButton();
-        editorButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.editor.png")));    // set icon
+        editorButton.setIcon(Resources.getAsIcon(resources + "button.editor.png"));    // set icon
         editorButton.setFocusable(false);     // not focusable (?)
         editorButton.addActionListener(new ActionListener() {
             @Override
@@ -129,7 +130,7 @@ public class StartFrame extends JFrame {
 
         // exit button
         JButton exitButton = new JButton();
-        exitButton.setIcon(new ImageIcon(getClass().getResource(resources + "button.exit.png")));    // set icon
+        exitButton.setIcon(Resources.getAsIcon(resources + "button.exit.png"));    // set icon
         exitButton.setFocusable(false);     // not focusable (?)
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
@@ -154,11 +155,11 @@ public class StartFrame extends JFrame {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(new ImageIcon(getClass().getResource(resources + "background.png")));    // set image
+        backgroundLabel.setIcon(Resources.getAsIcon(resources + "background.png"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(new ImageIcon(getClass().getResource(resources + "logo.png")));    // set image
+        logoLabel.setIcon(Resources.getAsIcon(resources + "logo.png"));    // set image
 
         // get layered pane
         JLayeredPane pane = getLayeredPane();

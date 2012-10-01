@@ -2,6 +2,8 @@ Imperialism remake
 
 - License GPLv3+
 
+- Home http://remake.twelvepm.de/
+
 
 -------------------------------------------------------------------------
 
@@ -10,25 +12,6 @@ Main Project
 
 - located in the "main" subfolder (Netbeans project)
 
-
--------------------------------------------------------------------------
-
-Sub One Project
-
-- located in the "sub one" subfolder (Netbeans project)
-
-
-
--------------------------------------------------------------------------
-
-
-Commons Library project
-
-
-- located in the "common" subfolder (Netbeans project)
-
-- contains code specific for the imperialism remake but general to all
-  the sub projects
 
 -------------------------------------------------------------------------
 
@@ -48,6 +31,6 @@ Design Specifications
 
 Manual
 
-- located in the "manual" subfolder
+- located in the "help" subfolder
 
 - uses restructured text to edit and convert to html

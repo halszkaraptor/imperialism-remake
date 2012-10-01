@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.UITools;
 
@@ -36,7 +37,7 @@ import org.tools.ui.UITools;
  *
  * @author Trilarion 2012
  */
-public class EditorFrame extends JFrame {
+public class EditorFrame extends ScreenFrame {
     private static final long serialVersionUID = 1L;
     private static final String resources = "/data/game/art/graphics/ui/";
 
@@ -45,16 +46,6 @@ public class EditorFrame extends JFrame {
     }
 
     private void initComponents() {
-        // frame specific
-        setTitle("Title");  // set title
-        setIconImage(Resources.getAsImage(resources + "icon.app.png"));  // set icon
-        setUndecorated(true);   // undecorated
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);  // turn of usual exiting mechanisms
-        setResizable(false);    // not resizable
-
-        Dimension s = UITools.getScreenSize();
-        setBounds(0, 0, s.width, s.height);
-        
         // toolbar
         JToolBar menuBar = new JToolBar();
         menuBar.setFloatable(false);  // non floatable

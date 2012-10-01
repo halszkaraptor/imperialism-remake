@@ -16,16 +16,36 @@
  */
 package org.iremake.client.ui.common;
 
+import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import org.iremake.client.utils.Resources;
+import org.tools.ui.UITools;
 
 /**
  *
  * @author Trilarion 2012
  */
 public class ScreenFrame extends JFrame {
-    
+
     public ScreenFrame() {
-        
+        // undecorated        
+        setUndecorated(true);
+
+        // turn of usual exiting mechanisms                
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // not resizable                
+        setResizable(false);
+
+        // set title        
+        setTitle("Title");
+
+        // set icon        
+        setIconImage(Resources.getAsImage(Resources.UI + "icon.app.png"));
+
+        // maximize (without setting the window maximized setting)
+        Dimension s = UITools.getScreenSize();
+        setBounds(0, 0, s.width, s.height);
     }
-    
 }

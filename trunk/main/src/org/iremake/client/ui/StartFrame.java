@@ -43,7 +43,6 @@ import org.tools.ui.BrowserDlg;
 public class StartFrame extends ScreenFrame {
 
     private static final long serialVersionUID = 1L;
-    private static final String resources = "/data/game/art/graphics/ui/startup/";
 
     public StartFrame() {
         initComponents();
@@ -58,7 +57,7 @@ public class StartFrame extends ScreenFrame {
 
         // scenario button
         JButton scenarioButton = new JButton();
-        scenarioButton.setIcon(Resources.getAsIcon(resources + "button.scenario.png"));    // set icon
+        scenarioButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.scenario.png")));    // set icon
         scenarioButton.setFocusable(false);     // not focusable (?)
         scenarioButton.addActionListener(new ActionListener() {
             @Override
@@ -69,7 +68,7 @@ public class StartFrame extends ScreenFrame {
 
         // network button
         JButton networkButton = new JButton();
-        networkButton.setIcon(Resources.getAsIcon(resources + "button.network.png"));    // set icon
+        networkButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.network.png")));    // set icon
         networkButton.setFocusable(false);     // not focusable (?)
         networkButton.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +79,7 @@ public class StartFrame extends ScreenFrame {
 
         // options button
         JButton optionsButton = new JButton();
-        optionsButton.setIcon(Resources.getAsIcon(resources + "button.options.png"));    // set icon
+        optionsButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.options.png")));    // set icon
         optionsButton.setFocusable(false);     // not focusable (?)
         optionsButton.addActionListener(new ActionListener() {
             @Override
@@ -91,7 +90,7 @@ public class StartFrame extends ScreenFrame {
 
         // help button
         JButton helpButton = new JButton();
-        helpButton.setIcon(Resources.getAsIcon(resources + "button.help.png"));    // set icon
+        helpButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.help.png")));    // set icon
         helpButton.setFocusable(false);     // not focusable (?)
         helpButton.addActionListener(new ActionListener() {
             @Override
@@ -105,7 +104,7 @@ public class StartFrame extends ScreenFrame {
 
         // editor button
         JButton editorButton = new JButton();
-        editorButton.setIcon(Resources.getAsIcon(resources + "button.editor.png"));    // set icon
+        editorButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.editor.png")));    // set icon
         editorButton.setFocusable(false);     // not focusable (?)
         editorButton.addActionListener(new ActionListener() {
             @Override
@@ -118,7 +117,7 @@ public class StartFrame extends ScreenFrame {
 
         // exit button
         JButton exitButton = new JButton();
-        exitButton.setIcon(Resources.getAsIcon(resources + "button.exit.png"));    // set icon
+        exitButton.setIcon(Resources.getAsIcon(Resources.fromStartup("button.exit.png")));    // set icon
         exitButton.setFocusable(false);     // not focusable (?)
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
@@ -143,11 +142,11 @@ public class StartFrame extends ScreenFrame {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(Resources.getAsIcon(resources + "background.png"));    // set image
+        backgroundLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("background.png")));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(Resources.getAsIcon(resources + "logo.png"));    // set image
+        logoLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("logo.png")));    // set image
 
         // get layered pane
         JLayeredPane pane = getLayeredPane();

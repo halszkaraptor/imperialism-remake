@@ -39,7 +39,7 @@ public class ScreenFrame extends JFrame {
         setResizable(false);
 
         // set title
-        setTitle("Title");
+        setTitle("App Title");
 
         // set icon
         setIconImage(Resources.getAsImage(Resources.fromUI("icon.app.png")));

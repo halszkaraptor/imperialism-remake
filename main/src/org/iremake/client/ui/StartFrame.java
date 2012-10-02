@@ -16,6 +16,7 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -26,10 +27,12 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.Main;
+import org.iremake.client.ui.common.ScreenDialog;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
+import org.tools.ui.UITools;
 
 /**
  *
@@ -62,7 +65,12 @@ public class StartFrame extends ScreenFrame {
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO implement
+                Dimension s = UITools.getScreenSize();
+                int w = 800;
+                int h = 700;
+                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Scenario - Start", bounds);
+                dialog.setVisible(true);
             }
         });
 

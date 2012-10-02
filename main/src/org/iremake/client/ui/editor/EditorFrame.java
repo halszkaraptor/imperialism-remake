@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
+import org.iremake.client.ui.Factory;
 import org.iremake.client.ui.StartFrame;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.utils.Resources;
@@ -53,9 +54,7 @@ public class EditorFrame extends ScreenFrame {
         menuBar.setOpaque(false);     // transparent
 
         // exit button
-        JButton exitButton = new JButton();
-        exitButton.setIcon(Resources.getAsIcon(Resources.fromEditor("button.exit.png")));
-        exitButton.setFocusable(false);
+        JButton exitButton = Factory.makeButton(Resources.fromEditor("button.exit.png"));
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +88,7 @@ public class EditorFrame extends ScreenFrame {
         content.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(menuBar).addComponent(tabPane));
+        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
     }
 }

@@ -16,19 +16,33 @@
  */
 package org.iremake.client.ui.common;
 
+import java.awt.Frame;
+import java.awt.Rectangle;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
  *
- * @author Trilarion extends JDialog
+ * @author Trilarion 2012
  */
-public class GameDialog extends JDialog {
+public class ScreenDialog extends JDialog {
     private static final long serialVersionUID = 1L;
 
-    public GameDialog() {
-        initComponents();
+    public ScreenDialog(JFrame owner, String title, Rectangle bounds) {
+        super(owner, title, false);
+        initComponents(bounds);
     }
 
-    private void initComponents() {
+    private void initComponents(Rectangle bounds) {
+        
+        // turn of usual exiting mechanisms
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
+        // not resizable
+        setResizable(false);
+        
+        // set bounds
+        setBounds(bounds);
     }
 }

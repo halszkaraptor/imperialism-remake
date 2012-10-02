@@ -30,6 +30,7 @@ import org.iremake.client.Main;
 import org.iremake.client.ui.common.ScreenDialog;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
+import org.iremake.client.ui.options.OptionsPane;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
 import org.tools.ui.UITools;
@@ -43,6 +44,8 @@ import org.tools.ui.UITools;
  *
  * @author Trilarion 2012
  */
+// TODO Dialogs and Frames are disposed now when they aren't needed, maybe for performance reason they should be re-used
+// TODO Special open source Font throughout the game (?)
 public class StartFrame extends ScreenFrame {
 
     private static final long serialVersionUID = 1L;
@@ -81,7 +84,12 @@ public class StartFrame extends ScreenFrame {
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO implement
+                Dimension s = UITools.getScreenSize();
+                int w = 800;
+                int h = 700;
+                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Network center", bounds);
+                dialog.setVisible(true);
             }
         });
 
@@ -92,7 +100,14 @@ public class StartFrame extends ScreenFrame {
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO implement
+                Dimension s = UITools.getScreenSize();
+                int w = 800;
+                int h = 700;
+                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Options", bounds);
+                OptionsPane pane = new OptionsPane();
+                dialog.add(pane);
+                dialog.setVisible(true);
             }
         });
 
@@ -155,6 +170,10 @@ public class StartFrame extends ScreenFrame {
         // logo label
         JLabel logoLabel = new JLabel();
         logoLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("logo.png")));    // set image
+        
+        // version label
+        JLabel versionLabel = new JLabel("version 0.1");
+        versionLabel.setForeground(Color.WHITE);    // white color
 
         // get layered pane
         JLayeredPane pane = getLayeredPane();
@@ -172,6 +191,11 @@ public class StartFrame extends ScreenFrame {
         pane.add(logoLabel, new Integer(2));
         d = logoLabel.getPreferredSize();
         logoLabel.setBounds(s.width / 2 - d.width / 2, s.height * 4 / 10 - d.height / 2, d.width, d.height);
+        
+        // add version in the same layer (right, lower border)
+        pane.add(versionLabel, new Integer(2));
+        d = versionLabel.getPreferredSize();
+        versionLabel.setBounds(s.width - d.width - 20, s.height - d.height - 20, d.width, d.height);
 
         // add menubar on top and position
         pane.add(menuBar, new Integer(3));

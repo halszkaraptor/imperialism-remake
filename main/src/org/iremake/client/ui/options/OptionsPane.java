@@ -14,34 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.common;
+package org.iremake.client.ui.options;
 
-import java.awt.Rectangle;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.swing.JTabbedPane;
 
 /**
  *
  * @author Trilarion 2012
  */
-public class ScreenDialog extends JDialog {
-    private static final long serialVersionUID = 1L;
-
-    public ScreenDialog(JFrame owner, String title, Rectangle bounds) {
-        super(owner, title, false);
-        initComponents(bounds);
+public class OptionsPane extends JTabbedPane {
+    
+    public OptionsPane() {
+        initComponents();
     }
-
-    private void initComponents(Rectangle bounds) {
+    
+    private void initComponents() {
+        setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);      
         
-        // turn of usual exiting mechanisms
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        // general options panel
+        GeneralOptionsPanel generalOptions = new GeneralOptionsPanel();
         
-        // not resizable
-        setResizable(false);
-        
-        // set bounds
-        setBounds(bounds);
+        // add panels to pane
+        add(generalOptions, "General");
     }
+    
 }

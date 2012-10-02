@@ -16,7 +16,15 @@
  */
 package org.iremake.client.ui.scenario;
 
+import java.awt.Color;
+import java.awt.Container;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import org.iremake.client.ui.Factory;
+import org.iremake.client.utils.Resources;
 
 /**
  *
@@ -30,5 +38,38 @@ public class ScenarioLoadPanel extends JPanel {
     }
 
     private void initComponents() {
+        JLabel selectPanel = new JLabel("Select");
+        JLabel mapPanel = new JLabel("Map");
+        JLabel infoPanel = new JLabel("Info");
+        
+        // toolbar
+        JToolBar menuBar = new JToolBar();
+        menuBar.setFloatable(false);  // non floatable
+        menuBar.setOpaque(false);     // transparent
+
+        // load button
+        JButton loadButton = Factory.makeButton("");
+        
+        // start button
+        JButton startButton = Factory.makeButton("");
+        
+        // add buttons to tool bar
+        menuBar.add(loadButton);
+        menuBar.add(startButton);
+        
+        // set background
+        setBackground(Color.WHITE);    // white color        
+        
+        // layout
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);        
+        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar)
+                .addGroup(layout.createSequentialGroup().addComponent(selectPanel)
+                .addComponent(mapPanel)).addComponent(infoPanel));
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar)
+                .addGroup(layout.createParallelGroup().addComponent(selectPanel).addComponent(mapPanel))
+                .addComponent(infoPanel));
     }
 }

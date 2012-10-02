@@ -23,14 +23,15 @@ import java.net.URL;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.Main;
-import org.iremake.client.ui.common.ScreenDialog;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
 import org.iremake.client.ui.options.OptionsPane;
+import org.iremake.client.ui.scenario.ScenarioLoadPanel;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
 import org.tools.ui.UITools;
@@ -72,7 +73,9 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Scenario - Start", bounds);
+                JDialog dialog = Factory.makeDialog(StartFrame.this, "Scenario - Start", bounds);
+                ScenarioLoadPanel panel = new ScenarioLoadPanel();
+                dialog.add(panel);
                 dialog.setVisible(true);
             }
         });
@@ -88,7 +91,7 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Network center", bounds);
+                JDialog dialog = Factory.makeDialog(StartFrame.this, "Network center", bounds);
                 dialog.setVisible(true);
             }
         });
@@ -104,7 +107,7 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                ScreenDialog dialog = new ScreenDialog(StartFrame.this, "Options", bounds);
+                JDialog dialog = Factory.makeDialog(StartFrame.this, "Options", bounds);
                 OptionsPane pane = new OptionsPane();
                 dialog.add(pane);
                 dialog.setVisible(true);

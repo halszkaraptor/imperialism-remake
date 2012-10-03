@@ -30,7 +30,6 @@ import javax.swing.JToolBar;
 import org.iremake.client.Main;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
-import org.iremake.client.ui.options.OptionsPane;
 import org.iremake.client.ui.scenario.ScenarioLoadPanel;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
@@ -107,9 +106,7 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = Factory.makeDialog(StartFrame.this, "Options", bounds);
-                OptionsPane pane = new OptionsPane();
-                dialog.add(pane);
+                JDialog dialog = OptionsDialogBuilder.makeDialog(StartFrame.this, "Options", bounds);
                 dialog.setVisible(true);
             }
         });
@@ -173,7 +170,7 @@ public class StartFrame extends ScreenFrame {
         // logo label
         JLabel logoLabel = new JLabel();
         logoLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("logo.png")));    // set image
-        
+
         // version label
         JLabel versionLabel = new JLabel("version 0.1");
         versionLabel.setForeground(Color.WHITE);    // white color
@@ -194,7 +191,7 @@ public class StartFrame extends ScreenFrame {
         pane.add(logoLabel, new Integer(2));
         d = logoLabel.getPreferredSize();
         logoLabel.setBounds(s.width / 2 - d.width / 2, s.height * 4 / 10 - d.height / 2, d.width, d.height);
-        
+
         // add version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));
         d = versionLabel.getPreferredSize();

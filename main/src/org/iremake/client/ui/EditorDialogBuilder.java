@@ -17,10 +17,12 @@
 package org.iremake.client.ui;
 
 import java.awt.Container;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -31,17 +33,17 @@ import org.iremake.client.utils.Resources;
  *
  * @author Trilarion 2012
  */
-public class EditorScreenBuilder {
+public class EditorDialogBuilder {
 
-    private EditorScreenBuilder() {
+    private EditorDialogBuilder() {
     }
 
-    public static JFrame makeFrame() {
-        JFrame frame = CommonElementsFactory.makeFrame();
+    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
 
         // create menu bar and add to frame
-        JToolBar menuBar = EditorScreenBuilder.menuBar(frame);
-        frame.add(menuBar);
+        JToolBar menuBar = EditorDialogBuilder.menuBar();
+        dialog.add(menuBar);
 
         // tabbed pane
         JTabbedPane tabPane = new JTabbedPane();
@@ -56,10 +58,10 @@ public class EditorScreenBuilder {
         tabPane.addTab("Nation", nationPanel);
 
         // add to frame
-        frame.add(tabPane);
+        dialog.add(tabPane);
 
         // layout (vertically first menubar, then tabbed pane)
-        Container c = frame.getContentPane();
+        Container c = dialog.getContentPane();
         GroupLayout layout = new GroupLayout(c);
         c.setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -67,26 +69,18 @@ public class EditorScreenBuilder {
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
-        return frame;
+        return dialog;
     }
 
-    private static JToolBar menuBar(final JFrame owner) {
+    private static JToolBar menuBar() {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromEditor("button.exit.png"));
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                owner.dispose();
-                JFrame frame = StartScreenBuilder.makeFrame();
-                frame.setVisible(true);
-            }
-        });
+        JButton loadButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.load.png"));
 
         // add buttons to toolbar
-        bar.add(exitButton);
+        bar.add(loadButton);
 
         return bar;
     }

@@ -16,10 +16,9 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -50,7 +49,7 @@ public class EditorDialogBuilder {
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // placeholder for the real things
-        JPanel mapPanel = new JPanel();
+        JPanel mapPanel = EditorDialogBuilder.createMapPanel();
         JPanel nationPanel = new JPanel();
 
         // add panels to tabbed pane
@@ -79,8 +78,61 @@ public class EditorDialogBuilder {
         // exit button
         JButton loadButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.load.png"));
 
+        // exit button
+        JButton saveButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.save.png"));
+
         // add buttons to toolbar
         bar.add(loadButton);
+        bar.add(saveButton);
+
+        return bar;
+    }
+
+    private static JPanel createMapPanel() {
+        JPanel panel = new JPanel();
+
+        JPanel miniMapPanel = MapPanelBuilder.makeMiniMapPanel();
+        // TODO so that not need to be resized
+
+        JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setBackground(Color.red);
+
+        JPanel editableMapPanel = new JPanel();
+        editableMapPanel.setBackground(Color.blue);
+
+        // add all
+        panel.add(miniMapPanel);
+        panel.add(menuBar);
+        panel.add(infoPanel);
+        panel.add(editableMapPanel);
+
+        // layout
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup()
+                .addComponent(miniMapPanel, 200, 200, 200).addComponent(menuBar, 200, 200, 200).addComponent(infoPanel, 200, 200, 200))
+                .addComponent(editableMapPanel));
+        layout.setVerticalGroup(layout.createParallelGroup().addGroup(layout.createSequentialGroup()
+                .addComponent(miniMapPanel, 200, 200, 200).addComponent(menuBar, 100, 100, 100).addComponent(infoPanel))
+                .addComponent(editableMapPanel));
+
+        return panel;
+    }
+
+    private static JToolBar makeMapMenuBar() {
+        // toolbar
+        JToolBar bar = CommonElementsFactory.makeToolBar();
+
+        // terrain button
+        JButton terrainButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.terrain.png"));
+
+        // add buttons to toolbar
+        bar.add(terrainButton);
 
         return bar;
     }

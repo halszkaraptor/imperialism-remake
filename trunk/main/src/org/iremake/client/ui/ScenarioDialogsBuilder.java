@@ -17,20 +17,28 @@
 package org.iremake.client.ui;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.JTree;
 import org.iremake.client.utils.Resources;
+import org.tools.ui.UITools;
 
 /**
  *
  * @author Trilarion 2012
  */
 public class ScenarioDialogsBuilder {
+
+    private static final int FIXEDSIZE = 200;
 
     private ScenarioDialogsBuilder() {
     }
@@ -47,34 +55,37 @@ public class ScenarioDialogsBuilder {
         JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
 
         // placeholder for the real things
-        JLabel selectPanel = new JLabel("Select");
-        JLabel mapPanel = new JLabel("Map");
-        JLabel infoPanel = new JLabel("Info");
-        dialog.add(selectPanel);
+        JTree selectTree = new JTree();
+        JPanel mapPanel = MapPanelBuilder.makeOverviewMapPanel();
+        JPanel infoPanel = ScenarioDialogsBuilder.createInfoPanel();
+
+        // add them to dialog
+        dialog.add(selectTree);
         dialog.add(mapPanel);
         dialog.add(infoPanel);
 
         // create menu bar and add to dialog
-        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar();
+        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar(owner);
         dialog.add(menuBar);
 
         // define the layout
+        // selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
         GroupLayout layout = new GroupLayout(c);
         c.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar)
-                .addGroup(layout.createSequentialGroup().addComponent(selectPanel)
+                .addGroup(layout.createSequentialGroup().addComponent(selectTree, FIXEDSIZE, FIXEDSIZE, FIXEDSIZE)
                 .addComponent(mapPanel)).addComponent(infoPanel));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar)
-                .addGroup(layout.createParallelGroup().addComponent(selectPanel).addComponent(mapPanel))
-                .addComponent(infoPanel));
+                .addGroup(layout.createParallelGroup().addComponent(selectTree).addComponent(mapPanel))
+                .addComponent(infoPanel, FIXEDSIZE, FIXEDSIZE, FIXEDSIZE));
 
         return dialog;
     }
 
-    private static JToolBar loadMenuBar() {
+    private static JToolBar loadMenuBar(final JFrame owner) {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
@@ -83,11 +94,23 @@ public class ScenarioDialogsBuilder {
 
         // start button
         JButton startButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.start.png"));
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = MainScreenBuilder.makeDialog(owner);
+                dialog.setVisible(true);
+            }
+        });
 
         // add buttons to tool bar
         bar.add(loadButton);
         bar.add(startButton);
 
         return bar;
+    }
+
+    private static JPanel createInfoPanel() {
+        JPanel panel = new JPanel();
+        return panel;
     }
 }

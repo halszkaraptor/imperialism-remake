@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2012 Trilarion 2012
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,50 +14,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.editor;
+package org.iremake.client.ui;
 
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.WindowConstants;
-import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.StartFrame;
-import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.UITools;
 
 /**
  *
  * @author Trilarion 2012
  */
-public class EditorFrame extends ScreenFrame {
+public class EditorScreenBuilder {
 
-    private static final long serialVersionUID = 1L;
-
-    public EditorFrame() {
-        initComponents();
+    private EditorScreenBuilder() {
     }
 
-    private void initComponents() {
-        // toolbar
-        JToolBar menuBar = new JToolBar();
-        menuBar.setFloatable(false);  // non floatable
-        menuBar.setOpaque(false);     // transparent
+    public static JFrame makeFrame() {
+        JFrame frame = CommonElementsFactory.makeFrame();
+
+        // create menu bar and add to frame
+        JToolBar menuBar = EditorScreenBuilder.menuBar(frame);
+        frame.add(menuBar);
 
         // tabbed pane
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        // panels in the tabbed pane
+        // placeholder for the real things
         JPanel mapPanel = new JPanel();
         JPanel nationPanel = new JPanel();
 
@@ -65,16 +55,39 @@ public class EditorFrame extends ScreenFrame {
         tabPane.addTab("Map", mapPanel);
         tabPane.addTab("Nation", nationPanel);
 
-        // set background of content pane (which is also included in layered pane
-        Container content = getContentPane();
-        content.setBackground(Color.WHITE);    // white color
+        // add to frame
+        frame.add(tabPane);
 
-        // layout
-        GroupLayout layout = new GroupLayout(content);
-        content.setLayout(layout);
+        // layout (vertically first menubar, then tabbed pane)
+        Container c = frame.getContentPane();
+        GroupLayout layout = new GroupLayout(c);
+        c.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
+
+        return frame;
+    }
+
+    private static JToolBar menuBar(final JFrame owner) {
+        // toolbar
+        JToolBar bar = CommonElementsFactory.makeToolBar();
+
+        // exit button
+        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromEditor("button.exit.png"));
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                owner.dispose();
+                JFrame frame = StartScreenBuilder.makeFrame();
+                frame.setVisible(true);
+            }
+        });
+
+        // add buttons to toolbar
+        bar.add(exitButton);
+
+        return bar;
     }
 }

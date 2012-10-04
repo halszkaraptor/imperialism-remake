@@ -16,20 +16,10 @@
  */
 package org.iremake.client.ui;
 
-import javax.swing.JFrame;
-
 /**
  *
  * @author Trilarion 2012
  */
-public class StartFrameBuilder {
-    
-    private StartFrameBuilder() {}
-    
-    public static JFrame makeFrame() {
-        JFrame frame = CommonElementsFactory.makeFrame();
-        
-        return frame;
-    }
+public class MapPanelBuilder {
     
 }

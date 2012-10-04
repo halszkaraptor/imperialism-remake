@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import org.iremake.client.ui.Factory;
+import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.StartFrame;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.utils.Resources;
@@ -52,20 +52,6 @@ public class EditorFrame extends ScreenFrame {
         JToolBar menuBar = new JToolBar();
         menuBar.setFloatable(false);  // non floatable
         menuBar.setOpaque(false);     // transparent
-
-        // exit button
-        JButton exitButton = Factory.makeButton(Resources.fromEditor("button.exit.png"));
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                StartFrame frame = new StartFrame();
-                frame.setVisible(true);
-            }
-        });
-
-        // add buttons to toolbar
-        menuBar.add(exitButton);
 
         // tabbed pane
         JTabbedPane tabPane = new JTabbedPane();

@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Container;
 import java.awt.Rectangle;
 import javax.swing.GroupLayout;
 import javax.swing.JDialog;
@@ -32,23 +33,35 @@ public class OptionsDialogBuilder {
     private OptionsDialogBuilder() {
     }
 
+    /**
+     * 
+     * @param owner
+     * @param title
+     * @param bounds
+     * @return 
+     */
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
-        JDialog dialog = Factory.makeDialog(owner, title, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
 
-        // create JTabbedpane and layout (to have same borders everywhere)
+        // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();
         pane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        GroupLayout layout = new GroupLayout(dialog);
-        dialog.setLayout(layout);
+        // add panels for each tab
+        pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
+        
+        // add pane to dialog
+        dialog.add(pane);
+        
+        // layout dialog (with GroupLayout so borders are respected)
+        Container c = dialog.getContentPane();
+        GroupLayout layout = new GroupLayout(c);
+        c.setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(pane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(pane));
-
-        // add panels for each tab
-        pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(pane));        
 
         return dialog;
     }

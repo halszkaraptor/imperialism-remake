@@ -16,13 +16,27 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import org.tools.ui.UITools;
+
 /**
  *
  * @author Trilarion 2012
  */
 public class MainScreenBuilder {
-    
+
     private MainScreenBuilder() {
     }
-    
+
+    public static JDialog makeDialog(JFrame owner) {
+        Dimension s = UITools.getScreenSize();
+        Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, bounds);
+        dialog.setUndecorated(true);
+
+        return dialog;
+    }
 }

@@ -16,10 +16,24 @@
  */
 package org.iremake.client.ui;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author Trilarion 2012
  */
 public class MapPanelBuilder {
-    
+
+    public static JPanel makeOverviewMapPanel() {
+        JPanel panel = new JPanel();
+
+        return panel;
+    }
+
+    static JPanel makeMiniMapPanel() {
+        JPanel panel = new JPanel();
+
+        return panel;
+    }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2012 Trilarion 2012
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.scenario;
+package org.iremake.client.ui;
 
-import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 /**
  *
- * @author Trilarion
+ * @author Trilarion 2012
  */
-public class ScenarioSavePanel extends JPanel {
-    private static final long serialVersionUID = 1L;
-
-    public ScenarioSavePanel() {
-        initComponents();
+public class StartFrameBuilder {
+    
+    private StartFrameBuilder() {}
+    
+    public static JFrame makeFrame() {
+        JFrame frame = CommonElementsFactory.makeFrame();
+        
+        return frame;
     }
-
-    private void initComponents() {
-    }
+    
 }

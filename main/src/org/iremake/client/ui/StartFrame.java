@@ -30,7 +30,6 @@ import javax.swing.JToolBar;
 import org.iremake.client.Main;
 import org.iremake.client.ui.common.ScreenFrame;
 import org.iremake.client.ui.editor.EditorFrame;
-import org.iremake.client.ui.scenario.ScenarioLoadPanel;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDlg;
 import org.tools.ui.UITools;
@@ -46,6 +45,7 @@ import org.tools.ui.UITools;
  */
 // TODO Dialogs and Frames are disposed now when they aren't needed, maybe for performance reason they should be re-used
 // TODO Special open source Font throughout the game (?)
+// TODO background of dialogs is not white (panel in contentpane?)
 public class StartFrame extends ScreenFrame {
 
     private static final long serialVersionUID = 1L;
@@ -72,9 +72,7 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = Factory.makeDialog(StartFrame.this, "Scenario - Start", bounds);
-                ScenarioLoadPanel panel = new ScenarioLoadPanel();
-                dialog.add(panel);
+                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog(StartFrame.this, "Scenario - Start", bounds);
                 dialog.setVisible(true);
             }
         });
@@ -90,7 +88,7 @@ public class StartFrame extends ScreenFrame {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = Factory.makeDialog(StartFrame.this, "Network center", bounds);
+                JDialog dialog = CommonElementsFactory.makeDialog(StartFrame.this, "Network center", bounds);
                 dialog.setVisible(true);
             }
         });

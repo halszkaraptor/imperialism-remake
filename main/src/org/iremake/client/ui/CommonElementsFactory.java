@@ -16,11 +16,13 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.UITools;
@@ -29,15 +31,15 @@ import org.tools.ui.UITools;
  *
  * @author Trilarion 2012
  */
-public class Factory {
-
-    private Factory() {
+public class CommonElementsFactory {
+    
+    private CommonElementsFactory() {
     }
 
     /**
-     * 
+     *
      * @param iconPath
-     * @return 
+     * @return
      */
     public static JButton makeButton(String iconPath) {
         JButton button = new JButton();
@@ -45,36 +47,50 @@ public class Factory {
         button.setIcon(Resources.getAsIcon(iconPath));
         return button;
     }
-    
+
     /**
-     * 
+     *
+     * @return
+     */
+    public static JToolBar makeToolBar() {
+        JToolBar bar = new JToolBar();
+        bar.setFloatable(false);  // non floatable
+        bar.setOpaque(false);     // transparent
+        return bar;
+    }
+
+    /**
+     *
      * @param owner
      * @param title
      * @param bounds
-     * @return 
+     * @return
      */
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         JDialog dialog = new JDialog(owner, title, false);
-        
+
         // turn of usual exiting mechanisms
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         // not resizable
         dialog.setResizable(false);
-        
+
         // set bounds
-        dialog.setBounds(bounds);        
+        dialog.setBounds(bounds);
+
+        // set background
+        dialog.getContentPane().setBackground(Color.WHITE);    // white color                
         
         return dialog;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public static JFrame makeFrame() {
         JFrame frame = new JFrame();
-        
+
         // undecorated
         frame.setUndecorated(true);
 

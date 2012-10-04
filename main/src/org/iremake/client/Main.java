@@ -15,7 +15,8 @@
 package org.iremake.client;
 
 import java.awt.EventQueue;
-import org.iremake.client.ui.StartFrame;
+import javax.swing.JFrame;
+import org.iremake.client.ui.StartScreenBuilder;
 import org.tools.ui.LookAndFeel;
 
 /**
@@ -39,7 +40,7 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                StartFrame frame = new StartFrame();
+                JFrame frame = StartScreenBuilder.makeFrame();
                 frame.setVisible(true);
             }
         });        

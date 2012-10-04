@@ -70,4 +70,8 @@ public class Resources {
     public static String fromEditor(String name) {
         return ui_base + "editor/" + name;
     }
+    
+    public static String fromScenario(String name) {
+        return ui_base + "scenario/" + name;
+    }    
 }

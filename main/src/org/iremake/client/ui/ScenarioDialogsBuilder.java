@@ -24,6 +24,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
+import org.iremake.client.utils.Resources;
 
 /**
  *
@@ -81,7 +82,7 @@ public class ScenarioDialogsBuilder {
         JButton loadButton = CommonElementsFactory.makeButton("");
 
         // start button
-        JButton startButton = CommonElementsFactory.makeButton("");
+        JButton startButton = CommonElementsFactory.makeButton(Resources.fromScenario("button.start.png"));
 
         // add buttons to tool bar
         bar.add(loadButton);

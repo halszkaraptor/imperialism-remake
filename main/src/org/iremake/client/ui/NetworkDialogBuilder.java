@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2012 Trilarion 2012
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.network;
+package org.iremake.client.ui;
 
+import java.awt.Rectangle;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
  *
- * @author Trilarion
+ * @author Trilarion 2012
  */
-public class NetworkChatPanel extends JPanel {
-    private static final long serialVersionUID = 1L;
-
-    public NetworkChatPanel() {
-        initComponents();
+public class NetworkDialogBuilder {
+    
+    private NetworkDialogBuilder() {
     }
-
-    private void initComponents() {
+    
+    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
+        // create general dialog
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
+        
+        return dialog;
     }
+    
+    private static JPanel chatPanel() {
+        return new JPanel();
+    }
+    
 }

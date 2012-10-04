@@ -44,16 +44,16 @@ import org.tools.ui.UITools;
 // TODO Special open source Font throughout the game (?)
 // TODO background of dialogs is not white (panel in contentpane?)
 public class StartScreenBuilder {
-    
+
     private StartScreenBuilder() {}
-    
+
     public static JFrame makeFrame() {
         JFrame frame = CommonElementsFactory.makeFrame();
-        
+
         // create menu bar and add to frame
         JToolBar menuBar = StartScreenBuilder.menuBar(frame);
-        frame.add(menuBar);  
-        
+        frame.add(menuBar);
+
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
         languageComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
@@ -61,11 +61,11 @@ public class StartScreenBuilder {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("background.png")));    // set image
+        backgroundLabel.setIcon(Resources.getAsIcon(Resources.fromUI("start.background.png")));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(Resources.getAsIcon(Resources.fromStartup("logo.png")));    // set image
+        logoLabel.setIcon(Resources.getAsIcon(Resources.fromUI("start.logo.png")));    // set image
 
         // version label
         JLabel versionLabel = new JLabel("version 0.1");
@@ -77,7 +77,7 @@ public class StartScreenBuilder {
         // adding each component with correct depth and correct position, depending on frame size
         Dimension s = frame.getSize();
         Dimension d;
-        
+
         // manual layout because it's layered one over another
 
         // add background image (centered)
@@ -106,17 +106,17 @@ public class StartScreenBuilder {
         languageComboBox.setBounds(s.width * 7 / 10 - d.width / 2, s.height / 2 - d.height / 2, d.width, d.height);  // horizontally at 70%, vertically centered
 
         // set background of content pane (which is also included in layered pane)
-        frame.getContentPane().setBackground(Color.BLACK);  // black background        
-        
+        frame.getContentPane().setBackground(Color.BLACK);  // black background
+
         return frame;
     }
-    
+
     private static JToolBar menuBar(final JFrame owner) {
         // tool bar
-        JToolBar bar = CommonElementsFactory.makeToolBar(); 
-        
+        JToolBar bar = CommonElementsFactory.makeToolBar();
+
         // scenario button
-        JButton scenarioButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.scenario.png"));
+        JButton scenarioButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.scenario.png"));
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,7 +130,7 @@ public class StartScreenBuilder {
         });
 
         // network button
-        JButton networkButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.network.png"));
+        JButton networkButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.network.png"));
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,7 +144,7 @@ public class StartScreenBuilder {
         });
 
         // options button
-        JButton optionsButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.options.png"));
+        JButton optionsButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.options.png"));
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -158,7 +158,7 @@ public class StartScreenBuilder {
         });
 
         // help button
-        JButton helpButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.help.png"));
+        JButton helpButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.help.png"));
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,18 +170,19 @@ public class StartScreenBuilder {
         });
 
         // editor button
-        JButton editorButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.editor.png"));
+        JButton editorButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.editor.png"));
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                owner.dispose();
-                JFrame frame = EditorScreenBuilder.makeFrame();
-                frame.setVisible(true);
+                Dimension s = UITools.getScreenSize();
+                Rectangle bounds = new Rectangle(50, 50, s.width - 100, s.height - 100);
+                JDialog dialog = EditorDialogBuilder.makeDialog(owner, "Editor", bounds);
+                dialog.setVisible(true);
             }
         });
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromStartup("button.exit.png"));
+        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.exit.png"));
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -197,8 +198,8 @@ public class StartScreenBuilder {
         bar.add(helpButton);
         bar.add(editorButton);
         bar.add(exitButton);
-        
+
         return bar;
     }
-    
+
 }

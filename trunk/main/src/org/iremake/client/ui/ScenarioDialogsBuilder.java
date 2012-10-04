@@ -79,10 +79,10 @@ public class ScenarioDialogsBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // load button
-        JButton loadButton = CommonElementsFactory.makeButton("");
+        JButton loadButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.load.png"));
 
         // start button
-        JButton startButton = CommonElementsFactory.makeButton(Resources.fromScenario("button.start.png"));
+        JButton startButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.start.png"));
 
         // add buttons to tool bar
         bar.add(loadButton);

@@ -44,6 +44,7 @@ public class Resources {
     public static Image getAsImage(String resource) {
         URL url = Resources.getAsURL(resource);
         if (url == null) {
+            // TODO entry in log file
             return null;
         }
         ImageIcon icon = new ImageIcon(url);
@@ -62,16 +63,4 @@ public class Resources {
     public static String fromUI(String name) {
         return ui_base + name;
     }
-
-    public static String fromStartup(String name) {
-        return ui_base + "startup/" + name;
-    }
-
-    public static String fromEditor(String name) {
-        return ui_base + "editor/" + name;
-    }
-    
-    public static String fromScenario(String name) {
-        return ui_base + "scenario/" + name;
-    }    
 }

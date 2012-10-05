@@ -17,7 +17,7 @@ package org.iremake.client;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import org.iremake.client.ui.StartScreenBuilder;
-import org.tools.ui.LookAndFeel;
+import org.tools.ui.helper.LookAndFeel;
 
 /**
  *

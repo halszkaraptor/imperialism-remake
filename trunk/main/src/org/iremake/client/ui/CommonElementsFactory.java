@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.UITools;
+import org.tools.ui.helper.UITools;
 
 /**
  *

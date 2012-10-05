@@ -131,8 +131,16 @@ public class EditorDialogBuilder {
         // terrain button
         JButton terrainButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.terrain.png"));
 
+        // nation button
+        JButton nationButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.nation.png"));
+
+        // province button
+        JButton provinceButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.province.png"));
+
         // add buttons to toolbar
         bar.add(terrainButton);
+        bar.add(nationButton);
+        bar.add(provinceButton);
 
         return bar;
     }

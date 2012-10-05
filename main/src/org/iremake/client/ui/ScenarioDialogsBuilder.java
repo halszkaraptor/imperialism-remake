@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.UITools;
+import org.tools.ui.helper.UITools;
 
 /**
  *

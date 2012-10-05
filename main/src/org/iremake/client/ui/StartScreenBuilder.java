@@ -32,8 +32,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.Main;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.BrowserDlg;
-import org.tools.ui.UITools;
+import org.tools.ui.BrowserDialog;
+import org.tools.ui.helper.UITools;
 
 /**
  *
@@ -163,7 +163,7 @@ public class StartScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = Resources.getAsURL("/help/en_index.html");
-                BrowserDlg dlg = new BrowserDlg(owner, "Help", false, index, index);
+                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index);
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
             }

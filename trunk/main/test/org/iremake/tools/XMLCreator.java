@@ -29,8 +29,8 @@ import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import org.tools.xml.Property;
 import org.tools.ui.LookAndFeel;
+import org.tools.xml.Property;
 import org.tools.xml.XMLHelper;
 
 /**

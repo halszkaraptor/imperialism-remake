@@ -30,14 +30,15 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import org.tools.ui.helper.LookAndFeel;
-import org.tools.xml.Property;
 import org.tools.xml.XMLHelper;
+import org.tools.xml.common.Property;
 
 /**
  *
  * @author Trilarion 2012
  */
 public class XMLCreator extends JFrame {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Creates new form XMLCreator

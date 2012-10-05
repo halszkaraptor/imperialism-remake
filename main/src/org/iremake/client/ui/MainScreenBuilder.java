@@ -18,8 +18,15 @@ package org.iremake.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import org.iremake.client.utils.Resources;
+import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.UITools;
 
 /**
@@ -37,6 +44,53 @@ public class MainScreenBuilder {
         JDialog dialog = CommonElementsFactory.makeDialog(owner, null, bounds);
         dialog.setUndecorated(true);
 
+        // get layered pane
+        JLayeredPane layers = dialog.getLayeredPane();
+
+        // add clock label to layered pane
+        JLabel clockLabel = new ClockLabel();
+        layers.add(clockLabel, new Integer(2));
+
+        // position clock
+        Dimension d = clockLabel.getPreferredSize();
+        clockLabel.setBounds(s.width - d.width - 10, s.height-d.height-10, d.width, d.height);
+
+        // add control panel to layered pane and position
+        JPanel controlPanel = MainScreenBuilder.createControlPanel();
+        layers.add(controlPanel, new Integer(3));
+        d = controlPanel.getPreferredSize();
+        controlPanel.setBounds(s.width - d.width - 20, 20, d.width, d.height);
+
+
         return dialog;
+    }
+
+    private static JPanel createControlPanel() {
+        JPanel panel = new JPanel();
+
+        panel.setPreferredSize(new Dimension(300, 800));
+
+        // create menu bar and add to frame
+        JToolBar menuBar = MainScreenBuilder.createControlMenuBar();
+        panel.add(menuBar);
+
+        return panel;
+    }
+
+    private static JToolBar createControlMenuBar() {
+        // toolbar
+        JToolBar bar = CommonElementsFactory.makeToolBar();
+
+        // exit button
+        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromUI("main.button.exit.png"));
+
+        // save button
+        JButton saveButton = CommonElementsFactory.makeButton(Resources.fromUI("main.button.save.png"));
+
+        // add buttons to toolbar
+        bar.add(exitButton);
+        bar.add(saveButton);
+
+        return bar;
     }
 }

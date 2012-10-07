@@ -22,13 +22,16 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import org.tools.ui.PropertyEditor;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Property;
@@ -37,13 +40,13 @@ import org.tools.xml.common.Property;
  *
  * @author Trilarion 2012
  */
-public class XMLCreator extends JFrame {
+public class XMLEditor extends JFrame {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Creates new form XMLCreator
+     * Creates new form XMLEditor
      */
-    public XMLCreator() {
+    public XMLEditor() {
         initComponents();
     }
 
@@ -56,17 +59,15 @@ public class XMLCreator extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        toolBar1 = new JToolBar();
+        baseTextField = new JTextField();
         terrainButton = new JButton();
-        scrollPane1 = new JScrollPane();
-        infoTextArea = new JTextArea();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("XML Creator Utility");
         setLocationByPlatform(true);
         setResizable(false);
 
-        toolBar1.setRollover(true);
+        baseTextField.setText("C:\\Users\\Admin\\Dropbox\\remake\\00 actual game data\\game");
 
         terrainButton.setText("Terrain");
         terrainButton.setFocusable(false);
@@ -77,12 +78,6 @@ public class XMLCreator extends JFrame {
                 terrainButtonActionPerformed(evt);
             }
         });
-        toolBar1.add(terrainButton);
-
-        infoTextArea.setEditable(false);
-        infoTextArea.setColumns(20);
-        infoTextArea.setRows(5);
-        scrollPane1.setViewportView(infoTextArea);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,35 +86,32 @@ public class XMLCreator extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(toolBar1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
+                    .addComponent(baseTextField, GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(terrainButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(toolBar1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
-                .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(baseTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(terrainButton)
+                .addContainerGap(540, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void terrainButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_terrainButtonActionPerformed
-        Property map = new Property();
-
-        // fill with connection
-        map.put("forest", "terrain.forest.png");
-        map.put("hills", "terrain.hills.png");
-        map.put("mountains", "terrain.mountains.png");
-        map.put("plains", "terrain.plains.png");
-        map.put("sea", "terrain.sea.png");
-
-        // write to file
-        XMLHelper.write("terrain.xml", map);
+        String location = baseTextField.getText() + "\\art\\graphics\\terrain\\terrain.xml";
+        Property prop = new Property();
+        XMLHelper.read(location, prop);
+        PropertyEditor editor = new PropertyEditor(prop);
+        JDialog dialog = editor.createDialog(this, true);
+        dialog.setVisible(true);
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     /**
@@ -133,14 +125,12 @@ public class XMLCreator extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new XMLCreator().setVisible(true);
+                new XMLEditor().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JTextArea infoTextArea;
-    private JScrollPane scrollPane1;
+    private JTextField baseTextField;
     private JButton terrainButton;
-    private JToolBar toolBar1;
     // End of variables declaration//GEN-END:variables
 }

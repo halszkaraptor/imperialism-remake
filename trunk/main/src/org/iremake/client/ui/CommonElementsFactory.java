@@ -32,7 +32,7 @@ import org.tools.ui.helper.UITools;
  * @author Trilarion 2012
  */
 public class CommonElementsFactory {
-    
+
     private CommonElementsFactory() {
     }
 
@@ -79,8 +79,8 @@ public class CommonElementsFactory {
         dialog.setBounds(bounds);
 
         // set background
-        dialog.getContentPane().setBackground(Color.WHITE);    // white color                
-        
+        dialog.getContentPane().setBackground(Color.WHITE);    // white color
+
         return dialog;
     }
 
@@ -108,8 +108,8 @@ public class CommonElementsFactory {
 
         // maximize (without setting the window maximized setting)
         Dimension s = UITools.getScreenSize();
-        frame.setBounds(0, 0, s.width, s.height);        
-        
+        frame.setBounds(0, 0, s.width, s.height);
+
         return frame;
     }
 }

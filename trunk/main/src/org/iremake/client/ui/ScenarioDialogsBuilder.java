@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion 2012
+ * Copyright (C) 2012 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 package org.iremake.client.ui;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,16 +24,13 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.helper.UITools;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class ScenarioDialogsBuilder {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion 2012
+ * Copyright (C) 2012 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import org.tools.ui.helper.UITools;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class MainScreenBuilder {
 

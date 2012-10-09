@@ -29,7 +29,6 @@ import org.tools.ui.helper.UITools;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class CommonElementsFactory {
 

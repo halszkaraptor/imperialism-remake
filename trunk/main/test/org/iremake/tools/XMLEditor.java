@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion 2012
+ * Copyright (C) 2012 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +33,10 @@ import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Property;
 
 /**
- *
- * @author Trilarion 2012
+ * Allows editing of various game XML files. Used for creating and editing them.
  */
 public class XMLEditor extends JFrame {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -102,7 +102,7 @@ public class XMLEditor extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void terrainButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_terrainButtonActionPerformed
-        
+
         final String target = "\\art\\graphics\\terrain\\terrain.xml";
         String full = baseTextField.getText() + target;
         Property prop = new Property();

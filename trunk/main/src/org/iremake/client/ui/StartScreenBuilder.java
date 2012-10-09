@@ -30,7 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
-import org.iremake.client.Main;
+import org.iremake.client.StartClient;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDialog;
 import org.tools.ui.helper.UITools;
@@ -186,7 +186,7 @@ public class StartScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 owner.dispose();
-                Main.shutDown();
+                StartClient.shutDown();
             }
         });
 

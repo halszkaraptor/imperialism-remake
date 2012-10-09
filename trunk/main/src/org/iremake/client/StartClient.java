@@ -25,9 +25,9 @@ import org.tools.ui.helper.LookAndFeel;
  * Main entry point for client.
  */
 // TODO logging into a file
-public class Main {
+public class StartClient {
 
-    private Main() {
+    private StartClient() {
     }
 
     /**

@@ -22,6 +22,7 @@ import javax.swing.JDialog;
  *
  */
 public class BattleMapDialog extends JDialog {
+
     private static final long serialVersionUID = 1L;
 
     public BattleMapDialog() {
@@ -29,6 +30,5 @@ public class BattleMapDialog extends JDialog {
     }
 
     private void initComponents() {
-
     }
 }

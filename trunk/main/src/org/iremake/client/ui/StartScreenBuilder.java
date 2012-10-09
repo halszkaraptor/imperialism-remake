@@ -33,7 +33,7 @@ import javax.swing.JToolBar;
 import org.iremake.client.StartClient;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.BrowserDialog;
-import org.tools.ui.helper.UITools;
+import org.tools.ui.helper.GraphicsUtils;
 
 /**
  *
@@ -67,7 +67,7 @@ public class StartScreenBuilder {
         logoLabel.setIcon(Resources.getAsIcon(Resources.fromUI("start.logo.png")));    // set image
 
         // version label
-        JLabel versionLabel = new JLabel("version 0.1");
+        JLabel versionLabel = new JLabel("version 0.1.0");
         versionLabel.setForeground(Color.WHITE);    // white color
 
         // get layered pane
@@ -119,7 +119,7 @@ public class StartScreenBuilder {
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = UITools.getScreenSize();
+                Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
@@ -133,7 +133,7 @@ public class StartScreenBuilder {
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = UITools.getScreenSize();
+                Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
@@ -147,7 +147,7 @@ public class StartScreenBuilder {
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = UITools.getScreenSize();
+                Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
@@ -173,7 +173,7 @@ public class StartScreenBuilder {
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = UITools.getScreenSize();
+                Dimension s = GraphicsUtils.getScreenSize();
                 Rectangle bounds = new Rectangle(50, 50, s.width - 100, s.height - 100);
                 JDialog dialog = EditorDialogBuilder.makeDialog(owner, "Editor", bounds);
                 dialog.setVisible(true);

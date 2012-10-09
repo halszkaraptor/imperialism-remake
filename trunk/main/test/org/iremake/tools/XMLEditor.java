@@ -158,7 +158,7 @@ public class XMLEditor extends JFrame {
 
     private void terrainButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_terrainButtonActionPerformed
 
-        final String target = "\\art\\graphics\\terrain\\terrain.xml";
+        final String target = "\\artwork\\graphics\\terrain\\terrain.xml";
         String full = baseTextField.getText() + target;
         Property prop = new Property();
         XMLHelper.read(full, prop);
@@ -168,7 +168,7 @@ public class XMLEditor extends JFrame {
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
-        final String target = "\\art\\graphics\\terrain\\terrain.xml";
+        final String target = "\\scenarios\\standard\\map.xml";
         String full = baseTextField.getText() + target;
         GameMap map = new GameMap();
         Dimension size = map.getSize();

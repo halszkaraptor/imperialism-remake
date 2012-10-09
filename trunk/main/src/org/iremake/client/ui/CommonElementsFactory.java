@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import org.iremake.client.utils.Resources;
-import org.tools.ui.helper.UITools;
+import org.tools.ui.helper.GraphicsUtils;
 
 /**
  *
@@ -106,7 +106,7 @@ public class CommonElementsFactory {
         frame.setIconImage(Resources.getAsImage(Resources.fromUI("icon.app.png")));
 
         // maximize (without setting the window maximized setting)
-        Dimension s = UITools.getScreenSize();
+        Dimension s = GraphicsUtils.getScreenSize();
         frame.setBounds(0, 0, s.width, s.height);
 
         return frame;

@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class DiplomacyPanel extends JPanel {
 

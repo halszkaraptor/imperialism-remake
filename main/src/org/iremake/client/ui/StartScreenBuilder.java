@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion 2012
+ * Copyright (C) 2012 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ import org.tools.ui.helper.UITools;
 
 /**
  *
- * @author Trilarion 2012
  */
 // TODO Dialogs and Frames are disposed now when they aren't needed, maybe for performance reason they should be re-used
 // TODO Frames change between editor, start and main, should we work with rootpanes instead?

@@ -26,7 +26,6 @@ import javax.swing.JTabbedPane;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class OptionsDialogBuilder {
 

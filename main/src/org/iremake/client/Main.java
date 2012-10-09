@@ -1,4 +1,6 @@
 /*
+ * Copyright (C) 2012 Trilarion
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,22 +22,23 @@ import org.iremake.client.ui.StartScreenBuilder;
 import org.tools.ui.helper.LookAndFeel;
 
 /**
- *
- * @author Trilarion 2012
+ * Main entry point for client.
  */
+// TODO logging into a file
 public class Main {
-    
-    private Main() {}    
+
+    private Main() {
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         // set look and feel
         LookAndFeel.setSystemLookAndFeel();
-        
-        
+
+
         // fire up start frame
         EventQueue.invokeLater(new Runnable() {
             @Override
@@ -43,12 +46,10 @@ public class Main {
                 JFrame frame = StartScreenBuilder.makeFrame();
                 frame.setVisible(true);
             }
-        });        
+        });
 
     }
-    
+
     public static void shutDown() {
-        
     }
-
 }

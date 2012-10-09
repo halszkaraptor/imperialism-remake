@@ -21,7 +21,6 @@ import javax.swing.JDialog;
 /**
  * Not based on GameDialog.
  *
- * @author Trilarion 2012
  */
 public class NewsPaperDialog extends JDialog {
     private static final long serialVersionUID = 1L;

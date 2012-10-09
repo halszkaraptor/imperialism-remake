@@ -23,8 +23,6 @@ import javax.swing.ImageIcon;
 
 /**
  * Loads from within the application jar file.
- *
- * @author Trilarion 2012
  */
 public class Resources {
 

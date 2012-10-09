@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Trilarion
  */
 public class BattleMiniMapPanel extends JPanel {
     private static final long serialVersionUID = 1L;

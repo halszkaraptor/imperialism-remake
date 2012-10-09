@@ -22,16 +22,12 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import org.tools.ui.PropertyEditor;
+import org.tools.ui.PropertyEditorDialog;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Property;
@@ -106,12 +102,14 @@ public class XMLEditor extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void terrainButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_terrainButtonActionPerformed
-        String location = baseTextField.getText() + "\\art\\graphics\\terrain\\terrain.xml";
+        
+        final String target = "\\art\\graphics\\terrain\\terrain.xml";
+        String full = baseTextField.getText() + target;
         Property prop = new Property();
-        XMLHelper.read(location, prop);
-        PropertyEditor editor = new PropertyEditor(prop);
-        JDialog dialog = editor.createDialog(this, true);
-        dialog.setVisible(true);
+        XMLHelper.read(full, prop);
+        if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {
+            XMLHelper.write(full, prop);
+        }
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     /**

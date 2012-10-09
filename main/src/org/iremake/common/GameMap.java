@@ -22,25 +22,25 @@ import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
 
 /**
- * 
+ *
  */
 public class GameMap implements XMLable {
-    
+
     private final static Dimension size = new Dimension(100, 60);
     private String[][] map;
-    
+
     public GameMap() {
         map = new String[size.width][size.height];
     }
-    
+
     public void setTerrainAt(int x, int y, String type) {
         map[x][y] = type;
     }
-    
+
     public String getTerrainAt(int x, int y) {
         return map[x][y];
     }
-    
+
     public Dimension getSize() {
         return size; // TODO how is JDialog et al making this immutable
     }
@@ -48,26 +48,27 @@ public class GameMap implements XMLable {
     @Override
     public Element toXML() {
         Element element = new Element("gamemap");
-        
+
         // add size
         element.appendChild(XMLHandler.DimensionToXML(size, "gamemap-size"));
-        
+
         // add map data
         element.appendChild(XMLHandler.StringArrayToXML(map, size, "gamemap-terrain"));
-        
+        // TODO this takes a lot of memory, shorten it
+
         return element;
     }
 
     @Override
     public boolean fromXML(Element element) {
         // TODO we need to clean it before
-        if (element == null || !"gamemap".equals(element.getLocalName())) {            
+        if (element == null || !"gamemap".equals(element.getLocalName())) {
             return false;
         }
-        
-        
-        
+
+
+
         return true;
     }
-    
+
 }

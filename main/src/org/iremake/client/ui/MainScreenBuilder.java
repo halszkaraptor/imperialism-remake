@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import org.iremake.client.utils.Resources;
 import org.tools.ui.common.ClockLabel;
-import org.tools.ui.helper.UITools;
+import org.tools.ui.helper.GraphicsUtils;
 
 /**
  *
@@ -38,7 +38,7 @@ public class MainScreenBuilder {
     }
 
     public static JDialog makeDialog(JFrame owner) {
-        Dimension s = UITools.getScreenSize();
+        Dimension s = GraphicsUtils.getScreenSize();
         Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
         JDialog dialog = CommonElementsFactory.makeDialog(owner, null, bounds);
         dialog.setUndecorated(true);

@@ -26,7 +26,7 @@ import javax.swing.ImageIcon;
  */
 public class Resources {
 
-    private static final String ui_base = "/data/game/art/graphics/ui/";
+    private static final String ui_base = "/data/game/artwork/graphics/ui/";
 
     private Resources() {}
 

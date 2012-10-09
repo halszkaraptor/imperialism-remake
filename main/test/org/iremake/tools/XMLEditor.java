@@ -16,6 +16,7 @@
  */
 package org.iremake.tools;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,10 +24,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import org.iremake.common.GameMap;
 import org.tools.ui.PropertyEditorDialog;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
@@ -56,7 +60,11 @@ public class XMLEditor extends JFrame {
     private void initComponents() {
 
         baseTextField = new JTextField();
+        mainSplitPane = new JSplitPane();
+        upperPanel = new JPanel();
         terrainButton = new JButton();
+        lowerPanel = new JPanel();
+        mapButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("XML Creator Utility");
@@ -65,7 +73,11 @@ public class XMLEditor extends JFrame {
 
         baseTextField.setText("C:\\Users\\Admin\\Dropbox\\remake\\00 actual game data\\game");
 
-        terrainButton.setText("Terrain");
+        mainSplitPane.setDividerLocation(276);
+        mainSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        mainSplitPane.setResizeWeight(0.5);
+
+        terrainButton.setText("Edit Terrain");
         terrainButton.setFocusable(false);
         terrainButton.setHorizontalTextPosition(SwingConstants.CENTER);
         terrainButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -75,6 +87,51 @@ public class XMLEditor extends JFrame {
             }
         });
 
+        GroupLayout upperPanelLayout = new GroupLayout(upperPanel);
+        upperPanel.setLayout(upperPanelLayout);
+        upperPanelLayout.setHorizontalGroup(
+            upperPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(upperPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(terrainButton)
+                .addContainerGap(681, Short.MAX_VALUE))
+        );
+        upperPanelLayout.setVerticalGroup(
+            upperPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(upperPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(terrainButton)
+                .addContainerGap(241, Short.MAX_VALUE))
+        );
+
+        mainSplitPane.setTopComponent(upperPanel);
+
+        mapButton.setText("Empty Map");
+        mapButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                mapButtonActionPerformed(evt);
+            }
+        });
+
+        GroupLayout lowerPanelLayout = new GroupLayout(lowerPanel);
+        lowerPanel.setLayout(lowerPanelLayout);
+        lowerPanelLayout.setHorizontalGroup(
+            lowerPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(lowerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mapButton)
+                .addContainerGap(683, Short.MAX_VALUE))
+        );
+        lowerPanelLayout.setVerticalGroup(
+            lowerPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(lowerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mapButton)
+                .addContainerGap(236, Short.MAX_VALUE))
+        );
+
+        mainSplitPane.setRightComponent(lowerPanel);
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,10 +139,8 @@ public class XMLEditor extends JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(baseTextField, GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(terrainButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(baseTextField)
+                    .addComponent(mainSplitPane, Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,8 +149,8 @@ public class XMLEditor extends JFrame {
                 .addContainerGap()
                 .addComponent(baseTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(terrainButton)
-                .addContainerGap(540, Short.MAX_VALUE))
+                .addComponent(mainSplitPane)
+                .addContainerGap())
         );
 
         pack();
@@ -111,6 +166,19 @@ public class XMLEditor extends JFrame {
             XMLHelper.write(full, prop);
         }
     }//GEN-LAST:event_terrainButtonActionPerformed
+
+    private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
+        final String target = "\\art\\graphics\\terrain\\terrain.xml";
+        String full = baseTextField.getText() + target;
+        GameMap map = new GameMap();
+        Dimension size = map.getSize();
+        for (int i = 0; i < size.width; i++) {
+            for (int j = 0; j < size.height; j++) {
+                map.setTerrainAt(i, j, "undefined");
+            }
+        }
+        XMLHelper.write(full, map);
+    }//GEN-LAST:event_mapButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -129,6 +197,10 @@ public class XMLEditor extends JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JTextField baseTextField;
+    private JPanel lowerPanel;
+    private JSplitPane mainSplitPane;
+    private JButton mapButton;
     private JButton terrainButton;
+    private JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 }

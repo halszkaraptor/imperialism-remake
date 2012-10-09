@@ -33,11 +33,11 @@ public class OptionsDialogBuilder {
     }
 
     /**
-     * 
+     *
      * @param owner
      * @param title
      * @param bounds
-     * @return 
+     * @return
      */
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
@@ -49,10 +49,10 @@ public class OptionsDialogBuilder {
 
         // add panels for each tab
         pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
-        
+
         // add pane to dialog
         dialog.add(pane);
-        
+
         // layout dialog (with GroupLayout so borders are respected)
         Container c = dialog.getContentPane();
         GroupLayout layout = new GroupLayout(c);
@@ -60,7 +60,7 @@ public class OptionsDialogBuilder {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(pane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(pane));        
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(pane));
 
         return dialog;
     }

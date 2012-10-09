@@ -22,6 +22,7 @@ import javax.swing.JPanel;
  *
  */
 public class BattleMiniMapPanel extends JPanel {
+
     private static final long serialVersionUID = 1L;
 
     public BattleMiniMapPanel() {
@@ -29,6 +30,5 @@ public class BattleMiniMapPanel extends JPanel {
     }
 
     private void initComponents() {
-
     }
 }

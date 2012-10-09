@@ -25,19 +25,18 @@ import javax.swing.JPanel;
  *
  */
 public class NetworkDialogBuilder {
-    
+
     private NetworkDialogBuilder() {
     }
-    
+
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
         JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
-        
+
         return dialog;
     }
-    
+
     private static JPanel chatPanel() {
         return new JPanel();
     }
-    
 }

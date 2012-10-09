@@ -28,7 +28,8 @@ public class Resources {
 
     private static final String ui_base = "/data/game/artwork/graphics/ui/";
 
-    private Resources() {}
+    private Resources() {
+    }
 
     public static Icon getAsIcon(String resource) {
         URL url = Resources.getAsURL(resource);

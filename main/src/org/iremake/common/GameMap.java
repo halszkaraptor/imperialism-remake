@@ -70,5 +70,4 @@ public class GameMap implements XMLable {
 
         return true;
     }
-
 }

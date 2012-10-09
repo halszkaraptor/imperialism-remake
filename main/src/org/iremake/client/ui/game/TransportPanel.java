@@ -22,6 +22,7 @@ import javax.swing.JPanel;
  *
  */
 public class TransportPanel extends JPanel {
+
     private static final long serialVersionUID = 1L;
 
     public TransportPanel() {

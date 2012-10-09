@@ -44,7 +44,8 @@ import org.tools.ui.helper.GraphicsUtils;
 // TODO background of dialogs is not white (panel in contentpane?)
 public class StartScreenBuilder {
 
-    private StartScreenBuilder() {}
+    private StartScreenBuilder() {
+    }
 
     public static JFrame makeFrame() {
         JFrame frame = CommonElementsFactory.makeFrame();
@@ -122,7 +123,7 @@ public class StartScreenBuilder {
                 Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
-                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
                 JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog(owner, "Scenario - Start", bounds);
                 dialog.setVisible(true);
             }
@@ -136,7 +137,7 @@ public class StartScreenBuilder {
                 Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
-                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
                 JDialog dialog = CommonElementsFactory.makeDialog(owner, "Network center", bounds);
                 dialog.setVisible(true);
             }
@@ -150,7 +151,7 @@ public class StartScreenBuilder {
                 Dimension s = GraphicsUtils.getScreenSize();
                 int w = 800;
                 int h = 700;
-                Rectangle bounds = new Rectangle(s.width /2 - w / 2, s.height / 2 - h / 2, w, h);
+                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
                 JDialog dialog = OptionsDialogBuilder.makeDialog(owner, "Options", bounds);
                 dialog.setVisible(true);
             }
@@ -200,5 +201,4 @@ public class StartScreenBuilder {
 
         return bar;
     }
-
 }

@@ -20,7 +20,7 @@ package org.iremake.server;
  *
  */
 public class StartServer {
-    
+
     private StartServer() {
     }
 }

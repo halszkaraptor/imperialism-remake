@@ -18,6 +18,9 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -98,8 +101,18 @@ public class EditorDialogBuilder {
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(Color.red);
 
-        JPanel editableMapPanel = new JPanel();
-        editableMapPanel.setBackground(Color.blue);
+        JPanel editableMapPanel = new JPanel() {
+            
+            Image image = Resources.getAsImage("/icons/terrain.plains.png");
+            
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;                
+                
+                g2d.drawImage(image, 10, 10, null);
+            }
+        };
+        editableMapPanel.setBackground(Color.white);
 
         // add all
         panel.add(miniMapPanel);

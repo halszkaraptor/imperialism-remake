@@ -29,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.border.LineBorder;
 import org.iremake.client.utils.Resources;
 
 /**
@@ -94,25 +95,36 @@ public class EditorDialogBuilder {
         JPanel panel = new JPanel();
 
         JPanel miniMapPanel = MapPanelBuilder.makeMiniMapPanel();
+        miniMapPanel.setBorder(new LineBorder(Color.black, 1));
         // TODO so that not need to be resized
 
         JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setBackground(Color.red);
+        infoPanel.setBorder(new LineBorder(Color.black, 1));
 
         JPanel editableMapPanel = new JPanel() {
-            
-            Image image = Resources.getAsImage("/icons/terrain.plains.png");
-            
+            private static final long serialVersionUID = 1L;
+            private static final int GAP = 10;
+
+            Image image = Resources.getAsImage("/data/game/artwork/graphics/terrain/terrain.plains.png");
+
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;                
-                
-                g2d.drawImage(image, 10, 10, null);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // staggered drawing
+                for (int col = 0; col < 100; col++) {
+                    for (int row = 0; row < 60; row++) {
+                        int x = GAP + col * 80 + ((row % 2 == 1) ? 40 : 0);
+                        int y = GAP + row * 80;
+                        g2d.drawImage(image, x, y, null);
+                    }
+                }
             }
         };
         editableMapPanel.setBackground(Color.white);
+        editableMapPanel.setBorder(new LineBorder(Color.black, 1));
 
         // add all
         panel.add(miniMapPanel);

@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
 import org.iremake.client.utils.Resources;
 
 /**
@@ -52,6 +54,7 @@ public class ScenarioDialogsBuilder {
 
         // placeholder for the real things
         JTree selectTree = new JTree();
+        selectTree.setBorder(new LineBorder(Color.black, 1));
         JPanel mapPanel = MapPanelBuilder.makeOverviewMapPanel();
         JPanel infoPanel = ScenarioDialogsBuilder.createInfoPanel();
 
@@ -107,6 +110,7 @@ public class ScenarioDialogsBuilder {
 
     private static JPanel createInfoPanel() {
         JPanel panel = new JPanel();
+        panel.setBorder(new LineBorder(Color.black, 1));
         return panel;
     }
 }

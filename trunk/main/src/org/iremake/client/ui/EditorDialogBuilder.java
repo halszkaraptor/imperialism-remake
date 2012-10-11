@@ -94,7 +94,7 @@ public class EditorDialogBuilder {
     private static JPanel createMapPanel() {
         JPanel panel = new JPanel();
 
-        JPanel miniMapPanel = MapPanelBuilder.makeMiniMapPanel();
+        JPanel miniMapPanel = new MiniMapPanel();
         miniMapPanel.setBorder(new LineBorder(Color.black, 1));
         // TODO so that not need to be resized
 
@@ -103,28 +103,7 @@ public class EditorDialogBuilder {
         JPanel infoPanel = new JPanel();
         infoPanel.setBorder(new LineBorder(Color.black, 1));
 
-        JPanel editableMapPanel = new JPanel() {
-            private static final long serialVersionUID = 1L;
-            private static final int GAP = 10;
-
-            Image image = Resources.getAsImage("/data/game/artwork/graphics/terrain/terrain.plains.png");
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-
-                // staggered drawing
-                for (int col = 0; col < 100; col++) {
-                    for (int row = 0; row < 60; row++) {
-                        int x = GAP + col * 80 + ((row % 2 == 1) ? 40 : 0);
-                        int y = GAP + row * 80;
-                        g2d.drawImage(image, x, y, null);
-                    }
-                }
-            }
-        };
-        editableMapPanel.setBackground(Color.white);
-        editableMapPanel.setBorder(new LineBorder(Color.black, 1));
+        JPanel editableMapPanel = new MainMapPanel();
 
         // add all
         panel.add(miniMapPanel);
@@ -139,10 +118,10 @@ public class EditorDialogBuilder {
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup()
-                .addComponent(miniMapPanel, 200, 200, 200).addComponent(menuBar, 200, 200, 200).addComponent(infoPanel, 200, 200, 200))
+                .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 200, 200, 200).addComponent(infoPanel, 200, 200, 200))
                 .addComponent(editableMapPanel));
         layout.setVerticalGroup(layout.createParallelGroup().addGroup(layout.createSequentialGroup()
-                .addComponent(miniMapPanel, 200, 200, 200).addComponent(menuBar, 100, 100, 100).addComponent(infoPanel))
+                .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 100, 100, 100).addComponent(infoPanel))
                 .addComponent(editableMapPanel));
 
         return panel;

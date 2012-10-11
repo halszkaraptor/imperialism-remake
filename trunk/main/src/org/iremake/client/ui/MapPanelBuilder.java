@@ -17,8 +17,6 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
@@ -30,21 +28,6 @@ public class MapPanelBuilder {
     public static JPanel makeOverviewMapPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(new LineBorder(Color.black, 1));
-
-        return panel;
-    }
-
-    static JPanel makeMiniMapPanel() {
-        JPanel panel = new JPanel() {
-            private static final long serialVersionUID = 1L;
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-
-                g2d.setColor(Color.gray);
-                g2d.draw3DRect(10, 10, 50, 50, true);
-            }
-        };
 
         return panel;
     }

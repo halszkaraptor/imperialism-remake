@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion 2012
+ * Copyright (C) 2012 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -43,6 +44,8 @@ public class MiniMapPanel extends JPanel {
     }
 
     private void initComponents() {
+
+        setBorder(new LineBorder(Color.black, 1));
 
         getSize(size);
         addComponentListener(new ComponentAdapter() {

@@ -35,7 +35,7 @@ import org.iremake.client.utils.Resources;
  *
  * @author Trilarion 2012
  */
-public class MainMapPanel extends JPanel {
+public class MainMapPanel extends JPanel implements TileFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
     private static final int GAP = 10;
@@ -50,7 +50,7 @@ public class MainMapPanel extends JPanel {
     private int ra = -1;
     private int ca = -1;
 
-    List<TileFocusChangedListener> tileListeners = new LinkedList<>();
+    private List<TileFocusChangedListener> tileFocusListeners = new LinkedList<>();
 
     public MainMapPanel() {
 
@@ -66,6 +66,9 @@ public class MainMapPanel extends JPanel {
                 getSize(size);
             }
         });
+
+        // we listen to ourselves
+        addTileFocusChangedListener(this);
 
         setOpaque(true);
 
@@ -104,16 +107,21 @@ public class MainMapPanel extends JPanel {
     }
 
     private void notifyTileFocusChangedListeners() {
-        for (TileFocusChangedListener l: tileListeners) {
-            l.newTileFocus(0, 0);
+        for (TileFocusChangedListener l: tileFocusListeners) {
+            l.newTileFocus(ra, ca);
         }
     }
 
     public void addTileFocusChangedListener(TileFocusChangedListener l) {
-        tileListeners.add(l);
+        tileFocusListeners.add(l);
     }
 
     public void removeTileFocusChangedListener(TileFocusChangedListener l) {
-        tileListeners.remove(l);
+        tileFocusListeners.remove(l);
+    }
+
+    @Override
+    public void newTileFocus(int row, int column) {
+        // TODO
     }
 }

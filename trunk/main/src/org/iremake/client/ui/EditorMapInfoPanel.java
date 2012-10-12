@@ -16,11 +16,33 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
 /**
- * The mouse moved over another tile on the main map.
+ *
  */
-public interface TileFocusChangedListener {
+public class EditorMapInfoPanel extends JPanel implements TileFocusChangedListener {
 
-    public void newTileFocus(int row, int column);
+    private static final long serialVersionUID = 1L;
+    private JLabel tile;
 
+    public EditorMapInfoPanel() {
+        initComponents();
+    }
+
+    private void initComponents() {
+
+        setBorder(new LineBorder(Color.black, 1));
+
+        tile = new JLabel();
+        add(tile);
+    }
+
+    @Override
+    public void newTileFocus(int row, int column) {
+        tile.setText("Pos: " + Integer.toString(row) + ", " + Integer.toString(column));
+    }
 }

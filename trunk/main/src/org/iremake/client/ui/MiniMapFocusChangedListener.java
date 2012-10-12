@@ -17,10 +17,10 @@
 package org.iremake.client.ui;
 
 /**
- * The mouse moved over another tile on the main map.
+ *
  */
-public interface TileFocusChangedListener {
+public interface MiniMapFocusChangedListener {
 
-    public void newTileFocus(int row, int column);
+    public void newMiniMapFocus(int x, int y);
 
 }

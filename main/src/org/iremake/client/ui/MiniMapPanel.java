@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -33,17 +34,24 @@ import javax.swing.border.LineBorder;
 public class MiniMapPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private int x0;
-    private int y0;
-    private final int w = 50;
-    private final int h = 30;
+    private int x;
+    private int y;
+    private Dimension focusSize;
+    private Dimension mapSize;
+    private Dimension tileSize;
     private Dimension size = new Dimension();
+    private Point p0;
+    private MiniMapFocusChangedListener focusChangedListener;
 
     public MiniMapPanel() {
         initComponents();
     }
 
     private void initComponents() {
+
+        mapSize = new Dimension(100, 60);
+        tileSize = new Dimension(2, 2);
+        setPreferredSize(new Dimension(mapSize.width * tileSize.width, mapSize.height * tileSize.height));
 
         setBorder(new LineBorder(Color.black, 1));
 
@@ -55,29 +63,30 @@ public class MiniMapPanel extends JPanel {
             }
         });
 
-        x0 = 10;
-        y0 = 10;
+        x = 10;
+        y = 10;
 
-        setPreferredSize(new Dimension(200,120));
+
         setOpaque(true); // by default is not
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    int x = e.getX() - w / 2;
-                    int y = e.getY() - h / 2;
-                    x = Math.min(Math.max(x, 0), size.width - w);
-                    y = Math.min(Math.max(y, 0), size.height - h);
-                    if (x != x0 || y != y0) {
-                        x0 = x;
-                        y0 = y;
+                    Point p =  new Point(e.getX() / tileSize.width, e.getY() / tileSize.height);
+                    if (!p.equals(p0)) {
+                        p0 = p;
                         MiniMapPanel.this.repaint();
+                        notifyFocusChangedListener();
                     }
                 }
             }
         });
 
+    }
+
+    public void calcFocusSize(Dimension mapAreaInTiles) {
+        focusSize = new Dimension(mapAreaInTiles.width * tileSize.width, mapAreaInTiles.height * tileSize.height);
     }
 
     @Override
@@ -88,7 +97,20 @@ public class MiniMapPanel extends JPanel {
         g2d.setColor(Color.gray);
         g2d.fillRect(0, 0, size.width, size.height);
 
-        g2d.setColor(Color.gray);
-        g2d.draw3DRect(x0, y0, w, h, true);
+        //
+        if (focusSize != null) {
+            g2d.setColor(Color.gray);
+            g2d.draw3DRect(x - focusSize.width / 2, y - focusSize.height / 2, focusSize.width, focusSize.height, true);
+        }
+    }
+
+    private void notifyFocusChangedListener() {
+        if (focusChangedListener != null) {
+            focusChangedListener.newMiniMapFocus(x, y);
+        }
+    }
+
+    public void setFocusChangedListener(MiniMapFocusChangedListener l) {
+        focusChangedListener = l;
     }
 }

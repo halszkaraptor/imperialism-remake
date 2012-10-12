@@ -101,6 +101,8 @@ public class EditorDialogBuilder {
 
         // wire them
        mainMapPanel.addTileFocusChangedListener(infoPanel);
+       miniMapPanel.setFocusChangedListener(mainMapPanel);
+       miniMapPanel.calcFocusSize(mainMapPanel.getAreaInTiles());
 
         // add all
         panel.add(miniMapPanel);

@@ -35,11 +35,11 @@ import org.iremake.client.utils.Resources;
  *
  * @author Trilarion 2012
  */
-public class MainMapPanel extends JPanel implements TileFocusChangedListener {
+public class MainMapPanel extends JPanel implements TileFocusChangedListener, MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
     private static final int GAP = 10;
-    private Image image = Resources.getAsImage("/data/game/artwork/graphics/terrain/terrain.plains.png");
+
 
     private Dimension size = new Dimension();
 
@@ -52,8 +52,11 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener {
 
     private List<TileFocusChangedListener> tileFocusListeners = new LinkedList<>();
 
+    private MapTiles map;
+
     public MainMapPanel() {
 
+        map = new MapTiles();
         initComponents();
     }
 
@@ -101,9 +104,14 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener {
             for (int row = 0; row < r; row++) {
                 int x = GAP + col * w + ((row % 2 == 1) ? w / 2 : 0);
                 int y = GAP + row * h;
-                g2d.drawImage(image, x, y, null);
+                g2d.drawImage(map.getTileAt(col, row), x, y, null);
             }
         }
+    }
+
+    public Dimension getAreaInTiles() {
+        Dimension tileSize = map.getTileSIze();
+        return new Dimension(size.width / tileSize.width, size.height / tileSize.height);
     }
 
     private void notifyTileFocusChangedListeners() {
@@ -123,5 +131,10 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener {
     @Override
     public void newTileFocus(int row, int column) {
         // TODO
+    }
+
+    @Override
+    public void newMiniMapFocus(int x, int y) {
+       // TODO
     }
 }

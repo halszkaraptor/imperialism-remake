@@ -18,9 +18,6 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -94,22 +91,22 @@ public class EditorDialogBuilder {
     private static JPanel createMapPanel() {
         JPanel panel = new JPanel();
 
-        JPanel miniMapPanel = new MiniMapPanel();
-        miniMapPanel.setBorder(new LineBorder(Color.black, 1));
-        // TODO so that not need to be resized
+        MiniMapPanel miniMapPanel = new MiniMapPanel();
 
         JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setBorder(new LineBorder(Color.black, 1));
+        EditorMapInfoPanel infoPanel = new EditorMapInfoPanel();
 
-        JPanel editableMapPanel = new MainMapPanel();
+        MainMapPanel mainMapPanel = new MainMapPanel();
+
+        // wire them
+       mainMapPanel.addTileFocusChangedListener(infoPanel);
 
         // add all
         panel.add(miniMapPanel);
         panel.add(menuBar);
         panel.add(infoPanel);
-        panel.add(editableMapPanel);
+        panel.add(mainMapPanel);
 
         // layout
         GroupLayout layout = new GroupLayout(panel);
@@ -119,10 +116,10 @@ public class EditorDialogBuilder {
 
         layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup()
                 .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 200, 200, 200).addComponent(infoPanel, 200, 200, 200))
-                .addComponent(editableMapPanel));
+                .addComponent(mainMapPanel));
         layout.setVerticalGroup(layout.createParallelGroup().addGroup(layout.createSequentialGroup()
                 .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 100, 100, 100).addComponent(infoPanel))
-                .addComponent(editableMapPanel));
+                .addComponent(mainMapPanel));
 
         return panel;
     }

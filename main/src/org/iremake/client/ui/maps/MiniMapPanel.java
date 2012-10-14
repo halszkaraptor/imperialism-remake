@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.maps;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,11 +27,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import org.iremake.client.ui.MapTiles;
+import org.tools.ui.helper.GraphicsUtils;
 
 /**
  *
  */
-public class MiniMapPanel extends JPanel {
+public class MiniMapPanel extends JPanel implements MainMapResizedListener {
 
     private static final long serialVersionUID = 1L;
     private int x;
@@ -40,10 +42,13 @@ public class MiniMapPanel extends JPanel {
     private Dimension mapSize;
     private Dimension tileSize;
     private Dimension size = new Dimension();
-    private Point p0;
     private MiniMapFocusChangedListener focusChangedListener;
 
+    private MapTiles map;
+
     public MiniMapPanel() {
+
+        map = new MapTiles();
         initComponents();
     }
 
@@ -71,11 +76,15 @@ public class MiniMapPanel extends JPanel {
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    Point p =  new Point(e.getX() / tileSize.width, e.getY() / tileSize.height);
-                    if (!p.equals(p0)) {
-                        p0 = p;
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && focusSize != null) {
+                    int x0 = e.getX();
+                    int y0 = e.getY();
+                    x0 = Math.min(Math.max(x0, focusSize.width / 2), size.width - focusSize.width / 2);
+                    y0 = Math.min(Math.max(y0, focusSize.height / 2), size.height - focusSize.height / 2);
+                    if (x != x0 || y != y0) {
+                        x = x0;
+                        y = y0;
                         MiniMapPanel.this.repaint();
                         notifyFocusChangedListener();
                     }
@@ -83,10 +92,6 @@ public class MiniMapPanel extends JPanel {
             }
         });
 
-    }
-
-    public void calcFocusSize(Dimension mapAreaInTiles) {
-        focusSize = new Dimension(mapAreaInTiles.width * tileSize.width, mapAreaInTiles.height * tileSize.height);
     }
 
     @Override
@@ -106,11 +111,18 @@ public class MiniMapPanel extends JPanel {
 
     private void notifyFocusChangedListener() {
         if (focusChangedListener != null) {
-            focusChangedListener.newMiniMapFocus(x, y);
+            Point center = new Point(x / tileSize.width, y / tileSize.height);
+            focusChangedListener.newMiniMapFocus(center);
         }
     }
 
     public void setFocusChangedListener(MiniMapFocusChangedListener l) {
         focusChangedListener = l;
+    }
+
+    @Override
+    public void newMainMapSizeInTiles(Dimension size) {
+        focusSize = GraphicsUtils.multiplayDimensions(size, tileSize);
+        repaint();
     }
 }

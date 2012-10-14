@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.maps;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -29,29 +29,28 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import org.iremake.client.utils.Resources;
+import org.iremake.client.ui.MapTiles;
+import org.tools.ui.helper.GraphicsUtils;
 
 /**
  *
  * @author Trilarion 2012
  */
-public class MainMapPanel extends JPanel implements TileFocusChangedListener, MiniMapFocusChangedListener {
+public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListener, MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
     private static final int GAP = 10;
-
-
     private Dimension size = new Dimension();
-
     private int w = 80;
     private int h = 80;
     private int r = 60;
     private int c = 100;
     private int ra = -1;
     private int ca = -1;
-
-    private List<TileFocusChangedListener> tileFocusListeners = new LinkedList<>();
-
+    private int x0 = -1;
+    private int y0 = -1;
+    private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
+    private MainMapResizedListener resizedListener;
     private MapTiles map;
 
     public MainMapPanel() {
@@ -67,6 +66,7 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener, Mi
             @Override
             public void componentResized(ComponentEvent e) {
                 getSize(size);
+                notifyResizedListener();
             }
         });
 
@@ -83,7 +83,7 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener, Mi
             public void mouseMoved(MouseEvent e) {
                 int x0 = e.getX();
                 int y0 = e.getY();
-                int r0 = (y0 - GAP)/ h;
+                int r0 = (y0 - GAP) / h;
                 int t = r0 % 2 == 1 ? w / 2 : 0;
                 int c0 = (x0 - GAP - t) / w;
                 if (r0 != ra || c0 != ca) {
@@ -99,32 +99,35 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener, Mi
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        // staggered drawing
-        for (int col = 0; col < c; col++) {
-            for (int row = 0; row < r; row++) {
-                int x = GAP + col * w + ((row % 2 == 1) ? w / 2 : 0);
-                int y = GAP + row * h;
-                g2d.drawImage(map.getTileAt(col, row), x, y, null);
+        if (x0 >= 0 && y0 >= 0) {
+
+            // staggered drawing
+            for (int col = 0; col < c; col++) {
+                for (int row = 0; row < r; row++) {
+                    int x = GAP + col * w + ((row % 2 == 1) ? w / 2 : 0);
+                    int y = GAP + row * h;
+                    g2d.drawImage(map.getTileAt(col, row), x, y, null);
+                }
             }
         }
     }
 
     public Dimension getAreaInTiles() {
-        Dimension tileSize = map.getTileSIze();
+        Dimension tileSize = map.getTileSize();
         return new Dimension(size.width / tileSize.width, size.height / tileSize.height);
     }
 
     private void notifyTileFocusChangedListeners() {
-        for (TileFocusChangedListener l: tileFocusListeners) {
+        for (MainMapTileFocusChangedListener l : tileFocusListeners) {
             l.newTileFocus(ra, ca);
         }
     }
 
-    public void addTileFocusChangedListener(TileFocusChangedListener l) {
+    public void addTileFocusChangedListener(MainMapTileFocusChangedListener l) {
         tileFocusListeners.add(l);
     }
 
-    public void removeTileFocusChangedListener(TileFocusChangedListener l) {
+    public void removeTileFocusChangedListener(MainMapTileFocusChangedListener l) {
         tileFocusListeners.remove(l);
     }
 
@@ -134,7 +137,21 @@ public class MainMapPanel extends JPanel implements TileFocusChangedListener, Mi
     }
 
     @Override
-    public void newMiniMapFocus(int x, int y) {
-       // TODO
+    public void newMiniMapFocus(Point center) {
+        Dimension dim = GraphicsUtils.divideDimensions(size, map.getTileSize());
+        x0 = Math.max(center.x - dim.width / 2, 0);
+        y0 = Math.max(center.y - dim.height / 2, 0);
+        repaint();
+    }
+
+    public void notifyResizedListener() {
+        if (resizedListener != null) {
+            Dimension dim = GraphicsUtils.divideDimensions(size, map.getTileSize());
+            resizedListener.newMainMapSizeInTiles(dim);
+        }
+    }
+
+    public void setResizedListener(MainMapResizedListener l) {
+        resizedListener = l;
     }
 }

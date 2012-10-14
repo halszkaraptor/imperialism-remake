@@ -16,6 +16,8 @@
  */
 package org.iremake.client.ui;
 
+import org.iremake.client.ui.maps.MiniMapPanel;
+import org.iremake.client.ui.maps.MainMapPanel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
@@ -101,8 +103,8 @@ public class EditorDialogBuilder {
 
         // wire them
        mainMapPanel.addTileFocusChangedListener(infoPanel);
+       mainMapPanel.setResizedListener(miniMapPanel);
        miniMapPanel.setFocusChangedListener(mainMapPanel);
-       miniMapPanel.calcFocusSize(mainMapPanel.getAreaInTiles());
 
         // add all
         panel.add(miniMapPanel);

@@ -20,11 +20,12 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import org.iremake.client.ui.maps.MainMapTileFocusChangedListener;
 
 /**
  *
  */
-public class EditorMapInfoPanel extends JPanel implements TileFocusChangedListener {
+public class EditorMapInfoPanel extends JPanel implements MainMapTileFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
     private JLabel tile;
@@ -43,6 +44,6 @@ public class EditorMapInfoPanel extends JPanel implements TileFocusChangedListen
 
     @Override
     public void newTileFocus(int row, int column) {
-        tile.setText("Pos: " + Integer.toString(row) + ", " + Integer.toString(column));
+        tile.setText("Tile: " + Integer.toString(row) + ", " + Integer.toString(column));
     }
 }

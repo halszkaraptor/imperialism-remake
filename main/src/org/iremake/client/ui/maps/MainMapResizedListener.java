@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.maps;
+
+import java.awt.Dimension;
 
 /**
  *
  */
-public interface MiniMapFocusChangedListener {
+public interface MainMapResizedListener {
 
-    public void newMiniMapFocus(int x, int y);
-
+    public void newMainMapSizeInTiles(Dimension size);
 }

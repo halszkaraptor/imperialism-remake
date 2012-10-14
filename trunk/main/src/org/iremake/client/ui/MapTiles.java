@@ -53,7 +53,7 @@ public class MapTiles {
         return map[column][row];
     }
 
-    public Dimension getTileSIze() {
+    public Dimension getTileSize() {
         return tileSize;
     }
 }

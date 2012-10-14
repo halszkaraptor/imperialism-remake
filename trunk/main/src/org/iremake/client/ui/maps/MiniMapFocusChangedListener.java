@@ -14,13 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.maps;
+
+import java.awt.Point;
 
 /**
- * The mouse moved over another tile on the main map.
+ *
  */
-public interface TileFocusChangedListener {
+public interface MiniMapFocusChangedListener {
 
-    public void newTileFocus(int row, int column);
+    public void newMiniMapFocus(Point center);
 
 }

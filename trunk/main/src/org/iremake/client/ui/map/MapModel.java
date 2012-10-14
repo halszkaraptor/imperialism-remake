@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.map;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -23,13 +23,13 @@ import org.iremake.client.utils.Resources;
 /**
  *
  */
-public class MapTiles {
+public class MapModel {
 
     private int rows, columns;
     private Image[][] map; // first columns, second rows
     private Dimension tileSize;
 
-    public MapTiles() {
+    public MapModel() {
         Image image = Resources.getAsImage("/data/game/artwork/graphics/terrain/terrain.plains.png");
         // TODO use ImageIO.read and BufferedImage, ImageIcon waits automatically, no ImageObserver needed
         tileSize = new Dimension(image.getWidth(null), image.getHeight(null));

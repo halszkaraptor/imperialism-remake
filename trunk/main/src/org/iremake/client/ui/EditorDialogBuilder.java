@@ -16,8 +16,8 @@
  */
 package org.iremake.client.ui;
 
-import org.iremake.client.ui.maps.MiniMapPanel;
-import org.iremake.client.ui.maps.MainMapPanel;
+import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.client.ui.map.MainMapPanel;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;

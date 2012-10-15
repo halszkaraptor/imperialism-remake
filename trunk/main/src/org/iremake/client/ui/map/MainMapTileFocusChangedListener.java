@@ -16,11 +16,13 @@
  */
 package org.iremake.client.ui.map;
 
+import org.tools.ui.helper.Vector2D;
+
 /**
  * The mouse moved over another tile on the main map.
  */
 public interface MainMapTileFocusChangedListener {
 
-    public void newTileFocus(int row, int column);
+    public void newTileFocus(Vector2D tile);
 
 }

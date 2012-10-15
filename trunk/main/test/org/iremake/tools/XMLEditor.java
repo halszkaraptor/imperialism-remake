@@ -23,10 +23,13 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -65,6 +68,8 @@ public class XMLEditor extends JFrame {
         terrainButton = new JButton();
         lowerPanel = new JPanel();
         mapButton = new JButton();
+        toolBar = new JToolBar();
+        colorButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("XML Creator Utility");
@@ -101,7 +106,7 @@ public class XMLEditor extends JFrame {
             .addGroup(upperPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(terrainButton)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
 
         mainSplitPane.setTopComponent(upperPanel);
@@ -127,10 +132,24 @@ public class XMLEditor extends JFrame {
             .addGroup(lowerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(mapButton)
-                .addContainerGap(236, Short.MAX_VALUE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
         mainSplitPane.setRightComponent(lowerPanel);
+
+        toolBar.setFloatable(false);
+        toolBar.setRollover(true);
+
+        colorButton.setText("Color");
+        colorButton.setFocusable(false);
+        colorButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        colorButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        colorButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                colorButtonActionPerformed(evt);
+            }
+        });
+        toolBar.add(colorButton);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,7 +159,8 @@ public class XMLEditor extends JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                     .addComponent(baseTextField)
-                    .addComponent(mainSplitPane, Alignment.TRAILING))
+                    .addComponent(mainSplitPane, Alignment.TRAILING)
+                    .addComponent(toolBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -150,6 +170,8 @@ public class XMLEditor extends JFrame {
                 .addComponent(baseTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(mainSplitPane)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -180,6 +202,15 @@ public class XMLEditor extends JFrame {
         XMLHelper.write(full, map);
     }//GEN-LAST:event_mapButtonActionPerformed
 
+    private void colorButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_colorButtonActionPerformed
+        JDialog dialog = new JDialog(this, "Color Chooser", false);
+        JColorChooser chooser = new JColorChooser();
+        dialog.add(chooser);
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_colorButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,10 +228,12 @@ public class XMLEditor extends JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JTextField baseTextField;
+    private JButton colorButton;
     private JPanel lowerPanel;
     private JSplitPane mainSplitPane;
     private JButton mapButton;
     private JButton terrainButton;
+    private JToolBar toolBar;
     private JPanel upperPanel;
     // End of variables declaration//GEN-END:variables
 }

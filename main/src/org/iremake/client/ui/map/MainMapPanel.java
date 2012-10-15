@@ -42,10 +42,8 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     private int h = 80;
     private int r = 60;
     private int c = 100;
-    private int ra = -1;
-    private int ca = -1;
-    private int x0 = -1;
-    private int y0 = -1;
+    private Vector2D pa = new Vector2D(-1, -1);
+    private Vector2D p0 = new Vector2D(-1, -1);
     private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
     private MainMapResizedListener resizedListener;
     private MapModel map;
@@ -83,9 +81,9 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
                 int r0 = y0 / h;
                 int t = r0 % 2 == 1 ? w / 2 : 0;
                 int c0 = (x0 - t) / w;
-                if (r0 != ra || c0 != ca) {
-                    ra = r0;
-                    ca = c0;
+                Vector2D r = new Vector2D(r0, c0);
+                if (!pa.equals(r)) {
+                    pa = r;
                     notifyTileFocusChangedListeners();
                 }
             }
@@ -96,7 +94,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        if (x0 >= 0 && y0 >= 0) {
+        if (p0.isNonNegative()) {
 
             // staggered drawing
             for (int col = 0; col < c; col++) {
@@ -116,7 +114,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
 
     private void notifyTileFocusChangedListeners() {
         for (MainMapTileFocusChangedListener l : tileFocusListeners) {
-            l.newTileFocus(ra, ca);
+            l.newTileFocus(pa);
         }
     }
 
@@ -129,7 +127,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     }
 
     @Override
-    public void newTileFocus(int row, int column) {
+    public void newTileFocus(Vector2D tile) {
         // TODO
     }
 
@@ -137,8 +135,8 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     public void newMiniMapFocus(Vector2D center) {
         Vector2D dim = new Vector2D(size);
         dim.divideby(map.getTileSize());
-        x0 = Math.max(center.a - dim.a / 2, 0);
-        y0 = Math.max(center.b - dim.b / 2, 0);
+        p0.a = Math.max(center.a - dim.a / 2, 0);
+        p0.b = Math.max(center.b - dim.b / 2, 0);
         repaint();
     }
 

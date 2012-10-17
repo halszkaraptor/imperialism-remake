@@ -34,7 +34,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import org.iremake.common.GameMap;
-import org.tools.ui.PropertyEditorDialog;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Property;
@@ -183,10 +182,11 @@ public class XMLEditor extends JFrame {
         final String target = "\\artwork\\graphics\\terrain\\terrain.xml";
         String full = baseTextField.getText() + target;
         Property prop = new Property();
+        /*
         XMLHelper.read(full, prop);
         if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {
             XMLHelper.write(full, prop);
-        }
+        }*/
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
@@ -199,7 +199,7 @@ public class XMLEditor extends JFrame {
                 map.setTerrainAt(i, j, "undefined");
             }
         }
-        XMLHelper.write(full, map);
+        /*XMLHelper.write(full, map);*/
     }//GEN-LAST:event_mapButtonActionPerformed
 
     private void colorButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_colorButtonActionPerformed

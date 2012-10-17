@@ -48,7 +48,7 @@ public class MainScreenBuilder {
 
         // add clock label to layered pane
         JLabel clockLabel = new ClockLabel();
-        layers.add(clockLabel, new Integer(2));
+        layers.add(clockLabel, Integer.valueOf(2));
 
         // position clock
         Dimension d = clockLabel.getPreferredSize();
@@ -56,7 +56,7 @@ public class MainScreenBuilder {
 
         // add control panel to layered pane and position
         JPanel controlPanel = MainScreenBuilder.createControlPanel();
-        layers.add(controlPanel, new Integer(3));
+        layers.add(controlPanel, Integer.valueOf(3));
         d = controlPanel.getPreferredSize();
         controlPanel.setBounds(s.width - d.width - 20, 20, d.width, d.height);
 

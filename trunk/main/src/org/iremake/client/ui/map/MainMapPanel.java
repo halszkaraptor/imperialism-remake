@@ -79,7 +79,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
                 int x0 = e.getX();
                 int y0 = e.getY();
                 int r0 = y0 / h;
-                int t = r0 % 2 == 1 ? w / 2 : 0;
+                int t = r0 % 2 != 0 ? w / 2 : 0;
                 int c0 = (x0 - t) / w;
                 Vector2D r = new Vector2D(r0, c0);
                 if (!pa.equals(r)) {
@@ -99,7 +99,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
             // staggered drawing
             for (int col = 0; col < c; col++) {
                 for (int row = 0; row < r; row++) {
-                    int x = col * w + ((row % 2 == 1) ? w / 2 : 0);
+                    int x = col * w + ((row % 2 != 0) ? w / 2 : 0);
                     int y = row * h;
                     g2d.drawImage(map.getTileAt(col, row), x, y, null);
                 }

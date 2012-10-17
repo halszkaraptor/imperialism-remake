@@ -53,13 +53,12 @@ public class GameMap implements XMLable {
         element.appendChild(XMLHandler.DimensionToXML(size, "gamemap-size"));
 
         // add map data
-        element.appendChild(XMLHandler.StringArrayToXML(map, size, "gamemap-terrain"));
+        // element.appendChild(XMLHandler.StringArrayToXML(map, size, "gamemap-terrain"));
         // TODO this takes a lot of memory, shorten it
 
         return element;
     }
 
-    @Override
     public boolean fromXML(Element element) {
         // TODO we need to clean it before
         if (element == null || !"gamemap".equals(element.getLocalName())) {

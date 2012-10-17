@@ -33,21 +33,24 @@ public class Resources {
 
     public static Icon getAsIcon(String resource) {
         URL url = Resources.getAsURL(resource);
-        if (url == null) {
-            return null;
+        ImageIcon icon = null;
+        if (url != null) {
+            icon = new ImageIcon(url);
+        } else {
+            // TODO log entry
         }
-        ImageIcon icon = new ImageIcon(url);
         return icon;
     }
 
     public static Image getAsImage(String resource) {
         URL url = Resources.getAsURL(resource);
-        if (url == null) {
-            // TODO entry in log file
-            return null;
+        Image image = null;
+        if (url != null) {
+            image = new ImageIcon(url).getImage();
+        } else {
+            // TODO log entry
         }
-        ImageIcon icon = new ImageIcon(url);
-        return icon.getImage();
+        return image;
     }
 
     /**

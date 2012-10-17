@@ -16,9 +16,6 @@
  */
 package org.iremake.client.ui;
 
-import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.map.MainMapPanel;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
 import javax.swing.GroupLayout;
@@ -28,7 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.border.LineBorder;
+import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.utils.Resources;
 
 /**
@@ -134,6 +132,7 @@ public class EditorDialogBuilder {
 
         // terrain button
         JButton terrainButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.terrain.png"));
+        terrainButton.setToolTipText("Modify terrain of current tile.");
 
         // nation button
         JButton nationButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.nation.png"));

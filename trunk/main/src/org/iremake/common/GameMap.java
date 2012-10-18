@@ -59,14 +59,14 @@ public class GameMap implements XMLable {
         return element;
     }
 
-    public boolean fromXML(Element element) {
+    @Override
+    public void fromXML(Element element) {
         // TODO we need to clean it before
+        /*
         if (element == null || !"gamemap".equals(element.getLocalName())) {
             return false;
         }
 
-
-
-        return true;
+       return true;*/
     }
 }

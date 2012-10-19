@@ -28,7 +28,7 @@ import org.tools.ui.helper.LookAndFeel;
  * Evaluates if a button is good for representing a tile. No.
  */
 public class Tile {
-    
+
     public static void main(String args[]) {
         // set look and feel
         LookAndFeel.setSystemLookAndFeel();
@@ -41,24 +41,23 @@ public class Tile {
                 frame.setVisible(true);
             }
         });
-    }    
-    
+    }
+
     private static JFrame createFrame() {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setTitle("Tile Button Test");
         frame.setSize(new Dimension(400, 400));
-        
+
         JButton button = new JButton();
         button.setFocusable(false);
         button.setIcon(new ImageIcon(Tile.class.getResource("/icons/terrain.plains.png")));
-        
+
         frame.setLayout(null);
         frame.add(button);
         Dimension d = button.getPreferredSize();
         button.setBounds(100, 100, d.width, d.height);
-        
+
         return frame;
     }
-    
 }

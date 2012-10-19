@@ -24,5 +24,4 @@ import org.tools.ui.helper.Vector2D;
 public interface MiniMapFocusChangedListener {
 
     public void newMiniMapFocus(Vector2D center);
-
 }

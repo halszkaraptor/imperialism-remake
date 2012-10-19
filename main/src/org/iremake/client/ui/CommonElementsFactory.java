@@ -24,7 +24,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import org.iremake.client.utils.Resources;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 import org.tools.ui.helper.GraphicsUtils;
 
 /**
@@ -40,10 +41,10 @@ public class CommonElementsFactory {
      * @param iconPath
      * @return
      */
-    public static JButton makeButton(String iconPath) {
+    public static JButton makeButton(Places base, String iconPath) {
         JButton button = new JButton();
         button.setFocusable(false);
-        button.setIcon(Resources.getAsIcon(iconPath));
+        button.setIcon(Loader.getAsIcon(base, iconPath));
         return button;
     }
 
@@ -103,7 +104,7 @@ public class CommonElementsFactory {
         frame.setTitle("App Title");
 
         // set icon
-        frame.setIconImage(Resources.getAsImage(Resources.fromUI("icon.app.png")));
+        frame.setIconImage(Loader.getAsImage(Places.UI, "icon.app.png"));
 
         // maximize (without setting the window maximized setting)
         Dimension s = GraphicsUtils.getScreenSize();

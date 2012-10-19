@@ -24,5 +24,4 @@ import org.tools.ui.helper.Vector2D;
 public interface MainMapTileFocusChangedListener {
 
     public void newTileFocus(Vector2D tile);
-
 }

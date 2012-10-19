@@ -18,7 +18,8 @@ package org.iremake.client.ui.map;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import org.iremake.client.utils.Resources;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 
 /**
  *
@@ -30,7 +31,7 @@ public class MapModel {
     private Dimension tileSize;
 
     public MapModel() {
-        Image image = Resources.getAsImage("/data/game/artwork/graphics/terrain/terrain.plains.png");
+        Image image = Loader.getAsImage(Places.Terrain, "terrain.plains.png");
         // TODO use ImageIO.read and BufferedImage, ImageIcon waits automatically, no ImageObserver needed
         tileSize = new Dimension(image.getWidth(null), image.getHeight(null));
 

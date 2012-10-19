@@ -183,10 +183,10 @@ public class XMLEditor extends JFrame {
         String full = baseTextField.getText() + target;
         Property prop = new Property();
         /*
-        XMLHelper.read(full, prop);
-        if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {
-            XMLHelper.write(full, prop);
-        }*/
+         XMLHelper.read(full, prop);
+         if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {
+         XMLHelper.write(full, prop);
+         }*/
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed

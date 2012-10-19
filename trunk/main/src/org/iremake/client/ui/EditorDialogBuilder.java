@@ -25,9 +25,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import org.iremake.client.resources.Places;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.utils.Resources;
 
 /**
  *
@@ -76,10 +76,10 @@ public class EditorDialogBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // exit button
-        JButton loadButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.load.png"));
+        JButton loadButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.load.png");
 
         // exit button
-        JButton saveButton = CommonElementsFactory.makeButton(Resources.fromUI("scenario.button.save.png"));
+        JButton saveButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.save.png");
 
         // add buttons to toolbar
         bar.add(loadButton);
@@ -100,9 +100,9 @@ public class EditorDialogBuilder {
         MainMapPanel mainMapPanel = new MainMapPanel();
 
         // wire them
-       mainMapPanel.addTileFocusChangedListener(infoPanel);
-       mainMapPanel.setResizedListener(miniMapPanel);
-       miniMapPanel.setFocusChangedListener(mainMapPanel);
+        mainMapPanel.addTileFocusChangedListener(infoPanel);
+        mainMapPanel.setResizedListener(miniMapPanel);
+        miniMapPanel.setFocusChangedListener(mainMapPanel);
 
         // add all
         panel.add(miniMapPanel);
@@ -131,14 +131,14 @@ public class EditorDialogBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // terrain button
-        JButton terrainButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.terrain.png"));
+        JButton terrainButton = CommonElementsFactory.makeButton(Places.UI, "editor.button.terrain.png");
         terrainButton.setToolTipText("Modify terrain of current tile.");
 
         // nation button
-        JButton nationButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.nation.png"));
+        JButton nationButton = CommonElementsFactory.makeButton(Places.UI, "editor.button.nation.png");
 
         // province button
-        JButton provinceButton = CommonElementsFactory.makeButton(Resources.fromUI("editor.button.province.png"));
+        JButton provinceButton = CommonElementsFactory.makeButton(Places.UI, "editor.button.province.png");
 
         // add buttons to toolbar
         bar.add(terrainButton);

@@ -31,7 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.StartClient;
-import org.iremake.client.utils.Resources;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 import org.tools.ui.BrowserDialog;
 import org.tools.ui.helper.GraphicsUtils;
 
@@ -61,11 +62,11 @@ public class StartScreenBuilder {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(Resources.getAsIcon(Resources.fromUI("start.background.png")));    // set image
+        backgroundLabel.setIcon(Loader.getAsIcon(Places.UI, "start.background.png"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(Resources.getAsIcon(Resources.fromUI("start.logo.png")));    // set image
+        logoLabel.setIcon(Loader.getAsIcon(Places.UI, "start.logo.png"));    // set image
 
         // version label
         JLabel versionLabel = new JLabel("version 0.1.0");
@@ -116,7 +117,7 @@ public class StartScreenBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // scenario button
-        JButton scenarioButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.scenario.png"));
+        JButton scenarioButton = CommonElementsFactory.makeButton(Places.UI, "start.button.scenario.png");
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,7 +131,7 @@ public class StartScreenBuilder {
         });
 
         // network button
-        JButton networkButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.network.png"));
+        JButton networkButton = CommonElementsFactory.makeButton(Places.UI, "start.button.network.png");
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,7 +145,7 @@ public class StartScreenBuilder {
         });
 
         // options button
-        JButton optionsButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.options.png"));
+        JButton optionsButton = CommonElementsFactory.makeButton(Places.UI, "start.button.options.png");
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -158,11 +159,11 @@ public class StartScreenBuilder {
         });
 
         // help button
-        JButton helpButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.help.png"));
+        JButton helpButton = CommonElementsFactory.makeButton(Places.UI, "start.button.help.png");
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                URL index = Resources.getAsURL("/help/en_index.html");
+                URL index = Loader.getAsURL("/help/en_index.html");
                 BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index);
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
@@ -170,7 +171,7 @@ public class StartScreenBuilder {
         });
 
         // editor button
-        JButton editorButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.editor.png"));
+        JButton editorButton = CommonElementsFactory.makeButton(Places.UI, "start.button.editor.png");
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +183,7 @@ public class StartScreenBuilder {
         });
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Resources.fromUI("start.button.exit.png"));
+        JButton exitButton = CommonElementsFactory.makeButton(Places.UI, "start.button.exit.png");
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
             public void actionPerformed(ActionEvent e) {

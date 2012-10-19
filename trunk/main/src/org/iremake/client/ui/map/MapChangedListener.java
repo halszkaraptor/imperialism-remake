@@ -24,5 +24,4 @@ import org.tools.ui.helper.Vector2D;
 public interface MapChangedListener {
 
     public void tileChanged(Vector2D p);
-
 }

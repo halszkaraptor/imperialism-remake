@@ -40,7 +40,6 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
     private Vector2D tileSize;
     private Dimension size = new Dimension();
     private MiniMapFocusChangedListener focusChangedListener;
-
     private MapModel map;
 
     public MiniMapPanel() {

@@ -101,7 +101,7 @@ public class CommonElementsFactory {
         frame.setResizable(false);
 
         // set title
-        frame.setTitle("App Title");
+        frame.setTitle("Imperialism Remake");
 
         // set icon
         frame.setIconImage(Loader.getAsImage(Places.UI, "icon.app.png"));

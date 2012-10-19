@@ -20,72 +20,35 @@ import java.awt.Color;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import nu.xom.Element;
+import org.iremake.client.ui.map.TerrainTile;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Table;
 
 /**
  *
  */
-public class Terrain {
+public class TerrainLoader {
 
-    /**
-     *      */
+    /** */
     private static Map<String, TerrainTile> map = new HashMap<>(0);
-
-    private static class TerrainTile {
-
-        public String type;
-        public int variant;
-        public Image image;
-        public Color color;
-
-        public TerrainTile(String t, int v, Image i, Color c) {
-            type = t;
-            variant = v;
-            image = i;
-            color = c;
-        }
-
-        @Override
-        public int hashCode() {
-            return type.hashCode() + variant;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final TerrainTile other = (TerrainTile) obj;
-            if (!Objects.equals(this.type, other.type)) {
-                return false;
-            }
-            if (this.variant != other.variant) {
-                return false;
-            }
-            return true;
-        }
-    }
 
     /**
      * Static class, prevent instantiation.
      */
-    private Terrain() {
+    private TerrainLoader() {
     }
 
     /**
      *
      * @param location
      */
-    public static void loadTerrain(String location) {
+    public static void load() {
+
+        // TODO inside archive?
         // read from xml file
-        Element xml = XMLHelper.read("/data/game/artwork/graphics/terrain/terrain.xml");
+        /*Element xml = XMLHelper.read(Places.Terrain + "terrain.xml");
 
         // parse xml and fill table
         Table table = new Table();
@@ -102,7 +65,7 @@ public class Terrain {
             Color color = new Color(0, 0, 0);
             TerrainTile tile = new TerrainTile(type, variant, image, color);
             map.put(id, tile);
-        }
+        }*/
     }
 
     /**
@@ -118,34 +81,8 @@ public class Terrain {
      * @param id
      * @return
      */
-    public static String getType(String id) {
-        return map.get(id).type;
+    public static TerrainTile getTile(String id) {
+        return map.get(id);
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public static int getVariant(String id) {
-        return map.get(id).variant;
-    }
-
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public static Image getImage(String id) {
-        return map.get(id).image;
-    }
-
-    /**
-     *
-     * @param id
-     * @return
-     */
-    public static Color getColor(String id) {
-        return map.get(id).color;
-    }
 }

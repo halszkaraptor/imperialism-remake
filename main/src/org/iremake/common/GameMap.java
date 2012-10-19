@@ -17,7 +17,10 @@
 package org.iremake.common;
 
 import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nu.xom.Element;
+import org.tools.ui.helper.Vector2D;
 import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
 
@@ -26,47 +29,87 @@ import org.tools.xml.XMLable;
  */
 public class GameMap implements XMLable {
 
-    private final static Dimension size = new Dimension(100, 60);
+    private static final Logger LOG = Logger.getLogger(GameMap.class.getName());
+    private Vector2D size = new Vector2D(0, 0);
     private String[][] map;
 
     public GameMap() {
-        map = new String[size.width][size.height];
     }
 
-    public void setTerrainAt(int x, int y, String type) {
-        map[x][y] = type;
+    /**
+     * A 100x60 sea(1) map.
+     */
+    public void setEmptyMap() {
+        size.a = 100;
+        size.b = 60;
+        map = new String[size.a][size.b];
+        for (int row = 0; row < size.b; row++) {
+            for (int column = 0; column < size.a; column++) {
+                map[row][column] = "s1";
+            }
+        }
+    }
+
+    public boolean checkConsistency() {
+        // TODO size and length of map are consistent, ids are valid and only 2 letters long
+        return true;
+    }
+
+    public void setTerrainAt(int x, int y, String id) {
+        if (x >= size.a || y >= size.b) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return;
+        }
+        map[x][y] = id;
     }
 
     public String getTerrainAt(int x, int y) {
+        if (x >= size.a || y >= size.b) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return null;
+        }
         return map[x][y];
     }
 
-    public Dimension getSize() {
-        return size; // TODO how is JDialog et al making this immutable
+    public Vector2D getSize() {
+        return new Vector2D(size); // TODO how is JDialog et al making this immutable
     }
+
+    private static final String NAME = "geographical map";
+    private static final String NAME_SIZE = "size";
+    private static final String NAME_MAP = "map";
 
     @Override
     public Element toXML() {
-        Element element = new Element("gamemap");
+        Element parent = new Element(NAME);
 
-        // add size
-        element.appendChild(XMLHandler.DimensionToXML(size, "gamemap-size"));
+        // add size as list
+        parent.appendChild(XMLHandler.Vector2DToXML(size, NAME_SIZE));
 
-        // add map data
-        // element.appendChild(XMLHandler.StringArrayToXML(map, size, "gamemap-terrain"));
-        // TODO this takes a lot of memory, shorten it
+        // assemble map as one big string
+        int capacity = size.a * size.b * 2;
+        StringBuilder builder = new StringBuilder(capacity);
+        for (int row = 0; row < size.b; row++) {
+            for (int column = 0; column < size.a; column++) {
+                builder.append(map[row][column]);
+            }
+        }
+        Element child = new Element(NAME_MAP);
+        child.appendChild(builder.toString());
+        parent.appendChild(child);
 
-        return element;
+        return parent;
     }
 
     @Override
     public void fromXML(Element element) {
-        // TODO we need to clean it before
-        /*
-         if (element == null || !"gamemap".equals(element.getLocalName())) {
-         return false;
-         }
 
-         return true;*/
+        if (element == null || !NAME.equals(element.getLocalName())) {
+            LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
+            return;
+        }
+
+        // TODO more checks (positivity)
+
     }
 }

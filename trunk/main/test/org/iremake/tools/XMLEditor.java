@@ -193,12 +193,12 @@ public class XMLEditor extends JFrame {
         final String target = "\\scenarios\\standard\\map.xml";
         String full = baseTextField.getText() + target;
         GameMap map = new GameMap();
-        Dimension size = map.getSize();
+       /* Dimension size = map.getSize();
         for (int i = 0; i < size.width; i++) {
             for (int j = 0; j < size.height; j++) {
                 map.setTerrainAt(i, j, "undefined");
             }
-        }
+        }*/
         /*XMLHelper.write(full, map);*/
     }//GEN-LAST:event_mapButtonActionPerformed
 

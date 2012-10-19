@@ -25,8 +25,9 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import org.iremake.client.resources.Places;
+import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
-import org.tools.Main;
 import org.tools.ui.helper.LookAndFeel;
 
 /**
@@ -49,6 +50,8 @@ public class StartClient {
         LookAndFeel.setSystemLookAndFeel();
 
         installFonts();
+
+        TerrainLoader.load();
 
         // fire up start frame
         EventQueue.invokeLater(new Runnable() {

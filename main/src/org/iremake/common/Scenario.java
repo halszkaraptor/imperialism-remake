@@ -14,25 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.resources;
+package org.iremake.common;
 
 /**
  *
  */
-public enum Places {
-
-    None(""),
-    Graphics("data/game/artwork/graphics/"),
-    UI(Graphics + "ui/"),
-    Terrain(Graphics + "terrain/");
-    private String id;
-
-    Places(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return id;
-    }
+public class Scenario {
+    
 }

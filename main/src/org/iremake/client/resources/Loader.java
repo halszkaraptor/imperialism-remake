@@ -17,46 +17,93 @@
 package org.iremake.client.resources;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import nu.xom.Element;
+import org.tools.xml.XMLHelper;
 
 /**
  * Loads from within the application jar file.
  */
+// TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class Loader {
+    
+    private static final Logger LOG = Logger.getLogger(Loader.class.getName());
+    // private static final String base = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    private static final String base = ""; // for testing
 
     private Loader() {
     }
 
-    public static Icon getAsIcon(Places base, String location) {
-        URL url = Loader.getAsURL(base + location);
-        ImageIcon icon = null;
-        if (url != null) {
-            icon = new ImageIcon(url);
-        } else {
+    /**
+     * 
+     * @param place
+     * @param location
+     * @return 
+     */
+    public static Icon getAsIcon(Places place, String location) {
+        String path = base + place + location;
+        ImageIcon icon = new ImageIcon(path);
+        if (icon == null) {
             // TODO log entry
         }
         return icon;
     }
 
-    public static Image getAsImage(Places base, String location) {
-        URL url = Loader.getAsURL(base + location);
-        Image image = null;
-        if (url != null) {
-            image = new ImageIcon(url).getImage();
-        } else {
-            // TODO log entry
-        }
-        return image;
-    }
-
     /**
-     *
+     * 
+     * @param place
      * @param location
-     * @return The URL or null if not existing.
+     * @return 
      */
-    public static URL getAsURL(String location) {
-        return Loader.class.getResource(location);
+    public static Image getAsImage(Places place, String location) {
+        String path = base + place + location;        
+        ImageIcon icon = new ImageIcon(path);
+        if (icon == null) {
+            // TODO log entry
+            return null;
+        }        
+        return icon.getImage();
+    }
+    
+    /**
+     * 
+     * @param place
+     * @param location
+     * @return 
+     */
+    public static Element getAsXML(Places place, String location) {
+        return XMLHelper.read(base + place + location);
+    }
+    
+    public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
+        return new FileInputStream(base + place + location);
+    }
+    
+    public static String getPath(String location) {
+        // TODO replace folder separator symbol in path ??
+        return base + location;
+    }    
+    
+    public static URL getURL(String location) {
+        try {
+            return new URL(base + location);
+        } catch (MalformedURLException ex) {
+            LOG.log(Level.INFO, "Could not obtain URL for path.");
+            return null;
+        }
+    }
+    
+    public static boolean createDirectory(String location) {
+        File file = new File(base + location);
+        return file.mkdirs();
     }
 }

@@ -16,10 +16,12 @@
  */
 package org.iremake.common;
 
-import java.awt.Dimension;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
+import nu.xom.Elements;
 import org.tools.ui.helper.Vector2D;
 import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
@@ -27,24 +29,26 @@ import org.tools.xml.XMLable;
 /**
  *
  */
-public class GameMap implements XMLable {
+public class GeographicalMap implements XMLable {
 
-    private static final Logger LOG = Logger.getLogger(GameMap.class.getName());
+    private static final Logger LOG = Logger.getLogger(GeographicalMap.class.getName());
     private Vector2D size = new Vector2D(0, 0);
     private String[][] map;
+    
+    private List<GeographicalMapChangedListener> listeners = new LinkedList<>();
 
-    public GameMap() {
+    public GeographicalMap() {
     }
 
     /**
      * A 100x60 sea(1) map.
      */
     public void setEmptyMap() {
-        size.a = 100;
-        size.b = 60;
+        size.a = 60;
+        size.b = 100;
         map = new String[size.a][size.b];
-        for (int row = 0; row < size.b; row++) {
-            for (int column = 0; column < size.a; column++) {
+        for (int row = 0; row < size.a; row++) {
+            for (int column = 0; column < size.b; column++) {
                 map[row][column] = "s1";
             }
         }
@@ -74,8 +78,29 @@ public class GameMap implements XMLable {
     public Vector2D getSize() {
         return new Vector2D(size); // TODO how is JDialog et al making this immutable
     }
+    
+    public void addMapChangedListener(GeographicalMapChangedListener l) {
+        listeners.add(l);
+    }
 
-    private static final String NAME = "geographical map";
+    public void removeMapChangedListener(GeographicalMapChangedListener l) {
+        listeners.remove(l);
+    }
+
+    private void fireTileChanged(int x, int y) {
+        String id = map[x][y];
+        for (GeographicalMapChangedListener l: listeners) {
+            l.tileChanged(x, y, id);
+        }
+    }    
+    
+    private void fireMapChanged() {
+        for (GeographicalMapChangedListener l: listeners) {
+            l.mapChanged();
+        }        
+    }
+
+    private static final String NAME = "geographical-map";
     private static final String NAME_SIZE = "size";
     private static final String NAME_MAP = "map";
 
@@ -89,8 +114,8 @@ public class GameMap implements XMLable {
         // assemble map as one big string
         int capacity = size.a * size.b * 2;
         StringBuilder builder = new StringBuilder(capacity);
-        for (int row = 0; row < size.b; row++) {
-            for (int column = 0; column < size.a; column++) {
+        for (int row = 0; row < size.a; row++) {
+            for (int column = 0; column < size.b; column++) {
                 builder.append(map[row][column]);
             }
         }
@@ -102,14 +127,28 @@ public class GameMap implements XMLable {
     }
 
     @Override
-    public void fromXML(Element element) {
+    public void fromXML(Element parent) {
 
-        if (element == null || !NAME.equals(element.getLocalName())) {
+        if (parent == null || !NAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }
-
-        // TODO more checks (positivity)
-
+        
+        Elements children = parent.getChildElements();
+        
+        // get size
+        size = XMLHandler.XMLToVector2D(children.get(0));
+        map = new String[size.a][size.b];
+        
+        // TODO test size of string with size
+        // TODO more checks (positivity)        
+        String content = children.get(1).getValue();
+        int p = 0;
+        for (int row = 0; row < size.a; row++) {
+            for (int column = 0; column < size.b; column++) {
+                map[row][column] = content.substring(p, p + 2);
+                p += 2;
+            }
+        }
     }
 }

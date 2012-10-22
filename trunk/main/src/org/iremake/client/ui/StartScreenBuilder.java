@@ -163,7 +163,7 @@ public class StartScreenBuilder {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                URL index = Loader.getAsURL("/help/en_index.html");
+                URL index = Loader.getURL("/help/en_index.html");
                 BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index);
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)

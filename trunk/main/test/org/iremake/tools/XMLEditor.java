@@ -33,7 +33,7 @@ import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import org.iremake.common.GameMap;
+import org.iremake.common.GeographicalMap;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.Property;
@@ -190,16 +190,11 @@ public class XMLEditor extends JFrame {
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
-        final String target = "\\scenarios\\standard\\map.xml";
-        String full = baseTextField.getText() + target;
-        GameMap map = new GameMap();
-       /* Dimension size = map.getSize();
-        for (int i = 0; i < size.width; i++) {
-            for (int j = 0; j < size.height; j++) {
-                map.setTerrainAt(i, j, "undefined");
-            }
-        }*/
-        /*XMLHelper.write(full, map);*/
+
+        GeographicalMap map = new GeographicalMap();
+        map.setEmptyMap();
+        map.setTerrainAt(0, 0, "p1");
+        XMLHelper.write("map.xml", map.toXML());
     }//GEN-LAST:event_mapButtonActionPerformed
 
     private void colorButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_colorButtonActionPerformed

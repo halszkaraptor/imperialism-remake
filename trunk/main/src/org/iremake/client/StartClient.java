@@ -20,11 +20,15 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
@@ -45,22 +49,28 @@ public class StartClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+            // first things first: logger
+            setupLogger();
 
-        // set look and feel
-        LookAndFeel.setSystemLookAndFeel();
+            // set look and feel
+            LookAndFeel.setSystemLookAndFeel();
 
-        installFonts();
+            // installFonts();
 
-        TerrainLoader.load();
+            TerrainLoader.load();
 
-        // fire up start frame
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JFrame frame = StartScreenBuilder.makeFrame();
-                frame.setVisible(true);
-            }
-        });
+            // fire up start frame
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    JFrame frame = StartScreenBuilder.makeFrame();
+                    frame.setVisible(true);
+                }
+            });
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -68,7 +78,7 @@ public class StartClient {
         FontUIResource r = (FontUIResource) UIManager.get("Label.font");
         Font font = null;
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, StartClient.class.getResource("/data/game/artwork/graphics/fonts/Lora-Regular.ttf").openStream());
+            font = Font.createFont(Font.TRUETYPE_FONT, Loader.getAsInputStream(Places.Graphics, "fonts/Lora-Regular.ttf"));
         } catch (FontFormatException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -78,5 +88,23 @@ public class StartClient {
     }
 
     public static void shutDown() {
+    }
+
+    /**
+     *
+     */
+    private static void setupLogger() throws IOException {
+
+        Loader.createDirectory("log");
+        // if log directory not yet existing, create it
+
+        // setup of the logger
+        Handler handler = new FileHandler(Loader.getPath("log/remake%g.log"), (int) 1e5, 10, false);
+        handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
+        handler.setLevel(Level.INFO);
+        Logger.getLogger("").addHandler(handler);
+
+        // our first log message (just to get the date and time)
+        LOG.log(Level.INFO, "Logger is setup");
     }
 }

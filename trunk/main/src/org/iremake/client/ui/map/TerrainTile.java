@@ -25,20 +25,12 @@ import java.util.Objects;
  */
 public class TerrainTile {
 
-    private String type;
-    private int variant;
     private Image image;
     private Color color;
 
-    public TerrainTile(String type, int variant, Image image, Color color) {
-        this.type = type;
-        this.variant = variant;
+    public TerrainTile(Image image, Color color) {
         this.image = image;
         this.color = color;
-    }
-
-    public int getVariant() {
-        return variant;
     }
 
     public Image getImage() {
@@ -51,7 +43,7 @@ public class TerrainTile {
 
     @Override
     public int hashCode() {
-        return type.hashCode() + variant;
+        return image.hashCode() * 13 + color.hashCode();
     }
 
     @Override
@@ -63,10 +55,10 @@ public class TerrainTile {
             return false;
         }
         final TerrainTile other = (TerrainTile) obj;
-        if (!Objects.equals(this.type, other.type)) {
+        if (!Objects.equals(this.image, other.image)) {
             return false;
         }
-        if (this.variant != other.variant) {
+        if (!Objects.equals(this.color, other.color)) {
             return false;
         }
         return true;

@@ -22,6 +22,7 @@ package org.iremake.client.resources;
 public enum Places {
 
     None(""),
+    Help("data/help/"),
     Graphics("data/game/artwork/graphics/"),
     UI(Graphics + "ui/"),
     Terrain(Graphics + "terrain/");

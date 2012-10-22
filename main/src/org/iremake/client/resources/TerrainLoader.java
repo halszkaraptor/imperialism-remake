@@ -41,17 +41,15 @@ public class TerrainLoader {
 
     /**
      *
-     * @param location
      */
     public static void load() {
 
-        // Element xml = Loader.getAsXML(Places.Terrain, "terrain.xml");
-        Element xml = Loader.getAsXML(Places.None, "terrain.xml");
+        Element xml = Loader.getAsXML(Places.Terrain, "terrain.xml");
 
         // parse xml and fill table
         Table table = new Table();
         table.fromXML(xml);
-        
+
         // TODO checks about number of columns
 
         // load terrain images, combine colors and fill map
@@ -83,7 +81,7 @@ public class TerrainLoader {
     public static TerrainTile getTile(String id) {
         return map.get(id);
     }
-    
+
     private static Color ColorFromHex(String hex) {
         int r = Integer.parseInt(hex.substring(0, 2), 16);
         int g = Integer.parseInt(hex.substring(2, 4), 16);

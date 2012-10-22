@@ -56,7 +56,7 @@ public class StartClient {
             // set look and feel
             LookAndFeel.setSystemLookAndFeel();
 
-            // installFonts();
+            installFonts();
 
             TerrainLoader.load();
 

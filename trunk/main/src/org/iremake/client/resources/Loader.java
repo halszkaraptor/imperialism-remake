@@ -35,19 +35,19 @@ import org.tools.xml.XMLHelper;
  */
 // TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class Loader {
-    
+
     private static final Logger LOG = Logger.getLogger(Loader.class.getName());
-    // private static final String base = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-    private static final String base = ""; // for testing
+    // private static final String base = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath(); // path of jar file
+    private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
 
     private Loader() {
     }
 
     /**
-     * 
+     *
      * @param place
      * @param location
-     * @return 
+     * @return
      */
     public static Icon getAsIcon(Places place, String location) {
         String path = base + place + location;
@@ -59,49 +59,52 @@ public class Loader {
     }
 
     /**
-     * 
+     *
      * @param place
      * @param location
-     * @return 
+     * @return
      */
     public static Image getAsImage(Places place, String location) {
-        String path = base + place + location;        
+        String path = base + place + location;
         ImageIcon icon = new ImageIcon(path);
         if (icon == null) {
             // TODO log entry
             return null;
-        }        
+        }
         return icon.getImage();
     }
-    
+
     /**
-     * 
+     *
      * @param place
      * @param location
-     * @return 
+     * @return
      */
     public static Element getAsXML(Places place, String location) {
-        return XMLHelper.read(base + place + location);
+        String path = base + place + location;
+        return XMLHelper.read(path);
     }
-    
+
     public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
-        return new FileInputStream(base + place + location);
+        String path = base + place + location;
+        return new FileInputStream(path);
     }
-    
+
     public static String getPath(String location) {
         // TODO replace folder separator symbol in path ??
         return base + location;
-    }    
-    
-    public static URL getURL(String location) {
+    }
+
+    public static URL getURL(Places place, String location) {
+        String path = base + place + location;
         try {
-            return new URL(base + location);
+            return new File(path).toURI().toURL();
         } catch (MalformedURLException ex) {
-            LOG.log(Level.INFO, "Could not obtain URL for path.");
+            LOG.log(Level.INFO, "Could not obtain URL.", ex);
             return null;
         }
     }
-    
+
     public static boolean createDirectory(String location) {
         File file = new File(base + location);
         return file.mkdirs();

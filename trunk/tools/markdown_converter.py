@@ -20,7 +20,7 @@ import tools
 # parameters
 lookup_dir = '..' + os.sep + 'help' # relative to this files location
 # all following dirs are relative to the lookup dir
-install_dir = '..' + os.sep + 'main' + os.sep + 'src' + os.sep + 'help'
+install_dir = '..' + os.sep + 'main' + os.sep + 'data' + os.sep + 'help'
 template_dir = 'templates'
 
 lookup_files = '*.txt'

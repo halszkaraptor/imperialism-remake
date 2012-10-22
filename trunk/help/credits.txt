@@ -1,3 +1,3 @@
 ﻿# Credits
 
-## Release 0.1 'Berlin'
+## Release 0.1.0

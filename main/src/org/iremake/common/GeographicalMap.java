@@ -39,19 +39,21 @@ public class GeographicalMap implements XMLable {
 
     public GeographicalMap() {
     }
-
+    
     /**
      * A 100x60 sea(1) map.
      */
-    public void setEmptyMap() {
-        size.a = 60;
-        size.b = 100;
+    public void setEmptyMap(int rows, int columns) {
+        size.a = rows;
+        size.b = columns;
         map = new String[size.a][size.b];
         for (int row = 0; row < size.a; row++) {
             for (int column = 0; column < size.b; column++) {
+                // TODO get it from somewhere
                 map[row][column] = "s1";
             }
         }
+        fireMapChanged();
     }
 
     public boolean checkConsistency() {
@@ -65,6 +67,7 @@ public class GeographicalMap implements XMLable {
             return;
         }
         map[x][y] = id;
+        fireTileChanged(x, y);
     }
 
     public String getTerrainAt(int x, int y) {
@@ -96,7 +99,7 @@ public class GeographicalMap implements XMLable {
     
     private void fireMapChanged() {
         for (GeographicalMapChangedListener l: listeners) {
-            l.mapChanged();
+            l.mapChanged(this);
         }        
     }
 
@@ -150,5 +153,7 @@ public class GeographicalMap implements XMLable {
                 p += 2;
             }
         }
+        
+        fireMapChanged();
     }
 }

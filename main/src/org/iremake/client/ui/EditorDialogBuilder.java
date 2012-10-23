@@ -27,7 +27,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.MapModel;
 import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.common.GeographicalMap;
 
 /**
  *
@@ -90,14 +92,19 @@ public class EditorDialogBuilder {
 
     private static JPanel createMapPanel() {
         JPanel panel = new JPanel();
+        
+        MapModel model = new MapModel();
+        
+        GeographicalMap map = new GeographicalMap();        
+        map.addMapChangedListener(model);
 
-        MiniMapPanel miniMapPanel = new MiniMapPanel();
+        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
         JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
 
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel();
 
-        MainMapPanel mainMapPanel = new MainMapPanel();
+        MainMapPanel mainMapPanel = new MainMapPanel(model);
 
         // wire them
         mainMapPanel.addTileFocusChangedListener(infoPanel);

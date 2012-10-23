@@ -16,45 +16,79 @@
  */
 package org.iremake.client.ui.map;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Image;
-import org.iremake.client.resources.Loader;
-import org.iremake.client.resources.Places;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.iremake.client.resources.TerrainLoader;
+import org.iremake.common.GeographicalMap;
+import org.iremake.common.GeographicalMapChangedListener;
+import org.tools.ui.helper.Vector2D;
 
 /**
  *
  */
-public class MapModel {
+public class MapModel implements GeographicalMapChangedListener {
+    
+    private static final Logger LOG = Logger.getLogger(MapModel.class.getName());
 
-    private int rows, columns;
-    private Image[][] map; // first columns, second rows
-    private Dimension tileSize;
+    private Vector2D size;
+    private TerrainTile[][] map; // first rows, then columns
+    private Vector2D tileSize;
 
     public MapModel() {
-        Image image = Loader.getAsImage(Places.Terrain, "terrain.plains.png");
-        // TODO use ImageIO.read and BufferedImage, ImageIcon waits automatically, no ImageObserver needed
-        tileSize = new Dimension(image.getWidth(null), image.getHeight(null));
+        tileSize = TerrainLoader.getTileSize();
+    }
 
-        columns = 100;
-        rows = 60;
+    public Vector2D getSize() {
+        return new Vector2D(size);
+    }
 
-        map = new Image[columns][rows];
-        for (int c = 0; c < columns; c++) {
-            for (int r = 0; r < rows; r++) {
-                map[c][r] = image;
+    public Image getTileAt(int row, int column) {
+        // TODO in range
+        return map[row][column].getImage();
+    }
+    
+    public Color getTileColorAt(int row, int column) {
+        // TODO in range
+        return map[row][column].getColor();
+    }
+
+    public Vector2D getTileSize() {
+        return new Vector2D(tileSize);
+    }
+
+    @Override
+    public void tileChanged(int row, int column, String id) {
+        // TODO check size
+        TerrainTile tile = TerrainLoader.getTile(id);
+        if (tile == null) {
+            LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);
+            return;
+        }
+        map[row][column] = tile;
+        // fire event
+    }
+
+    @Override
+    public void mapChanged(GeographicalMap gmap) {
+        size = gmap.getSize();
+        map = new TerrainTile[size.a][size.b];
+        
+        String id;
+        TerrainTile tile;
+        
+        for (int row = 0; row < size.a; row++) {
+            for (int column = 0; column < size.b; column++) {
+                id = gmap.getTerrainAt(row, column);
+                tile = TerrainLoader.getTile(id);
+                if (tile == null) {
+                    LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);
+                }
+                map[row][column] = tile;
             }
         }
-    }
-
-    public Dimension getSize() {
-        return new Dimension(columns, rows);
-    }
-
-    public Image getTileAt(int column, int row) {
-        return map[column][row];
-    }
-
-    public Dimension getTileSize() {
-        return tileSize;
+        
+        // fire event
     }
 }

@@ -32,7 +32,6 @@ import org.tools.ui.helper.Vector2D;
 
 /**
  *
- * @author Trilarion 2012
  */
 public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListener, MiniMapFocusChangedListener {
 
@@ -46,11 +45,11 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     private Vector2D p0 = new Vector2D(-1, -1);
     private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
     private MainMapResizedListener resizedListener;
-    private MapModel map;
+    private MapModel model;
 
-    public MainMapPanel() {
+    public MainMapPanel(MapModel model) {
 
-        map = new MapModel();
+        this.model = model;
         initComponents();
     }
 
@@ -101,15 +100,10 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
                 for (int row = 0; row < r; row++) {
                     int x = col * w + ((row % 2 != 0) ? w / 2 : 0);
                     int y = row * h;
-                    g2d.drawImage(map.getTileAt(col, row), x, y, null);
+                    g2d.drawImage(model.getTileAt(col, row), x, y, null);
                 }
             }
         }
-    }
-
-    public Dimension getAreaInTiles() {
-        Dimension tileSize = map.getTileSize();
-        return new Dimension(size.width / tileSize.width, size.height / tileSize.height);
     }
 
     private void notifyTileFocusChangedListeners() {
@@ -133,8 +127,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
 
     @Override
     public void newMiniMapFocus(Vector2D center) {
-        Vector2D dim = new Vector2D(size);
-        dim.divideby(map.getTileSize());
+        Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
         p0.a = Math.max(center.a - dim.a / 2, 0);
         p0.b = Math.max(center.b - dim.b / 2, 0);
         repaint();
@@ -142,8 +135,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
 
     public void notifyResizedListener() {
         if (resizedListener != null) {
-            Vector2D dim = new Vector2D(size);
-            dim.divideby(map.getTileSize());
+            Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
             resizedListener.newMainMapSizeInTiles(dim);
         }
     }

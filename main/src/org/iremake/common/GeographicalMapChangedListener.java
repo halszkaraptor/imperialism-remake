@@ -21,8 +21,8 @@ package org.iremake.common;
  */
 public interface GeographicalMapChangedListener {
     
-    public void tileChanged(int x, int y, String id);
+    public void tileChanged(int row, int column, String id);
     
-    public void mapChanged();
+    public void mapChanged(GeographicalMap gmap);
     
 }

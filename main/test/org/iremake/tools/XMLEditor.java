@@ -16,7 +16,6 @@
  */
 package org.iremake.tools;
 
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -192,7 +191,7 @@ public class XMLEditor extends JFrame {
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
 
         GeographicalMap map = new GeographicalMap();
-        map.setEmptyMap();
+        map.setEmptyMap(60, 100);
         map.setTerrainAt(0, 0, "p1");
         XMLHelper.write("map.xml", map.toXML());
     }//GEN-LAST:event_mapButtonActionPerformed

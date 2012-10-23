@@ -52,8 +52,9 @@ public class Loader {
     public static Icon getAsIcon(Places place, String location) {
         String path = base + place + location;
         ImageIcon icon = new ImageIcon(path);
+        // ImageIcon waits automatically, no ImageObserver needed
         if (icon == null) {
-            // TODO log entry
+            LOG.log(Level.INFO, "Image {0} not readable.", path);
         }
         return icon;
     }
@@ -68,7 +69,7 @@ public class Loader {
         String path = base + place + location;
         ImageIcon icon = new ImageIcon(path);
         if (icon == null) {
-            // TODO log entry
+            LOG.log(Level.INFO, "Image {0} not readable.", path);
             return null;
         }
         return icon.getImage();

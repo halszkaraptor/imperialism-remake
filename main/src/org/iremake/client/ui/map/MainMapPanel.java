@@ -37,12 +37,10 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
-    private int w = 80;
-    private int h = 80;
-    private int r = 60;
-    private int c = 100;
     private Vector2D pa = new Vector2D(-1, -1);
     private Vector2D p0 = new Vector2D(-1, -1);
+    private Vector2D tileSize;
+    private Vector2D mapSize;
     private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
     private MainMapResizedListener resizedListener;
     private MapModel model;
@@ -64,6 +62,8 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
             }
         });
 
+        tileSize = model.getTileSize();
+
         // we listen to ourselves
         addTileFocusChangedListener(this);
 
@@ -71,15 +71,26 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
 
         setBackground(Color.white);
         setBorder(new LineBorder(Color.black, 1));
+    }
+
+    private boolean isFinalized = false;
+
+    public void finalizeComponents() {
+        if (isFinalized) {
+            return;
+        }
+        isFinalized = true;
+
+        mapSize = model.getSize();
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
                 int x0 = e.getX();
                 int y0 = e.getY();
-                int r0 = y0 / h;
-                int t = r0 % 2 != 0 ? w / 2 : 0;
-                int c0 = (x0 - t) / w;
+                int r0 = y0 / tileSize.b;
+                int t = r0 % 2 != 0 ? tileSize.a / 2 : 0;
+                int c0 = (x0 - t) / tileSize.b;
                 Vector2D r = new Vector2D(r0, c0);
                 if (!pa.equals(r)) {
                     pa = r;
@@ -87,6 +98,7 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
                 }
             }
         });
+
     }
 
     @Override
@@ -96,11 +108,11 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
         if (p0.isNonNegative()) {
 
             // staggered drawing
-            for (int col = 0; col < c; col++) {
-                for (int row = 0; row < r; row++) {
-                    int x = col * w + ((row % 2 != 0) ? w / 2 : 0);
-                    int y = row * h;
-                    g2d.drawImage(model.getTileAt(col, row), x, y, null);
+            for (int column = 0; column < mapSize.b; column++) {
+                for (int row = 0; row < mapSize.a; row++) {
+                    int x = column * tileSize.a + ((row % 2 != 0) ? tileSize.a / 2 : 0);
+                    int y = row * tileSize.b;
+                    g2d.drawImage(model.getTileAt(row, column), x, y, null);
                 }
             }
         }

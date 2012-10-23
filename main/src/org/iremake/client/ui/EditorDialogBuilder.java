@@ -36,6 +36,10 @@ import org.iremake.common.GeographicalMap;
  */
 public class EditorDialogBuilder {
 
+    private static MapModel model;
+    private static GeographicalMap map;
+    private static MainMapPanel mainMapPanel;
+
     private EditorDialogBuilder() {
     }
 
@@ -70,6 +74,11 @@ public class EditorDialogBuilder {
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
+        // now we compute the real sizes and finish everything
+        dialog.validate();
+
+        mainMapPanel.finalizeComponents();
+
         return dialog;
     }
 
@@ -92,11 +101,12 @@ public class EditorDialogBuilder {
 
     private static JPanel createMapPanel() {
         JPanel panel = new JPanel();
-        
-        MapModel model = new MapModel();
-        
-        GeographicalMap map = new GeographicalMap();        
+
+        model = new MapModel();
+
+        map = new GeographicalMap();
         map.addMapChangedListener(model);
+        map.setEmptyMap(60, 100); // shift this backwards
 
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
@@ -104,7 +114,7 @@ public class EditorDialogBuilder {
 
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel();
 
-        MainMapPanel mainMapPanel = new MainMapPanel(model);
+        mainMapPanel = new MainMapPanel(model);
 
         // wire them
         mainMapPanel.addTileFocusChangedListener(infoPanel);

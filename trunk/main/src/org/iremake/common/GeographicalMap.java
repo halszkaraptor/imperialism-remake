@@ -34,14 +34,16 @@ public class GeographicalMap implements XMLable {
     private static final Logger LOG = Logger.getLogger(GeographicalMap.class.getName());
     private Vector2D size = new Vector2D(0, 0);
     private String[][] map;
-    
+
     private List<GeographicalMapChangedListener> listeners = new LinkedList<>();
 
     public GeographicalMap() {
     }
-    
+
     /**
-     * A 100x60 sea(1) map.
+     * A sea(1) map.
+     * @param rows
+     * @param columns
      */
     public void setEmptyMap(int rows, int columns) {
         size.a = rows;
@@ -81,7 +83,7 @@ public class GeographicalMap implements XMLable {
     public Vector2D getSize() {
         return new Vector2D(size); // TODO how is JDialog et al making this immutable
     }
-    
+
     public void addMapChangedListener(GeographicalMapChangedListener l) {
         listeners.add(l);
     }
@@ -95,12 +97,12 @@ public class GeographicalMap implements XMLable {
         for (GeographicalMapChangedListener l: listeners) {
             l.tileChanged(x, y, id);
         }
-    }    
-    
+    }
+
     private void fireMapChanged() {
         for (GeographicalMapChangedListener l: listeners) {
             l.mapChanged(this);
-        }        
+        }
     }
 
     private static final String NAME = "geographical-map";
@@ -136,15 +138,15 @@ public class GeographicalMap implements XMLable {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }
-        
+
         Elements children = parent.getChildElements();
-        
+
         // get size
         size = XMLHandler.XMLToVector2D(children.get(0));
         map = new String[size.a][size.b];
-        
+
         // TODO test size of string with size
-        // TODO more checks (positivity)        
+        // TODO more checks (positivity)
         String content = children.get(1).getValue();
         int p = 0;
         for (int row = 0; row < size.a; row++) {
@@ -153,7 +155,7 @@ public class GeographicalMap implements XMLable {
                 p += 2;
             }
         }
-        
+
         fireMapChanged();
     }
 }

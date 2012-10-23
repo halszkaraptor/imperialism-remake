@@ -50,7 +50,7 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
 
     private void initComponents() {
 
-        mapSize = new Vector2D(100, 60);
+        mapSize = model.getSize();
         tileSize = new Vector2D(2, 2);
         setPreferredSize(Vector2D.multiply(mapSize, tileSize).asDimension());
 
@@ -90,6 +90,15 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
             }
         });
 
+    }
+
+    private boolean isFinalized = false;
+
+    public void finalizeComponents() {
+        if (isFinalized) {
+            return;
+        }
+        isFinalized = true;
     }
 
     @Override

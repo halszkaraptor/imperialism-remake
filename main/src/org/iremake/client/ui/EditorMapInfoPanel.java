@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.client.ui.map.MainMapTileFocusChangedListener;
-import org.tools.ui.helper.Vector2D;
 
 /**
  *
@@ -44,7 +43,7 @@ public class EditorMapInfoPanel extends JPanel implements MainMapTileFocusChange
     }
 
     @Override
-    public void newTileFocus(Vector2D focus) {
-        tile.setText("Tile: " + Integer.toString(focus.a) + ", " + Integer.toString(focus.b));
+    public void newTileFocus(int row, int column) {
+        tile.setText("Tile: " + Integer.toString(row) + ", " + Integer.toString(column));
     }
 }

@@ -180,7 +180,7 @@ public class XMLEditor extends JFrame {
 
         final String target = "\\artwork\\graphics\\terrain\\terrain.xml";
         String full = baseTextField.getText() + target;
-        Property prop = new Property();
+        Property prop = new Property(0);
         /*
          XMLHelper.read(full, prop);
          if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {

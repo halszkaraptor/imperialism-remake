@@ -20,107 +20,98 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import org.tools.ui.helper.Vector2D;
+import org.iremake.client.resources.TerrainLoader;
 
 /**
  *
  */
-public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListener, MiniMapFocusChangedListener {
+public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
-    private Dimension size = new Dimension();
-    private Vector2D pa = new Vector2D(-1, -1);
-    private Vector2D p0 = new Vector2D(-1, -1);
-    private Vector2D tileSize;
-    private Vector2D mapSize;
+    private Dimension size;
     private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
-    private MainMapResizedListener resizedListener;
     private MapModel model;
+    private Dimension tileSize;
+
+    private int offsetRow = 0;
+    private int offsetColumn = 0;
+
+    private int hooveredRow = -1;
+    private int hooveredColumn = -1;
+
+    private int selectedRow = -1;
+    private int selectedColumn = -1;
 
     public MainMapPanel(MapModel model) {
 
         this.model = model;
-        initComponents();
-    }
 
-    private void initComponents() {
-
-        getSize(size);
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                getSize(size);
-                notifyResizedListener();
-            }
-        });
-
-        tileSize = model.getTileSize();
-
-        // we listen to ourselves
-        addTileFocusChangedListener(this);
+        tileSize = TerrainLoader.getTileSize();
 
         setOpaque(true);
 
         setBackground(Color.white);
         setBorder(new LineBorder(Color.black, 1));
-    }
-
-    private boolean isFinalized = false;
-
-    public void finalizeComponents() {
-        if (isFinalized) {
-            return;
-        }
-        isFinalized = true;
-
-        mapSize = model.getSize();
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                int x0 = e.getX();
-                int y0 = e.getY();
-                int r0 = y0 / tileSize.b;
-                int t = r0 % 2 != 0 ? tileSize.a / 2 : 0;
-                int c0 = (x0 - t) / tileSize.b;
-                Vector2D r = new Vector2D(r0, c0);
-                if (!pa.equals(r)) {
-                    pa = r;
-                    notifyTileFocusChangedListeners();
-                }
+                int x = e.getX();
+                int y = e.getY();
+                int r = y / tileSize.height;
+                int t = r % 2 != 0 ? tileSize.width / 2 : 0;
+                int c = (x - t) / tileSize.height;
+                /*
+                 Vector2D r = new Vector2D(r0, c0);
+                 if (!pa.equals(r)) {
+                 pa = r;
+                 notifyTileFocusChangedListeners();
+                 }*/
             }
         });
 
+    }
+
+    public void setSizeAndPrepare(MiniMapPanel miniMap) {
+
+        size = getSize();
+
+        // tell the minimap
+        // miniMap.newMainMapSizeInTiles(TOP_ALIGNMENT, TOP_ALIGNMENT);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        if (p0.isNonNegative()) {
-
-            // staggered drawing
-            for (int column = 0; column < mapSize.b; column++) {
-                for (int row = 0; row < mapSize.a; row++) {
-                    int x = column * tileSize.a + ((row % 2 != 0) ? tileSize.a / 2 : 0);
-                    int y = row * tileSize.b;
-                    g2d.drawImage(model.getTileAt(row, column), x, y, null);
-                }
-            }
+        if (size == null) {
+            return;
         }
+
+        /*
+         if (p0.isNonNegative()) {
+
+         // staggered drawing
+         for (int column = 0; column < model.getNumberColumns(); column++) {
+         for (int row = 0; row < model.getNumberRows(); row++) {
+         int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+         int y = row * tileSize.height;
+         g2d.drawImage(model.getTileAt(row, column), x, y, null);
+         }
+         }
+         }
+         */
     }
 
     private void notifyTileFocusChangedListeners() {
         for (MainMapTileFocusChangedListener l : tileFocusListeners) {
-            l.newTileFocus(pa);
+            // l.newTileFocus(pa);
         }
     }
 
@@ -133,26 +124,11 @@ public class MainMapPanel extends JPanel implements MainMapTileFocusChangedListe
     }
 
     @Override
-    public void newTileFocus(Vector2D tile) {
-        // TODO
-    }
-
-    @Override
-    public void newMiniMapFocus(Vector2D center) {
-        Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
-        p0.a = Math.max(center.a - dim.a / 2, 0);
-        p0.b = Math.max(center.b - dim.b / 2, 0);
+    public void newMiniMapFocus(float x, float y) {
+        /*
+         Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
+         p0.a = Math.max(center.a - dim.a / 2, 0);
+         p0.b = Math.max(center.b - dim.b / 2, 0); */
         repaint();
-    }
-
-    public void notifyResizedListener() {
-        if (resizedListener != null) {
-            Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
-            resizedListener.newMainMapSizeInTiles(dim);
-        }
-    }
-
-    public void setResizedListener(MainMapResizedListener l) {
-        resizedListener = l;
     }
 }

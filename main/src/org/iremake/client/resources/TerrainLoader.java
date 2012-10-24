@@ -17,6 +17,7 @@
 package org.iremake.client.resources;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,19 +26,17 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
-import org.iremake.client.ui.map.MapModel;
 import org.iremake.client.ui.map.TerrainTile;
-import org.tools.ui.helper.Vector2D;
 import org.tools.xml.common.Table;
 
 /**
  *
  */
 public class TerrainLoader {
-    
-    private static final Logger LOG = Logger.getLogger(TerrainLoader.class.getName());    
 
-    private static Vector2D tileSize;
+    private static final Logger LOG = Logger.getLogger(TerrainLoader.class.getName());
+
+    private static Dimension tileSize;
     /** */
     private static Map<String, TerrainTile> map = new HashMap<>(0);
 
@@ -71,14 +70,14 @@ public class TerrainLoader {
             TerrainTile tile = new TerrainTile(image, color);
             map.put(id, tile);
         }
-        
+
         // TODO check tileSize is the same for all
         Collection<TerrainTile> tiles = map.values();
         tileSize = null;
         for (TerrainTile tile: tiles) {
-            int width = tile.getImage().getWidth(null);            
+            int width = tile.getImage().getWidth(null);
             int height = tile.getImage().getHeight(null);
-            Vector2D size = new Vector2D(width, height);
+            Dimension size = new Dimension(width, height);
             if (tileSize == null) {
                 tileSize = size;
             } else if (!tileSize.equals(size)) {
@@ -111,9 +110,9 @@ public class TerrainLoader {
         int b = Integer.parseInt(hex.substring(4, 6), 16);
         return new Color(r, g, b);
     }
-    
-    public static Vector2D getTileSize() {
-        return new Vector2D(tileSize);
-    }    
+
+    public static Dimension getTileSize() {
+        return tileSize; // or copy new?
+    }
 
 }

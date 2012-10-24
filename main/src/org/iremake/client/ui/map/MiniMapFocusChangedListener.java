@@ -16,12 +16,10 @@
  */
 package org.iremake.client.ui.map;
 
-import org.tools.ui.helper.Vector2D;
-
 /**
  *
  */
 public interface MiniMapFocusChangedListener {
 
-    public void newMiniMapFocus(Vector2D center);
+    public void newMiniMapFocus(float x, float y);
 }

@@ -39,6 +39,7 @@ public class EditorDialogBuilder {
     private static MapModel model;
     private static GeographicalMap map;
     private static MainMapPanel mainMapPanel;
+    private static MiniMapPanel miniMapPanel;
 
     private EditorDialogBuilder() {
     }
@@ -75,9 +76,10 @@ public class EditorDialogBuilder {
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
         // now we compute the real sizes and finish everything
-        dialog.validate();
 
+        miniMapPanel.finalizeComponents();        
         mainMapPanel.finalizeComponents();
+
 
         return dialog;
     }
@@ -108,7 +110,7 @@ public class EditorDialogBuilder {
         map.addMapChangedListener(model);
         map.setEmptyMap(60, 100); // shift this backwards
 
-        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
+        miniMapPanel = new MiniMapPanel(model);
 
         JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
 

@@ -50,9 +50,10 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
 
     private void initComponents() {
 
-        mapSize = model.getSize();
+        mapSize = model.getSize();                
         tileSize = new Vector2D(2, 2);
-        setPreferredSize(Vector2D.multiply(mapSize, tileSize).asDimension());
+        Vector2D preferredSize = Vector2D.multiply(mapSize, tileSize);
+        setPreferredSize(new Dimension(preferredSize.b, preferredSize.a));
 
         setBorder(new LineBorder(Color.black, 1));
 
@@ -65,13 +66,21 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
             }
         });
 
-        // set focus center to center
-        focusCenter = new Vector2D(size);
-        focusCenter.divideby(2);
-
-
         setOpaque(true); // by default is not
+    }
 
+    private boolean isFinalized = false;
+
+    public void finalizeComponents() {
+        if (isFinalized) {
+            return;
+        }
+        isFinalized = true;
+        
+        // set initial focus center to center of frame
+        focusCenter = new Vector2D(size);
+        focusCenter.divideby(2);        
+        
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -88,17 +97,7 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
                     }
                 }
             }
-        });
-
-    }
-
-    private boolean isFinalized = false;
-
-    public void finalizeComponents() {
-        if (isFinalized) {
-            return;
-        }
-        isFinalized = true;
+        });        
     }
 
     @Override
@@ -124,8 +123,6 @@ public class MiniMapPanel extends JPanel implements MainMapResizedListener {
 
     public void setFocusChangedListener(MiniMapFocusChangedListener l) {
         focusChangedListener = l;
-        // do it once
-        notifyFocusChangedListener();
     }
 
     @Override

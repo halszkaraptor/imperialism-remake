@@ -23,39 +23,37 @@ import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.common.GeographicalMap;
 import org.iremake.common.GeographicalMapChangedListener;
-import org.tools.ui.helper.Vector2D;
 
 /**
  *
  */
 public class MapModel implements GeographicalMapChangedListener {
-    
+
     private static final Logger LOG = Logger.getLogger(MapModel.class.getName());
 
-    private Vector2D size;
+    private int rows;
+    private int columns;
     private TerrainTile[][] map; // first rows, then columns
-    private Vector2D tileSize;
 
     public MapModel() {
-        tileSize = TerrainLoader.getTileSize();
     }
 
-    public Vector2D getSize() {
-        return new Vector2D(size);
+    public int getNumberRows() {
+        return rows;
+    }
+
+    public int getNumberColumns() {
+        return columns;
     }
 
     public Image getTileAt(int row, int column) {
         // TODO in range
         return map[row][column].getImage();
     }
-    
+
     public Color getTileColorAt(int row, int column) {
         // TODO in range
         return map[row][column].getColor();
-    }
-
-    public Vector2D getTileSize() {
-        return new Vector2D(tileSize);
     }
 
     @Override
@@ -72,14 +70,15 @@ public class MapModel implements GeographicalMapChangedListener {
 
     @Override
     public void mapChanged(GeographicalMap gmap) {
-        size = gmap.getSize();
-        map = new TerrainTile[size.a][size.b];
-        
+        rows = gmap.getNumberRows();
+        columns = gmap.getNumberColumns();
+        map = new TerrainTile[rows][columns];
+
         String id;
         TerrainTile tile;
-        
-        for (int row = 0; row < size.a; row++) {
-            for (int column = 0; column < size.b; column++) {
+
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
                 id = gmap.getTerrainAt(row, column);
                 tile = TerrainLoader.getTile(id);
                 if (tile == null) {
@@ -88,7 +87,7 @@ public class MapModel implements GeographicalMapChangedListener {
                 map[row][column] = tile;
             }
         }
-        
+
         // fire event
     }
 }

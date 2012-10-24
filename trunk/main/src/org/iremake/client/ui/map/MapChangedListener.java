@@ -16,12 +16,10 @@
  */
 package org.iremake.client.ui.map;
 
-import org.tools.ui.helper.Vector2D;
-
 /**
  *
  */
 public interface MapChangedListener {
 
-    public void tileChanged(Vector2D p);
+    public void tileChanged(int row, int column);
 }

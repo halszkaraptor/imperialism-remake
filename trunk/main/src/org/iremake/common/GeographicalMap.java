@@ -22,9 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
-import org.tools.ui.helper.Vector2D;
-import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
+import org.tools.xml.common.Property;
 
 /**
  *
@@ -32,7 +31,8 @@ import org.tools.xml.XMLable;
 public class GeographicalMap implements XMLable {
 
     private static final Logger LOG = Logger.getLogger(GeographicalMap.class.getName());
-    private Vector2D size = new Vector2D(0, 0);
+    private int rows;
+    private int columns;
     private String[][] map;
 
     private List<GeographicalMapChangedListener> listeners = new LinkedList<>();
@@ -46,11 +46,11 @@ public class GeographicalMap implements XMLable {
      * @param columns
      */
     public void setEmptyMap(int rows, int columns) {
-        size.a = rows;
-        size.b = columns;
-        map = new String[size.a][size.b];
-        for (int row = 0; row < size.a; row++) {
-            for (int column = 0; column < size.b; column++) {
+        this.rows = rows;
+        this.columns = columns;
+        map = new String[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
                 // TODO get it from somewhere
                 map[row][column] = "s1";
             }
@@ -64,7 +64,7 @@ public class GeographicalMap implements XMLable {
     }
 
     public void setTerrainAt(int x, int y, String id) {
-        if (x >= size.a || y >= size.b) {
+        if (x >= rows || y >= columns) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
         }
@@ -73,15 +73,19 @@ public class GeographicalMap implements XMLable {
     }
 
     public String getTerrainAt(int x, int y) {
-        if (x >= size.a || y >= size.b) {
+        if (x >= rows || y >= columns) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
         return map[x][y];
     }
 
-    public Vector2D getSize() {
-        return new Vector2D(size); // TODO how is JDialog et al making this immutable
+    public int getNumberRows() {
+        return rows;
+    }
+
+    public int getNumberColumns() {
+        return columns;
     }
 
     public void addMapChangedListener(GeographicalMapChangedListener l) {
@@ -106,7 +110,6 @@ public class GeographicalMap implements XMLable {
     }
 
     private static final String NAME = "geographical-map";
-    private static final String NAME_SIZE = "size";
     private static final String NAME_MAP = "map";
 
     @Override
@@ -114,13 +117,16 @@ public class GeographicalMap implements XMLable {
         Element parent = new Element(NAME);
 
         // add size as list
-        parent.appendChild(XMLHandler.Vector2DToXML(size, NAME_SIZE));
+        Property dimensions = new Property(2);
+        dimensions.putInt("rows", rows);
+        dimensions.putInt("columns", columns);
+        parent.appendChild(dimensions.toXML());
 
         // assemble map as one big string
-        int capacity = size.a * size.b * 2;
+        int capacity = rows * columns * 2;
         StringBuilder builder = new StringBuilder(capacity);
-        for (int row = 0; row < size.a; row++) {
-            for (int column = 0; column < size.b; column++) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
                 builder.append(map[row][column]);
             }
         }
@@ -142,15 +148,18 @@ public class GeographicalMap implements XMLable {
         Elements children = parent.getChildElements();
 
         // get size
-        size = XMLHandler.XMLToVector2D(children.get(0));
-        map = new String[size.a][size.b];
+        Property dimensions = new Property(0);
+        dimensions.fromXML(children.get(0));
+        rows = dimensions.getInt("rows");
+        columns = dimensions.getInt("columns");
+        map = new String[rows][columns];
 
         // TODO test size of string with size
         // TODO more checks (positivity)
         String content = children.get(1).getValue();
         int p = 0;
-        for (int row = 0; row < size.a; row++) {
-            for (int column = 0; column < size.b; column++) {
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
                 map[row][column] = content.substring(p, p + 2);
                 p += 2;
             }

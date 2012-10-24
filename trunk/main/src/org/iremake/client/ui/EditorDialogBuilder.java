@@ -75,12 +75,6 @@ public class EditorDialogBuilder {
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
-        // now we compute the real sizes and finish everything
-
-        miniMapPanel.finalizeComponents();        
-        mainMapPanel.finalizeComponents();
-
-
         return dialog;
     }
 
@@ -120,7 +114,6 @@ public class EditorDialogBuilder {
 
         // wire them
         mainMapPanel.addTileFocusChangedListener(infoPanel);
-        mainMapPanel.setResizedListener(miniMapPanel);
         miniMapPanel.setFocusChangedListener(mainMapPanel);
 
         // add all

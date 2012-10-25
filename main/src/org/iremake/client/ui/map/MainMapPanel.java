@@ -38,17 +38,14 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
     private MapModel model;
     private Dimension tileSize;
-
     private int offsetRow = 0;
     private int offsetColumn = 0;
-
     private int hooveredRow = -1;
     private int hooveredColumn = -1;
-
     private int selectedRow = -1;
     private int selectedColumn = -1;
 
-    public MainMapPanel(MapModel model) {
+    public MainMapPanel(final MapModel model) {
 
         this.model = model;
 
@@ -64,26 +61,42 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             public void mouseMoved(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                int r = y / tileSize.height;
-                int t = r % 2 != 0 ? tileSize.width / 2 : 0;
-                int c = (x - t) / tileSize.height;
-                /*
-                 Vector2D r = new Vector2D(r0, c0);
-                 if (!pa.equals(r)) {
-                 pa = r;
-                 notifyTileFocusChangedListeners();
-                 }*/
+                int row = y / tileSize.height;
+                int shift = row % 2 != 0 ? tileSize.width / 2 : 0;
+                int column = (x - shift) / tileSize.height;
+                
+                row = row + offsetRow;
+                column = column + offsetColumn;
+
+                if (row < 0 || row >= model.getNumberRows() || column < 0 || column >= model.getNumberColumns()) {
+                    // outside of area, deselect                    
+                    hooveredRow = -1;
+                    hooveredColumn = -1;
+                    repaint(); // TODO only the one tile
+                } else {
+                    // inside, check if over new tile
+                    if (hooveredRow != row || hooveredColumn != column) {
+                        hooveredRow = row;
+                        hooveredColumn = column;
+                        // hoovered tile changed
+                        notifyTileFocusChangedListeners();
+                        repaint(); // TODO only the two tiles
+                    }
+                }
+
             }
         });
 
     }
 
-    public void setSizeAndPrepare(MiniMapPanel miniMap) {
+    public void initWithSize(final MiniMapPanel miniMap) {
 
         size = getSize();
 
-        // tell the minimap
-        // miniMap.newMainMapSizeInTiles(TOP_ALIGNMENT, TOP_ALIGNMENT);
+        // tell the minimap about our size
+        float fractionRows = (float) size.height / tileSize.height / model.getNumberRows();
+        float fractionColumns = (float) size.width / tileSize.width / model.getNumberColumns();
+        miniMap.setMainMapViewSize(fractionRows, fractionColumns);
     }
 
     @Override
@@ -94,24 +107,39 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             return;
         }
 
-        /*
-         if (p0.isNonNegative()) {
+        // first just fill the background
+        g2d.setColor(Color.gray);
+        g2d.fillRect(0, 0, size.width, size.height);
 
-         // staggered drawing
-         for (int column = 0; column < model.getNumberColumns(); column++) {
-         for (int row = 0; row < model.getNumberRows(); row++) {
-         int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
-         int y = row * tileSize.height;
-         g2d.drawImage(model.getTileAt(row, column), x, y, null);
-         }
-         }
-         }
-         */
+        // draw the tiles
+        int drawnRows = size.height / tileSize.height + 1;
+        int drawnColumns = size.width / tileSize.width + 1;
+        for (int row = 0; row < drawnRows; row++) {
+            for (int column = 0; column < drawnColumns; column++) {
+                int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+                int y = row * tileSize.height;
+                if (row + offsetRow < model.getNumberRows() && column + offsetColumn < model.getNumberColumns()) {
+                    // lower right map border could want to print outside of map
+                    g2d.drawImage(model.getTileAt(row + offsetRow, column + offsetColumn), x, y, null);
+                }
+            }
+        }
+        // TODO general transformation row, column to x, y
+        
+        // draw hoover rectangle
+        if (hooveredRow != -1) {
+                int row = hooveredRow - offsetRow;
+                int column = hooveredColumn - offsetColumn;
+                int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+                int y = row * tileSize.height;            
+                g2d.setColor(Color.gray);
+                g2d.drawRect(x, y, tileSize.width, tileSize.height);
+        }
     }
 
     private void notifyTileFocusChangedListeners() {
         for (MainMapTileFocusChangedListener l : tileFocusListeners) {
-            // l.newTileFocus(pa);
+            l.newTileFocus(hooveredRow, hooveredColumn);
         }
     }
 
@@ -125,10 +153,15 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     @Override
     public void newMiniMapFocus(float x, float y) {
-        /*
-         Vector2D dim = Vector2D.divide(new Vector2D(size), model.getTileSize());
-         p0.a = Math.max(center.a - dim.a / 2, 0);
-         p0.b = Math.max(center.b - dim.b / 2, 0); */
-        repaint();
+        // update offset row/column accordingly
+        int row = (int) (y * model.getNumberRows() - size.height / 2 / tileSize.height);
+        int column = (int) (x * model.getNumberColumns() - size.width / 2 / tileSize.width);
+        row = Math.max(row, 0);
+        column = Math.max(column, 0);
+        if (offsetRow != row || offsetColumn != column) {
+            offsetRow = row;
+            offsetColumn = column;
+            repaint();
+        }
     }
 }

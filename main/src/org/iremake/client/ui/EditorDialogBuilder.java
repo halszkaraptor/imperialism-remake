@@ -44,7 +44,7 @@ public class EditorDialogBuilder {
     private EditorDialogBuilder() {
     }
 
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
+    public static void makeDialog(JFrame owner, String title, Rectangle bounds) {
         JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
 
         // create menu bar and add to frame
@@ -75,7 +75,9 @@ public class EditorDialogBuilder {
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
-        return dialog;
+        dialog.setVisible(true);
+        
+        mainMapPanel.initWithSize(miniMapPanel);
     }
 
     private static JToolBar menuBar() {

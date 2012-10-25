@@ -98,8 +98,8 @@ public class MiniMapPanel extends JPanel {
     }
 
     private void notifyFocusChangedListener() {
-        if (focusChangedListener != null) {
-            // focusChangedListener.newMiniMapFocus(Vector2D.divide(focusCenter, tileSize));
+        if (focusChangedListener != null && focus.width > 0) {
+            focusChangedListener.newMiniMapFocus((float) focus.x / size.width, (float) focus.y / size.height);
         }
     }
 
@@ -107,9 +107,10 @@ public class MiniMapPanel extends JPanel {
         focusChangedListener = l;
     }
 
-    public void newMainMapSizeInTiles(float fractionRows, float fractionColumns) {
+    public void setMainMapViewSize(float fractionRows, float fractionColumns) {
         focus.width = (int) (size.width * fractionColumns);
         focus.height = (int) (size.height * fractionRows);
         repaint();
+        notifyFocusChangedListener();
     }
 }

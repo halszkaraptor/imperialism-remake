@@ -21,5 +21,10 @@ package org.iremake.client.ui.map;
  */
 public interface MiniMapFocusChangedListener {
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void newMiniMapFocus(float x, float y);
 }

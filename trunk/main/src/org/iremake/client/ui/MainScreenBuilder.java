@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
@@ -41,7 +40,7 @@ public class MainScreenBuilder {
     public static JDialog makeDialog(JFrame owner) {
         Dimension s = GraphicsUtils.getScreenSize();
         Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, bounds);
         dialog.setUndecorated(true);
 
         // get layered pane

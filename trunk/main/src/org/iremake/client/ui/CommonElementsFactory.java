@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -66,8 +67,8 @@ public class CommonElementsFactory {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
-        JDialog dialog = new JDialog(owner, title, false);
+    public static JDialog makeDialog(Frame owner, String title, boolean modal, Rectangle bounds) {
+        JDialog dialog = new JDialog(owner, title, modal);
 
         // turn of usual exiting mechanisms
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

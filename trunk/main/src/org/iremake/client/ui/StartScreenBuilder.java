@@ -177,8 +177,7 @@ public class StartScreenBuilder {
             public void actionPerformed(ActionEvent e) {
                 Dimension s = GraphicsUtils.getScreenSize();
                 Rectangle bounds = new Rectangle(50, 50, s.width - 100, s.height - 100);
-                JDialog dialog = EditorDialogBuilder.makeDialog(owner, "Editor", bounds);
-                dialog.setVisible(true);
+                EditorDialogBuilder.makeDialog(owner, "Editor", bounds);
             }
         });
 

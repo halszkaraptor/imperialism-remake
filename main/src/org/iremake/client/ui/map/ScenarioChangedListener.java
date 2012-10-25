@@ -19,7 +19,9 @@ package org.iremake.client.ui.map;
 /**
  *
  */
-public interface MapChangedListener {
+public interface ScenarioChangedListener {
 
     public void tileChanged(int row, int column);
+
+    public void mapChanged();
 }

@@ -20,41 +20,24 @@ import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.filechooser.FileFilter;
-import nu.xom.Element;
-import nu.xom.ParsingException;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.client.ui.map.MapModel;
 import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.client.ui.map.ScenarioModel;
 import org.iremake.common.GeographicalMap;
-import org.tools.xml.XMLHelper;
 
 /**
  *
  */
 public class EditorDialogBuilder {
 
-    private static JDialog dialog;
-    private static MapModel model;
-    private static GeographicalMap map;
-    private static MainMapPanel mainMapPanel;
-    private static MiniMapPanel miniMapPanel;
-    
     private static EditorManager manager;
 
     private EditorDialogBuilder() {
@@ -62,9 +45,10 @@ public class EditorDialogBuilder {
 
     public static void makeDialog(JFrame owner, String title, Rectangle bounds) {
         manager = new EditorManager();
-        
-        dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
 
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
+
+        manager.setFrame(dialog);
         // create menu bar and add to frame
         JToolBar menuBar = EditorDialogBuilder.menuBar();
         dialog.add(menuBar);
@@ -94,26 +78,11 @@ public class EditorDialogBuilder {
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
 
         dialog.setVisible(true);
-        
-        mainMapPanel.initWithSize(miniMapPanel);
+
+        manager.init();
     }
 
     private static JToolBar menuBar() {
-        final JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                return f.isFile() && f.getName().endsWith(".xml");
-            }
-
-            @Override
-            public String getDescription() {
-                return "Map files (*.xml)";
-            }
-        });        
-        
-        
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
@@ -122,20 +91,7 @@ public class EditorDialogBuilder {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (fileChooser.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
-                    File f = fileChooser.getSelectedFile();
-                    // read file and parse to xml
-                    Element xml;
-                    try (InputStream is = new FileInputStream(f)) {
-                        xml = XMLHelper.read(is);
-                    } catch (ParsingException | IOException ex) {
-                        // LOG.log(Level.SEVERE, null, ex);
-                        // NotificationFactory.createInfoPane(dialog, "Loading failed.");
-                        // TODO also make it working with dialogs
-                        return;
-                    }                    
-                    map.fromXML(xml);
-                }
+                manager.load();
             }
         });
 
@@ -144,27 +100,10 @@ public class EditorDialogBuilder {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (fileChooser.showSaveDialog(dialog) == JFileChooser.APPROVE_OPTION) {
-                    File f = fileChooser.getSelectedFile();
-                    String name = f.getAbsolutePath();
-                    if (!name.endsWith(".xml")) {
-                        f = new File(name + ".xml");
-                    }
-                    Element xml = map.toXML();
-                    OutputStream os;
-                    try {
-                        os = new FileOutputStream(f);
-                        XMLHelper.write(os, xml);
-                    } catch (IOException ex) {
-                        //LOG.log(Level.SEVERE, null, ex);
-                        //NotificationFactory.createInfoPane(TableEditorFrame.this, "Saving failed.");
-                        return;
-                    }
-                    //NotificationFactory.createInfoPane(TableEditorFrame.this, "Table saved.");
-                }                
+                manager.save();
             }
         });
-        
+
         // add buttons to toolbar
         bar.add(loadButton);
         bar.add(saveButton);
@@ -175,23 +114,23 @@ public class EditorDialogBuilder {
     private static JPanel createMapPanel() {
         JPanel panel = new JPanel();
 
-        model = new MapModel();
+        ScenarioModel model = new ScenarioModel();
 
-        map = new GeographicalMap();
-        map.addMapChangedListener(model);
-        map.setEmptyMap(60, 100); // shift this backwards
 
-        miniMapPanel = new MiniMapPanel(model);
+        GeographicalMap map = new GeographicalMap();
+
+        manager.setScenarioContent(map, model);
+
+        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
         JToolBar menuBar = EditorDialogBuilder.makeMapMenuBar();
 
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel();
 
-        mainMapPanel = new MainMapPanel(model);
+        MainMapPanel mainMapPanel = new MainMapPanel(model);
 
-        // wire them
-        mainMapPanel.setTileListener(manager);
-        miniMapPanel.setFocusChangedListener(mainMapPanel);
+        // manager (wires everything
+        manager.setMapTab(mainMapPanel, miniMapPanel, infoPanel);
 
         // add all
         panel.add(miniMapPanel);

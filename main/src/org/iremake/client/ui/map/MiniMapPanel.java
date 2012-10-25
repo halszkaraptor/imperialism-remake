@@ -36,30 +36,14 @@ public class MiniMapPanel extends JPanel {
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
     private MiniMapFocusChangedListener focusChangedListener;
-    private MapModel model;
+    private ScenarioModel model;
     private BufferedImage miniMap;
 
-    public MiniMapPanel(MapModel model) {
+    public MiniMapPanel(ScenarioModel model) {
 
         this.model = model;
 
-        size.width = 200;
-        size.height = 200 * model.getNumberRows() / model.getNumberColumns();
-        this.setPreferredSize(size);
-
-        miniMap = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-
-        for (int x = 0; x < size.width; x++) {
-            for (int y = 0; y < size.height; y++) {
-                int column = model.getNumberColumns() * x / size.width; // rounding down
-                int row = model.getNumberRows() * y / size.height;
-                Color color = model.getTileColorAt(row, column);
-                miniMap.setRGB(x, y, color.getRGB());
-            }
-        }
-
-        focus.x = size.width / 2;
-        focus.y = size.height / 2;
+        setPreferredSize(new Dimension(200, 120));
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -88,7 +72,9 @@ public class MiniMapPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // draw background
-        g2d.drawImage(miniMap, 0, 0, this);
+        if (miniMap != null) {
+            g2d.drawImage(miniMap, 0, 0, this);
+        }
 
         // the main map has told us their size, we can draw the focus rectangle
         if (focus.width > 0) {
@@ -107,10 +93,37 @@ public class MiniMapPanel extends JPanel {
         focusChangedListener = l;
     }
 
-    public void setMainMapViewSize(float fractionRows, float fractionColumns) {
+    public void mapChanged(float fractionRows, float fractionColumns) {
+
+        size.width = 200;
+        size.height = 200 * model.getNumberRows() / model.getNumberColumns();
+        setSize(size);
+
+        focus.x = size.width / 2;
+        focus.y = size.height / 2;
+        notifyFocusChangedListener();
+
         focus.width = (int) (size.width * fractionColumns);
         focus.height = (int) (size.height * fractionRows);
+
+        redrawMap();
         repaint();
-        notifyFocusChangedListener();
+    }
+
+    public void tileChanged() {
+        redrawMap();
+        repaint();
+    }
+
+    private void redrawMap() {
+        miniMap = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < size.width; x++) {
+            for (int y = 0; y < size.height; y++) {
+                int column = model.getNumberColumns() * x / size.width; // rounding down
+                int row = model.getNumberRows() * y / size.height;
+                Color color = model.getTileColorAt(row, column);
+                miniMap.setRGB(x, y, color.getRGB());
+            }
+        }
     }
 }

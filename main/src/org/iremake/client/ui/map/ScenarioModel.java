@@ -27,15 +27,16 @@ import org.iremake.common.GeographicalMapChangedListener;
 /**
  *
  */
-public class MapModel implements GeographicalMapChangedListener {
+public class ScenarioModel implements GeographicalMapChangedListener {
 
-    private static final Logger LOG = Logger.getLogger(MapModel.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScenarioModel.class.getName());
 
     private int rows;
     private int columns;
     private TerrainTile[][] map; // first rows, then columns
+    private ScenarioChangedListener listener;
 
-    public MapModel() {
+    public ScenarioModel() {
     }
 
     public int getNumberRows() {
@@ -65,7 +66,9 @@ public class MapModel implements GeographicalMapChangedListener {
             return;
         }
         map[row][column] = tile;
-        // fire event
+        if (listener != null) {
+            listener.tileChanged(row, column);
+        }
     }
 
     @Override
@@ -88,6 +91,12 @@ public class MapModel implements GeographicalMapChangedListener {
             }
         }
 
-        // fire event
+        if (listener != null) {
+            listener.mapChanged();
+        }
+    }
+
+    public void setScenarioChangedListener(ScenarioChangedListener l) {
+        listener = l;
     }
 }

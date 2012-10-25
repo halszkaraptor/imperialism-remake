@@ -23,8 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.LinkedList;
-import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.client.resources.TerrainLoader;
@@ -35,9 +33,9 @@ import org.iremake.client.resources.TerrainLoader;
 public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
-    private Dimension size;
+    private Dimension size = new Dimension();
     private MainMapTileListener tileListener;
-    private MapModel model;
+    private ScenarioModel model;
     private Dimension tileSize;
     private int offsetRow = 0;
     private int offsetColumn = 0;
@@ -46,7 +44,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private int selectedRow = -1;
     private int selectedColumn = -1;
 
-    public MainMapPanel(final MapModel model) {
+    public MainMapPanel(final ScenarioModel model) {
 
         this.model = model;
 
@@ -66,13 +64,13 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 int shift = row % 2 != 0 ? tileSize.width / 2 : 0;
                 int column = (x - shift) / tileSize.height;
 
-                row = row + offsetRow;
-                column = column + offsetColumn;
-                
+                row += offsetRow;
+                column += offsetColumn;
+
                 // TODO mouse leaves the panel -> deselect
 
                 if (row < 0 || row >= model.getNumberRows() || column < 0 || column >= model.getNumberColumns()) {
-                    // outside of area, deselect                    
+                    // outside of area, deselect
                     hooveredRow = -1;
                     hooveredColumn = -1;
                     notifyTileFocusChangedListeners();
@@ -99,8 +97,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     int shift = row % 2 != 0 ? tileSize.width / 2 : 0;
                     int column = (x - shift) / tileSize.height;
 
-                    row = row + offsetRow;
-                    column = column + offsetColumn;
+                    row += offsetRow;
+                    column += offsetColumn;
 
                     if (row >= 0 && row < model.getNumberRows() && column >= 0 && column < model.getNumberColumns()) {
                         notifyTileClickedListeners(row, column);
@@ -111,23 +109,11 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     }
 
-    public void initWithSize(final MiniMapPanel miniMap) {
-
-        size = getSize();
-
-        // tell the minimap about our size
-        float fractionRows = (float) size.height / tileSize.height / model.getNumberRows();
-        float fractionColumns = (float) size.width / tileSize.width / model.getNumberColumns();
-        miniMap.setMainMapViewSize(fractionRows, fractionColumns);
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        if (size == null) {
-            return;
-        }
+        getSize(size);
 
         // first just fill the background
         g2d.setColor(Color.gray);
@@ -164,7 +150,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             tileListener.focusChanged(hooveredRow, hooveredColumn);
         }
     }
-    
+
     private void notifyTileClickedListeners(int row, int column) {
         if (tileListener != null) {
             tileListener.tileClicked(row, column);
@@ -186,6 +172,18 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             offsetRow = row;
             offsetColumn = column;
             repaint();
+        }
+    }
+
+    public void tileChanged(int row, int column) {
+        // TODO this should go into the painComponent later on
+        Graphics2D g2d = (Graphics2D) getGraphics();
+
+        int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+        int y = row * tileSize.height;
+        if (row + offsetRow < model.getNumberRows() && column + offsetColumn < model.getNumberColumns()) {
+            // lower right map border could want to print outside of map
+            g2d.drawImage(model.getTileAt(row + offsetRow, column + offsetColumn), x, y, null);
         }
     }
 }

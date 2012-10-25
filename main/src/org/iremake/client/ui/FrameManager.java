@@ -16,27 +16,9 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Rectangle;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 /**
- *
+ * Startframe / Mainframe / Editorframe juggling.
  */
-public class NetworkDialogBuilder {
-
-    private NetworkDialogBuilder() {
-    }
-
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
-        // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
-
-        return dialog;
-    }
-
-    private static JPanel chatPanel() {
-        return new JPanel();
-    }
+public class FrameManager {
+    
 }

@@ -29,7 +29,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
-import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
 
 /**
@@ -51,7 +50,7 @@ public class ScenarioDialogsBuilder {
      */
     public static JDialog makeLoadDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
 
         // placeholder for the real things
         JTree selectTree = new JTree();

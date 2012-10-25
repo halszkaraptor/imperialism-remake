@@ -19,7 +19,10 @@ package org.iremake.client.ui.map;
 /**
  * The mouse moved over another tile on the main map.
  */
-public interface MainMapTileFocusChangedListener {
+public interface MainMapTileListener {
 
-    public void newTileFocus(int row, int column);
+    public void focusChanged(int row, int column);
+    
+    public void tileClicked(int row, int column);
+    
 }

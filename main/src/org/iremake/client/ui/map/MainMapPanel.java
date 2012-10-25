@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
@@ -35,7 +36,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     private static final long serialVersionUID = 1L;
     private Dimension size;
-    private List<MainMapTileFocusChangedListener> tileFocusListeners = new LinkedList<>();
+    private MainMapTileListener tileListener;
     private MapModel model;
     private Dimension tileSize;
     private int offsetRow = 0;
@@ -64,14 +65,17 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 int row = y / tileSize.height;
                 int shift = row % 2 != 0 ? tileSize.width / 2 : 0;
                 int column = (x - shift) / tileSize.height;
-                
+
                 row = row + offsetRow;
                 column = column + offsetColumn;
+                
+                // TODO mouse leaves the panel -> deselect
 
                 if (row < 0 || row >= model.getNumberRows() || column < 0 || column >= model.getNumberColumns()) {
                     // outside of area, deselect                    
                     hooveredRow = -1;
                     hooveredColumn = -1;
+                    notifyTileFocusChangedListeners();
                     repaint(); // TODO only the one tile
                 } else {
                     // inside, check if over new tile
@@ -83,7 +87,25 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                         repaint(); // TODO only the two tiles
                     }
                 }
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    int row = y / tileSize.height;
+                    int shift = row % 2 != 0 ? tileSize.width / 2 : 0;
+                    int column = (x - shift) / tileSize.height;
 
+                    row = row + offsetRow;
+                    column = column + offsetColumn;
+
+                    if (row >= 0 && row < model.getNumberRows() && column >= 0 && column < model.getNumberColumns()) {
+                        notifyTileClickedListeners(row, column);
+                    }
+                }
             }
         });
 
@@ -125,31 +147,33 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             }
         }
         // TODO general transformation row, column to x, y
-        
+
         // draw hoover rectangle
         if (hooveredRow != -1) {
-                int row = hooveredRow - offsetRow;
-                int column = hooveredColumn - offsetColumn;
-                int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
-                int y = row * tileSize.height;            
-                g2d.setColor(Color.gray);
-                g2d.drawRect(x, y, tileSize.width, tileSize.height);
+            int row = hooveredRow - offsetRow;
+            int column = hooveredColumn - offsetColumn;
+            int x = column * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+            int y = row * tileSize.height;
+            g2d.setColor(Color.gray);
+            g2d.drawRect(x, y, tileSize.width, tileSize.height);
         }
     }
 
     private void notifyTileFocusChangedListeners() {
-        for (MainMapTileFocusChangedListener l : tileFocusListeners) {
-            l.newTileFocus(hooveredRow, hooveredColumn);
+        if (tileListener != null) {
+            tileListener.focusChanged(hooveredRow, hooveredColumn);
+        }
+    }
+    
+    private void notifyTileClickedListeners(int row, int column) {
+        if (tileListener != null) {
+            tileListener.tileClicked(row, column);
         }
     }
 
-    public void addTileFocusChangedListener(MainMapTileFocusChangedListener l) {
-        tileFocusListeners.add(l);
-    }
-
-    public void removeTileFocusChangedListener(MainMapTileFocusChangedListener l) {
-        tileFocusListeners.remove(l);
-    }
+    public void setTileListener(MainMapTileListener l) {
+        tileListener = l;
+    } // TODO at some point?
 
     @Override
     public void newMiniMapFocus(float x, float y) {

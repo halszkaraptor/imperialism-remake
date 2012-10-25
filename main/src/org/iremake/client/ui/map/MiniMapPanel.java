@@ -93,7 +93,7 @@ public class MiniMapPanel extends JPanel {
         // the main map has told us their size, we can draw the focus rectangle
         if (focus.width > 0) {
             g2d.setColor(Color.gray);
-            g2d.draw3DRect(focus.x - focus.width / 2, focus.y - focus.height / 2, focus.width, focus.height, true);
+            g2d.draw3DRect(focus.x - focus.width / 2 + 1, focus.y - focus.height / 2 + 1, focus.width - 2, focus.height - 2, true);
         }
     }
 

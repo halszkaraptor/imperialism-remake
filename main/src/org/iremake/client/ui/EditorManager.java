@@ -16,27 +16,26 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Rectangle;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import org.iremake.client.ui.map.MainMapTileListener;
 
 /**
- *
+ * Editorframe manager.
  */
-public class NetworkDialogBuilder {
-
-    private NetworkDialogBuilder() {
+public class EditorManager implements MainMapTileListener {
+    
+    EditorMapInfoPanel mapInfoPanel;
+    
+    public void setMapPanels(EditorMapInfoPanel infoPanel) {
+        mapInfoPanel = infoPanel;
     }
 
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
-        // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
-
-        return dialog;
+    @Override
+    public void focusChanged(int row, int column) {
+        mapInfoPanel.mainMapFocusChanged(row, column);
     }
 
-    private static JPanel chatPanel() {
-        return new JPanel();
+    @Override
+    public void tileClicked(int row, int column) {
+        
     }
 }

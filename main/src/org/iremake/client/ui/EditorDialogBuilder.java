@@ -18,34 +18,52 @@ package org.iremake.client.ui;
 
 import java.awt.Container;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.filechooser.FileFilter;
+import nu.xom.Element;
+import nu.xom.ParsingException;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MapModel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.common.GeographicalMap;
+import org.tools.xml.XMLHelper;
 
 /**
  *
  */
 public class EditorDialogBuilder {
 
+    private static JDialog dialog;
     private static MapModel model;
     private static GeographicalMap map;
     private static MainMapPanel mainMapPanel;
     private static MiniMapPanel miniMapPanel;
+    
+    private static EditorManager manager;
 
     private EditorDialogBuilder() {
     }
 
     public static void makeDialog(JFrame owner, String title, Rectangle bounds) {
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
+        manager = new EditorManager();
+        
+        dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
 
         // create menu bar and add to frame
         JToolBar menuBar = EditorDialogBuilder.menuBar();
@@ -81,15 +99,72 @@ public class EditorDialogBuilder {
     }
 
     private static JToolBar menuBar() {
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.isFile() && f.getName().endsWith(".xml");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Map files (*.xml)";
+            }
+        });        
+        
+        
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // exit button
         JButton loadButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.load.png");
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
+                    File f = fileChooser.getSelectedFile();
+                    // read file and parse to xml
+                    Element xml;
+                    try (InputStream is = new FileInputStream(f)) {
+                        xml = XMLHelper.read(is);
+                    } catch (ParsingException | IOException ex) {
+                        // LOG.log(Level.SEVERE, null, ex);
+                        // NotificationFactory.createInfoPane(dialog, "Loading failed.");
+                        // TODO also make it working with dialogs
+                        return;
+                    }                    
+                    map.fromXML(xml);
+                }
+            }
+        });
 
         // exit button
         JButton saveButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.save.png");
-
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser.showSaveDialog(dialog) == JFileChooser.APPROVE_OPTION) {
+                    File f = fileChooser.getSelectedFile();
+                    String name = f.getAbsolutePath();
+                    if (!name.endsWith(".xml")) {
+                        f = new File(name + ".xml");
+                    }
+                    Element xml = map.toXML();
+                    OutputStream os;
+                    try {
+                        os = new FileOutputStream(f);
+                        XMLHelper.write(os, xml);
+                    } catch (IOException ex) {
+                        //LOG.log(Level.SEVERE, null, ex);
+                        //NotificationFactory.createInfoPane(TableEditorFrame.this, "Saving failed.");
+                        return;
+                    }
+                    //NotificationFactory.createInfoPane(TableEditorFrame.this, "Table saved.");
+                }                
+            }
+        });
+        
         // add buttons to toolbar
         bar.add(loadButton);
         bar.add(saveButton);
@@ -115,7 +190,7 @@ public class EditorDialogBuilder {
         mainMapPanel = new MainMapPanel(model);
 
         // wire them
-        mainMapPanel.addTileFocusChangedListener(infoPanel);
+        mainMapPanel.setTileListener(manager);
         miniMapPanel.setFocusChangedListener(mainMapPanel);
 
         // add all
@@ -147,6 +222,14 @@ public class EditorDialogBuilder {
         // terrain button
         JButton terrainButton = CommonElementsFactory.makeButton(Places.UI, "editor.button.terrain.png");
         terrainButton.setToolTipText("Modify terrain of current tile.");
+        terrainButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Rectangle bounds = new Rectangle(100, 100, 200, 200);
+                JDialog terrainDialog = CommonElementsFactory.makeDialog(null, "Terrain Selector", true, bounds);
+                terrainDialog.setVisible(true);
+            }
+        });
 
         // nation button
         JButton nationButton = CommonElementsFactory.makeButton(Places.UI, "editor.button.nation.png");

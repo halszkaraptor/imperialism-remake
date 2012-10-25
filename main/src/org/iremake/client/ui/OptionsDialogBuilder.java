@@ -41,7 +41,7 @@ public class OptionsDialogBuilder {
      */
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
 
         // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();

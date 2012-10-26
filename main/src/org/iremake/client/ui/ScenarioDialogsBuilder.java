@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
-import org.iremake.client.resources.Places;
+import org.iremake.common.resources.Places;
 
 /**
  *
@@ -89,10 +89,10 @@ public class ScenarioDialogsBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // load button
-        JButton loadButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.load.png");
+        JButton loadButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
 
         // start button
-        JButton startButton = CommonElementsFactory.makeButton(Places.UI, "scenario.button.start.png");
+        JButton startButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.start.png");
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

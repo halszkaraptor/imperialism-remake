@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import org.iremake.client.resources.Places;
+import org.iremake.common.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
 
@@ -81,10 +81,10 @@ public class MainScreenBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Places.UI, "main.button.exit.png");
+        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.exit.png");
 
         // save button
-        JButton saveButton = CommonElementsFactory.makeButton(Places.UI, "main.button.save.png");
+        JButton saveButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.save.png");
 
         // add buttons to toolbar
         bar.add(exitButton);

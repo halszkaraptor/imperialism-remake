@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.resources;
+package org.iremake.common.resources;
 
 import java.awt.Image;
 import java.io.File;
@@ -91,9 +91,9 @@ public class Loader {
         return new FileInputStream(path);
     }
 
-    public static String getPath(String location) {
+    public static String getPath(Places place, String location) {
         // TODO replace folder separator symbol in path ??
-        return base + location;
+        return base + place + location;
     }
 
     public static URL getURL(Places place, String location) {

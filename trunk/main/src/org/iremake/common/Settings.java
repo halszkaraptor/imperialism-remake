@@ -30,6 +30,11 @@ public class Settings {
 
     private static Map<String, String> terrainTypes = new HashMap<>(0);
 
+    static String getDefaultTerrainID() {
+        return "s1"; // sea
+        // TODO softcode
+    }
+
     private Settings() {
     }
 

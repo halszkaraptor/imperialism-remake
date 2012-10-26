@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.common.GeographicalMap;
 import org.iremake.common.GeographicalMapChangedListener;
-import org.iremake.common.Settings;
+import org.iremake.common.MapPosition;
 
 /**
  *
@@ -48,27 +48,37 @@ public class ScenarioModel implements GeographicalMapChangedListener {
         return columns;
     }
 
-    public Image getTileAt(int row, int column) {
-        // TODO in range
-        return map[row][column].getImage();
+    public boolean contains(MapPosition p) {
+        return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
 
-    public Color getTileColorAt(int row, int column) {
-        // TODO in range
-        return map[row][column].getColor();
+    public Image getTileAt(MapPosition p) {
+        if (!contains(p)) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return null;
+        }
+        return map[p.row][p.column].getImage();
     }
-    
+
+    public Color getTileColorAt(MapPosition p) {
+        if (!contains(p)) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return null;
+        }
+        return map[p.row][p.column].getColor();
+    }
+
     @Override
-    public void tileChanged(int row, int column, String id) {
+    public void tileChanged(MapPosition p, String id) {
         // TODO check size
         TerrainTile tile = TerrainLoader.getTile(id);
         if (tile == null) {
             LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);
             return;
         }
-        map[row][column] = tile;
+        map[p.row][p.column] = tile;
         if (listener != null) {
-            listener.tileChanged(row, column);
+            listener.tileChanged(p);
         }
     }
 
@@ -83,7 +93,7 @@ public class ScenarioModel implements GeographicalMapChangedListener {
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                id = gmap.getTerrainAt(row, column);
+                id = gmap.getTerrainAt(new MapPosition(row, column));
                 tile = TerrainLoader.getTile(id);
                 if (tile == null) {
                     LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);

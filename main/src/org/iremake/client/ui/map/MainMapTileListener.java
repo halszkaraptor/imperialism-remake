@@ -16,13 +16,15 @@
  */
 package org.iremake.client.ui.map;
 
+import org.iremake.common.MapPosition;
+
 /**
  * The mouse moved over another tile on the main map.
  */
 public interface MainMapTileListener {
 
-    public void focusChanged(int row, int column);
-    
-    public void tileClicked(int row, int column);
-    
+    public void focusChanged(MapPosition p);
+
+    public void tileClicked(MapPosition p);
+
 }

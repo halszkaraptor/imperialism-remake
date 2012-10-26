@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import org.iremake.common.MapPosition;
 
 /**
  *
@@ -104,8 +105,8 @@ public class MiniMapPanel extends JPanel {
 
         focus.width = (int) (size.width * fractionColumns);
         focus.height = (int) (size.height * fractionRows);
-        
-        notifyFocusChangedListener();        
+
+        notifyFocusChangedListener();
 
         redrawMap();
         repaint();
@@ -122,7 +123,7 @@ public class MiniMapPanel extends JPanel {
             for (int y = 0; y < size.height; y++) {
                 int column = model.getNumberColumns() * x / size.width; // rounding down
                 int row = model.getNumberRows() * y / size.height;
-                Color color = model.getTileColorAt(row, column);
+                Color color = model.getTileColorAt(new MapPosition(row, column));
                 miniMap.setRGB(x, y, color.getRGB());
             }
         }

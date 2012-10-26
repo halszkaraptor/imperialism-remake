@@ -14,16 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.map;
-
-import org.iremake.common.MapPosition;
+package org.iremake.common;
 
 /**
  *
  */
-public interface ScenarioChangedListener {
+public class MapPosition {
 
-    public void tileChanged(MapPosition p);
+    public final static MapPosition Off = new MapPosition(-1, -1);
 
-    public void mapChanged();
+    public int row, column;
+
+    public MapPosition() {
+        this(0, 0);
+    }
+
+    public MapPosition(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
+
+    public boolean isOff() {
+        return equals(Off);
+    }
+
+    public void setFrom(MapPosition p) {
+        row = p.row;
+        column = p.column;
+    }
+
+    public boolean equals(MapPosition p) {
+        return row == p.row && column == p.column;
+    }
+
 }

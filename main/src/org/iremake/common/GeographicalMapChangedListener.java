@@ -20,9 +20,9 @@ package org.iremake.common;
  *
  */
 public interface GeographicalMapChangedListener {
-    
-    public void tileChanged(int row, int column, String id);
-    
+
+    public void tileChanged(MapPosition p, String id);
+
     public void mapChanged(GeographicalMap gmap);
-    
+
 }

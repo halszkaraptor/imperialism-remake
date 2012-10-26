@@ -31,6 +31,7 @@ import org.tools.xml.common.Property;
 public class GeographicalMap implements XMLable {
 
     private static final Logger LOG = Logger.getLogger(GeographicalMap.class.getName());
+
     private int rows;
     private int columns;
     private String[][] map;
@@ -46,13 +47,16 @@ public class GeographicalMap implements XMLable {
      * @param columns
      */
     public void setEmptyMap(int rows, int columns) {
+        if (rows <= 0 || columns <= 0) {
+            LOG.log(Level.INFO, "Zero or negative sizes!");
+            return;
+        }
         this.rows = rows;
         this.columns = columns;
         map = new String[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                // TODO get it from somewhere
-                map[row][column] = "s1";
+                map[row][column] = Settings.getDefaultTerrainID();
             }
         }
         fireMapChanged();
@@ -63,23 +67,28 @@ public class GeographicalMap implements XMLable {
         return true;
     }
 
-    public void setTerrainAt(int x, int y, String id) {
-        if (x >= rows || y >= columns) {
+    private boolean contains(MapPosition p) {
+        return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
+    }
+
+
+    public void setTerrainAt(MapPosition p, String id) {
+        if (!contains(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
         }
-        map[x][y] = id;
-        fireTileChanged(x, y);
+        map[p.row][p.column] = id;
+        fireTileChanged(p);
     }
 
-    public String getTerrainAt(int x, int y) {
-        if (x >= rows || y >= columns) {
+    public String getTerrainAt(MapPosition p) {
+        if (!contains(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return map[x][y];
+        return map[p.row][p.column];
     }
-    
+
     public int getNumberRows() {
         return rows;
     }
@@ -96,10 +105,10 @@ public class GeographicalMap implements XMLable {
         listeners.remove(l);
     }
 
-    private void fireTileChanged(int x, int y) {
-        String id = map[x][y];
+    private void fireTileChanged(MapPosition p) {
+        String id = map[p.row][p.column];
         for (GeographicalMapChangedListener l: listeners) {
-            l.tileChanged(x, y, id);
+            l.tileChanged(p, id);
         }
     }
 
@@ -123,7 +132,7 @@ public class GeographicalMap implements XMLable {
         parent.appendChild(dimensions.toXML());
 
         // assemble map as one big string
-        int capacity = rows * columns * 2;
+        int capacity = rows * columns * 2; // TODO check somewhere that ids have size 2
         StringBuilder builder = new StringBuilder(capacity);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {

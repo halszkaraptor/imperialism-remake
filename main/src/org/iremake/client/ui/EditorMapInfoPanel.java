@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.common.GeographicalMap;
+import org.iremake.common.MapPosition;
 import org.iremake.common.Settings;
 
 /**
@@ -36,16 +37,16 @@ public class EditorMapInfoPanel extends JPanel {
         setBorder(new LineBorder(Color.black, 1));
 
         tile = new JLabel();
-        add(tile);        
-        
+        add(tile);
+
         this.map = map;
     }
 
-    public void mainMapTileChanged(int row, int column) {
-        if (row == -1 && column == -1) {
+    public void mainMapTileChanged(MapPosition p) {
+        if (p.isOff()) {
             tile.setText("");
         } else {
-            tile.setText("Tile: " + Integer.toString(row) + ", " + Integer.toString(column) + "  " + Settings.getTerrainType(map.getTerrainAt(row, column)));
+            tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column) + "  " + Settings.getTerrainType(map.getTerrainAt(p)));
         }
     }
 }

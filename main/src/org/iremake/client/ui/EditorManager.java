@@ -35,6 +35,7 @@ import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.map.ScenarioChangedListener;
 import org.iremake.client.ui.map.ScenarioModel;
 import org.iremake.common.GeographicalMap;
+import org.iremake.common.MapPosition;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.xml.XMLHelper;
@@ -92,23 +93,23 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
     }
 
     @Override
-    public void focusChanged(int row, int column) {
-        mapInfoPanel.mainMapTileChanged(row, column);
+    public void focusChanged(MapPosition p) {
+        mapInfoPanel.mainMapTileChanged(p);
     }
 
     @Override
-    public void tileClicked(int row, int column) {
-        map.setTerrainAt(row, column, "p1");
+    public void tileClicked(MapPosition p) {
+        map.setTerrainAt(p, "p1");
     }
 
     @Override
-    public void tileChanged(int row, int column) {
+    public void tileChanged(MapPosition p) {
         // although only a single tile has changed we redo the minimap completely
         miniMapPanel.tileChanged();
 
-        mainMapPanel.tileChanged(row, column);
-        
-        mapInfoPanel.mainMapTileChanged(row, column);
+        mainMapPanel.tileChanged(p);
+
+        mapInfoPanel.mainMapTileChanged(p);
     }
 
     @Override
@@ -128,14 +129,14 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
         //map.setEmptyMap(60, 100);
         loadScenario(Loader.getPath(Places.ScenarioMaps, "map.Europe1814.xml"));
     }
-    
+
     private void loadScenario(String location) {
         Element xml = XMLHelper.read(location);
         map.fromXML(xml);
     }
-    
+
     private void saveScenario(String location) {
-        
+
     }
 
     public void loadScenarioDialog() {

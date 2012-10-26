@@ -27,6 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import org.iremake.client.ui.map.TerrainTile;
+import org.iremake.common.resources.Loader;
+import org.iremake.common.resources.Places;
 import org.tools.xml.common.Table;
 
 /**
@@ -51,7 +53,7 @@ public class TerrainLoader {
      */
     public static void load() {
 
-        Element xml = Loader.getAsXML(Places.Terrain, "terrain.xml");
+        Element xml = Loader.getAsXML(Places.GraphicsTerrain, "terrain.xml");
 
         // parse xml and fill table
         Table table = new Table();
@@ -65,7 +67,7 @@ public class TerrainLoader {
         for (int row = 0; row < n; row++) {
             String id = table.getEntryAt(row, 0);
             String location = table.getEntryAt(row, 1);
-            Image image = Loader.getAsImage(Places.Terrain, location);
+            Image image = Loader.getAsImage(Places.GraphicsTerrain, location);
             Color color = TerrainLoader.ColorFromHex(table.getEntryAt(row, 2));
             TerrainTile tile = new TerrainTile(image, color);
             map.put(id, tile);

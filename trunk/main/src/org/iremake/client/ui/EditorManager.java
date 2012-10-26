@@ -35,6 +35,8 @@ import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.map.ScenarioChangedListener;
 import org.iremake.client.ui.map.ScenarioModel;
 import org.iremake.common.GeographicalMap;
+import org.iremake.common.resources.Loader;
+import org.iremake.common.resources.Places;
 import org.tools.xml.XMLHelper;
 
 /**
@@ -91,7 +93,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
 
     @Override
     public void focusChanged(int row, int column) {
-        mapInfoPanel.mainMapFocusChanged(row, column);
+        mapInfoPanel.mainMapTileChanged(row, column);
     }
 
     @Override
@@ -105,12 +107,14 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
         miniMapPanel.tileChanged();
 
         mainMapPanel.tileChanged(row, column);
+        
+        mapInfoPanel.mainMapTileChanged(row, column);
     }
 
     @Override
     public void mapChanged() {
         // TODO size of map could also have changed!!!
-        mainMapPanel.repaint();
+        mainMapPanel.mapChanged();
 
         Dimension size = mainMapPanel.getSize();
         Dimension tileSize = TerrainLoader.getTileSize();
@@ -120,11 +124,21 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
         miniMapPanel.mapChanged(fractionRows, fractionColumns);
     }
 
-    void init() {
-        map.setEmptyMap(60, 100); // shift this backwards
+    public void loadInitialScenario() {
+        //map.setEmptyMap(60, 100);
+        loadScenario(Loader.getPath(Places.ScenarioMaps, "map.Europe1814.xml"));
+    }
+    
+    private void loadScenario(String location) {
+        Element xml = XMLHelper.read(location);
+        map.fromXML(xml);
+    }
+    
+    private void saveScenario(String location) {
+        
     }
 
-    void load() {
+    public void loadScenarioDialog() {
         if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             // read file and parse to xml
@@ -141,7 +155,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
         }
     }
 
-    void save() {
+    public void saveScenarioDialog() {
         if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             String name = f.getAbsolutePath();

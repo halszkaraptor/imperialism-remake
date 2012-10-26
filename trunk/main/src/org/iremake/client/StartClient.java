@@ -28,10 +28,11 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-import org.iremake.client.resources.Loader;
-import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
+import org.iremake.common.Settings;
+import org.iremake.common.resources.Loader;
+import org.iremake.common.resources.Places;
 import org.tools.ui.helper.LookAndFeel;
 
 /**
@@ -59,6 +60,7 @@ public class StartClient {
             installFonts();
 
             TerrainLoader.load();
+            Settings.load();
 
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {
@@ -99,7 +101,7 @@ public class StartClient {
         // if log directory not yet existing, create it
 
         // setup of the logger
-        Handler handler = new FileHandler(Loader.getPath("log/remake%g.log"), (int) 1e5, 10, false);
+        Handler handler = new FileHandler(Loader.getPath(Places.LOG, "remake%g.log"), (int) 1e5, 10, false);
         handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
         handler.setLevel(Level.INFO);
         Logger.getLogger("").addHandler(handler);

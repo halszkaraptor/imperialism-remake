@@ -25,8 +25,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import org.iremake.client.resources.Loader;
-import org.iremake.client.resources.Places;
+import org.iremake.common.resources.Loader;
+import org.iremake.common.resources.Places;
 import org.tools.ui.helper.GraphicsUtils;
 
 /**
@@ -105,7 +105,7 @@ public class CommonElementsFactory {
         frame.setTitle("Imperialism Remake");
 
         // set icon
-        frame.setIconImage(Loader.getAsImage(Places.UI, "icon.app.png"));
+        frame.setIconImage(Loader.getAsImage(Places.GraphicsIcons, "icon.app.png"));
 
         // maximize (without setting the window maximized setting)
         Dimension s = GraphicsUtils.getScreenSize();

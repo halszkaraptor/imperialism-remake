@@ -79,7 +79,7 @@ public class GeographicalMap implements XMLable {
         }
         return map[x][y];
     }
-
+    
     public int getNumberRows() {
         return rows;
     }

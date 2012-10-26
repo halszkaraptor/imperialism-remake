@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.common.GeographicalMap;
 import org.iremake.common.GeographicalMapChangedListener;
+import org.iremake.common.Settings;
 
 /**
  *
@@ -56,7 +57,7 @@ public class ScenarioModel implements GeographicalMapChangedListener {
         // TODO in range
         return map[row][column].getColor();
     }
-
+    
     @Override
     public void tileChanged(int row, int column, String id) {
         // TODO check size

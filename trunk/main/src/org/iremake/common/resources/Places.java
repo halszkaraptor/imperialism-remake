@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.resources;
+package org.iremake.common.resources;
 
 /**
  *
@@ -22,10 +22,14 @@ package org.iremake.client.resources;
 public enum Places {
 
     None(""),
+    LOG("log/"),
     Help("data/help/"),
+    Scenario("data/game/scenarios/"),
+    ScenarioMaps(Scenario + "maps/"),
+    ScenarioSettings(Scenario + "settings/"),
     Graphics("data/game/artwork/graphics/"),
-    UI(Graphics + "ui/"),
-    Terrain(Graphics + "terrain/");
+    GraphicsIcons(Graphics + "ui/"),
+    GraphicsTerrain(Graphics + "terrain/");
     private String id;
 
     Places(String id) {

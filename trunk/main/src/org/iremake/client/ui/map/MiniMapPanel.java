@@ -101,10 +101,11 @@ public class MiniMapPanel extends JPanel {
 
         focus.x = size.width / 2;
         focus.y = size.height / 2;
-        notifyFocusChangedListener();
 
         focus.width = (int) (size.width * fractionColumns);
         focus.height = (int) (size.height * fractionRows);
+        
+        notifyFocusChangedListener();        
 
         redrawMap();
         repaint();

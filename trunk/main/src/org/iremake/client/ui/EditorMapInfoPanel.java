@@ -20,7 +20,8 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import org.iremake.client.ui.map.MainMapTileListener;
+import org.iremake.common.GeographicalMap;
+import org.iremake.common.Settings;
 
 /**
  *
@@ -29,21 +30,22 @@ public class EditorMapInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JLabel tile;
+    private GeographicalMap map;
 
-    public EditorMapInfoPanel() {
-        initComponents();
-    }
-
-    private void initComponents() {
-
+    public EditorMapInfoPanel(GeographicalMap map) {
         setBorder(new LineBorder(Color.black, 1));
 
         tile = new JLabel();
-        add(tile);
+        add(tile);        
+        
+        this.map = map;
     }
 
-    public void mainMapFocusChanged(int row, int column) {
-        tile.setText("Tile: " + Integer.toString(row) + ", " + Integer.toString(column));
+    public void mainMapTileChanged(int row, int column) {
+        if (row == -1 && column == -1) {
+            tile.setText("");
+        } else {
+            tile.setText("Tile: " + Integer.toString(row) + ", " + Integer.toString(column) + "  " + Settings.getTerrainType(map.getTerrainAt(row, column)));
+        }
     }
-
 }

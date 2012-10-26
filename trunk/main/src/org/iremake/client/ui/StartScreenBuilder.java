@@ -31,8 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.StartClient;
-import org.iremake.client.resources.Loader;
-import org.iremake.client.resources.Places;
+import org.iremake.common.resources.Loader;
+import org.iremake.common.resources.Places;
 import org.tools.ui.BrowserDialog;
 import org.tools.ui.helper.GraphicsUtils;
 
@@ -62,11 +62,11 @@ public class StartScreenBuilder {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(Loader.getAsIcon(Places.UI, "start.background.png"));    // set image
+        backgroundLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.background.png"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(Loader.getAsIcon(Places.UI, "start.logo.png"));    // set image
+        logoLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
 
         // version label
         JLabel versionLabel = new JLabel("version 0.1.0");
@@ -117,7 +117,7 @@ public class StartScreenBuilder {
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // scenario button
-        JButton scenarioButton = CommonElementsFactory.makeButton(Places.UI, "start.button.scenario.png");
+        JButton scenarioButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.scenario.png");
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,7 +131,7 @@ public class StartScreenBuilder {
         });
 
         // network button
-        JButton networkButton = CommonElementsFactory.makeButton(Places.UI, "start.button.network.png");
+        JButton networkButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.network.png");
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -145,7 +145,7 @@ public class StartScreenBuilder {
         });
 
         // options button
-        JButton optionsButton = CommonElementsFactory.makeButton(Places.UI, "start.button.options.png");
+        JButton optionsButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.options.png");
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -159,7 +159,7 @@ public class StartScreenBuilder {
         });
 
         // help button
-        JButton helpButton = CommonElementsFactory.makeButton(Places.UI, "start.button.help.png");
+        JButton helpButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.help.png");
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -171,18 +171,18 @@ public class StartScreenBuilder {
         });
 
         // editor button
-        JButton editorButton = CommonElementsFactory.makeButton(Places.UI, "start.button.editor.png");
+        JButton editorButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.editor.png");
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dimension s = GraphicsUtils.getScreenSize();
                 Rectangle bounds = new Rectangle(50, 50, s.width - 100, s.height - 100);
-                EditorDialogBuilder.makeDialog(owner, "Editor", bounds);
+                EditorBuilder.build(owner, "Editor", bounds);
             }
         });
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Places.UI, "start.button.exit.png");
+        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.exit.png");
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
             public void actionPerformed(ActionEvent e) {

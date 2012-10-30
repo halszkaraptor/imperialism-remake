@@ -35,7 +35,7 @@ import javax.swing.WindowConstants;
 import org.iremake.common.GeographicalMap;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
-import org.tools.xml.common.Property;
+import org.tools.xml.common.XProperty;
 
 /**
  * Allows editing of various game XML files. Used for creating and editing them.
@@ -180,7 +180,7 @@ public class XMLEditor extends JFrame {
 
         final String target = "\\artwork\\graphics\\terrain\\terrain.xml";
         String full = baseTextField.getText() + target;
-        Property prop = new Property(0);
+        XProperty prop = new XProperty(0);
         /*
          XMLHelper.read(full, prop);
          if (PropertyEditorDialog.createAndRun(this, target, prop) == 0) {

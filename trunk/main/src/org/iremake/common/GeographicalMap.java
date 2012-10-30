@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.tools.xml.XMLable;
-import org.tools.xml.common.Property;
+import org.tools.xml.common.XProperty;
 
 /**
  *
@@ -126,7 +126,7 @@ public class GeographicalMap implements XMLable {
         Element parent = new Element(NAME);
 
         // add size as list
-        Property dimensions = new Property(2);
+        XProperty dimensions = new XProperty(2);
         dimensions.putInt("rows", rows);
         dimensions.putInt("columns", columns);
         parent.appendChild(dimensions.toXML());
@@ -157,7 +157,7 @@ public class GeographicalMap implements XMLable {
         Elements children = parent.getChildElements();
 
         // get size
-        Property dimensions = new Property(0);
+        XProperty dimensions = new XProperty(0);
         dimensions.fromXML(children.get(0));
         rows = dimensions.getInt("rows");
         columns = dimensions.getInt("columns");

@@ -22,7 +22,7 @@ import java.util.Set;
 import nu.xom.Element;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.common.Table;
+import org.tools.xml.common.XTable;
 
 /**
  *
@@ -44,7 +44,7 @@ public class Settings {
         Element xml = Loader.getAsXML(Places.ScenarioSettings, "terrain.xml");
 
         // parse xml and fill table
-        Table table = new Table();
+        XTable table = new XTable();
         table.fromXML(xml);
 
         // load terrain images, combine colors and fill map

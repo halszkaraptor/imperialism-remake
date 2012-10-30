@@ -29,7 +29,7 @@ import nu.xom.Element;
 import org.iremake.client.ui.map.TerrainTile;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.common.Table;
+import org.tools.xml.common.XTable;
 
 /**
  *
@@ -56,7 +56,7 @@ public class TerrainLoader {
         Element xml = Loader.getAsXML(Places.GraphicsTerrain, "terrain.xml");
 
         // parse xml and fill table
-        Table table = new Table();
+        XTable table = new XTable();
         table.fromXML(xml);
 
         // TODO checks about number of columns

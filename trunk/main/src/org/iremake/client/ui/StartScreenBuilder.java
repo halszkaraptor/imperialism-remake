@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import org.iremake.client.ui.editor.EditorBuilder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;

@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.editor;
 
 import java.awt.Container;
+import java.awt.Dialog;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.map.ScenarioModel;
@@ -83,7 +85,7 @@ public class EditorBuilder {
         dialog.add(tabPane);
         
         // create and add map panel
-        JPanel mapPanel = EditorBuilder.buildMapPanel(manager);
+        JPanel mapPanel = EditorBuilder.buildMapPanel(dialog, manager);
         tabPane.addTab("Map", mapPanel);
         
         // create and add nations panel
@@ -112,7 +114,7 @@ public class EditorBuilder {
      * @param manager
      * @return 
      */
-    private static JPanel buildMapPanel(final EditorManager manager) {
+    private static JPanel buildMapPanel(final Dialog parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
         ScenarioModel model = new ScenarioModel();
@@ -133,9 +135,8 @@ public class EditorBuilder {
         terrainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Rectangle bounds = new Rectangle(100, 100, 200, 200);
-                JDialog terrainDialog = CommonElementsFactory.makeDialog(null, "Terrain Selector", true, bounds);
-                terrainDialog.setVisible(true);
+                JDialog dialog = new EditorSelectionTerrainDialog(parent, manager);
+                dialog.setVisible(true);
             }
         });
         menuBar.add(terrainButton);

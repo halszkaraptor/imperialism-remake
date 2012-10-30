@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.editor;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -52,6 +52,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
     private GeographicalMap map;
     private ScenarioModel model;
     private JFileChooser fileChooser;
+    private String terrainSelectedID;
 
     public EditorManager() {
         fileChooser = new JFileChooser();
@@ -99,7 +100,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
 
     @Override
     public void tileClicked(MapPosition p) {
-        map.setTerrainAt(p, "p1");
+        map.setTerrainAt(p, terrainSelectedID);
     }
 
     @Override
@@ -175,5 +176,9 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
             }
             //NotificationFactory.createInfoPane(TableEditorFrame.this, "Table saved.");
         }
+    }
+
+    void terrainSelected(String id) {
+        terrainSelectedID = id;
     }
 }

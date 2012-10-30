@@ -36,6 +36,7 @@ import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.ui.BrowserDialog;
 import org.tools.ui.helper.GraphicsUtils;
+import org.tools.ui.helper.WindowCorner;
 
 /**
  *
@@ -58,7 +59,7 @@ public class StartScreenBuilder {
 
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
-        languageComboBox.setModel(new DefaultComboBoxModel<String>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
+        languageComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
         languageComboBox.setToolTipText("Select language");     // tooltip
 
         // background image
@@ -76,36 +77,28 @@ public class StartScreenBuilder {
         // get layered pane
         JLayeredPane pane = frame.getLayeredPane();
 
-        // adding each component with correct depth and correct position, depending on frame size
-        Dimension s = frame.getSize();
-        Dimension d;
-
-        // manual layout because it's layered one over another
+        RelativeLayout layout = new RelativeLayout();
+        pane.setLayout(layout);
 
         // add background image (centered)
         pane.add(backgroundLabel, new Integer(1));
-        d = backgroundLabel.getPreferredSize();
-        backgroundLabel.setBounds(s.width / 2 - d.width / 2, s.height / 2 - d.height / 2, d.width, d.height);
+        layout.addConstraint(backgroundLabel, RelativeLayoutConstraint.centered());
 
         // add logo (horizontally centerd, vertically at 40%)
         pane.add(logoLabel, new Integer(2));
-        d = logoLabel.getPreferredSize();
-        logoLabel.setBounds(s.width / 2 - d.width / 2, s.height * 4 / 10 - d.height / 2, d.width, d.height);
+        layout.addConstraint(logoLabel, RelativeLayoutConstraint.relative(0.5f, 0.4f));
 
         // add version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));
-        d = versionLabel.getPreferredSize();
-        versionLabel.setBounds(s.width - d.width - 20, s.height - d.height - 20, d.width, d.height);
+        layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthWest, 20, 20));
 
         // add menubar on top and position
         pane.add(menuBar, new Integer(3));
-        d = menuBar.getPreferredSize();
-        menuBar.setBounds(s.width / 2 - d.width / 2, s.height * 6 / 10 - d.height / 2, d.width, d.height);  // horizontally centered, vertically at 60%
+        layout.addConstraint(menuBar, RelativeLayoutConstraint.relative(0.5f, 0.6f));
 
         // add language combo box
         pane.add(languageComboBox, new Integer(4));
-        d = languageComboBox.getPreferredSize();
-        languageComboBox.setBounds(s.width * 7 / 10 - d.width / 2, s.height / 2 - d.height / 2, d.width, d.height);  // horizontally at 70%, vertically centered
+        layout.addConstraint(languageComboBox, RelativeLayoutConstraint.relative(0.7f, 0.5f));
 
         // set background of content pane (which is also included in layered pane)
         frame.getContentPane().setBackground(Color.BLACK);  // black background

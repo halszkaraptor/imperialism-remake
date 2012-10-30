@@ -64,6 +64,7 @@ public class CommonElementsFactory {
      *
      * @param owner
      * @param title
+     * @param modal 
      * @param bounds
      * @return
      */
@@ -87,13 +88,20 @@ public class CommonElementsFactory {
 
     /**
      *
+     * The frame is maximized via setting the maximized state instead of
+     * something like
+     *   Dimension s = GraphicsUtils.getScreenSize();
+     *   frame.setBounds(0, 0, s.width, s.height);
+     * The reason is that some OS like Ubuntu react funny on these two lines.
+     *
      * @return
      */
     public static JFrame makeFrame() {
         JFrame frame = new JFrame();
 
-        // undecorated
+        // undecorated and maximized
         frame.setUndecorated(true);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
         // turn of usual exiting mechanisms
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -106,10 +114,6 @@ public class CommonElementsFactory {
 
         // set icon
         frame.setIconImage(Loader.getAsImage(Places.GraphicsIcons, "icon.app.png"));
-
-        // maximize (without setting the window maximized setting)
-        Dimension s = GraphicsUtils.getScreenSize();
-        frame.setBounds(0, 0, s.width, s.height);
 
         return frame;
     }

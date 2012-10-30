@@ -52,7 +52,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
     private GeographicalMap map;
     private ScenarioModel model;
     private JFileChooser fileChooser;
-    private String terrainSelectedID;
+    private String terrainSelectedID = "p1"; // TODO better initial value
 
     public EditorManager() {
         fileChooser = new JFileChooser();

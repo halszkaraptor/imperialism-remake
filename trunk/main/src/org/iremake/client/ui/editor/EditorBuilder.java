@@ -38,6 +38,7 @@ import org.iremake.common.resources.Places;
 /**
  *
  */
+// TODO unmake static
 public class EditorBuilder {
 
     private EditorBuilder() {

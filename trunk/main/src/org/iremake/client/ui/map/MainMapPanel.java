@@ -31,6 +31,7 @@ import org.iremake.common.MapPosition;
 /**
  *
  */
+// TODO drawing into border? (make border thicker, then you see it)
 public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;

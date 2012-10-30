@@ -96,8 +96,7 @@ public class ScenarioDialogsBuilder {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = MainScreenBuilder.makeDialog(owner);
-                dialog.setVisible(true);
+                MainScreenBuilder.build(owner);
             }
         });
 

@@ -18,6 +18,8 @@ package org.iremake.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -25,6 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.ScenarioModel;
+import org.iremake.common.GeographicalMap;
 import org.iremake.common.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
@@ -32,19 +37,36 @@ import org.tools.ui.helper.GraphicsUtils;
 /**
  *
  */
+// TODO unmake static
 public class MainScreenBuilder {
 
     private MainScreenBuilder() {
     }
 
-    public static JDialog makeDialog(JFrame owner) {
+    public static void build(JFrame owner) {
+        final MainScreenManager manager = new MainScreenManager();
+
         Dimension s = GraphicsUtils.getScreenSize();
         Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
         JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, bounds);
         dialog.setUndecorated(true);
+        
+        manager.setFrame(dialog);
+        
+        ScenarioModel model = new ScenarioModel();
+        GeographicalMap map = new GeographicalMap();
+        manager.setScenarioContent(map, model);        
 
         // get layered pane
         JLayeredPane layers = dialog.getLayeredPane();
+        
+        // TODO change to RelativeLayout
+        
+        // Add MapPanel
+        MainMapPanel mainMapPanel = new MainMapPanel(model);
+        layers.add(mainMapPanel, Integer.valueOf(1));
+        mainMapPanel.setBounds(0, 0, s.width, s.height);
+        manager.setPanels(mainMapPanel);
 
         // add clock label to layered pane
         JLabel clockLabel = new ClockLabel();
@@ -55,41 +77,44 @@ public class MainScreenBuilder {
         clockLabel.setBounds(s.width - d.width - 10, s.height - d.height - 10, d.width, d.height);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = MainScreenBuilder.createControlPanel();
+        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager);
         layers.add(controlPanel, Integer.valueOf(3));
         d = controlPanel.getPreferredSize();
         controlPanel.setBounds(s.width - d.width - 20, 20, d.width, d.height);
 
+        // we make it visible immediately
+        dialog.setVisible(true);
 
-        return dialog;
+        // and load a basic scenario
+        manager.loadInitialScenario();
     }
 
-    private static JPanel createControlPanel() {
+    private static JPanel createControlPanel(final MainScreenManager manager) {
         JPanel panel = new JPanel();
 
         panel.setPreferredSize(new Dimension(300, 800));
 
         // create menu bar and add to frame
-        JToolBar menuBar = MainScreenBuilder.createControlMenuBar();
-        panel.add(menuBar);
-
-        return panel;
-    }
-
-    private static JToolBar createControlMenuBar() {
-        // toolbar
-        JToolBar bar = CommonElementsFactory.makeToolBar();
+        JToolBar menuBar = CommonElementsFactory.makeToolBar();
 
         // exit button
         JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.exit.png");
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                manager.exit();
+            }
+        });
 
         // save button
         JButton saveButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.save.png");
 
         // add buttons to toolbar
-        bar.add(exitButton);
-        bar.add(saveButton);
+        menuBar.add(exitButton);
+        menuBar.add(saveButton);
+        
+        panel.add(menuBar);
 
-        return bar;
+        return panel;
     }
 }

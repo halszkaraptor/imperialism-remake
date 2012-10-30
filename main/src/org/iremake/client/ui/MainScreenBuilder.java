@@ -33,6 +33,7 @@ import org.iremake.common.GeographicalMap;
 import org.iremake.common.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
+import org.tools.ui.helper.WindowCorner;
 
 /**
  *
@@ -49,38 +50,41 @@ public class MainScreenBuilder {
         Dimension s = GraphicsUtils.getScreenSize();
         Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
         JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, bounds);
+        dialog.setSize(s);
         dialog.setUndecorated(true);
-        
+
         manager.setFrame(dialog);
-        
+
         ScenarioModel model = new ScenarioModel();
         GeographicalMap map = new GeographicalMap();
-        manager.setScenarioContent(map, model);        
+        manager.setScenarioContent(map, model);
 
         // get layered pane
         JLayeredPane layers = dialog.getLayeredPane();
-        
+
         // TODO change to RelativeLayout
-        
+
         // Add MapPanel
         MainMapPanel mainMapPanel = new MainMapPanel(model);
         layers.add(mainMapPanel, Integer.valueOf(1));
-        mainMapPanel.setBounds(0, 0, s.width, s.height);
+        mainMapPanel.setPreferredSize(s);
         manager.setPanels(mainMapPanel);
+
+        RelativeLayout layout = new RelativeLayout();
+        layers.setLayout(layout);
 
         // add clock label to layered pane
         JLabel clockLabel = new ClockLabel();
         layers.add(clockLabel, Integer.valueOf(2));
+        layout.addConstraint(clockLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthWest, 10, 10));
 
-        // position clock
-        Dimension d = clockLabel.getPreferredSize();
-        clockLabel.setBounds(s.width - d.width - 10, s.height - d.height - 10, d.width, d.height);
+        // add main panel to layout
+        layout.addConstraint(mainMapPanel, RelativeLayoutConstraint.centered());
 
         // add control panel to layered pane and position
         JPanel controlPanel = MainScreenBuilder.createControlPanel(manager);
         layers.add(controlPanel, Integer.valueOf(3));
-        d = controlPanel.getPreferredSize();
-        controlPanel.setBounds(s.width - d.width - 20, 20, d.width, d.height);
+        layout.addConstraint(controlPanel, new RelativeLayoutConstraint(1.0f, -1.0f, -20, 0.5f, -0.5f, 0));
 
         // we make it visible immediately
         dialog.setVisible(true);
@@ -112,7 +116,7 @@ public class MainScreenBuilder {
         // add buttons to toolbar
         menuBar.add(exitButton);
         menuBar.add(saveButton);
-        
+
         panel.add(menuBar);
 
         return panel;

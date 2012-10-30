@@ -18,6 +18,7 @@ package org.iremake.common;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import nu.xom.Element;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
@@ -54,8 +55,11 @@ public class Settings {
             String type = table.getEntryAt(row, 1);
             terrainTypes.put(id, type);
         }
-
     }
+	
+    public static Set<String> getTerrainIDs() {
+        return terrainTypes.keySet();
+    }	
 
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
     public static String getTerrainType(String id) {

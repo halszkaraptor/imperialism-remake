@@ -124,8 +124,8 @@ public class Scenario implements XMLable {
         }
     }
 
-    private static final String NAME = "geographical-map";
-    private static final String NAME_MAP = "map";
+    private static final String NAME = "Scenario";
+    private static final String NAME_MAP = "Geographical-Map";
 
     @Override
     public Element toXML() {
@@ -148,6 +148,12 @@ public class Scenario implements XMLable {
         Element child = new Element(NAME_MAP);
         child.appendChild(builder.toString());
         parent.appendChild(child);
+        
+        // nation list
+        parent.appendChild(nations.toXML());
+        
+        // provinces list
+        parent.appendChild(provinces.toXML());
 
         return parent;
     }

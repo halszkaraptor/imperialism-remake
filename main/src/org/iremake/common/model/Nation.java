@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.xml.XMLable;
 
@@ -39,9 +40,16 @@ public class Nation implements XMLable {
         return name;
     }
 
+    private static final String NAME = "Nation";
+    
     @Override
     public Element toXML() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element element = new Element(NAME);
+        element.addAttribute(new Attribute("id", String.valueOf(id)));
+        element.addAttribute(new Attribute("name", name));
+        element.addAttribute(new Attribute("colorcode", colorcode));
+        
+        return element;
     }
 
     @Override

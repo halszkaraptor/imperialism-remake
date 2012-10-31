@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.xml.XMLable;
 
@@ -24,17 +25,23 @@ import org.tools.xml.XMLable;
  */
 public class Province implements XMLable {
     
-    private int ID;
+    private int id;
     private String name;
     
     @Override
     public String toString() {
         return name;
     }
+    
+    public static final String NAME = "Province";
 
     @Override
     public Element toXML() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element element = new Element(NAME);
+        element.addAttribute(new Attribute("id", String.valueOf(id)));
+        element.addAttribute(new Attribute("name", name));
+        
+        return element;
     }
 
     @Override

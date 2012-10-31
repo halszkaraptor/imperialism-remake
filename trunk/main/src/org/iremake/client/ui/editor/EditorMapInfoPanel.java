@@ -20,9 +20,9 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import org.iremake.common.GeographicalMap;
 import org.iremake.common.MapPosition;
 import org.iremake.common.Settings;
+import org.iremake.common.model.Scenario;
 
 /**
  *
@@ -31,9 +31,9 @@ public class EditorMapInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JLabel tile;
-    private GeographicalMap map;
+    private Scenario map;
 
-    public EditorMapInfoPanel(GeographicalMap map) {
+    public EditorMapInfoPanel(Scenario map) {
         setBorder(new LineBorder(Color.black, 1));
 
         tile = new JLabel();

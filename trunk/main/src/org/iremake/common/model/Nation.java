@@ -14,29 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.common.model;
 
-import java.awt.Rectangle;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import nu.xom.Element;
+import org.tools.xml.XMLable;
 
 /**
  *
  */
-public class NetworkDialogBuilder {
-
-    private NetworkDialogBuilder() {
+public class Nation implements XMLable {
+    
+    private final int id;
+    private final String name;
+    private final String colorcode;
+    
+    public Nation(int id, String name, String colorcode) {
+        this.id = id;
+        this.name = name;
+        this.colorcode = colorcode;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
-        // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
-
-        return dialog;
+    @Override
+    public Element toXML() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private static JPanel chatPanel() {
-        return new JPanel();
+    @Override
+    public void fromXML(Element parent) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

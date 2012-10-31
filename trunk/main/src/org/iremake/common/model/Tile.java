@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common;
+package org.iremake.common.model;
 
 /**
  *
  */
-public class Province {
+public class Tile {
     
-    private String ID;
-    private String name;
+    public String terrainID;
+    public int provinceID;
+    public int nationID;
     
-    @Override
-    public String toString() {
-        return name;
+    public Tile(String terrainID, int provinceID, int nationID) {
+        this.terrainID = terrainID;
+        this.provinceID = provinceID;
+        this.nationID = nationID;
     }
+    
 }

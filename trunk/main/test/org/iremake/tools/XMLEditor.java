@@ -32,7 +32,7 @@ import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import org.iremake.common.GeographicalMap;
+import org.iremake.common.model.Scenario;
 import org.tools.ui.helper.LookAndFeel;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.common.XProperty;
@@ -190,7 +190,7 @@ public class XMLEditor extends JFrame {
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
 
-        GeographicalMap map = new GeographicalMap();
+        Scenario map = new Scenario();
         map.setEmptyMap(60, 100);
         map.setTerrainAt(0, 0, "p1");
         XMLHelper.write("map.xml", map.toXML());

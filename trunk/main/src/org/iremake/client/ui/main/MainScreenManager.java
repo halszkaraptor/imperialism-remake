@@ -14,20 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.main;
 
-import java.awt.Component;
 import java.awt.Window;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import nu.xom.Element;
-import org.iremake.client.ui.editor.EditorMapInfoPanel;
+import org.iremake.client.ui.Model;
+import org.iremake.client.ui.ModelChangedListener;
 import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.map.ScenarioChangedListener;
-import org.iremake.client.ui.map.ScenarioModel;
-import org.iremake.common.GeographicalMap;
 import org.iremake.common.MapPosition;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.xml.XMLHelper;
@@ -36,11 +32,11 @@ import org.tools.xml.XMLHelper;
  *
  */
 // TODO generalize between EditorManager and this class (some code duplicates)
-public class MainScreenManager implements ScenarioChangedListener {
+public class MainScreenManager implements ModelChangedListener {
     
-    private GeographicalMap map;
+    private Scenario map;
     private MainMapPanel mainMapPanel;    
-    private ScenarioModel model;    
+    private Model model;    
     private Window window;
 
     public void setFrame(JDialog dialog) {
@@ -51,7 +47,7 @@ public class MainScreenManager implements ScenarioChangedListener {
         mainMapPanel = mainPanel;
     }    
 
-    public void setScenarioContent(GeographicalMap map, ScenarioModel model) {
+    public void setScenarioContent(Scenario map, Model model) {
         this.map = map;
         this.model = model;
 
@@ -81,7 +77,7 @@ public class MainScreenManager implements ScenarioChangedListener {
         mainMapPanel.mapChanged();
     }
 
-    void exit() {
+    public void exit() {
         window.dispose();
     }
     

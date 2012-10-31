@@ -31,11 +31,6 @@ public class Settings {
 
     private static Map<String, String> terrainTypes = new HashMap<>(0);
 
-    static String getDefaultTerrainID() {
-        return "s1"; // sea
-        // TODO softcode
-    }
-
     private Settings() {
     }
 
@@ -65,4 +60,9 @@ public class Settings {
     public static String getTerrainType(String id) {
         return terrainTypes.get(id);
     }
+    
+    public static String getDefaultTerrainID() {
+        return "s1"; // sea
+        // TODO softcode
+    }    
 }

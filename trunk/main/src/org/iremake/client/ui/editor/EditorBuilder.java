@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.editor;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Rectangle;
@@ -28,11 +29,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
+import javax.swing.border.LineBorder;
 import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.Model;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.map.ScenarioModel;
-import org.iremake.common.GeographicalMap;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
 
 /**
@@ -90,7 +92,7 @@ public class EditorBuilder {
         tabPane.addTab("Map", mapPanel);
         
         // create and add nations panel
-        JPanel nationPanel = new JPanel();
+        JPanel nationPanel = EditorBuilder.buildNationPanel(dialog, manager);
         tabPane.addTab("Nation", nationPanel);
 
 
@@ -109,6 +111,29 @@ public class EditorBuilder {
         // and load a basic scenario
         manager.loadInitialScenario();
     }
+    
+    private static JPanel buildNationPanel(final Dialog parent, final EditorManager manager) {
+        JPanel panel = new JPanel();
+        
+        JPanel nations = new JPanel();
+        nations.setBorder(new LineBorder(Color.black, 1));
+        
+        JPanel provinces = new JPanel();
+        provinces.setBorder(new LineBorder(Color.black, 1));
+        
+        // set layout
+        GroupLayout layout = new GroupLayout(panel);
+        panel.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(nations, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(provinces, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE));
+        layout.setVerticalGroup(layout.createParallelGroup().addComponent(nations, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(provinces, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE));
+        
+        return panel;
+    }
 
     /**
      * 
@@ -118,8 +143,8 @@ public class EditorBuilder {
     private static JPanel buildMapPanel(final Dialog parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
-        ScenarioModel model = new ScenarioModel();
-        GeographicalMap map = new GeographicalMap();
+        Model model = new Model();
+        Scenario map = new Scenario();
         manager.setScenarioContent(map, model);
 
         // create mini map and add to panel

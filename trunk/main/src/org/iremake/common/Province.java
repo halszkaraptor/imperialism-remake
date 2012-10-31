@@ -19,6 +19,13 @@ package org.iremake.common;
 /**
  *
  */
-public class Scenario {
+public class Province {
     
+    private String ID;
+    private String name;
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

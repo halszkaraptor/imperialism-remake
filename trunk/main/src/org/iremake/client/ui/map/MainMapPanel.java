@@ -39,8 +39,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private MainMapTileListener tileListener;
     private ScenarioModel model;
     private Dimension tileSize;
-    private MapPosition offset = new MapPosition(0, 0);
-    private MapPosition hoover = MapPosition.Off;
+    private MapPosition offset = new MapPosition();
+    private MapPosition hoover = new MapPosition();
 
     public MainMapPanel(final ScenarioModel model) {
 
@@ -49,6 +49,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         tileSize = TerrainLoader.getTileSize();
 
         setOpaque(true);
+        
+        hoover.setOff();
 
         setBackground(Color.white);
         setBorder(new LineBorder(Color.black, 1));
@@ -69,7 +71,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     }
                 } else {
                     // outside of area, deselect
-                    hoover = MapPosition.Off;
+                    hoover.setOff();
                     repaint(); // TODO only the one tile
                     notifyTileFocusChangedListeners();
                 }
@@ -89,7 +91,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
             @Override
             public void mouseExited(MouseEvent e) {
-                hoover = MapPosition.Off;
+                hoover.setOff();
                 repaint();
                 notifyTileFocusChangedListeners();
             }

@@ -21,8 +21,6 @@ package org.iremake.common;
  */
 public class MapPosition {
 
-    public final static MapPosition Off = new MapPosition(-1, -1);
-
     public int row, column;
 
     public MapPosition() {
@@ -33,9 +31,14 @@ public class MapPosition {
         this.row = row;
         this.column = column;
     }
+    
+    public void setOff() {
+        row = -1;
+        column = -1;
+    }
 
     public boolean isOff() {
-        return equals(Off);
+        return row == -1 && column == -1;
     }
 
     public void setFrom(MapPosition p) {

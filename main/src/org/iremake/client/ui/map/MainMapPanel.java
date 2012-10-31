@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.map;
 
+import org.iremake.client.ui.Model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -37,12 +38,12 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private MainMapTileListener tileListener;
-    private ScenarioModel model;
+    private Model model;
     private Dimension tileSize;
     private MapPosition offset = new MapPosition();
     private MapPosition hoover = new MapPosition();
 
-    public MainMapPanel(final ScenarioModel model) {
+    public MainMapPanel(final Model model) {
 
         this.model = model;
 

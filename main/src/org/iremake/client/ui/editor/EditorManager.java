@@ -32,10 +32,11 @@ import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MainMapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.map.ScenarioChangedListener;
-import org.iremake.client.ui.map.ScenarioModel;
-import org.iremake.common.GeographicalMap;
+import org.iremake.client.ui.Model;
+import org.iremake.client.ui.ModelChangedListener;
 import org.iremake.common.MapPosition;
+import org.iremake.common.Settings;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.xml.XMLHelper;
@@ -43,16 +44,16 @@ import org.tools.xml.XMLHelper;
 /**
  * Editorframe manager.
  */
-public class EditorManager implements MainMapTileListener, ScenarioChangedListener {
+public class EditorManager implements MainMapTileListener, ModelChangedListener {
 
     private Component frame;
     private EditorMapInfoPanel mapInfoPanel;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
-    private GeographicalMap map;
-    private ScenarioModel model;
+    private Scenario map;
+    private Model model;
     private JFileChooser fileChooser;
-    private String terrainSelectedID = "p1"; // TODO better initial value
+    private String terrainSelectedID = Settings.getDefaultTerrainID(); // TODO better initial value
 
     public EditorManager() {
         fileChooser = new JFileChooser();
@@ -84,7 +85,7 @@ public class EditorManager implements MainMapTileListener, ScenarioChangedListen
         miniMapPanel.setFocusChangedListener(mainMapPanel);
     }
 
-    public void setScenarioContent(GeographicalMap map, ScenarioModel model) {
+    public void setScenarioContent(Scenario map, Model model) {
         this.map = map;
         this.model = model;
 

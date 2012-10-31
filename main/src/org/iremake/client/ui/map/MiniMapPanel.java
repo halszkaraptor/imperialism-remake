@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.map;
 
+import org.iremake.client.ui.Model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -37,10 +38,10 @@ public class MiniMapPanel extends JPanel {
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
     private MiniMapFocusChangedListener focusChangedListener;
-    private ScenarioModel model;
+    private Model model;
     private BufferedImage miniMap;
 
-    public MiniMapPanel(ScenarioModel model) {
+    public MiniMapPanel(Model model) {
 
         this.model = model;
 

@@ -14,30 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui.map;
+package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.common.GeographicalMap;
-import org.iremake.common.GeographicalMapChangedListener;
+import org.iremake.client.ui.map.TerrainTile;
 import org.iremake.common.MapPosition;
+import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ScenarioChangedListener;
 
 /**
  *
  */
-public class ScenarioModel implements GeographicalMapChangedListener {
+public class Model implements ScenarioChangedListener {
 
-    private static final Logger LOG = Logger.getLogger(ScenarioModel.class.getName());
+    private static final Logger LOG = Logger.getLogger(Model.class.getName());
 
     private int rows;
     private int columns;
     private TerrainTile[][] map; // first rows, then columns
-    private ScenarioChangedListener listener;
+    private ModelChangedListener listener;
 
-    public ScenarioModel() {
+    public Model() {
     }
 
     public int getNumberRows() {
@@ -83,7 +84,7 @@ public class ScenarioModel implements GeographicalMapChangedListener {
     }
 
     @Override
-    public void mapChanged(GeographicalMap gmap) {
+    public void mapChanged(Scenario gmap) {
         rows = gmap.getNumberRows();
         columns = gmap.getNumberColumns();
         map = new TerrainTile[rows][columns];
@@ -107,7 +108,7 @@ public class ScenarioModel implements GeographicalMapChangedListener {
         }
     }
 
-    public void setScenarioChangedListener(ScenarioChangedListener l) {
+    public void setScenarioChangedListener(ModelChangedListener l) {
         listener = l;
     }
 }

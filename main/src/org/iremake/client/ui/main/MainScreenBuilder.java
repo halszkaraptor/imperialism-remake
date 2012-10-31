@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.main;
 
+import org.iremake.client.ui.main.MainScreenManager;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -27,9 +28,12 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.Model;
+import org.tools.ui.layout.RelativeLayout;
+import org.tools.ui.layout.RelativeLayoutConstraint;
 import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.client.ui.map.ScenarioModel;
-import org.iremake.common.GeographicalMap;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
@@ -55,8 +59,8 @@ public class MainScreenBuilder {
 
         manager.setFrame(dialog);
 
-        ScenarioModel model = new ScenarioModel();
-        GeographicalMap map = new GeographicalMap();
+        Model model = new Model();
+        Scenario map = new Scenario();
         manager.setScenarioContent(map, model);
 
         // get layered pane

@@ -14,21 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.common.model;
 
-import java.awt.Color;
-import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
+import org.iremake.common.MapPosition;
 
 /**
  *
  */
-public class MapPanelBuilder {
+public interface ScenarioChangedListener {
 
-    public static JPanel makeOverviewMapPanel() {
-        JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.black, 1));
+    public void tileChanged(MapPosition p, String id);
 
-        return panel;
-    }
+    public void mapChanged(Scenario scenario);
 }

@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui;
 
-import org.iremake.client.ui.editor.EditorBuilder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -32,11 +31,14 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.StartClient;
+import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.ui.BrowserDialog;
 import org.tools.ui.helper.GraphicsUtils;
 import org.tools.ui.helper.WindowCorner;
+import org.tools.ui.layout.RelativeLayout;
+import org.tools.ui.layout.RelativeLayoutConstraint;
 
 /**
  *

@@ -14,18 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common;
+package org.iremake.common.model;
+
+import nu.xom.Element;
+import org.tools.xml.XMLable;
 
 /**
  *
  */
-public class Nation {
-    private String ID;
+public class Province implements XMLable {
+    
+    private int ID;
     private String name;
-    private String color;
     
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public Element toXML() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void fromXML(Element parent) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common;
+package org.iremake.common.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,23 +22,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
+import org.iremake.common.MapPosition;
+import org.iremake.common.Settings;
 import org.tools.xml.XMLable;
+import org.tools.xml.common.XList;
 import org.tools.xml.common.XProperty;
 
 /**
  *
  */
-public class GeographicalMap implements XMLable {
+public class Scenario implements XMLable {
 
-    private static final Logger LOG = Logger.getLogger(GeographicalMap.class.getName());
+    private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
 
     private int rows;
     private int columns;
-    private String[][] map;
+    private Tile[][] map;
+    
+    private XList<Nation> nations = new XList<>(Nation.class);
+    private XList<Province> provinces = new XList<>(Province.class);
 
-    private List<GeographicalMapChangedListener> listeners = new LinkedList<>();
+    private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
-    public GeographicalMap() {
+    public Scenario() {
     }
 
     /**
@@ -53,10 +59,10 @@ public class GeographicalMap implements XMLable {
         }
         this.rows = rows;
         this.columns = columns;
-        map = new String[rows][columns];
+        map = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                map[row][column] = Settings.getDefaultTerrainID();
+                map[row][column] = new Tile(Settings.getDefaultTerrainID(), -1, -1);
             }
         }
         fireMapChanged();
@@ -77,7 +83,7 @@ public class GeographicalMap implements XMLable {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
         }
-        map[p.row][p.column] = id;
+        map[p.row][p.column].terrainID = id;
         fireTileChanged(p);
     }
 
@@ -86,7 +92,7 @@ public class GeographicalMap implements XMLable {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return map[p.row][p.column];
+        return map[p.row][p.column].terrainID;
     }
 
     public int getNumberRows() {
@@ -97,23 +103,23 @@ public class GeographicalMap implements XMLable {
         return columns;
     }
 
-    public void addMapChangedListener(GeographicalMapChangedListener l) {
+    public void addMapChangedListener(ScenarioChangedListener l) {
         listeners.add(l);
     }
 
-    public void removeMapChangedListener(GeographicalMapChangedListener l) {
+    public void removeMapChangedListener(ScenarioChangedListener l) {
         listeners.remove(l);
     }
 
     private void fireTileChanged(MapPosition p) {
-        String id = map[p.row][p.column];
-        for (GeographicalMapChangedListener l: listeners) {
+        String id = map[p.row][p.column].terrainID;
+        for (ScenarioChangedListener l: listeners) {
             l.tileChanged(p, id);
         }
     }
 
     private void fireMapChanged() {
-        for (GeographicalMapChangedListener l: listeners) {
+        for (ScenarioChangedListener l: listeners) {
             l.mapChanged(this);
         }
     }
@@ -136,7 +142,7 @@ public class GeographicalMap implements XMLable {
         StringBuilder builder = new StringBuilder(capacity);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                builder.append(map[row][column]);
+                builder.append(map[row][column].terrainID);
             }
         }
         Element child = new Element(NAME_MAP);
@@ -148,6 +154,8 @@ public class GeographicalMap implements XMLable {
 
     @Override
     public void fromXML(Element parent) {
+        
+        // clear (?)
 
         if (parent == null || !NAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
@@ -161,7 +169,7 @@ public class GeographicalMap implements XMLable {
         dimensions.fromXML(children.get(0));
         rows = dimensions.getInt("rows");
         columns = dimensions.getInt("columns");
-        map = new String[rows][columns];
+        map = new Tile[rows][columns];
 
         // TODO test size of string with size
         // TODO more checks (positivity)
@@ -169,7 +177,8 @@ public class GeographicalMap implements XMLable {
         int p = 0;
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                map[row][column] = content.substring(p, p + 2);
+                Tile tile = new Tile(content.substring(p, p + 2), -1, -1);
+                map[row][column] = tile;
                 p += 2;
             }
         }

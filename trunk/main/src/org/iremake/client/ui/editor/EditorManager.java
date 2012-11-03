@@ -50,18 +50,18 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
     private EditorMapInfoPanel mapInfoPanel;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
-    private Scenario map;
+    private Scenario scenario;
     private Model model;
     private JFileChooser fileChooser;
     private String terrainSelectedID = Settings.getDefaultTerrainID(); // TODO better initial value
 
     public EditorManager() {
-        fileChooser = new JFileChooser();
+        fileChooser = new JFileChooser(Loader.getPath(Places.Scenarios, ""));
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File f) {
-                return f.isFile() && f.getName().endsWith(".xml");
+                return f.isDirectory() || (f.getName().startsWith("scenario.") && f.getName().endsWith(".xml"));
             }
 
             @Override
@@ -86,7 +86,7 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
     }
 
     public void setScenarioContent(Scenario map, Model model) {
-        this.map = map;
+        this.scenario = map;
         this.model = model;
 
         // wiring (map tells model, model tells manager)
@@ -101,7 +101,7 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
 
     @Override
     public void tileClicked(MapPosition p) {
-        map.setTerrainAt(p, terrainSelectedID);
+        scenario.setTerrainAt(p, terrainSelectedID);
     }
 
     @Override
@@ -128,13 +128,13 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
     }
 
     public void loadInitialScenario() {
-        //map.setEmptyMap(60, 100);
-        loadScenario(Loader.getPath(Places.ScenarioMaps, "map.Europe1814.xml"));
+        // map.setEmptyMap(60, 100);
+        loadScenario(Loader.getPath(Places.Scenarios, "scenario.Europe1814.xml"));
     }
 
     private void loadScenario(String location) {
         Element xml = XMLHelper.read(location);
-        map.fromXML(xml);
+        scenario.fromXML(xml);
     }
 
     private void saveScenario(String location) {
@@ -154,7 +154,7 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
                 // TODO also make it working with dialogs
                 return;
             }
-            map.fromXML(xml);
+            scenario.fromXML(xml);
         }
     }
 
@@ -165,7 +165,7 @@ public class EditorManager implements MainMapTileListener, ModelChangedListener 
             if (!name.endsWith(".xml")) {
                 f = new File(name + ".xml");
             }
-            Element xml = map.toXML();
+            Element xml = scenario.toXML();
             OutputStream os;
             try {
                 os = new FileOutputStream(f);

@@ -33,19 +33,19 @@ import org.tools.xml.XMLHelper;
  */
 // TODO generalize between EditorManager and this class (some code duplicates)
 public class MainScreenManager implements ModelChangedListener {
-    
+
     private Scenario map;
-    private MainMapPanel mainMapPanel;    
-    private Model model;    
+    private MainMapPanel mainMapPanel;
+    private Model model;
     private Window window;
 
     public void setFrame(JDialog dialog) {
         window = dialog;
     }
-    
+
     public void setPanels(MainMapPanel mainPanel) {
         mainMapPanel = mainPanel;
-    }    
+    }
 
     public void setScenarioContent(Scenario map, Model model) {
         this.map = map;
@@ -54,17 +54,17 @@ public class MainScreenManager implements ModelChangedListener {
         // wiring (map tells model, model tells manager)
         map.addMapChangedListener(model);
         model.setScenarioChangedListener(this);
-    }    
-    
+    }
+
     public void loadInitialScenario() {
-        //map.setEmptyMap(60, 100);
-        loadScenario(Loader.getPath(Places.ScenarioMaps, "map.Europe1814.xml"));
+        // map.setEmptyMap(60, 100);
+        loadScenario(Loader.getPath(Places.Scenarios, "scenario.Europe1814.xml"));
     }
 
     private void loadScenario(String location) {
         Element xml = XMLHelper.read(location);
         map.fromXML(xml);
-    }    
+    }
 
     @Override
     public void tileChanged(MapPosition p) {
@@ -80,5 +80,5 @@ public class MainScreenManager implements ModelChangedListener {
     public void exit() {
         window.dispose();
     }
-    
+
 }

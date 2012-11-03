@@ -24,9 +24,8 @@ public enum Places {
     None(""),
     LOG("log/"),
     Help("data/help/"),
-    Scenario("data/game/scenarios/"),
-    ScenarioMaps(Scenario + "maps/"),
-    ScenarioSettings(Scenario + "settings/"),
+    Scenarios("data/game/scenarios/"),
+    ScenarioSettings(Scenarios + "settings/"),
     Graphics("data/game/artwork/graphics/"),
     GraphicsIcons(Graphics + "ui/"),
     GraphicsTerrain(Graphics + "terrain/");

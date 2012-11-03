@@ -41,6 +41,7 @@ import org.iremake.client.ui.Model;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.common.model.Nation;
+import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
 import org.tools.xml.common.XList;
@@ -126,7 +127,7 @@ public class EditorBuilder {
         JPanel nations = new JPanel();
         nations.setBorder(new LineBorder(Color.black, 1));
         nations.setPreferredSize(new Dimension(200, 400));
-        
+
         // InfoLabel
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
         nations.add(nationsInfoLabel);
@@ -140,17 +141,17 @@ public class EditorBuilder {
         nationsBar.add(removenationButton);
         JButton changenationButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         nationsBar.add(changenationButton);
-        
+
         // list
-        JList nationList = new JList();
+        JList<Nation> nationList = new JList<>();
         nationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         nationList.setModel(new XList<>(Nation.class));
 
         // ScrollPane
         JScrollPane nationScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         nationScrollPane.setViewportView(nationList);
-        nations.add(nationScrollPane);        
-        
+        nations.add(nationScrollPane);
+
         // layout of nations panel
         GroupLayout layout = new GroupLayout(nations);
         nations.setLayout(layout);
@@ -159,12 +160,12 @@ public class EditorBuilder {
 
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(nationsInfoLabel).addComponent(nationsBar).addComponent(nationScrollPane));
         layout.setVerticalGroup(layout.createSequentialGroup().addComponent(nationsInfoLabel).addComponent(nationsBar).addComponent(nationScrollPane));
-        
+
 
         JPanel provinces = new JPanel();
         provinces.setBorder(new LineBorder(Color.black, 1));
-        provinces.setPreferredSize(new Dimension(200, 400));        
-        
+        provinces.setPreferredSize(new Dimension(200, 400));
+
         // InfoLabel
         JLabel provinceInfoLabel = new JLabel("X Provinces");
         provinces.add(provinceInfoLabel);
@@ -178,17 +179,17 @@ public class EditorBuilder {
         provinceBar.add(removeprovinceButton);
         JButton changeprovinceButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         provinceBar.add(changeprovinceButton);
-        
+
         // list
-        JList provinceList = new JList();
-        provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
-        provinceList.setModel(new XList<>(Nation.class));
+        JList<Province> provinceList = new JList<>();
+        provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        provinceList.setModel(new XList<>(Province.class));
 
         // ScrollPane
         JScrollPane provinceScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         provinceScrollPane.setViewportView(provinceList);
-        provinces.add(provinceScrollPane);        
-        
+        provinces.add(provinceScrollPane);
+
         // layout of province panel
         layout = new GroupLayout(provinces);
         provinces.setLayout(layout);
@@ -196,7 +197,7 @@ public class EditorBuilder {
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(layout.createParallelGroup().addComponent(provinceInfoLabel).addComponent(provinceBar).addComponent(provinceScrollPane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(provinceInfoLabel).addComponent(provinceBar).addComponent(provinceScrollPane));        
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(provinceInfoLabel).addComponent(provinceBar).addComponent(provinceScrollPane));
 
         // set layout
         layout = new GroupLayout(panel);

@@ -71,4 +71,15 @@
     nbproject/build-impl.xml file. 
 
     -->
+	
+    <target name="-post-jar">
+        <!-- Empty placeholder for easier customization. -->
+        <!-- You can override this target in the ../build.xml file. -->
+		<delete file="dist/README.TXT"/>
+		<copy overwrite="true" tofile="dist/readme.txt" file="readme.txt" /> 		
+		<copy todir="dist/data">
+			<fileset dir="data"/>
+		</copy>		
+		<!-- Trilarion, before version 0.1.0 inserted this copy tasks for easier distribution -->
+    </target>	
 </project>

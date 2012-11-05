@@ -1,7 +1,9 @@
 ﻿# Imperialism remake Help
 
-- Starting a game
-- Game Tutorial
+Version: 0.1.0
+[Credits](credits.html).   
+
+Not yet filled with content.
 
 
-[Credits](credits.html) page for details.   
+

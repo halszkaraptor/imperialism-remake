@@ -36,10 +36,6 @@ terrain = data[0: n * s : s]
 # 6	wasteland	desert, tundra
 # 7	farmland	grain, orchard
 
-r = list(set(terrain))
-r.sort()
-print r
-
 resources = data[17: n * s + 17 : s]
 # 0	cotton
 # 1	wool
@@ -56,16 +52,34 @@ resources = data[17: n * s + 17 : s]
 # 22	gold
 # 255	no resource
 
-r = list(set(resources))
-r.sort()
-print r
+# trim size (first 8 columns)
+terrain = [v for i, v in enumerate(terrain) if i % 108 >= 8]
+resources = [v for i, v in enumerate(resources) if i % 108 >= 8]
+
+# some statistics
+unique_terrain = list(set(terrain))
+unique_terrain.sort()
+for t in unique_terrain:
+    print 'terrain {0}'.format(ord(t))
+    rt = [vars for i, vars in enumerate(resources) if terrain[i] == t]
+    unique_rt = list(set(rt))
+    unique_rt.sort()
+    h = [ord(v) for v in unique_rt]
+    print ' contains resources {0}'.format(h)
+
 
 # transform to our scheme
 new_terrain = {'\x00': 'p1', '\x01': 'f1', '\x02': 'h1', '\x03': 'm1', '\x04': 'x1', '\x05': 's1', '\x06': 'd1', '\x07': 'p1'}
 
 result = []
-for i in range(n):
+for i in range(len(terrain)):
     t = new_terrain[terrain[i]]
+    if resources[i] == chr(18):
+        t = 'p4'
+    if resources[i] == chr(0):
+        t = 'p3'
+    if resources[i] == chr(20):
+        t = 'p2'
     result.append(t)
 
 # save output

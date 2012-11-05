@@ -1,3 +1,11 @@
 ﻿# Credits
 
 ## Release 0.1.0
+
+2012-11-06
+
+Featuring a basic terrain editor, some terrain tile graphics and some simple User Interface dialogs.
+
+Programming: Trilarion (trilarion@twelvepm.de)
+
+Artwork: Eric "Veneteaou" Nelson

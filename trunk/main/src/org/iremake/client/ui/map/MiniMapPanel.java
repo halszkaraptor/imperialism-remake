@@ -16,12 +16,14 @@
  */
 package org.iremake.client.ui.map;
 
+import java.awt.BasicStroke;
 import org.iremake.client.ui.Model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -80,8 +82,11 @@ public class MiniMapPanel extends JPanel {
 
         // the main map has told us their size, we can draw the focus rectangle
         if (focus.width > 0) {
-            g2d.setColor(Color.gray);
-            g2d.draw3DRect(focus.x - focus.width / 2 + 1, focus.y - focus.height / 2 + 1, focus.width - 2, focus.height - 2, true);
+            Stroke oldStroke = g2d.getStroke();
+            g2d.setStroke(new BasicStroke(2));
+            g2d.setColor(Color.black);
+            g2d.drawRect(focus.x - focus.width / 2 + 1, focus.y - focus.height / 2 + 1, focus.width - 2, focus.height - 2);
+            g2d.setStroke(oldStroke);
         }
     }
 

@@ -21,29 +21,44 @@ import nu.xom.Element;
 import org.tools.xml.XMLable;
 
 /**
- *
+ * A province has an id (int) and a name.
  */
 public class Province implements XMLable {
-    
+
     private int id;
     private String name;
-    
+
+    /**
+     * String representation is always the name, makes it easy to use in UI
+     * elements.
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return name;
     }
-    
     public static final String NAME = "Province";
 
+    /**
+     * Export to XML.
+     *
+     * @return
+     */
     @Override
     public Element toXML() {
         Element element = new Element(NAME);
         element.addAttribute(new Attribute("id", String.valueOf(id)));
         element.addAttribute(new Attribute("name", name));
-        
+
         return element;
     }
 
+    /**
+     * Import from XML.
+     *
+     * @param parent
+     */
     @Override
     public void fromXML(Element parent) {
         throw new UnsupportedOperationException("Not supported yet.");

@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.main;
 
-import org.iremake.client.ui.main.MainScreenManager;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -29,25 +28,32 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.Model;
-import org.tools.ui.layout.RelativeLayout;
-import org.tools.ui.layout.RelativeLayoutConstraint;
+import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
 import org.tools.ui.common.ClockLabel;
 import org.tools.ui.helper.GraphicsUtils;
 import org.tools.ui.helper.WindowCorner;
+import org.tools.ui.layout.RelativeLayout;
+import org.tools.ui.layout.RelativeLayoutConstraint;
 
 /**
- *
+ * Builds the main screen.
  */
 // TODO unmake static
 public class MainScreenBuilder {
 
+    /**
+     * No instantiation.
+     */
     private MainScreenBuilder() {
     }
 
+    /**
+     *
+     * @param owner
+     */
     public static void build(JFrame owner) {
         final MainScreenManager manager = new MainScreenManager();
 
@@ -59,7 +65,7 @@ public class MainScreenBuilder {
 
         manager.setFrame(dialog);
 
-        Model model = new Model();
+        ScenarioUIModel model = new ScenarioUIModel();
         Scenario map = new Scenario();
         manager.setScenarioContent(map, model);
 
@@ -97,6 +103,11 @@ public class MainScreenBuilder {
         manager.loadInitialScenario();
     }
 
+    /**
+     *
+     * @param manager
+     * @return
+     */
     private static JPanel createControlPanel(final MainScreenManager manager) {
         JPanel panel = new JPanel();
 

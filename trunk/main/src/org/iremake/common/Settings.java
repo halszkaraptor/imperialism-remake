@@ -25,8 +25,10 @@ import org.iremake.common.resources.Places;
 import org.tools.xml.common.XTable;
 
 /**
- *
+ * Reads some settings, like ids of Terrain...
  */
+// TODO do we need to know the ids here? (they are defined twice, in the terrain set and in the scenario settings)
+// TODO unmake static
 public class Settings {
 
     private static Map<String, String> terrainTypes = new HashMap<>(0);
@@ -34,6 +36,9 @@ public class Settings {
     private Settings() {
     }
 
+    /**
+     * Load everything.
+     */
     public static void load() {
 
         Element xml = Loader.getAsXML(Places.ScenarioSettings, "terrain.xml");
@@ -51,18 +56,31 @@ public class Settings {
             terrainTypes.put(id, type);
         }
     }
-	
+
+    /**
+     *
+     * @return
+     */
     public static Set<String> getTerrainIDs() {
         return terrainTypes.keySet();
-    }	
+    }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
     public static String getTerrainType(String id) {
         return terrainTypes.get(id);
     }
-    
+
+    /**
+     *
+     * @return
+     */
     public static String getDefaultTerrainID() {
         return "s1"; // sea
-        // TODO softcode
-    }    
+        // TODO softcode this
+    }
 }

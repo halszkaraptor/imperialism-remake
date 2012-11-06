@@ -17,7 +17,6 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JButton;
@@ -27,13 +26,16 @@ import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.ui.helper.GraphicsUtils;
 
 /**
+ * Some common elements needed.
  *
  */
 public class CommonElementsFactory {
 
+    /**
+     * No instantiation.
+     */
     private CommonElementsFactory() {
     }
 
@@ -64,7 +66,7 @@ public class CommonElementsFactory {
      *
      * @param owner
      * @param title
-     * @param modal 
+     * @param modal
      * @param bounds
      * @return
      */
@@ -89,10 +91,9 @@ public class CommonElementsFactory {
     /**
      *
      * The frame is maximized via setting the maximized state instead of
-     * something like
-     *   Dimension s = GraphicsUtils.getScreenSize();
-     *   frame.setBounds(0, 0, s.width, s.height);
-     * The reason is that some OS like Ubuntu react funny on these two lines.
+     * something like Dimension s = GraphicsUtils.getScreenSize();
+     * frame.setBounds(0, 0, s.width, s.height); The reason is that some OS like
+     * Ubuntu react funny on these two lines.
      *
      * @return
      */

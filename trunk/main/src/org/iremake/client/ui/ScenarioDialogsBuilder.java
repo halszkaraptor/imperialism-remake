@@ -33,12 +33,15 @@ import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.common.resources.Places;
 
 /**
- *
+ * Scenario dialogs wiring.
  */
 public class ScenarioDialogsBuilder {
 
     private static final int FIXEDSIZE = 200;
 
+    /**
+     * No instantiation.
+     */
     private ScenarioDialogsBuilder() {
     }
 
@@ -84,13 +87,13 @@ public class ScenarioDialogsBuilder {
 
         return dialog;
     }
-    
+
     private static JPanel makeOverviewMapPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(new LineBorder(Color.black, 1));
 
         return panel;
-    }    
+    }
 
     private static JToolBar loadMenuBar(final JFrame owner) {
         // toolbar

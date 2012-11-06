@@ -31,7 +31,12 @@ import nu.xom.Element;
 import org.tools.xml.XMLHelper;
 
 /**
- * Loads from within the application jar file.
+ * Loads from the data folder.
+ *
+ * The Tools library loads all resources from within their own jar. But here,
+ * for easier editing and size considerations, everything is loaded from a same
+ * parent folder as the executing jar folder, but with different sub directories
+ * (Places).
  */
 // TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class Loader {
@@ -40,10 +45,14 @@ public class Loader {
     // private static final String base = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath(); // path of jar file
     private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
 
+    /**
+     * No instantiation.
+     */
     private Loader() {
     }
 
     /**
+     * Load as an Icon.
      *
      * @param place
      * @param location
@@ -60,6 +69,7 @@ public class Loader {
     }
 
     /**
+     * Load as an Image.
      *
      * @param place
      * @param location
@@ -76,6 +86,7 @@ public class Loader {
     }
 
     /**
+     * Load from an XML file.
      *
      * @param place
      * @param location
@@ -86,16 +97,38 @@ public class Loader {
         return XMLHelper.read(path);
     }
 
+    /**
+     * Just an InputStream from a file.
+     *
+     * @param place
+     * @param location
+     * @return
+     * @throws FileNotFoundException
+     */
     public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
         String path = base + place + location;
         return new FileInputStream(path);
     }
 
+    /**
+     * Just the path.
+     *
+     * @param place
+     * @param location
+     * @return
+     */
     public static String getPath(Places place, String location) {
         // TODO replace folder separator symbol in path ??
         return base + place + location;
     }
 
+    /**
+     * The path as URL.
+     *
+     * @param place
+     * @param location
+     * @return
+     */
     public static URL getURL(Places place, String location) {
         String path = base + place + location;
         try {
@@ -106,6 +139,12 @@ public class Loader {
         }
     }
 
+    /**
+     * If not existent, we sometimes have to create directories.
+     *
+     * @param location
+     * @return
+     */
     public static boolean createDirectory(String location) {
         File file = new File(base + location);
         return file.mkdirs();

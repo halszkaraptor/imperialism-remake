@@ -17,7 +17,7 @@
 package org.iremake.server;
 
 /**
- *
+ * Starting point for the server part.
  */
 public class StartServer {
 

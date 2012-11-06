@@ -19,7 +19,7 @@ package org.iremake.client.ui.battle;
 import javax.swing.JDialog;
 
 /**
- *
+ * Not implemented yet.
  */
 public class BattleMapDialog extends JDialog {
 

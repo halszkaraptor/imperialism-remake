@@ -17,37 +17,69 @@
 package org.iremake.common;
 
 /**
- *
+ * A general position. Used in our context for addressing the position on the
+ * map with (-1,-1) being the generic 'off' value.
  */
 public class MapPosition {
 
+    /**
+     * Two coordinates (row, column).
+     */
     public int row, column;
 
+    /**
+     * Initializes to (0, 0) by default.
+     */
     public MapPosition() {
         this(0, 0);
     }
 
+    /**
+     * Initializes with given row and column.
+     *
+     * @param row
+     * @param column
+     */
     public MapPosition(int row, int column) {
+        // TODO check non-negative or 'off'
         this.row = row;
         this.column = column;
     }
-    
+
+    /**
+     * Set to 'off' state.
+     */
     public void setOff() {
         row = -1;
         column = -1;
     }
 
+    /**
+     * Test if 'off' state
+     *
+     * @return
+     */
     public boolean isOff() {
         return row == -1 && column == -1;
     }
 
+    /**
+     * Set from another position, copy the position.
+     *
+     * @param p
+     */
     public void setFrom(MapPosition p) {
         row = p.row;
         column = p.column;
     }
 
+    /**
+     * Is equal if row and column are equal.
+     *
+     * @param p
+     * @return
+     */
     public boolean equals(MapPosition p) {
         return row == p.row && column == p.column;
     }
-
 }

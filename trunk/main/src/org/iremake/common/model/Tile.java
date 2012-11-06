@@ -17,18 +17,17 @@
 package org.iremake.common.model;
 
 /**
- *
+ * A tile holds it all together. Internally the Scenario is a big map of tiles.
  */
 public class Tile {
-    
+
     public String terrainID;
     public int provinceID;
     public int nationID;
-    
+
     public Tile(String terrainID, int provinceID, int nationID) {
         this.terrainID = terrainID;
         this.provinceID = provinceID;
         this.nationID = nationID;
     }
-    
 }

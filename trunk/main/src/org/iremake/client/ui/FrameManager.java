@@ -20,5 +20,4 @@ package org.iremake.client.ui;
  * Startframe / Mainframe / Editorframe juggling.
  */
 public class FrameManager {
-    
 }

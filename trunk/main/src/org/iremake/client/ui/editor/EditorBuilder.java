@@ -37,7 +37,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.Model;
+import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.common.model.Nation;
@@ -47,11 +47,14 @@ import org.iremake.common.resources.Places;
 import org.tools.xml.common.XList;
 
 /**
- *
+ * Builds the editor as we know it for now.
  */
 // TODO unmake static
 public class EditorBuilder {
 
+    /**
+     * No instantiation.
+     */
     private EditorBuilder() {
     }
 
@@ -71,6 +74,15 @@ public class EditorBuilder {
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
         dialog.add(menuBar);
+
+        // new scenario button
+        JButton newButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.new.png");
+        newButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO create dialog, transfer the manager and start it or simply call (empty map or so)
+            }
+        });
 
         // load scenario button
         JButton loadButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
@@ -121,6 +133,12 @@ public class EditorBuilder {
         manager.loadInitialScenario();
     }
 
+    /**
+     *
+     * @param parent
+     * @param manager
+     * @return
+     */
     private static JPanel buildNationPanel(final Dialog parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
@@ -221,7 +239,7 @@ public class EditorBuilder {
     private static JPanel buildMapPanel(final Dialog parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
-        Model model = new Model();
+        ScenarioUIModel model = new ScenarioUIModel();
         Scenario map = new Scenario();
         manager.setScenarioContent(map, model);
 

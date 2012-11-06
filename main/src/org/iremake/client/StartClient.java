@@ -38,6 +38,7 @@ import org.tools.ui.helper.LookAndFeel;
 /**
  * Main entry point for client.
  */
+// TODO too many things are done in the EDT, check this and put stuff in WorkerThreads
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());

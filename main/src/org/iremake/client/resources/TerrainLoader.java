@@ -26,20 +26,23 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
-import org.iremake.client.ui.map.TerrainTile;
+import org.iremake.client.ui.model.TerrainTile;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.xml.common.XTable;
 
 /**
+ * Loads the terrain tiles from the artwork folder and delivers if needed.
  *
+ * Determines the tile size.
  */
+// TODO unmake static
 public class TerrainLoader {
 
     private static final Logger LOG = Logger.getLogger(TerrainLoader.class.getName());
-
     private static Dimension tileSize;
-    /** */
+    /**
+     *      */
     private static Map<String, TerrainTile> map = new HashMap<>(0);
 
     /**
@@ -49,7 +52,7 @@ public class TerrainLoader {
     }
 
     /**
-     *
+     * Loads everything and determines tile size.
      */
     public static void load() {
 
@@ -76,7 +79,7 @@ public class TerrainLoader {
         // TODO check tileSize is the same for all
         Collection<TerrainTile> tiles = map.values();
         tileSize = null;
-        for (TerrainTile tile: tiles) {
+        for (TerrainTile tile : tiles) {
             int width = tile.getImage().getWidth(null);
             int height = tile.getImage().getHeight(null);
             Dimension size = new Dimension(width, height);
@@ -106,6 +109,12 @@ public class TerrainLoader {
         return map.get(id);
     }
 
+    /**
+     * Parses a six character string (hex presentation) into a Color object.
+     *
+     * @param hex
+     * @return
+     */
     private static Color ColorFromHex(String hex) {
         int r = Integer.parseInt(hex.substring(0, 2), 16);
         int g = Integer.parseInt(hex.substring(2, 4), 16);
@@ -113,8 +122,12 @@ public class TerrainLoader {
         return new Color(r, g, b);
     }
 
+    /**
+     * Returns tile size.
+     *
+     * @return
+     */
     public static Dimension getTileSize() {
         return tileSize; // or copy new?
     }
-
 }

@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.model;
 
 import org.iremake.common.MapPosition;
 
 /**
- *
+ * All possible ways the ScenarioModel can have changed.
  */
-public interface ModelChangedListener {
+public interface ScenarioUIModelChangedListener {
 
     public void tileChanged(MapPosition p);
 

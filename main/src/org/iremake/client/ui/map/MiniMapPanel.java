@@ -17,7 +17,6 @@
 package org.iremake.client.ui.map;
 
 import java.awt.BasicStroke;
-import org.iremake.client.ui.Model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -29,21 +28,27 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.MapPosition;
 
 /**
- *
+ * Mini map panel.
  */
+// TODO different views (political, geographical)
 public class MiniMapPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
     private MiniMapFocusChangedListener focusChangedListener;
-    private Model model;
+    private ScenarioUIModel model;
     private BufferedImage miniMap;
 
-    public MiniMapPanel(Model model) {
+    /**
+     *
+     * @param model
+     */
+    public MiniMapPanel(ScenarioUIModel model) {
 
         this.model = model;
 
@@ -71,6 +76,10 @@ public class MiniMapPanel extends JPanel {
         setOpaque(true); // by default is not
     }
 
+    /**
+     *
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -90,16 +99,28 @@ public class MiniMapPanel extends JPanel {
         }
     }
 
+    /**
+     *
+     */
     private void notifyFocusChangedListener() {
         if (focusChangedListener != null && focus.width > 0) {
             focusChangedListener.newMiniMapFocus((float) focus.x / size.width, (float) focus.y / size.height);
         }
     }
 
+    /**
+     *
+     * @param l
+     */
     public void setFocusChangedListener(MiniMapFocusChangedListener l) {
         focusChangedListener = l;
     }
 
+    /**
+     *
+     * @param fractionRows
+     * @param fractionColumns
+     */
     public void mapChanged(float fractionRows, float fractionColumns) {
 
         size.width = 200;
@@ -118,11 +139,17 @@ public class MiniMapPanel extends JPanel {
         repaint();
     }
 
+    /**
+     *
+     */
     public void tileChanged() {
         redrawMap();
         repaint();
     }
 
+    /**
+     *
+     */
     private void redrawMap() {
         miniMap = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < size.width; x++) {

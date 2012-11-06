@@ -21,37 +21,59 @@ import nu.xom.Element;
 import org.tools.xml.XMLable;
 
 /**
- *
+ * A nation has an id (int) and a name and a color.
  */
 public class Nation implements XMLable {
-    
+
     private final int id;
     private final String name;
     private final String colorcode;
-    
+
+    /**
+     * Set from values.
+     *
+     * @param id
+     * @param name
+     * @param colorcode
+     */
     public Nation(int id, String name, String colorcode) {
         this.id = id;
         this.name = name;
         this.colorcode = colorcode;
     }
-    
+
+    /**
+     * String representation is always the name. Allows easy usage in UI
+     * elements.
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return name;
     }
-
     private static final String NAME = "Nation";
-    
+
+    /**
+     * Export to XML.
+     *
+     * @return
+     */
     @Override
     public Element toXML() {
         Element element = new Element(NAME);
         element.addAttribute(new Attribute("id", String.valueOf(id)));
         element.addAttribute(new Attribute("name", name));
         element.addAttribute(new Attribute("colorcode", colorcode));
-        
+
         return element;
     }
 
+    /**
+     * Import from XML.
+     *
+     * @param parent
+     */
     @Override
     public void fromXML(Element parent) {
         throw new UnsupportedOperationException("Not supported yet.");

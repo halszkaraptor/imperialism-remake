@@ -17,11 +17,12 @@
 package org.iremake.client.ui.map;
 
 /**
- *
+ * Changes in the mini map are just that the focus changes.
  */
 public interface MiniMapFocusChangedListener {
 
     /**
+     * Changed the focus.
      *
      * @param x
      * @param y

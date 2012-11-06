@@ -25,10 +25,13 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
- *
+ * Options dialog wiring.
  */
 public class OptionsDialogBuilder {
 
+    /**
+     * No instantiation.
+     */
     private OptionsDialogBuilder() {
     }
 
@@ -65,6 +68,10 @@ public class OptionsDialogBuilder {
         return dialog;
     }
 
+    /**
+     *
+     * @return
+     */
     private static JPanel generalOptionsPanel() {
         JPanel panel = new JPanel();
         return panel;

@@ -19,11 +19,20 @@ package org.iremake.common.model;
 import org.iremake.common.MapPosition;
 
 /**
- *
+ * All the ways the scenario can have changed.
  */
 public interface ScenarioChangedListener {
 
+    /**
+     *
+     * @param p
+     * @param id
+     */
     public void tileChanged(MapPosition p, String id);
 
+    /**
+     *
+     * @param scenario
+     */
     public void mapChanged(Scenario scenario);
 }

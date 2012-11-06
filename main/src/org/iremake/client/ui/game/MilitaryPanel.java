@@ -19,7 +19,7 @@ package org.iremake.client.ui.game;
 import javax.swing.JPanel;
 
 /**
- *
+ * Not yet implemented.
  */
 public class MilitaryPanel extends JPanel {
 

@@ -19,7 +19,7 @@ package org.iremake.client.ui.battle;
 import javax.swing.JPanel;
 
 /**
- *
+ * Not implemented yet.
  */
 public class BattleMiniMapPanel extends JPanel {
 

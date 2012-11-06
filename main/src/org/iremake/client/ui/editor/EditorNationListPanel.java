@@ -19,8 +19,7 @@ package org.iremake.client.ui.editor;
 import javax.swing.JPanel;
 
 /**
- *
+ * Not yet implemented.
  */
 public class EditorNationListPanel extends JPanel {
-    
 }

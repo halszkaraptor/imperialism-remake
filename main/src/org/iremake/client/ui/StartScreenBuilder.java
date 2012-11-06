@@ -41,6 +41,7 @@ import org.tools.ui.layout.RelativeLayout;
 import org.tools.ui.layout.RelativeLayoutConstraint;
 
 /**
+ * Initial building of the start screen.
  *
  */
 // TODO Dialogs and Frames are disposed now when they aren't needed, maybe for performance reason they should be re-used
@@ -49,9 +50,17 @@ import org.tools.ui.layout.RelativeLayoutConstraint;
 // TODO background of dialogs is not white (panel in contentpane?)
 public class StartScreenBuilder {
 
+    /**
+     * No instantiation.
+     */
     private StartScreenBuilder() {
     }
 
+    /**
+     * Makes the start frame.
+     *
+     * @return
+     */
     public static JFrame makeFrame() {
         JFrame frame = CommonElementsFactory.makeFrame();
 
@@ -108,6 +117,12 @@ public class StartScreenBuilder {
         return frame;
     }
 
+    /**
+     * Makes the menu bar.
+     *
+     * @param owner
+     * @return
+     */
     private static JToolBar menuBar(final JFrame owner) {
         // tool bar
         JToolBar bar = CommonElementsFactory.makeToolBar();

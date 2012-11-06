@@ -14,45 +14,69 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.model;
 
 import java.awt.Color;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.map.TerrainTile;
+import org.iremake.client.ui.model.TerrainTile;
 import org.iremake.common.MapPosition;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.model.ScenarioChangedListener;
 
 /**
+ * The model for a Scenario from a User Interface perspective. Add all user
+ * interface specific stuff, mostly graphics.
  *
  */
-public class Model implements ScenarioChangedListener {
+// TODO fine-adjust playing together with Scenario
+public class ScenarioUIModel implements ScenarioChangedListener {
 
-    private static final Logger LOG = Logger.getLogger(Model.class.getName());
-
+    private static final Logger LOG = Logger.getLogger(ScenarioUIModel.class.getName());
     private int rows;
     private int columns;
     private TerrainTile[][] map; // first rows, then columns
-    private ModelChangedListener listener;
+    private ScenarioUIModelChangedListener listener;
 
-    public Model() {
+    /**
+     *
+     */
+    public ScenarioUIModel() {
     }
 
+    /**
+     * Width of game map.
+     *
+     * @return
+     */
     public int getNumberRows() {
         return rows;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumberColumns() {
         return columns;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean contains(MapPosition p) {
         return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Image getTileAt(MapPosition p) {
         if (!contains(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
@@ -61,6 +85,11 @@ public class Model implements ScenarioChangedListener {
         return map[p.row][p.column].getImage();
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Color getTileColorAt(MapPosition p) {
         if (!contains(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
@@ -69,6 +98,11 @@ public class Model implements ScenarioChangedListener {
         return map[p.row][p.column].getColor();
     }
 
+    /**
+     *
+     * @param p
+     * @param id
+     */
     @Override
     public void tileChanged(MapPosition p, String id) {
         // TODO check size
@@ -83,6 +117,10 @@ public class Model implements ScenarioChangedListener {
         }
     }
 
+    /**
+     *
+     * @param gmap
+     */
     @Override
     public void mapChanged(Scenario gmap) {
         rows = gmap.getNumberRows();
@@ -108,7 +146,11 @@ public class Model implements ScenarioChangedListener {
         }
     }
 
-    public void setScenarioChangedListener(ModelChangedListener l) {
+    /**
+     *
+     * @param l
+     */
+    public void setScenarioChangedListener(ScenarioUIModelChangedListener l) {
         listener = l;
     }
 }

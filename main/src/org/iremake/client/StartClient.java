@@ -38,15 +38,19 @@ import org.tools.ui.helper.LookAndFeel;
 /**
  * Main entry point for client.
  */
-// TODO logging into a file
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
 
+    /**
+     * No instantiation.
+     */
     private StartClient() {
     }
 
     /**
+     * Main entry point for the application.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -76,6 +80,9 @@ public class StartClient {
 
     }
 
+    /**
+     * Install Fonts
+     */
     public static void installFonts() {
         FontUIResource r = (FontUIResource) UIManager.get("Label.font");
         Font font = null;
@@ -89,11 +96,14 @@ public class StartClient {
         UIManager.put("Label.font", new FontUIResource(font));
     }
 
+    /**
+     * Shut down clean up.
+     */
     public static void shutDown() {
     }
 
     /**
-     *
+     * Setup logger
      */
     private static void setupLogger() throws IOException {
 

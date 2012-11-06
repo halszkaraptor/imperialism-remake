@@ -29,19 +29,16 @@ import org.tools.xml.common.XList;
 import org.tools.xml.common.XProperty;
 
 /**
- *
+ * The full internal Scenario model.
  */
 public class Scenario implements XMLable {
 
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
-
     private int rows;
     private int columns;
     private Tile[][] map;
-    
     private XList<Nation> nations = new XList<>(Nation.class);
     private XList<Province> provinces = new XList<>(Province.class);
-
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     public Scenario() {
@@ -49,6 +46,7 @@ public class Scenario implements XMLable {
 
     /**
      * A sea(1) map.
+     *
      * @param rows
      * @param columns
      */
@@ -68,18 +66,31 @@ public class Scenario implements XMLable {
         fireMapChanged();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean checkConsistency() {
         // TODO size and length of map are consistent, ids are valid and only 2 letters long
         return true;
     }
 
-    private boolean contains(MapPosition p) {
+    /**
+     *
+     * @param p
+     * @return
+     */
+    private boolean containsPosition(MapPosition p) {
         return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
 
-
+    /**
+     *
+     * @param p
+     * @param id
+     */
     public void setTerrainAt(MapPosition p, String id) {
-        if (!contains(p)) {
+        if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
         }
@@ -87,46 +98,78 @@ public class Scenario implements XMLable {
         fireTileChanged(p);
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public String getTerrainAt(MapPosition p) {
-        if (!contains(p)) {
+        if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
         return map[p.row][p.column].terrainID;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumberRows() {
         return rows;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumberColumns() {
         return columns;
     }
 
+    /**
+     *
+     * @param l
+     */
     public void addMapChangedListener(ScenarioChangedListener l) {
         listeners.add(l);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void removeMapChangedListener(ScenarioChangedListener l) {
         listeners.remove(l);
     }
 
+    /**
+     *
+     * @param p
+     */
     private void fireTileChanged(MapPosition p) {
         String id = map[p.row][p.column].terrainID;
-        for (ScenarioChangedListener l: listeners) {
+        for (ScenarioChangedListener l : listeners) {
             l.tileChanged(p, id);
         }
     }
 
+    /**
+     *
+     */
     private void fireMapChanged() {
-        for (ScenarioChangedListener l: listeners) {
+        for (ScenarioChangedListener l : listeners) {
             l.mapChanged(this);
         }
     }
-
     private static final String NAME = "Scenario";
     private static final String NAME_MAP = "Geographical-Map";
 
+    /**
+     * Export to XML.
+     *
+     * @return
+     */
     @Override
     public Element toXML() {
         Element parent = new Element(NAME);
@@ -148,19 +191,24 @@ public class Scenario implements XMLable {
         Element child = new Element(NAME_MAP);
         child.appendChild(builder.toString());
         parent.appendChild(child);
-        
+
         // nation list
         parent.appendChild(nations.toXML());
-        
+
         // provinces list
         parent.appendChild(provinces.toXML());
 
         return parent;
     }
 
+    /**
+     * Import from XML.
+     *
+     * @param parent
+     */
     @Override
     public void fromXML(Element parent) {
-        
+
         // clear (?)
 
         if (parent == null || !NAME.equals(parent.getLocalName())) {
@@ -189,6 +237,7 @@ public class Scenario implements XMLable {
             }
         }
 
+        // Of course everything has changed.
         fireMapChanged();
     }
 }

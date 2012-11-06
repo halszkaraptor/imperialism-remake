@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.map;
 
-import org.iremake.client.ui.Model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,10 +26,11 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.MapPosition;
 
 /**
- *
+ * The Main map display, currently used in the editor.
  */
 // TODO drawing into border? (make border thicker, then you see it)
 public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener {
@@ -38,19 +38,23 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private MainMapTileListener tileListener;
-    private Model model;
+    private ScenarioUIModel model;
     private Dimension tileSize;
     private MapPosition offset = new MapPosition();
     private MapPosition hoover = new MapPosition();
 
-    public MainMapPanel(final Model model) {
+    /**
+     *
+     * @param model
+     */
+    public MainMapPanel(final ScenarioUIModel model) {
 
         this.model = model;
 
         tileSize = TerrainLoader.getTileSize();
 
         setOpaque(true);
-        
+
         hoover.setOff();
 
         setBackground(Color.white);
@@ -100,6 +104,13 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     }
 
+    /**
+     * From mouse to tile.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     private MapPosition getPositionFromXY(int x, int y) {
         MapPosition p = new MapPosition();
         p.row = y / tileSize.height + offset.row;
@@ -109,6 +120,11 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         return p;
     }
 
+    /**
+     * Paints tiles and focus rectangle.
+     *
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -167,22 +183,38 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
     }
 
+    /**
+     *
+     */
     private void notifyTileFocusChangedListeners() {
         if (tileListener != null) {
             tileListener.focusChanged(hoover);
         }
     }
 
+    /**
+     *
+     * @param p
+     */
     private void notifyTileClickedListeners(MapPosition p) {
         if (tileListener != null) {
             tileListener.tileClicked(p);
         }
     }
 
+    /**
+     *
+     * @param l
+     */
     public void setTileListener(MainMapTileListener l) {
         tileListener = l;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     @Override
     public void newMiniMapFocus(float x, float y) {
         // update offset row/column accordingly
@@ -197,10 +229,17 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
     }
 
+    /**
+     *
+     * @param p
+     */
     public void tileChanged(MapPosition p) {
         repaint();
     }
 
+    /**
+     *
+     */
     public void mapChanged() {
         repaint();
     }

@@ -18,7 +18,6 @@ package org.iremake.client.ui.editor;
 
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -34,23 +33,31 @@ import org.iremake.client.resources.TerrainLoader;
 import org.iremake.common.Settings;
 
 /**
- *
+ * New Terrain is Selected. A modal dialog.
  */
 public class EditorSelectionTerrainDialog extends JDialog implements ActionListener {
-    
+
     private EditorManager manager;
     // TODO could be a listener only
 
+    /**
+     *
+     * @param owner
+     * @param manager
+     */
     public EditorSelectionTerrainDialog(Dialog owner, EditorManager manager) {
         super(owner, "Terrain Selection", true);
         this.manager = manager;
         initComponents();
     }
 
+    /**
+     *
+     */
     private void initComponents() {
         final int gap = 10;
         final Dimension tileSize = TerrainLoader.getTileSize();
-        
+
         setLocationByPlatform(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -69,10 +76,10 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
             c = l + 1;
         }
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(r, c, gap, gap));        
+        panel.setLayout(new GridLayout(r, c, gap, gap));
         panel.setBorder(new EmptyBorder(gap, gap, gap, gap));
-        
-        for (String id: IDs) {
+
+        for (String id : IDs) {
             JButton button = new JButton();
             button.setIcon(new ImageIcon(TerrainLoader.getTile(id).getImage()));
             button.setMargin(new Insets(0, 0, 0, 0));
@@ -83,10 +90,15 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
             panel.add(button);
         }
         add(panel);
-        
+
         pack();
     }
 
+    /**
+     * Catch the various buttons and tell the manager about it.
+     *
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String id = ((JButton) e.getSource()).getName();

@@ -17,7 +17,7 @@
 package org.iremake.common.resources;
 
 /**
- *
+ * Logical structure of the data folders, used for input/output.
  */
 public enum Places {
 

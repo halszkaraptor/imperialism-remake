@@ -25,6 +25,7 @@ import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
 
 /**
+ * The map info panel, located at the left lower part of the map tab.
  *
  */
 public class EditorMapInfoPanel extends JPanel {
@@ -33,6 +34,10 @@ public class EditorMapInfoPanel extends JPanel {
     private JLabel tile;
     private Scenario map;
 
+    /**
+     *
+     * @param map
+     */
     public EditorMapInfoPanel(Scenario map) {
         setBorder(new LineBorder(Color.black, 1));
 
@@ -42,6 +47,11 @@ public class EditorMapInfoPanel extends JPanel {
         this.map = map;
     }
 
+    /**
+     * Focus changed of main map.
+     *
+     * @param p
+     */
     public void mainMapTileChanged(MapPosition p) {
         if (p.isOff()) {
             tile.setText("");

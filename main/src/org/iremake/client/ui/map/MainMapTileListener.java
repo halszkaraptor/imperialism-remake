@@ -19,12 +19,19 @@ package org.iremake.client.ui.map;
 import org.iremake.common.MapPosition;
 
 /**
- * The mouse moved over another tile on the main map.
+ * Changes of the main map, mainly due to mouse actions (moves or clicks).
  */
 public interface MainMapTileListener {
 
+    /**
+     *
+     * @param p
+     */
     public void focusChanged(MapPosition p);
 
+    /**
+     *
+     * @param p
+     */
     public void tileClicked(MapPosition p);
-
 }

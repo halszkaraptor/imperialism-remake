@@ -126,6 +126,17 @@ public class Scenario implements XMLable {
     public int getNumberColumns() {
         return columns;
     }
+    
+    // TODO sort alphabetically
+    public void addNation(Nation nation) {
+        // TODO add element at end
+        nations.addElement(nation);
+        // TODO fire something
+    }
+    
+    public Nation getNation(int index) {
+        return nations.getElementAt(index);
+    }
 
     /**
      *
@@ -236,6 +247,8 @@ public class Scenario implements XMLable {
                 p += 2;
             }
         }
+        
+        // TODO reading of Nations and Provinces
 
         // Of course everything has changed.
         fireMapChanged();

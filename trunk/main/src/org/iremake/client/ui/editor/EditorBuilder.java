@@ -29,6 +29,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -153,6 +154,7 @@ public class EditorBuilder {
         // create menu bar and add to panel
         JToolBar nationsBar = CommonElementsFactory.makeToolBar();
         nations.add(nationsBar);
+        // TODO load images
         JButton addnationButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         nationsBar.add(addnationButton);
         JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
@@ -161,9 +163,42 @@ public class EditorBuilder {
         nationsBar.add(changenationButton);
 
         // list
-        JList<Nation> nationList = new JList<>();
+        final JList<Nation> nationList = new JList<>();
         nationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         nationList.setModel(new XList<>(Nation.class));
+
+        // set button actions
+        addnationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = JOptionPane.showInputDialog(parent, "Enter new Nation's name:");
+                if (name != null) {
+                    // need new valid id
+                    Nation nation = new Nation(0, name, "");
+                    // tell the manager
+                    // TODO implement
+                }
+            }
+        });
+        removenationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = nationList.getSelectedIndex();
+                if (row != -1) {
+                    // TODO implement
+                }
+            }
+        });
+        changenationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = nationList.getSelectedIndex();
+                if (row != -1) {
+                    // TODO implement
+                }
+            }
+        });
+
 
         // ScrollPane
         JScrollPane nationScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -191,6 +226,7 @@ public class EditorBuilder {
         // create menu bar and add to panel
         JToolBar provinceBar = CommonElementsFactory.makeToolBar();
         provinces.add(provinceBar);
+        // TODO load images
         JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         provinceBar.add(addprovinceButton);
         JButton removeprovinceButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
@@ -199,9 +235,42 @@ public class EditorBuilder {
         provinceBar.add(changeprovinceButton);
 
         // list
-        JList<Province> provinceList = new JList<>();
+        final JList<Province> provinceList = new JList<>();
         provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         provinceList.setModel(new XList<>(Province.class));
+        
+
+        // set button actions
+        addprovinceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = JOptionPane.showInputDialog(parent, "Enter new Province's name:");
+                if (name != null) {
+                    // need new valid id
+                    
+                    // tell the manager
+                    // TODO implement
+                }
+            }
+        });
+        removeprovinceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = provinceList.getSelectedIndex();
+                if (row != -1) {
+                    // TODO implement
+                }
+            }
+        });
+        changeprovinceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = provinceList.getSelectedIndex();
+                if (row != -1) {
+                    // TODO implement
+                }
+            }
+        });
 
         // ScrollPane
         JScrollPane provinceScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

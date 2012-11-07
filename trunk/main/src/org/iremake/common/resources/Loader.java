@@ -121,6 +121,17 @@ public class Loader {
         // TODO replace folder separator symbol in path ??
         return base + place + location;
     }
+    
+    /**
+     * 
+     * @param place
+     * @param location
+     * @return 
+     */
+    public static boolean exists(Places place, String location) {
+        String path = base + place + location;
+        return (new File(path)).exists();
+    }
 
     /**
      * The path as URL.

@@ -28,12 +28,15 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import nu.xom.Element;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.common.Settings;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
 import org.tools.ui.helper.LookAndFeel;
+import org.tools.xml.XMLHelper;
+import org.tools.xml.common.XProperty;
 
 /**
  * Main entry point for client.
@@ -42,6 +45,8 @@ import org.tools.ui.helper.LookAndFeel;
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
+    
+    private static XProperty options = new XProperty(0);
 
     /**
      * No instantiation.
@@ -62,10 +67,15 @@ public class StartClient {
             // set look and feel
             LookAndFeel.setSystemLookAndFeel();
 
+            // install font
             installFonts();
 
+            // load terrain and scenario settings
             TerrainLoader.load();
             Settings.load();
+            
+            // load preferences
+            StartClient.loadPreferences();
 
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {
@@ -101,6 +111,9 @@ public class StartClient {
      * Shut down clean up.
      */
     public static void shutDown() {
+        
+        // save preferences
+        StartClient.savePreferences();
     }
 
     /**
@@ -119,5 +132,23 @@ public class StartClient {
 
         // our first log message (just to get the date and time)
         LOG.log(Level.INFO, "Logger is setup");
+    }
+    
+    private static void loadPreferences() {
+        // either load the options or the default options
+        String name = "options.xml";
+        if (Loader.exists(Places.Common, name) == false) {
+            name = "options.default.xml";
+        }
+        String location = Loader.getPath(Places.Common, name);
+        
+        // read options from that location
+        XMLHelper.read(location, options);
+    }
+    
+    private static void savePreferences() {
+        String location = Loader.getPath(Places.Common, "options.xml");
+        
+        XMLHelper.write(location, options);
     }
 }

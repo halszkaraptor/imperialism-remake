@@ -18,6 +18,7 @@ package org.iremake.client.network;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.DebugConsole;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.Channel;
@@ -38,16 +39,11 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     private static final Logger LOG = Logger.getLogger(ClientHandler.class.getName());
     private long transferredBytes;
     private final byte[] content;
+    private DebugConsole console;
 
-    public ClientHandler(int messageSize) {
-        if (messageSize <= 0) {
-            throw new IllegalArgumentException("messageSize: " + messageSize);
-        }
-        content = new byte[messageSize];
-    }
-
-    public long getTransferredBytes() {
-        return transferredBytes;
+    public ClientHandler(DebugConsole console) {
+        this.console = console;
+        content = new byte[20];
     }
 
     @Override
@@ -64,6 +60,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
+        console.displayMessage("[Client] connected");
         // Send the initial messages.
         generateTraffic(e);
     }
@@ -76,6 +73,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
+        console.displayMessage("[Client] received: " + e.getMessage());
         // Server is supposed to send nothing.  Therefore, do nothing.
     }
 
@@ -88,6 +86,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
         // Close the connection when an exception is raised.
         LOG.log(Level.WARNING, "Unexpected exception from downstream.", e.getCause());
+        console.displayMessage("[Client] exception: " + e.getCause());
         e.getChannel().close();
     }
 
@@ -102,6 +101,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
             if (m == null) {
                 break;
             }
+            console.displayMessage(m.toString());
             channel.write(m);
         }
     }

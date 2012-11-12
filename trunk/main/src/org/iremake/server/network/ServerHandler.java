@@ -18,6 +18,7 @@ package org.iremake.server.network;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.DebugConsole;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -33,9 +34,15 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
 
     private static final Logger LOG = Logger.getLogger(ServerHandler.class.getName());
     private long transferredBytes;
+    private DebugConsole console;
 
-    public long getTransferredBytes() {
-        return transferredBytes;
+    /**
+     * Use null if you don't need it.
+     *
+     * @param console
+     */
+    public ServerHandler(DebugConsole console) {
+        this.console = console;
     }
 
     @Override
@@ -50,7 +57,9 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
-        // Discard received data silently by doing nothing.
+        if (console != null) {
+            console.displayMessage("[Server] received: " + e.getMessage());
+        }
         transferredBytes += ((ChannelBuffer) e.getMessage()).readableBytes();
     }
 
@@ -58,6 +67,11 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
         // Close the connection when an exception is raised.
         LOG.log(Level.WARNING, "Unexpected exception from downstream.", e.getCause());
+
+        if (console != null) {
+            console.displayMessage("[Server] exception: " + e.getCause());
+        }
+
         e.getChannel().close();
     }
 }

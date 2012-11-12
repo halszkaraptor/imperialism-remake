@@ -18,6 +18,7 @@ package org.iremake.server.network;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
+import org.iremake.common.network.LoggingDebugConsole;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -45,7 +46,7 @@ public class StartServer {
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             @Override
             public ChannelPipeline getPipeline() throws Exception {
-                return Channels.pipeline(new ServerHandler());
+                return Channels.pipeline(new ServerHandler(new LoggingDebugConsole()));
             }
         });
 

@@ -18,6 +18,7 @@ package org.iremake.client.network;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
+import org.iremake.common.network.LoggingDebugConsole;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -49,7 +50,7 @@ public class Client {
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             @Override
             public ChannelPipeline getPipeline() throws Exception {
-                return Channels.pipeline(new ClientHandler(firstMessageSize));
+                return Channels.pipeline(new ClientHandler(new LoggingDebugConsole()));
             }
         });
 

@@ -19,8 +19,7 @@ package org.iremake.client.network;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.DebugConsole;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
+import org.iremake.common.network.messages.Messages;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -37,15 +36,13 @@ import org.jboss.netty.channel.WriteCompletionEvent;
 public class ClientHandler extends SimpleChannelUpstreamHandler {
 
     private static final Logger LOG = Logger.getLogger(ClientHandler.class.getName());
-    private long transferredBytes;
-    private final byte[] content;
     private DebugConsole console;
-    // Stateful properties
+
+    // stateful properties
     private volatile Channel channel;
 
     public ClientHandler(DebugConsole console) {
         this.console = console;
-        content = new byte[20];
     }
 
     @Override
@@ -61,8 +58,7 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     }
 
     @Override
-    public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e)
-            throws Exception {
+    public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e) throws Exception {
         channel = e.getChannel();
         super.channelOpen(ctx, e);
     }
@@ -70,25 +66,23 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
         console.displayMessage("[Client] connected");
-        // Send the initial messages.
-        generateTraffic(e);
     }
 
     @Override
     public void channelInterestChanged(ChannelHandlerContext ctx, ChannelStateEvent e) {
-        // Keep sending messages whenever the current socket buffer has room.
-        generateTraffic(e);
     }
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
-        console.displayMessage("[Client] received: " + e.getMessage());
-        // Server is supposed to send nothing.  Therefore, do nothing.
+        // it's a Message.Msg
+        Messages.Msg message = (Messages.Msg) e.getMessage();
+
+        console.displayMessage("[Client] received: " + message.getType());
     }
 
     @Override
     public void writeComplete(ChannelHandlerContext ctx, WriteCompletionEvent e) {
-        transferredBytes += e.getWrittenAmount();
+        // transferredBytes += e.getWrittenAmount();
     }
 
     @Override
@@ -97,25 +91,5 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
         LOG.log(Level.WARNING, "Unexpected exception from downstream.", e.getCause());
         console.displayMessage("[Client] exception: " + e.getCause());
         e.getChannel().close();
-    }
-
-    private void generateTraffic(ChannelStateEvent e) {
-        // Keep generating traffic until the channel is unwritable.
-        // A channel becomes unwritable when its internal buffer is full.
-        // If you keep writing messages ignoring this property,
-        // you will end up with an OutOfMemoryError.
-        Channel channel = e.getChannel();
-        while (channel.isWritable()) {
-            ChannelBuffer m = nextMessage();
-            if (m == null) {
-                break;
-            }
-            console.displayMessage(m.toString());
-            channel.write(m);
-        }
-    }
-
-    private ChannelBuffer nextMessage() {
-        return ChannelBuffers.wrappedBuffer(content);
     }
 }

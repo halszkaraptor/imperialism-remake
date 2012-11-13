@@ -38,9 +38,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
@@ -84,6 +84,7 @@ public class EditorBuilder {
                 // TODO create dialog, transfer the manager and start it or simply call (empty map or so)
             }
         });
+        menuBar.add(newButton);
 
         // load scenario button
         JButton loadButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
@@ -155,7 +156,7 @@ public class EditorBuilder {
         JToolBar nationsBar = CommonElementsFactory.makeToolBar();
         nations.add(nationsBar);
         // TODO load images
-        JButton addnationButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+        JButton addnationButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "generic.button.add.png");
         nationsBar.add(addnationButton);
         JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         nationsBar.add(removenationButton);
@@ -238,7 +239,7 @@ public class EditorBuilder {
         final JList<Province> provinceList = new JList<>();
         provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         provinceList.setModel(new XList<>(Province.class));
-        
+
 
         // set button actions
         addprovinceButton.addActionListener(new ActionListener() {
@@ -247,7 +248,7 @@ public class EditorBuilder {
                 String name = JOptionPane.showInputDialog(parent, "Enter new Province's name:");
                 if (name != null) {
                     // need new valid id
-                    
+
                     // tell the manager
                     // TODO implement
                 }

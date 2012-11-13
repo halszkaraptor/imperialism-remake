@@ -1,0 +1,7 @@
+package messages;
+
+option java_package = "org.iremake.common.network.messages";
+
+message Register {
+  required string name = 1;
+}

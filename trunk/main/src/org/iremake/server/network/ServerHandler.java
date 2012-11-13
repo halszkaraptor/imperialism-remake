@@ -61,6 +61,8 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
             console.displayMessage("[Server] received: " + e.getMessage());
         }
         transferredBytes += ((ChannelBuffer) e.getMessage()).readableBytes();
+        
+        // e.getChannel().write(xxx); // the answer
     }
 
     @Override

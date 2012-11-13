@@ -47,12 +47,7 @@ public class Client {
                 Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
 
         // Set up the pipeline factory.
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-            @Override
-            public ChannelPipeline getPipeline() throws Exception {
-                return Channels.pipeline(new ClientHandler(new LoggingDebugConsole()));
-            }
-        });
+        bootstrap.setPipelineFactory(new ClientPipelineFactory());
 
         // Start the connection attempt.
         ChannelFuture future = bootstrap.connect(new InetSocketAddress(host, port));

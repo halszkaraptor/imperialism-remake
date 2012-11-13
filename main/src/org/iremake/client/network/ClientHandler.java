@@ -40,6 +40,8 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
     private long transferredBytes;
     private final byte[] content;
     private DebugConsole console;
+    // Stateful properties
+    private volatile Channel channel;
 
     public ClientHandler(DebugConsole console) {
         this.console = console;
@@ -56,6 +58,13 @@ public class ClientHandler extends SimpleChannelUpstreamHandler {
 
         // Let SimpleChannelHandler call actual event handler methods below.
         super.handleUpstream(ctx, e);
+    }
+
+    @Override
+    public void channelOpen(ChannelHandlerContext ctx, ChannelStateEvent e)
+            throws Exception {
+        channel = e.getChannel();
+        super.channelOpen(ctx, e);
     }
 
     @Override

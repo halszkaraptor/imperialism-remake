@@ -42,8 +42,9 @@ import org.tools.xml.XMLHelper;
 public class Loader {
 
     private static final Logger LOG = Logger.getLogger(Loader.class.getName());
-    // private static final String base = Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath(); // path of jar file
-    private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
+    private static final String base = "";
+    // private static final String base = (new File(Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath())).getParent() + File.separator;
+    // private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
 
     /**
      * No instantiation.

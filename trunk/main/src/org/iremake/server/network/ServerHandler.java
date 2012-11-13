@@ -19,6 +19,7 @@ package org.iremake.server.network;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.DebugConsole;
+import org.iremake.common.network.messages.Messages;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelEvent;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -33,7 +34,6 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 public class ServerHandler extends SimpleChannelUpstreamHandler {
 
     private static final Logger LOG = Logger.getLogger(ServerHandler.class.getName());
-    private long transferredBytes;
     private DebugConsole console;
 
     /**
@@ -57,11 +57,13 @@ public class ServerHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
+        // it's a Message.Msg
+        Messages.Msg message = (Messages.Msg) e.getMessage();
+
         if (console != null) {
-            console.displayMessage("[Server] received: " + e.getMessage());
+            console.displayMessage("[Server] received: " + message.getType());
         }
-        transferredBytes += ((ChannelBuffer) e.getMessage()).readableBytes();
-        
+
         // e.getChannel().write(xxx); // the answer
     }
 

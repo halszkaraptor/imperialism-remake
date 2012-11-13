@@ -17,6 +17,7 @@
 package org.iremake.client.network;
 
 import org.iremake.common.network.LoggingDebugConsole;
+import org.iremake.common.network.messages.Messages;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
@@ -33,10 +34,10 @@ public class ClientPipelineFactory implements ChannelPipelineFactory {
     @Override
     public ChannelPipeline getPipeline() throws Exception {
         ChannelPipeline p = Channels.pipeline();
-        
+
         // ChannelBuffer to protocol buffer
         p.addLast("frameDecoder", new ProtobufVarint32FrameDecoder());
-        p.addLast("protobufDecoder", new ProtobufDecoder(null)); // TODO need message prototype??
+        p.addLast("protobufDecoder", new ProtobufDecoder(Messages.Msg.getDefaultInstance()));
 
         // protocol buffer to message
         p.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());

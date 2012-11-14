@@ -16,21 +16,9 @@
  */
 package org.iremake.common.network.messages;
 
-import com.esotericsoftware.kryo.Kryo;
-
 /**
- * Registration of Message classes to the Kryo serializer.
+ *
  */
-public class KryoRegistration {
-    
-    public static void register(Kryo kryo) {
-        kryo.register(ActionMessage.class);
-        
-        kryo.register(TextMessage.class);
-        kryo.register(TextMessage.Type.class);
-        
-        kryo.register(NumberMessage.class);
-        kryo.register(NumberMessage.Type.class);
-    }
-    
+public enum ActionMessage implements Message {
+    REGISTER;
 }

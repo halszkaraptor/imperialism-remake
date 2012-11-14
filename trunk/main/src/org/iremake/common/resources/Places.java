@@ -22,7 +22,7 @@ package org.iremake.common.resources;
 public enum Places {
 
     None(""),
-    LOG("log/"),
+    Log("log/"),
     Help("data/help/"),
     
     Common("data/game/common/"),

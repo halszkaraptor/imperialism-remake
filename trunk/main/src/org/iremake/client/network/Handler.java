@@ -19,6 +19,7 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.NumberMessage;
 
 /**
  * Handling of received messages on the client side.
@@ -38,7 +39,12 @@ public class Handler extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
-            
+            if (object instanceof NumberMessage) {
+                NumberMessage message = (NumberMessage) object;
+                if (NumberMessage.Type.ID.equals(message.getType())) {
+                    System.out.println("[Client] My new ID is: " + message.getNumber());
+                }
+            }
         } else {
             // TODO log unexpected types of objects
         }

@@ -16,7 +16,6 @@
  */
 package org.iremake.client.network;
 
-import com.google.protobuf.Message;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import org.iremake.common.network.messages.Messages;
@@ -24,7 +23,6 @@ import org.iremake.common.network.messages.Messages.Msg;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
-import org.jboss.netty.channel.ChannelFutureListener;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 
 /**
@@ -61,9 +59,10 @@ public class Client {
 
         Channel channel = future.getChannel();
 
+        Messages.Msg message = Messages.Msg.newBuilder().setType(Msg.Type.TEXT).build();
         channel.write(message);
 
-        channel.close().awaitUninterruptibly();
+        channel.getCloseFuture().awaitUninterruptibly();
         bootstrap.releaseExternalResources();
 
         return true;

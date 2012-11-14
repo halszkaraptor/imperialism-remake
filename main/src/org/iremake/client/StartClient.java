@@ -125,7 +125,7 @@ public class StartClient {
         // if log directory not yet existing, create it
 
         // setup of the logger
-        Handler handler = new FileHandler(Loader.getPath(Places.LOG, "remake%g.log"), (int) 1e5, 10, false);
+        Handler handler = new FileHandler(Loader.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
         handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
         handler.setLevel(Level.INFO);
         Logger.getLogger("").addHandler(handler);

@@ -19,20 +19,21 @@ package org.iremake.common.network.messages;
 /**
  * Just a String and a enumeration indicating which type the message is.
  */
-public class TextMessage implements Message {
+public final class TextMessage implements Message {
     
     private String text;
     private Type type;
     
     public enum Type {
-        VERSION, REGISTER;
+        Version, Error, ClientName;
     }
     
     private TextMessage() {
     }
     
-    public TextMessage(String text) {
+    public TextMessage(String text, Type type) {
         this.text = text;
+        this.type = type;
     }
     
     public String getText() {

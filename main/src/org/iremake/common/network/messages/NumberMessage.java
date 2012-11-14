@@ -16,21 +16,31 @@
  */
 package org.iremake.common.network.messages;
 
-import com.esotericsoftware.kryo.Kryo;
-
 /**
- * Registration of Message classes to the Kryo serializer.
+ *
  */
-public class KryoRegistration {
+public final class NumberMessage implements Message {
     
-    public static void register(Kryo kryo) {
-        kryo.register(ActionMessage.class);
-        
-        kryo.register(TextMessage.class);
-        kryo.register(TextMessage.Type.class);
-        
-        kryo.register(NumberMessage.class);
-        kryo.register(NumberMessage.Type.class);
+    private int number;
+    private Type type;
+    
+    public enum Type {
+        ID;
     }
     
+    private NumberMessage() {
+    }
+    
+    public NumberMessage(int number, Type type) {
+        this.number = number;
+        this.type = type;
+    }
+    
+    public int getNumber() {
+        return number;
+    }
+    
+    public Type getType() {
+        return type;
+    }
 }

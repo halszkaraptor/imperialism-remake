@@ -34,12 +34,16 @@ public class ClientManager {
     private Client client;
 
     public boolean start() {
+        if (client != null) {
+            return false;
+        }
+
         client = new Client();
-        
-        KryoRegistration.register(client.getKryo());        
+
+        KryoRegistration.register(client.getKryo());
 
         client.start();
-        
+
         try {
             client.connect(TIMEOUT, "localhost", PORT);
         } catch (IOException ex) {
@@ -54,7 +58,7 @@ public class ClientManager {
 
         return true;
     }
-    
+
     public void send(Message message) {
         if (client != null && client.isConnected()) {
             client.sendTCP(message);
@@ -63,7 +67,9 @@ public class ClientManager {
 
     public void stop() {
         // TODO what happens to operations being sent
-        client.stop();
-        client = null;
+        if (client != null) {
+            client.stop();
+            client = null;
+        }
     }
 }

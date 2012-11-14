@@ -192,7 +192,7 @@ public class XMLEditor extends JFrame {
 
         Scenario map = new Scenario();
         map.setEmptyMap(60, 100);
-        map.setTerrainAt(0, 0, "p1");
+        // map.setTerrainAt(0, 0, "p1");
         XMLHelper.write("map.xml", map.toXML());
     }//GEN-LAST:event_mapButtonActionPerformed
 

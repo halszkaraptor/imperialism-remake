@@ -32,12 +32,16 @@ public class ServerManager {
     private Server server;
 
     public boolean start() {
+        if (server != null) {
+            return false;
+        }
+
         server = new Server();
-        
+
         KryoRegistration.register(server.getKryo());
 
         server.start();
-        
+
         try {
             server.bind(PORT);
         } catch (IOException ex) {
@@ -54,7 +58,9 @@ public class ServerManager {
     }
 
     public void stop() {
-        server.stop();
-        server = null;
+        if (server != null) {
+            server.stop();
+            server = null;
+        }
     }
 }

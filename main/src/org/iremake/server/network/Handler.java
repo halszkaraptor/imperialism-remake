@@ -18,7 +18,9 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.NumberMessage;
 
 /**
  * Handling of received messages on the server side.
@@ -37,7 +39,11 @@ public class Handler extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
-            
+            if (ActionMessage.REGISTER.equals(object)) {
+                System.out.println("Client from " + connection.getRemoteAddressTCP() + " wants to register.");
+                Message message = new NumberMessage(3, NumberMessage.Type.ID);
+                connection.sendTCP(message);
+            }
         } else {
             // TODO log unexpected types of objects
         }

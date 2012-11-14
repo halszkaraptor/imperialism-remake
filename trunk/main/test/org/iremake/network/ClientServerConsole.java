@@ -38,7 +38,7 @@ import org.tools.ui.helper.LookAndFeel;
  * Tests the Client and Server via a graphical user interface, and some logging
  * output to some text areas.
  */
-public class ClientServerSniffer extends JFrame {
+public class ClientServerConsole extends JFrame {
 
     private ServerManager server;
     private ClientManager client;
@@ -46,7 +46,7 @@ public class ClientServerSniffer extends JFrame {
     /**
      * Creates new form ClientServerSniffer
      */
-    public ClientServerSniffer() {
+    public ClientServerConsole() {
         initComponents();
 
         // client and server manager
@@ -222,7 +222,7 @@ public class ClientServerSniffer extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ClientServerSniffer().setVisible(true);
+                new ClientServerConsole().setVisible(true);
             }
         });
     }

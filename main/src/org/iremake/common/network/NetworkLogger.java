@@ -16,18 +16,10 @@
  */
 package org.iremake.common.network;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  */
-public class LoggingDebugConsole implements DebugConsole {
-
-    private static final Logger LOG = Logger.getLogger(LoggingDebugConsole.class.getName());
-
-    @Override
-    public void displayMessage(String message) {
-        LOG.log(Level.INFO, message);
-    }
+public interface NetworkLogger {
+    
+    public void log(String message);
 }

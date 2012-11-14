@@ -16,19 +16,41 @@
  */
 package org.iremake.network;
 
-import org.iremake.client.network.Client;
-import org.iremake.server.network.StartServer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.iremake.client.network.ClientManager;
+import org.iremake.common.network.messages.TextMessage;
+import org.iremake.server.network.ServerManager;
 
 /**
  *
  */
 public class SimpleTest {
+    
+    private static final Logger LOG = Logger.getLogger(SimpleTest.class.getName());    
 
-    public static void main(String args[]) {
-        // start server
-        StartServer.run();
+    public static void main(String args[]) throws InterruptedException {
+        
+        ServerManager server = new ServerManager();
+        if (!server.start()) {
+            LOG.log(Level.SEVERE, "Server could not start.");
+            return;
+        }
+        
+        ClientManager client = new ClientManager();
+        if (!client.start()) {
+            LOG.log(Level.SEVERE, "Client could not start.");
+            return;
+        }
+        
+        TextMessage message = new TextMessage("Hello World!");
+        client.send(message);
+        
+        Thread.sleep(5000);
+        
+        client.stop();
+        
+        server.stop();
 
-        // start client
-        new Client("localhost", 19876, 256).run();
     }
 }

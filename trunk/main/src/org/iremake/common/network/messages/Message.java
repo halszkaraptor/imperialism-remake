@@ -14,26 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.iremake.common.network.messages;
 
-package messages;
-
-// Add @SuppressWarnings("all") to the generated code not to pollute IDE task list.
-
-option java_package = "org.iremake.common.network.messages";
-
-message Msg {
-  enum Type { TEXT = 1; }
-
-  required Type type = 1;
-
-  optional Text text = 2;
-}
-
-message Text {
-  enum Type {
-    VERSION = 0;
-    REGISTER = 1;
-  }
-
-  required string text = 1;
+/**
+ * Marker interface
+ */
+public interface Message {
 }

@@ -18,34 +18,43 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import org.iremake.common.network.messages.ActionMessage;
+import java.util.HashMap;
+import java.util.Map;
+import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.NumberMessage;
 
 /**
  * Handling of received messages on the server side.
  */
-public class Handler extends Listener {
-    
+public class ServerHandler extends Listener {
+
+    private Map<Connection, ServerClientHandler> handlers = new HashMap<>();
+    private NetworkLogger logger;
+
+    public ServerHandler(NetworkLogger logger) {
+        this.logger = logger;
+    }
+
     @Override
     public void connected(Connection connection) {
+        logger.log("Connection from " + connection.getRemoteAddressTCP());
+        handlers.put(connection, new ServerClientHandler(connection, logger));
     }
-    
+
     @Override
     public void disconnected(Connection connection) {
-        
+        logger.log("Disconnection"); // TODO which one
+        handlers.get(connection).setState(ClientState.Disconnected);
+        // TODO from time to time check and delete all disconnected ones
     }
-    
+
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
-            if (ActionMessage.Register.equals(object)) {
-                System.out.println("Client from " + connection.getRemoteAddressTCP() + " wants to register.");
-                Message message = new NumberMessage(3, NumberMessage.Type.ID);
-                connection.sendTCP(message);
-            }
+            logger.log("Message arrived: " + object.getClass().getSimpleName());
+            handlers.get(connection).received((Message) object);
         } else {
-            // TODO log unexpected types of objects
+            // TODO log unexpected types of objects, should normally not happen
         }
     }
 }

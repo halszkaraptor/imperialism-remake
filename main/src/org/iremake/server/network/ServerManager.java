@@ -20,6 +20,7 @@ import com.esotericsoftware.kryonet.Server;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.KryoRegistration;
 
 /**
@@ -30,8 +31,14 @@ public class ServerManager {
     private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
     private static final int PORT = 19876;
     private Server server;
+    private NetworkLogger logger;
+
+    public ServerManager(NetworkLogger logger) {
+        this.logger = logger;
+    }
 
     public boolean start() {
+        logger.log("Server start initiated.");
         if (server != null) {
             return false;
         }
@@ -46,21 +53,27 @@ public class ServerManager {
             server.bind(PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            logger.log("Could not start.");
 
             stop();
 
             return false;
         }
 
-        server.addListener(new Handler());
+        logger.log("Bound to port.");
+
+        server.addListener(new ServerHandler(logger));
 
         return true;
     }
 
     public void stop() {
         if (server != null) {
+            logger.log("Will stop.");
             server.stop();
             server = null;
+        } else {
+            logger.log("Already stopped.");
         }
     }
 }

@@ -20,6 +20,7 @@ import com.esotericsoftware.kryonet.Client;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
 
@@ -32,8 +33,14 @@ public class ClientManager {
     private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
     private Client client;
+    private NetworkLogger logger;
+
+    public ClientManager(NetworkLogger logger) {
+        this.logger = logger;
+    }
 
     public boolean start() {
+        logger.log("Client start initiated.");
         if (client != null) {
             return false;
         }
@@ -48,19 +55,23 @@ public class ClientManager {
             client.connect(TIMEOUT, "localhost", PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            logger.log("Could not connect.");
 
             stop();
 
             return false;
         }
 
-        client.addListener(new Handler());
+        logger.log("Connected.");
+
+        client.addListener(new ClientHandler(logger));
 
         return true;
     }
 
     public void send(Message message) {
         if (client != null && client.isConnected()) {
+            logger.log("Send message: " + message.getClass().getSimpleName());
             client.sendTCP(message);
         }
     }
@@ -68,6 +79,7 @@ public class ClientManager {
     public void stop() {
         // TODO what happens to operations being sent
         if (client != null) {
+            logger.log("Will stop.");
             client.stop();
             client = null;
         }

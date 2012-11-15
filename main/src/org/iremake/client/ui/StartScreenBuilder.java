@@ -3,8 +3,8 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * the Free Software Foundation, either Version 3 of the License, or
+ * (at your option) any later Version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -81,8 +81,8 @@ public class StartScreenBuilder {
         JLabel logoLabel = new JLabel();
         logoLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
 
-        // version label
-        JLabel versionLabel = new JLabel("version 0.1.0");
+        // Version label
+        JLabel versionLabel = new JLabel("Version " + StartClient.Version);
         versionLabel.setForeground(Color.WHITE);    // white color
 
         // get layered pane
@@ -99,7 +99,7 @@ public class StartScreenBuilder {
         pane.add(logoLabel, new Integer(2));
         layout.addConstraint(logoLabel, RelativeLayoutConstraint.relative(0.5f, 0.4f));
 
-        // add version in the same layer (right, lower border)
+        // add Version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));
         layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthWest, 20, 20));
 

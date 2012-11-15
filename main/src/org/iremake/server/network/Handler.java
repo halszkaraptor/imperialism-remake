@@ -39,7 +39,7 @@ public class Handler extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
-            if (ActionMessage.REGISTER.equals(object)) {
+            if (ActionMessage.Register.equals(object)) {
                 System.out.println("Client from " + connection.getRemoteAddressTCP() + " wants to register.");
                 Message message = new NumberMessage(3, NumberMessage.Type.ID);
                 connection.sendTCP(message);

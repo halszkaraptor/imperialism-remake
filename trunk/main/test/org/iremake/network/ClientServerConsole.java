@@ -18,19 +18,21 @@ package org.iremake.network;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import org.iremake.client.network.ClientManager;
+import org.iremake.common.network.NetworkLogger;
+import org.iremake.common.network.messages.TextMessage;
 import org.iremake.server.network.ServerManager;
 import org.tools.ui.helper.LookAndFeel;
 
@@ -39,6 +41,7 @@ import org.tools.ui.helper.LookAndFeel;
  * output to some text areas.
  */
 public class ClientServerConsole extends JFrame {
+    private static final long serialVersionUID = 1L;
 
     private ServerManager server;
     private ClientManager client;
@@ -50,8 +53,20 @@ public class ClientServerConsole extends JFrame {
         initComponents();
 
         // client and server manager
-        server = new ServerManager();
-        client = new ClientManager();
+        NetworkLogger serverLogger = new NetworkLogger() {
+            @Override
+            public void log(String message) {
+                ClientServerConsole.this.serverMessage(message);
+            }
+        };
+        server = new ServerManager(serverLogger);
+        NetworkLogger clientLogger = new NetworkLogger() {
+            @Override
+            public void log(String message) {
+                ClientServerConsole.this.clientMessage(message);
+            }
+        };
+        client = new ClientManager(clientLogger);
     }
 
     /**
@@ -63,24 +78,20 @@ public class ClientServerConsole extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        serverStatus = new JLabel();
         serverStart = new JButton();
         serverStop = new JButton();
         serverScrollPane = new JScrollPane();
         serverTextArea = new JTextArea();
-        clientStatus = new JLabel();
         clientStart = new JButton();
-        clientRegister = new JButton();
+        clientName = new JButton();
         clientScrollPane = new JScrollPane();
         clientTextArea = new JTextArea();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Client Server Sniffer");
+        setTitle("Client Server Console");
         setLocationByPlatform(true);
         setMinimumSize(new Dimension(600, 400));
         setResizable(false);
-
-        serverStatus.setText("Server: down");
 
         serverStart.setText("Start");
         serverStart.addActionListener(new ActionListener() {
@@ -100,10 +111,9 @@ public class ClientServerConsole extends JFrame {
         serverScrollPane.setMinimumSize(new Dimension(400, 200));
 
         serverTextArea.setColumns(20);
+        serverTextArea.setFont(new Font("Monospaced", 0, 12)); // NOI18N
         serverTextArea.setRows(5);
         serverScrollPane.setViewportView(serverTextArea);
-
-        clientStatus.setText("Clients: none");
 
         clientStart.setText("Start");
         clientStart.addActionListener(new ActionListener() {
@@ -112,10 +122,10 @@ public class ClientServerConsole extends JFrame {
             }
         });
 
-        clientRegister.setText("Register");
-        clientRegister.addActionListener(new ActionListener() {
+        clientName.setText("Name");
+        clientName.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                clientRegisterActionPerformed(evt);
+                clientNameActionPerformed(evt);
             }
         });
 
@@ -123,6 +133,7 @@ public class ClientServerConsole extends JFrame {
         clientScrollPane.setMinimumSize(new Dimension(400, 200));
 
         clientTextArea.setColumns(20);
+        clientTextArea.setFont(new Font("Monospaced", 0, 12)); // NOI18N
         clientTextArea.setRows(5);
         clientScrollPane.setViewportView(clientTextArea);
 
@@ -130,23 +141,21 @@ public class ClientServerConsole extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(Alignment.LEADING)
-            .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                    .addComponent(clientScrollPane, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-                    .addComponent(serverScrollPane, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-                    .addComponent(serverStatus, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(clientStatus, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                            .addGroup(Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                    .addComponent(clientScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                    .addComponent(serverScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(serverStart)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(serverStop))
-                            .addGroup(Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(clientStart)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(clientRegister)))
+                                .addComponent(clientName)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -154,49 +163,38 @@ public class ClientServerConsole extends JFrame {
             layout.createParallelGroup(Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(serverStatus)
-                .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(serverStart)
                     .addComponent(serverStop))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(serverScrollPane, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(clientStatus)
+                .addComponent(serverScrollPane, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(clientStart)
-                    .addComponent(clientRegister))
+                    .addComponent(clientName))
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(clientScrollPane, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(clientScrollPane, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void serverStartActionPerformed(ActionEvent evt) {//GEN-FIRST:event_serverStartActionPerformed
-        if (!server.start()) {
-            serverMessage("Server could not start.");
-        } else {
-            serverMessage("Server started.");
-            serverStatus.setText("Server: up");
-        }
+        server.start();
     }//GEN-LAST:event_serverStartActionPerformed
 
     private void serverStopActionPerformed(ActionEvent evt) {//GEN-FIRST:event_serverStopActionPerformed
         server.stop();
-        serverMessage("Server stopped.");
-        serverStatus.setText("Server: down");
     }//GEN-LAST:event_serverStopActionPerformed
 
     private void clientStartActionPerformed(ActionEvent evt) {//GEN-FIRST:event_clientStartActionPerformed
-        // TODO add your handling code here:
+        client.start();
     }//GEN-LAST:event_clientStartActionPerformed
 
-    private void clientRegisterActionPerformed(ActionEvent evt) {//GEN-FIRST:event_clientRegisterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_clientRegisterActionPerformed
+    private void clientNameActionPerformed(ActionEvent evt) {//GEN-FIRST:event_clientNameActionPerformed
+        client.send(new TextMessage("John Doe", TextMessage.Type.ClientName));
+    }//GEN-LAST:event_clientNameActionPerformed
     private int counter = 0;
 
     private void serverMessage(String message) {
@@ -227,14 +225,12 @@ public class ClientServerConsole extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton clientRegister;
+    private JButton clientName;
     private JScrollPane clientScrollPane;
     private JButton clientStart;
-    private JLabel clientStatus;
     private JTextArea clientTextArea;
     private JScrollPane serverScrollPane;
     private JButton serverStart;
-    private JLabel serverStatus;
     private JButton serverStop;
     private JTextArea serverTextArea;
     // End of variables declaration//GEN-END:variables

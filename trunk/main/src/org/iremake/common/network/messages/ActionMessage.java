@@ -20,5 +20,5 @@ package org.iremake.common.network.messages;
  *
  */
 public enum ActionMessage implements Message {
-    REGISTER;
+    Validate, Register;
 }

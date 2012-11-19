@@ -22,7 +22,7 @@ import java.util.Set;
 import nu.xom.Element;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.common.XTable;
+import org.iremake.common.xml.common.XTable;
 
 /**
  * Reads some settings, like ids of Terrain...

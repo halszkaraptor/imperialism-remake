@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.common;
+package org.iremake.common.utils;
 
 /**
  * Generic Pair<A, B> implementation to help when you really only need a simple

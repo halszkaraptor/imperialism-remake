@@ -18,7 +18,7 @@ package org.iremake.common.model;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import org.tools.xml.XMLable;
+import org.iremake.common.xml.XMLable;
 
 /**
  * A province has an id (int) and a name.

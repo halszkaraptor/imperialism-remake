@@ -39,7 +39,7 @@ import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.XMLHelper;
+import org.iremake.common.xml.XMLHelper;
 
 /**
  * Editor frame manager. Holds all the various panels together and manages

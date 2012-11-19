@@ -29,7 +29,7 @@ import nu.xom.Element;
 import org.iremake.client.ui.model.TerrainTile;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.common.XTable;
+import org.iremake.common.xml.common.XTable;
 
 /**
  * Loads the terrain tiles from the artwork folder and delivers if needed.

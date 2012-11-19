@@ -45,7 +45,7 @@ import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
-import org.tools.xml.common.XList;
+import org.iremake.common.xml.common.XList;
 
 /**
  * Builds the editor as we know it for now.

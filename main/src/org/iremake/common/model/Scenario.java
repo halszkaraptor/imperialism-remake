@@ -24,9 +24,9 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.common.MapPosition;
 import org.iremake.common.Settings;
-import org.tools.xml.XMLable;
-import org.tools.xml.common.XList;
-import org.tools.xml.common.XProperty;
+import org.iremake.common.xml.XMLable;
+import org.iremake.common.xml.common.XList;
+import org.iremake.common.xml.common.XProperty;
 
 /**
  * The full internal Scenario model.
@@ -126,14 +126,14 @@ public class Scenario implements XMLable {
     public int getNumberColumns() {
         return columns;
     }
-    
+
     // TODO sort alphabetically
     public void addNation(Nation nation) {
         // TODO add element at end
         nations.addElement(nation);
         // TODO fire something
     }
-    
+
     public Nation getNation(int index) {
         return nations.getElementAt(index);
     }
@@ -247,7 +247,7 @@ public class Scenario implements XMLable {
                 p += 2;
             }
         }
-        
+
         // TODO reading of Nations and Provinces
 
         // Of course everything has changed.

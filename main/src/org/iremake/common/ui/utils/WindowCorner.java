@@ -14,16 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.common;
+package org.iremake.common.ui.utils;
 
 /**
- * Everything OS or system specific.
+ * Used for specifying location relative to windows/frames.
  */
-public class SystemInfo {
+public enum WindowCorner {
 
-    public String getInfo() {
-        StringBuilder sb = null;
-
-        return sb.toString();
-    }
+    NorthWest, NorthEast, SouthWest, SouthEast
 }

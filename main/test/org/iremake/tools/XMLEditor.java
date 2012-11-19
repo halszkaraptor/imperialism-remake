@@ -33,9 +33,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import org.iremake.common.model.Scenario;
-import org.tools.ui.helper.LookAndFeel;
-import org.tools.xml.XMLHelper;
-import org.tools.xml.common.XProperty;
+import org.iremake.common.ui.utils.LookAndFeel;
+import org.iremake.common.xml.XMLHelper;
+import org.iremake.common.xml.common.XProperty;
 
 /**
  * Allows editing of various game XML files. Used for creating and editing them.

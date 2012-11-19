@@ -150,7 +150,7 @@ public class StartScreenBuilder {
                 int w = 800;
                 int h = 700;
                 Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = CommonElementsFactory.makeDialog(owner, "Network center", false, bounds);
+                JDialog dialog = NetworkDialogBuilder.makeDialog(owner, "Network center", bounds);
                 dialog.setVisible(true);
             }
         });

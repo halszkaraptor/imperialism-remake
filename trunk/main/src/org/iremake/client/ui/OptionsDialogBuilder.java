@@ -23,6 +23,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 
 /**
  * Options dialog wiring.
@@ -52,6 +54,7 @@ public class OptionsDialogBuilder {
 
         // add panels for each tab
         pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
+        pane.add(OptionsDialogBuilder.serverOptionsPanel(), "Server");
 
         // add pane to dialog
         dialog.add(pane);
@@ -75,5 +78,16 @@ public class OptionsDialogBuilder {
     private static JPanel generalOptionsPanel() {
         JPanel panel = new JPanel();
         return panel;
+    }
+    
+    private static JPanel serverOptionsPanel() {
+        JPanel panel = new JPanel();
+        JToggleButton serverStart = new JToggleButton();
+        JToolBar menuBar = new JToolBar();
+        menuBar.add(serverStart);
+        panel.add(menuBar);
+        
+        return panel;
+        
     }
 }

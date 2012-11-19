@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import org.tools.ui.helper.LookAndFeel;
+import org.iremake.common.ui.utils.LookAndFeel;
 
 /**
  * Evaluates if a button is good for representing a tile. No.

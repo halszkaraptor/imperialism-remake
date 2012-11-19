@@ -26,7 +26,7 @@ import org.iremake.common.MapPosition;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.xml.XMLHelper;
+import org.iremake.common.xml.XMLHelper;
 
 /**
  * Manages all the wirings of the main screen maps.

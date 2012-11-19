@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import nu.xom.Element;
-import org.tools.xml.XMLHelper;
+import org.iremake.common.xml.XMLHelper;
 
 /**
  * Loads from the data folder.
@@ -122,12 +122,12 @@ public class Loader {
         // TODO replace folder separator symbol in path ??
         return base + place + location;
     }
-    
+
     /**
-     * 
+     *
      * @param place
      * @param location
-     * @return 
+     * @return
      */
     public static boolean exists(Places place, String location) {
         String path = base + place + location;

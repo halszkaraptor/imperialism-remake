@@ -34,9 +34,9 @@ import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.common.Settings;
 import org.iremake.common.resources.Loader;
 import org.iremake.common.resources.Places;
-import org.tools.ui.helper.LookAndFeel;
-import org.tools.xml.XMLHelper;
-import org.tools.xml.common.XProperty;
+import org.iremake.common.ui.utils.LookAndFeel;
+import org.iremake.common.xml.XMLHelper;
+import org.iremake.common.xml.common.XProperty;
 
 /**
  * Main entry point for client.

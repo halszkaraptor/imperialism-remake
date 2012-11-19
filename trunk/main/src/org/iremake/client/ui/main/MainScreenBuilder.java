@@ -32,11 +32,11 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.resources.Places;
-import org.tools.ui.common.ClockLabel;
-import org.tools.ui.helper.GraphicsUtils;
-import org.tools.ui.helper.WindowCorner;
-import org.tools.ui.layout.RelativeLayout;
-import org.tools.ui.layout.RelativeLayoutConstraint;
+import org.iremake.common.ui.ClockLabel;
+import org.iremake.common.ui.utils.GraphicsUtils;
+import org.iremake.common.ui.utils.WindowCorner;
+import org.iremake.common.ui.layout.RelativeLayout;
+import org.iremake.common.ui.layout.RelativeLayoutConstraint;
 
 /**
  * Builds the main screen.

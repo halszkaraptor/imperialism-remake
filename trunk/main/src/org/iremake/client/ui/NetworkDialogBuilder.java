@@ -32,7 +32,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.common.resources.Places;
 
@@ -57,45 +59,42 @@ public class NetworkDialogBuilder {
     public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
         // create general dialog
         JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
-        
+
         // create menu bar and add to dialog
         JToolBar menuBar = NetworkDialogBuilder.menuBar(owner);
-        dialog.add(menuBar);        
-        
+
         // client info panel
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
-        dialog.add(clientInfoPanel);
-        
+
         // server member list
         JList serverMemberList = NetworkDialogBuilder.serverInfoList();
-        serverMemberList.setModel(new DefaultListModel());
-        dialog.add(serverMemberList);
-        
+        DefaultListModel<String> model = new DefaultListModel<>();
+        model.add(0, "Hallo");
+        serverMemberList.setModel(model);
+
         // server chat window
         JTextArea serverChatText = new JTextArea();
         JScrollPane serverChatPane = new JScrollPane();
-        dialog.add(serverChatPane);
         serverChatPane.setViewportView(serverChatText);
         serverChatPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
+
         // chat input
         JTextField chatInputField = new JTextField();
-        dialog.add(chatInputField);
 
         // define the layout
         // selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
-        GroupLayout layout = new GroupLayout(c);
-        c.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(clientInfoPanel).addGroup(layout.createSequentialGroup().addComponent(serverMemberList).addGroup(layout.createParallelGroup().addComponent(serverChatPane).addComponent(chatInputField))));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(clientInfoPanel).addGroup(layout.createParallelGroup().addComponent(serverMemberList).addGroup(layout.createSequentialGroup().addComponent(serverChatPane).addComponent(chatInputField))));
+        c.setLayout(new MigLayout("wrap 2", "[grow, fill]", "[][][grow, fill]"));
+        dialog.add(menuBar, "span");
+        dialog.add(clientInfoPanel, "hmin 40, growx, span");
+        dialog.add(serverMemberList, "wmin 40, hmin 40, growy, span 1 2");
+        dialog.add(serverChatPane, "growy");
+        dialog.add(chatInputField, "height pref!");
+
 
         return dialog;
     }
-    
+
     private static JToolBar menuBar(JFrame owner) {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
@@ -106,17 +105,17 @@ public class NetworkDialogBuilder {
         // add buttons to tool bar
         bar.add(serverStartButton);
 
-        return bar;        
-    }    
-    
+        return bar;
+    }
+
     private static JPanel clientInfoPanel() {
         JPanel panel = new JPanel();
         return panel;
     }
-    
+
     private static JList serverInfoList() {
         JList list = new JList();
-        
+
         return list;
     }
 }

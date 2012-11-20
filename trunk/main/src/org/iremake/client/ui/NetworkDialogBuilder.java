@@ -84,11 +84,11 @@ public class NetworkDialogBuilder {
         // define the layout
         // selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
-        c.setLayout(new MigLayout("wrap 2", "[grow, fill]", "[][][grow, fill]"));
+        c.setLayout(new MigLayout("wrap 2, fill", "[][fill, grow]", "[][][fill, grow][]"));
         dialog.add(menuBar, "span");
-        dialog.add(clientInfoPanel, "hmin 40, growx, span");
-        dialog.add(serverMemberList, "wmin 40, hmin 40, growy, span 1 2");
-        dialog.add(serverChatPane, "growy");
+        dialog.add(clientInfoPanel, "height 100!, growx, span");
+        dialog.add(serverMemberList, "wmin 100, hmin 100, growy, span 1 2");
+        dialog.add(serverChatPane, "grow");
         dialog.add(chatInputField, "height pref!");
 
 

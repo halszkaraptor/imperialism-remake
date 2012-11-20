@@ -37,6 +37,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
@@ -74,7 +75,6 @@ public class EditorBuilder {
 
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
-        dialog.add(menuBar);
 
         // new scenario button
         JButton newButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.new.png");
@@ -108,7 +108,7 @@ public class EditorBuilder {
         // create tabbed pane and add to dialog
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        dialog.add(tabPane);
+
 
         // create and add map panel
         JPanel mapPanel = EditorBuilder.buildMapPanel(dialog, manager);
@@ -121,13 +121,10 @@ public class EditorBuilder {
 
         // set layout (vertically first menubar, then tabbed pane)
         Container c = dialog.getContentPane();
-        GroupLayout layout = new GroupLayout(c);
-        c.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar).addComponent(tabPane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar).addComponent(tabPane));
-
+        c.setLayout(new MigLayout("wrap 1, fill", "[grow]", "[][grow]"));
+        dialog.add(menuBar);
+        dialog.add(tabPane);
+        
         // we make it visible immediately
         dialog.setVisible(true);
 

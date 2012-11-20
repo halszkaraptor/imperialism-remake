@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.resources;
+package org.iremake.client.resources;
 
+import org.iremake.client.resources.Places;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import nu.xom.Element;
+import org.iremake.common.ui.utils.UILoader;
 import org.iremake.common.xml.XMLHelper;
 
 /**
@@ -109,6 +111,22 @@ public class Loader {
     public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
         String path = base + place + location;
         return new FileInputStream(path);
+    }
+
+    /**
+     * Returns an UILoader for a certain Place.
+     * 
+     * @param places
+     * @return 
+     */
+    public static UILoader getAsLoader(Places places) {
+        UILoader loader = new UILoader() {
+            @Override
+            public Icon getAsIcon(String location) {
+                return Loader.getAsIcon(Places.GraphicsIcons, location);
+            }
+        };
+        return loader;
     }
 
     /**

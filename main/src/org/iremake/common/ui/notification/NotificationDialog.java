@@ -20,6 +20,7 @@ import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import org.iremake.common.ui.utils.GraphicsUtils;
+import org.iremake.common.ui.utils.UILoader;
 import org.iremake.common.ui.utils.WindowCorner;
 
 /**
@@ -48,8 +49,8 @@ public class NotificationDialog extends Notification {
      * @param parent
      * @param message
      */
-    public NotificationDialog(JFrame parent, String message) {
-        super(message);
+    public NotificationDialog(JFrame parent, String message, UILoader loader) {
+        super(message, loader);
         dialog = new JDialog(parent);
 
         dialog.add(panel);

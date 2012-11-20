@@ -28,8 +28,8 @@ import nu.xom.Element;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 import nu.xom.ValidityException;
-import org.tools.io.Resource;
-import org.tools.io.ResourceUtils;
+import org.iremake.common.resources.Resource;
+import org.iremake.common.resources.ResourceUtils;
 
 /**
  * Read/Write to file.

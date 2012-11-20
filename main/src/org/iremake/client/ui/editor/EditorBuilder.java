@@ -45,7 +45,7 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.resources.Places;
+import org.iremake.client.resources.Places;
 import org.iremake.common.xml.common.XList;
 
 /**

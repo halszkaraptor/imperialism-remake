@@ -27,8 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import org.iremake.client.ui.model.TerrainTile;
-import org.iremake.common.resources.Loader;
-import org.iremake.common.resources.Places;
 import org.iremake.common.xml.common.XTable;
 
 /**

@@ -37,8 +37,8 @@ import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.common.MapPosition;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.resources.Loader;
-import org.iremake.common.resources.Places;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 import org.iremake.common.xml.XMLHelper;
 
 /**

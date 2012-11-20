@@ -14,28 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.ui.utils;
+package org.iremake.sound;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import org.iremake.common.ui.utils.BasicFrame;
 
 /**
- * Just sets the basic properties of probably all Frames we are going to use.
- *
+ * An Ogg file player with graphical user interface.
  */
-public class BasicFrame extends JFrame {
+public class OggPlayerApp extends BasicFrame {
     private static final long serialVersionUID = 1L;
 
-    public BasicFrame(String title) {
+    public OggPlayerApp(String title) {
         super(title);
-        initComponents();
-    }
-
-    /**
-     * Initializes components.
-     */
-    private void initComponents() {
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setLocationByPlatform(true);
     }
 }

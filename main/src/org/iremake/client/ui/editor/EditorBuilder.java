@@ -121,10 +121,10 @@ public class EditorBuilder {
 
         // set layout (vertically first menubar, then tabbed pane)
         Container c = dialog.getContentPane();
-        c.setLayout(new MigLayout("wrap 1, fill", "[grow]", "[][grow]"));
+        c.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
         dialog.add(menuBar);
         dialog.add(tabPane);
-        
+
         // we make it visible immediately
         dialog.setVisible(true);
 
@@ -312,11 +312,9 @@ public class EditorBuilder {
 
         // create mini map and add to panel
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
-        panel.add(miniMapPanel);
 
         // create menu bar and add to panel
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
-        panel.add(menuBar);
 
         // terrain button
         JButton terrainButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
@@ -338,27 +336,21 @@ public class EditorBuilder {
 
         // info map panel and add
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel(map);
-        panel.add(infoPanel);
 
         // create main map panel and add
         MainMapPanel mainMapPanel = new MainMapPanel(model);
-        panel.add(mainMapPanel);
 
         // add them to manager
         manager.setMapTab(mainMapPanel, miniMapPanel, infoPanel);
 
         // set layout
-        GroupLayout layout = new GroupLayout(panel);
-        panel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+        panel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][grow]"));
 
-        layout.setHorizontalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup()
-                .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 200, 200, 200).addComponent(infoPanel, 200, 200, 200))
-                .addComponent(mainMapPanel));
-        layout.setVerticalGroup(layout.createParallelGroup().addGroup(layout.createSequentialGroup()
-                .addComponent(miniMapPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(menuBar, 100, 100, 100).addComponent(infoPanel))
-                .addComponent(mainMapPanel));
+        panel.add(miniMapPanel);
+        panel.add(mainMapPanel, "span 1 3, grow");
+        panel.add(menuBar);
+        panel.add(infoPanel, "grow");
+
 
         return panel;
     }

@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import nu.xom.Element;
-import org.iremake.common.resources.Loader;
-import org.iremake.common.resources.Places;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 import org.iremake.common.xml.common.XTable;
 
 /**

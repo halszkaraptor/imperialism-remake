@@ -35,7 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import org.tools.common.Loader;
+import org.iremake.common.ui.utils.UILoader;
 
 /**
  * Small notification at some position within some window.
@@ -49,12 +49,14 @@ public abstract class Notification {
     private float alpha = 1f;
     private Timer timer;
     private int fadeInTime, fadeOutTime, onTime;
+    private UILoader loader;
 
     /**
      *
      * @param message
      */
-    public Notification(String message) {
+    public Notification(String message, UILoader loader) {
+        this.loader = loader;
         ActionListener cancelAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,7 +100,7 @@ public abstract class Notification {
 
         // special icon to the left
         JLabel infoIcon = new JLabel();
-        infoIcon.setIcon(Loader.getAsIcon(Loader.IconPath + "information.png")); // NOI18N
+        infoIcon.setIcon(loader.getAsIcon("notification.information.png")); // NOI18N
 
         // Message
         JLabel msgLabel = new JLabel();
@@ -108,7 +110,7 @@ public abstract class Notification {
 
         // close button to the right
         JButton closeButton = new JButton();
-        closeButton.setIcon(Loader.getAsIcon(Loader.IconPath + "cross.png")); // NOI18N
+        closeButton.setIcon(loader.getAsIcon("notification.cross.png")); // NOI18N
         closeButton.addActionListener(cancelAction);
         closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         closeButton.setFocusable(false);

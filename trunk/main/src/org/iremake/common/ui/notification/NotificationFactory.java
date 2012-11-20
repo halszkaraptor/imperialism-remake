@@ -17,6 +17,7 @@
 package org.iremake.common.ui.notification;
 
 import javax.swing.JFrame;
+import org.iremake.common.ui.utils.UILoader;
 import org.iremake.common.ui.utils.WindowCorner;
 
 /**
@@ -39,9 +40,9 @@ public class NotificationFactory {
      * @param listener
      * @return
      */
-    public static NotificationDialog createDlg(JFrame parent, String message, NotificationListener listener) {
+    public static NotificationDialog createDlg(JFrame parent, String message, NotificationListener listener, UILoader loader) {
 
-        NotificationDialog dlg = new NotificationDialog(parent, message);
+        NotificationDialog dlg = new NotificationDialog(parent, message, loader);
         dlg.addNotificationListener(listener);
 
         return dlg;
@@ -56,9 +57,9 @@ public class NotificationFactory {
      * @param listener
      * @return
      */
-    public static NotificationPane createPane(JFrame parent, String message, NotificationListener listener) {
+    public static NotificationPane createPane(JFrame parent, String message, NotificationListener listener, UILoader loader) {
 
-        NotificationPane pane = new NotificationPane(parent, message);
+        NotificationPane pane = new NotificationPane(parent, message, loader);
         pane.addNotificationListener(listener);
 
         return pane;
@@ -74,8 +75,8 @@ public class NotificationFactory {
      * @param parent The parent window
      * @param message
      */
-    public static void createInfoPane(JFrame parent, String message) {
-        NotificationPane pane = new NotificationPane(parent, message);
+    public static void createInfoPane(JFrame parent, String message, UILoader loader) {
+        NotificationPane pane = new NotificationPane(parent, message, loader);
 
         pane.setFadeInTime(1500);
         pane.setOnTime(3000);

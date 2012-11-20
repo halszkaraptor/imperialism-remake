@@ -16,6 +16,7 @@
  */
 package org.iremake.common.ui;
 
+import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -35,7 +35,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import org.tools.common.Loader;
+import net.miginfocom.swing.MigLayout;
+import org.iremake.common.ui.utils.UILoader;
 
 /**
  * Based on JEditorPane in non-editable, content text/html mode.
@@ -56,6 +57,7 @@ public class BrowserDialog extends JDialog {
     private URL indexURL;
     private Deque<URL> historyList = new LinkedList<>();
     private Deque<URL> forwardList = new LinkedList<>();
+    private UILoader loader;
 
     /**
      * Initializes the Browser.
@@ -66,13 +68,14 @@ public class BrowserDialog extends JDialog {
      * @param index
      * @param start
      */
-    public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start) {
+    public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start, UILoader loader) {
         super(parent, title, modal);
         if (index == null || start == null) {
             LOG.log(Level.SEVERE, "BrowserDialog init failed");
             throw new IllegalArgumentException("index or start URL are null");
         }
         indexURL = index;
+        this.loader = loader;
         initComponents();
         setPage(start);
     }
@@ -85,7 +88,7 @@ public class BrowserDialog extends JDialog {
         // previous in the list button
         previousButton = new JButton();
         previousButton.setToolTipText("Previous page");
-        previousButton.setIcon(Loader.getAsIcon(Loader.IconPath + "resultset_previous.png"));
+        previousButton.setIcon(loader.getAsIcon("browser.button.previous.png"));
         previousButton.setMargin(new Insets(1, 1, 1, 1));
         previousButton.addActionListener(new ActionListener() {
 
@@ -108,7 +111,7 @@ public class BrowserDialog extends JDialog {
         // next in the list button
         nextButton = new JButton();
         nextButton.setToolTipText("Next page");
-        nextButton.setIcon(Loader.getAsIcon(Loader.IconPath + "resultset_next.png"));
+        nextButton.setIcon(loader.getAsIcon("browser.button.next.png"));
         nextButton.setMargin(new Insets(1, 1, 1, 1));
         nextButton.addActionListener(new ActionListener() {
 
@@ -166,20 +169,18 @@ public class BrowserDialog extends JDialog {
         scrollPane.setViewportView(contentPane);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        // layout (grouplayout)
-        GroupLayout layout = new GroupLayout(getContentPane());
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setVerticalGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup().addComponent(previousButton).addComponent(nextButton).addComponent(indexButton)).addComponent(scrollPane));
-        layout.setHorizontalGroup(layout.createParallelGroup().addGroup(layout.createSequentialGroup().addComponent(previousButton).addComponent(nextButton).addComponent(indexButton)).addComponent(scrollPane));
-
-        getContentPane().setLayout(layout);
+        // layout
+        Container c = getContentPane();
+        c.setLayout(new MigLayout("wrap 3, fill"));
+        add(previousButton);
+        add(nextButton);
+        add(indexButton);
+        add(scrollPane, "dock south, growy");
 
         // size and close operations
-        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE); // TODO do we need this
 
-        setSize(800, 600);
+        setSize(800, 600); // TODO do we need this
     }
 
     /**

@@ -14,34 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.resources;
+package org.iremake.common.ui.utils;
+
+import javax.swing.Icon;
 
 /**
- * Logical structure of the data folders, used for input/output.
+ *
  */
-public enum Places {
-
-    None(""),
-    Log("log/"),
-    Help("data/help/"),
+public interface UILoader {
     
-    Common("data/game/common/"),
+    public Icon getAsIcon(String location);
     
-    Scenarios("data/game/scenarios/"),
-    ScenarioSettings(Scenarios + "settings/"),
-    
-    Graphics("data/game/artwork/graphics/"),
-    GraphicsIcons(Graphics + "ui/"),
-    GraphicsTerrain(Graphics + "terrain/");
-    
-    private String id;
-
-    Places(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return id;
-    }
 }

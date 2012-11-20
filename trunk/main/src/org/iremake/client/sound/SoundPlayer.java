@@ -25,7 +25,7 @@ import javax.sound.sampled.BooleanControl;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import org.tools.io.Resource;
+import org.iremake.common.resources.Resource;
 
 /**
  * Elementary class for playing music.

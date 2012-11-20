@@ -31,14 +31,14 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.StartClient;
+import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.Places;
 import org.iremake.client.ui.editor.EditorBuilder;
-import org.iremake.common.resources.Loader;
-import org.iremake.common.resources.Places;
 import org.iremake.common.ui.BrowserDialog;
-import org.iremake.common.ui.utils.GraphicsUtils;
-import org.iremake.common.ui.utils.WindowCorner;
 import org.iremake.common.ui.layout.RelativeLayout;
 import org.iremake.common.ui.layout.RelativeLayoutConstraint;
+import org.iremake.common.ui.utils.GraphicsUtils;
+import org.iremake.common.ui.utils.WindowCorner;
 
 /**
  * Initial building of the start screen.
@@ -175,7 +175,7 @@ public class StartScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = Loader.getURL(Places.Help, "en_index.html");
-                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index);
+                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index, Loader.getAsLoader(Places.GraphicsIcons));
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
             }

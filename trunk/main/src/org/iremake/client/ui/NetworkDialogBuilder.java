@@ -17,12 +17,8 @@
 package org.iremake.client.ui;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -32,11 +28,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.ui.main.MainScreenBuilder;
-import org.iremake.common.resources.Places;
+import org.iremake.client.resources.Places;
 
 /**
  *

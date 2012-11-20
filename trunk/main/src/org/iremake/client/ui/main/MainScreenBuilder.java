@@ -31,7 +31,7 @@ import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.resources.Places;
+import org.iremake.client.resources.Places;
 import org.iremake.common.ui.ClockLabel;
 import org.iremake.common.ui.utils.GraphicsUtils;
 import org.iremake.common.ui.utils.WindowCorner;

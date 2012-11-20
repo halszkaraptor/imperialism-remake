@@ -14,28 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.ui.utils;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+package org.iremake.client.resources;
 
 /**
- * Just sets the basic properties of probably all Frames we are going to use.
- *
+ * Logical structure of the data folders, used for input/output.
  */
-public class BasicFrame extends JFrame {
-    private static final long serialVersionUID = 1L;
+public enum Places {
 
-    public BasicFrame(String title) {
-        super(title);
-        initComponents();
+    None(""),
+    Log("log/"),
+    Help("data/help/"),
+    
+    Common("data/game/common/"),
+    
+    Scenarios("data/game/scenarios/"),
+    ScenarioSettings(Scenarios + "settings/"),
+    
+    Graphics("data/game/artwork/graphics/"),
+    GraphicsIcons(Graphics + "ui/"),
+    GraphicsTerrain(Graphics + "terrain/");
+    
+    private String id;
+
+    Places(String id) {
+        this.id = id;
     }
 
-    /**
-     * Initializes components.
-     */
-    private void initComponents() {
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setLocationByPlatform(true);
+    @Override
+    public String toString() {
+        return id;
     }
 }

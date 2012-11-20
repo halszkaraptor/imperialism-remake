@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.common.resources.Places;
 
@@ -62,28 +63,18 @@ public class ScenarioDialogsBuilder {
         JPanel mapPanel = makeOverviewMapPanel();
         JPanel infoPanel = ScenarioDialogsBuilder.createInfoPanel();
 
-        // add them to dialog
-        dialog.add(selectTree);
-        dialog.add(mapPanel);
-        dialog.add(infoPanel);
 
         // create menu bar and add to dialog
         JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar(owner);
-        dialog.add(menuBar);
 
-        // define the layout
-        // selectTree fixed width, infoPanel fixed height
+
+        // layout - selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
-        GroupLayout layout = new GroupLayout(c);
-        c.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(menuBar)
-                .addGroup(layout.createSequentialGroup().addComponent(selectTree, FIXEDSIZE, FIXEDSIZE, FIXEDSIZE)
-                .addComponent(mapPanel)).addComponent(infoPanel));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(menuBar)
-                .addGroup(layout.createParallelGroup().addComponent(selectTree).addComponent(mapPanel))
-                .addComponent(infoPanel, FIXEDSIZE, FIXEDSIZE, FIXEDSIZE));
+        c.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
+        dialog.add(menuBar);
+        dialog.add(selectTree, "width 200!, split 2");
+        dialog.add(mapPanel, "grow");
+        dialog.add(infoPanel, "height 200!, growx");
 
         return dialog;
     }

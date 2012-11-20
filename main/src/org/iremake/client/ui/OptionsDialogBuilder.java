@@ -16,15 +16,17 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
-import javax.swing.GroupLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.border.LineBorder;
+import net.miginfocom.swing.MigLayout;
 
 /**
  * Options dialog wiring.
@@ -56,18 +58,11 @@ public class OptionsDialogBuilder {
         pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
         pane.add(OptionsDialogBuilder.serverOptionsPanel(), "Server");
 
-        // add pane to dialog
-        dialog.add(pane);
-
-        // layout dialog (with GroupLayout so borders are respected)
+        // layout dialog (use simpel borderlayout);
         Container c = dialog.getContentPane();
-        GroupLayout layout = new GroupLayout(c);
-        c.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(pane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(pane));
-
+        c.setLayout(new MigLayout("fill"));
+        dialog.add(pane, "grow");
+        
         return dialog;
     }
 
@@ -85,7 +80,14 @@ public class OptionsDialogBuilder {
         JToggleButton serverStart = new JToggleButton();
         JToolBar menuBar = new JToolBar();
         menuBar.add(serverStart);
+        
+        JPanel serverInfoPanel = new JPanel();
+        serverInfoPanel.setBorder(new LineBorder(Color.black, 1));
+        
+        // layout
+        panel.setLayout(new MigLayout("wrap 1, fillx"));
         panel.add(menuBar);
+        panel.add(serverInfoPanel, "height 100!, growx");
         
         return panel;
         

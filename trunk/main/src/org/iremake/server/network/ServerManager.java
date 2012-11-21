@@ -18,6 +18,8 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Server;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.NetworkLogger;
@@ -32,9 +34,24 @@ public class ServerManager {
     private static final int PORT = 19876;
     private Server server;
     private NetworkLogger logger;
+    private List<ServerStatusListener> listeners = new LinkedList<>();
 
     public ServerManager(NetworkLogger logger) {
         this.logger = logger;
+    }
+    
+    public void addStatusListener(ServerStatusListener l) {
+        listeners.add(l);
+    }
+    
+    public void removeStatusListener(ServerStatusListener l) {
+        listeners.remove(l);
+    }
+    
+    private void fireStatusChanged(String message) {
+        for (ServerStatusListener l: listeners) {
+            l.statusUpdate(message);
+        }
     }
 
     public boolean start() {
@@ -63,8 +80,14 @@ public class ServerManager {
         logger.log("Bound to port.");
 
         server.addListener(new ServerHandler(logger));
+        
+        fireStatusChanged("Server running.");
 
         return true;
+    }
+    
+    public boolean isRunning() {
+        return server != null;
     }
 
     public void stop() {
@@ -72,6 +95,8 @@ public class ServerManager {
             logger.log("Will stop.");
             server.stop();
             server = null;
+            
+            fireStatusChanged("Server not running.");
         } else {
             logger.log("Already stopped.");
         }

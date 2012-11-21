@@ -28,15 +28,18 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
-import nu.xom.Element;
+import org.iremake.client.network.ClientManager;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.common.Settings;
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
+import org.iremake.common.BigBag;
+import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.ui.utils.LookAndFeel;
 import org.iremake.common.xml.XMLHelper;
 import org.iremake.common.xml.common.XProperty;
+import org.iremake.server.network.ServerManager;
 
 /**
  * Main entry point for client.
@@ -78,6 +81,16 @@ public class StartClient {
 
             // load preferences
             StartClient.loadPreferences();
+            
+            // set some variables in the BigBag
+            NetworkLogger nLog = new NetworkLogger() {
+                @Override
+                public void log(String message) {
+                    LOG.log(Level.INFO, message);
+                }
+            };
+            BigBag.serverManager = new ServerManager(nLog);
+            BigBag.clientManager = new ClientManager(nLog);
 
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {

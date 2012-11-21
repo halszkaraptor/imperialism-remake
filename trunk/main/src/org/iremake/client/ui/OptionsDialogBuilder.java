@@ -19,14 +19,20 @@ package org.iremake.client.ui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.AbstractButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.common.BigBag;
+import org.iremake.server.network.ServerStatusListener;
 
 /**
  * Options dialog wiring.
@@ -77,12 +83,33 @@ public class OptionsDialogBuilder {
     
     private static JPanel serverOptionsPanel() {
         JPanel panel = new JPanel();
-        JToggleButton serverStart = new JToggleButton();
+        JToggleButton serverStart = new JToggleButton("Toggle Server");
+        serverStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AbstractButton abstractButton = (AbstractButton) e.getSource();
+                boolean selected = abstractButton.getModel().isSelected();                
+                if (selected) {
+                    BigBag.serverManager.start();
+                } else {
+                    BigBag.serverManager.stop();
+                }
+            }
+        });
         JToolBar menuBar = new JToolBar();
         menuBar.add(serverStart);
         
         JPanel serverInfoPanel = new JPanel();
         serverInfoPanel.setBorder(new LineBorder(Color.black, 1));
+        
+        final JLabel status = new JLabel();
+        BigBag.serverManager.addStatusListener(new ServerStatusListener() {
+            @Override
+            public void statusUpdate(String message) {
+                status.setText(message);
+            }
+        });
+        serverInfoPanel.add(status);
         
         // layout
         panel.setLayout(new MigLayout("wrap 1, fillx"));

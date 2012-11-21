@@ -23,7 +23,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -147,11 +146,9 @@ public class EditorBuilder {
 
         // InfoLabel
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
-        nations.add(nationsInfoLabel);
 
         // create menu bar and add to panel
         JToolBar nationsBar = CommonElementsFactory.makeToolBar();
-        nations.add(nationsBar);
         // TODO load images
         JButton addnationButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "generic.button.add.png");
         nationsBar.add(addnationButton);
@@ -201,17 +198,16 @@ public class EditorBuilder {
         // ScrollPane
         JScrollPane nationScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         nationScrollPane.setViewportView(nationList);
-        nations.add(nationScrollPane);
+
 
         // layout of nations panel
-        GroupLayout layout = new GroupLayout(nations);
-        nations.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
+        nations.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
+        nations.add(nationsInfoLabel);
+        nations.add(nationsBar);
+        nations.add(nationScrollPane, "grow");
 
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(nationsInfoLabel).addComponent(nationsBar).addComponent(nationScrollPane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(nationsInfoLabel).addComponent(nationsBar).addComponent(nationScrollPane));
 
+        // provinces panel
 
         JPanel provinces = new JPanel();
         provinces.setBorder(new LineBorder(Color.black, 1));
@@ -219,11 +215,9 @@ public class EditorBuilder {
 
         // InfoLabel
         JLabel provinceInfoLabel = new JLabel("X Provinces");
-        provinces.add(provinceInfoLabel);
 
         // create menu bar and add to panel
         JToolBar provinceBar = CommonElementsFactory.makeToolBar();
-        provinces.add(provinceBar);
         // TODO load images
         JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         provinceBar.add(addprovinceButton);
@@ -245,7 +239,6 @@ public class EditorBuilder {
                 String name = JOptionPane.showInputDialog(parent, "Enter new Province's name:");
                 if (name != null) {
                     // need new valid id
-
                     // tell the manager
                     // TODO implement
                 }
@@ -273,27 +266,17 @@ public class EditorBuilder {
         // ScrollPane
         JScrollPane provinceScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         provinceScrollPane.setViewportView(provinceList);
-        provinces.add(provinceScrollPane);
 
         // layout of province panel
-        layout = new GroupLayout(provinces);
-        provinces.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(provinceInfoLabel).addComponent(provinceBar).addComponent(provinceScrollPane));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(provinceInfoLabel).addComponent(provinceBar).addComponent(provinceScrollPane));
-
+        provinces.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
+        provinces.add(provinceInfoLabel);
+        provinces.add(provinceBar);
+        provinces.add(provinceScrollPane, "grow");        
+        
         // set layout
-        layout = new GroupLayout(panel);
-        panel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(layout.createSequentialGroup().addComponent(nations, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addComponent(provinces, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE));
-        layout.setVerticalGroup(layout.createParallelGroup().addComponent(nations, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addComponent(provinces, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE));
+        panel.setLayout(new MigLayout());
+        panel.add(nations);
+        panel.add(provinces);
 
         return panel;
     }

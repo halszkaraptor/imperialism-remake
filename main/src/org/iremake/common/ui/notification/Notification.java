@@ -35,6 +35,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.common.ui.utils.UILoader;
 
 /**
@@ -117,15 +118,14 @@ public abstract class Notification {
         closeButton.setBorder(null);
 
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
-        GroupLayout layout = new GroupLayout(panel);
-        panel.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setHorizontalGroup(
-                layout.createSequentialGroup().addGap(5).addComponent(infoIcon).addComponent(msgLabel).addComponent(closeButton));
-        layout.setVerticalGroup(
-                layout.createSequentialGroup().addGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(5).addGroup(layout.createParallelGroup(Alignment.CENTER).addComponent(infoIcon).addComponent(msgLabel))).addComponent(closeButton)).addGap(5));
-
-        panel.setSize(panel.getPreferredSize());
+        
+        // layout
+        panel.setLayout(new MigLayout("wrap 3, fill", "[][grow][]"));
+        panel.add(infoIcon);
+        panel.add(msgLabel, "grow");
+        panel.add(closeButton, "aligny top");
+        
+        panel.setSize(panel.getPreferredSize()); // TODO needed?
         panel.setOpaque(false);
     }
 

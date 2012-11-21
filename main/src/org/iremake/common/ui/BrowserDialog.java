@@ -31,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
@@ -168,14 +169,19 @@ public class BrowserDialog extends JDialog {
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(contentPane);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        // menubar
+        JToolBar menuBar = new JToolBar();
+        menuBar.setFloatable(false);
+        menuBar.add(previousButton);
+        menuBar.add(nextButton);
+        menuBar.add(indexButton);
 
         // layout
         Container c = getContentPane();
-        c.setLayout(new MigLayout("wrap 3, fill"));
-        add(previousButton);
-        add(nextButton);
-        add(indexButton);
-        add(scrollPane, "dock south, growy");
+        c.setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
+        add(menuBar);
+        add(scrollPane, "grow");
 
         // size and close operations
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE); // TODO do we need this

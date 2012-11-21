@@ -76,6 +76,7 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
             c = l + 1;
         }
         JPanel panel = new JPanel();
+        // here actually GridLayout does exactly the job and we do not need MigLayout
         panel.setLayout(new GridLayout(r, c, gap, gap));
         panel.setBorder(new EmptyBorder(gap, gap, gap, gap));
 

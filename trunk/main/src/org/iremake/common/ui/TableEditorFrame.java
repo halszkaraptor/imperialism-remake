@@ -37,6 +37,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileFilter;
+import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.common.ui.utils.BasicFrame;
@@ -257,22 +258,17 @@ public class TableEditorFrame extends BasicFrame {
         toolBar.add(delColumnButton);
         toolBar.add(renColumnButton);
         toolBar.add(helpButton);
-        add(toolBar);
 
         // create scroll pane (only vertical scroll bar)
         JScrollPane scrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setViewportView(table);
-        add(scrollPane);
 
         // layout
         Container c = getContentPane();
-        GroupLayout layout = new GroupLayout(c);
-        c.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(scrollPane, 400, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(scrollPane, 300, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-
+        c.setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
+        add(toolBar);
+        add(scrollPane, "grow, hmin 400, wmin 400");        
+        
         // set to preferred size, validate layout and set minimum size to preferred size
         pack();
         setMinimumSize(getSize());

@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.map.MainMapPanel;
@@ -69,32 +70,18 @@ public class MainScreenBuilder {
         Scenario map = new Scenario();
         manager.setScenarioContent(map, model);
 
-        // get layered pane
-        JLayeredPane layers = dialog.getLayeredPane();
-
-        // TODO change to RelativeLayout
-
         // Add MapPanel
         MainMapPanel mainMapPanel = new MainMapPanel(model);
-        layers.add(mainMapPanel, Integer.valueOf(1));
+
         mainMapPanel.setPreferredSize(s);
         manager.setPanels(mainMapPanel);
 
-        RelativeLayout layout = new RelativeLayout();
-        layers.setLayout(layout);
-
-        // add clock label to layered pane
-        JLabel clockLabel = new ClockLabel();
-        layers.add(clockLabel, Integer.valueOf(2));
-        layout.addConstraint(clockLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthWest, 10, 10));
-
-        // add main panel to layout
-        layout.addConstraint(mainMapPanel, RelativeLayoutConstraint.centered());
-
         // add control panel to layered pane and position
         JPanel controlPanel = MainScreenBuilder.createControlPanel(manager);
-        layers.add(controlPanel, Integer.valueOf(3));
-        layout.addConstraint(controlPanel, new RelativeLayoutConstraint(1.0f, -1.0f, -20, 0.5f, -0.5f, 0));
+        
+        dialog.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
+        dialog.add(mainMapPanel, "grow");
+        dialog.add(controlPanel, "growy, wmin 300");
 
         // we make it visible immediately
         dialog.setVisible(true);
@@ -110,8 +97,6 @@ public class MainScreenBuilder {
      */
     private static JPanel createControlPanel(final MainScreenManager manager) {
         JPanel panel = new JPanel();
-
-        panel.setPreferredSize(new Dimension(300, 800));
 
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
@@ -132,8 +117,14 @@ public class MainScreenBuilder {
         menuBar.add(exitButton);
         menuBar.add(saveButton);
 
-        panel.add(menuBar);
-
+        // layout
+        panel.setLayout(new MigLayout("fill"));
+        panel.add(menuBar, "dock north");
+        
+        // add clock label to layered pane
+        JLabel clockLabel = new ClockLabel();
+        panel.add(clockLabel, "dock south");
+        
         return panel;
     }
 }

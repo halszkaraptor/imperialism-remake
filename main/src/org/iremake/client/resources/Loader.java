@@ -16,7 +16,6 @@
  */
 package org.iremake.client.resources;
 
-import org.iremake.client.resources.Places;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;

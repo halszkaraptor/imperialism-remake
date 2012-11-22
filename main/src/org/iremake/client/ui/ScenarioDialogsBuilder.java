@@ -29,8 +29,8 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.client.resources.Places;
+import org.iremake.client.ui.main.MainScreenBuilder;
 
 /**
  * Scenario dialogs wiring.

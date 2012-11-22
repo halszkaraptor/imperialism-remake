@@ -37,6 +37,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.resources.Places;
 import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
@@ -44,7 +45,6 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
-import org.iremake.client.resources.Places;
 import org.iremake.common.xml.common.XList;
 
 /**
@@ -329,7 +329,7 @@ public class EditorBuilder {
         // set layout
         panel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][grow]"));
 
-        panel.add(miniMapPanel);
+        panel.add(miniMapPanel, "width 200:300:, hmin 100");
         panel.add(mainMapPanel, "span 1 3, grow");
         panel.add(menuBar);
         panel.add(infoPanel, "grow");

@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.main;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -24,20 +25,18 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.model.ScenarioUIModel;
-import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.common.model.Scenario;
 import org.iremake.client.resources.Places;
+import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.ui.ClockLabel;
 import org.iremake.common.ui.utils.GraphicsUtils;
-import org.iremake.common.ui.utils.WindowCorner;
-import org.iremake.common.ui.layout.RelativeLayout;
-import org.iremake.common.ui.layout.RelativeLayoutConstraint;
 
 /**
  * Builds the main screen.
@@ -77,7 +76,7 @@ public class MainScreenBuilder {
         manager.setPanels(mainMapPanel);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager);
+        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model);
         
         dialog.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
         dialog.add(mainMapPanel, "grow");
@@ -95,7 +94,7 @@ public class MainScreenBuilder {
      * @param manager
      * @return
      */
-    private static JPanel createControlPanel(final MainScreenManager manager) {
+    private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model) {
         JPanel panel = new JPanel();
 
         // create menu bar and add to frame
@@ -116,14 +115,28 @@ public class MainScreenBuilder {
         // add buttons to toolbar
         menuBar.add(exitButton);
         menuBar.add(saveButton);
+        
+        // create mini map and add to panel
+        MiniMapPanel miniMapPanel = new MiniMapPanel(model);        
+        
+        manager.setMiniMap(miniMapPanel);
+        
+        // create other buttons
+        JToolBar toolBar = CommonElementsFactory.makeToolBar();
+        JButton industryDialog = new JButton("Industry");
+        toolBar.add(industryDialog);
+        
+        // create info panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setBorder(new LineBorder(Color.black, 1));
 
         // layout
-        panel.setLayout(new MigLayout("fill"));
-        panel.add(menuBar, "dock north");
-        
-        // add clock label to layered pane
-        JLabel clockLabel = new ClockLabel();
-        panel.add(clockLabel, "dock south");
+        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][grow][]"));
+        panel.add(menuBar);
+        panel.add(miniMapPanel, "growx"); // because the extra space goes here
+        panel.add(toolBar);
+        panel.add(infoPanel, "grow");
+        panel.add(new ClockLabel(), "alignx center");
         
         return panel;
     }

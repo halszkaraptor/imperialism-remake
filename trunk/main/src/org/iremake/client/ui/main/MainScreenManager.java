@@ -16,16 +16,20 @@
  */
 package org.iremake.client.ui.main;
 
+import java.awt.Dimension;
 import java.awt.Window;
 import javax.swing.JDialog;
 import nu.xom.Element;
-import org.iremake.client.ui.model.ScenarioUIModel;
-import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
-import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.common.MapPosition;
-import org.iremake.common.model.Scenario;
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
+import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.MainMapTileListener;
+import org.iremake.client.ui.map.MiniMapPanel;
+import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
+import org.iremake.common.MapPosition;
+import org.iremake.common.model.Scenario;
 import org.iremake.common.xml.XMLHelper;
 
 /**
@@ -33,10 +37,11 @@ import org.iremake.common.xml.XMLHelper;
  *
  */
 // TODO generalize between EditorManager and this class (some code duplicates)
-public class MainScreenManager implements ScenarioUIModelChangedListener {
+public class MainScreenManager implements MainMapTileListener, ScenarioUIModelChangedListener {
 
     private Scenario map;
     private MainMapPanel mainMapPanel;
+    private MiniMapPanel miniMapPanel;
     private ScenarioUIModel model;
     private Window window;
 
@@ -54,6 +59,13 @@ public class MainScreenManager implements ScenarioUIModelChangedListener {
      */
     public void setPanels(MainMapPanel mainPanel) {
         mainMapPanel = mainPanel;
+        // wiring (main map tells manager, mini map tells main map)
+        mainMapPanel.setTileListener(this);        
+    }
+    
+    public void setMiniMap(MiniMapPanel miniMapPanel) {
+        this.miniMapPanel = miniMapPanel;
+        miniMapPanel.setFocusChangedListener(mainMapPanel); // TODO make sure mainMapPanel is set before, set them together or later        
     }
 
     /**
@@ -94,6 +106,10 @@ public class MainScreenManager implements ScenarioUIModelChangedListener {
     @Override
     public void tileChanged(MapPosition p) {
         // TODO do we need this method? (adapter)
+        
+        miniMapPanel.tileChanged();
+
+        mainMapPanel.tileChanged(p);        
     }
 
     /**
@@ -103,6 +119,13 @@ public class MainScreenManager implements ScenarioUIModelChangedListener {
     public void mapChanged() {
         // TODO size of map could also have changed!!!
         mainMapPanel.mapChanged();
+        
+        Dimension size = mainMapPanel.getSize();
+        Dimension tileSize = TerrainLoader.getTileSize();
+        // tell the minimap about our size
+        float fractionRows = (float) size.height / tileSize.height / model.getNumberRows();
+        float fractionColumns = (float) size.width / tileSize.width / model.getNumberColumns();
+        miniMapPanel.mapChanged(fractionRows, fractionColumns);        
     }
 
     /**
@@ -111,5 +134,15 @@ public class MainScreenManager implements ScenarioUIModelChangedListener {
     // TODO improve the exit (use frame manager)
     public void exit() {
         window.dispose();
+    }
+
+    @Override
+    public void focusChanged(MapPosition p) {
+
+    }
+
+    @Override
+    public void tileClicked(MapPosition p) {
+
     }
 }

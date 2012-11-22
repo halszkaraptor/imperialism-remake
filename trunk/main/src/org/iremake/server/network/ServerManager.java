@@ -18,6 +18,8 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Server;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -80,8 +82,15 @@ public class ServerManager {
         logger.log("Bound to port.");
 
         server.addListener(new ServerHandler(logger));
-        
-        fireStatusChanged("Server running.");
+
+        InetAddress own;
+        try {
+            own = InetAddress.getLocalHost();
+        } catch (UnknownHostException ex) {
+            LOG.log(Level.SEVERE, null, ex); // TODO this shouldn't happen but we have to catch it.
+            return true;
+        }
+        fireStatusChanged("Server running at " + own.getHostAddress());
 
         return true;
     }

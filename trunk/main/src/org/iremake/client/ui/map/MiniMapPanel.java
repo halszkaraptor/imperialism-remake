@@ -52,8 +52,6 @@ public class MiniMapPanel extends JPanel {
 
         this.model = model;
 
-        setPreferredSize(new Dimension(200, 120));
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -123,8 +121,9 @@ public class MiniMapPanel extends JPanel {
      */
     public void mapChanged(float fractionRows, float fractionColumns) {
 
-        size.width = 200;
-        size.height = 200 * model.getNumberRows() / model.getNumberColumns();
+        
+        size = getSize();
+        size.height = size.width * model.getNumberRows() / model.getNumberColumns();
         setSize(size);
 
         focus.x = size.width / 2;

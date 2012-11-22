@@ -29,12 +29,12 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.network.ClientManager;
-import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.StartScreenBuilder;
-import org.iremake.common.Settings;
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
+import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.common.BigBag;
+import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.ui.utils.LookAndFeel;
 import org.iremake.common.xml.XMLHelper;
@@ -126,6 +126,13 @@ public class StartClient {
      * Shut down clean up.
      */
     public static void shutDown() {
+        
+        // if server is still running shut down
+        if (BigBag.serverManager.isRunning()) {
+            LOG.log(Level.INFO, "Server still running, shut down.");
+            BigBag.serverManager.stop();
+        }
+                
 
         // save preferences
         StartClient.savePreferences();

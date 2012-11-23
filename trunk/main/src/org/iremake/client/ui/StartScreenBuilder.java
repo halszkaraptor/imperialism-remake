@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
+import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
@@ -82,7 +83,7 @@ public class StartScreenBuilder {
         logoLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
 
         // Version label
-        JLabel versionLabel = new JLabel("Version " + StartClient.Version);
+        JLabel versionLabel = new JLabel("Version " + Options.Version.get());
         versionLabel.setForeground(Color.WHITE);    // white color
 
         // get layered pane

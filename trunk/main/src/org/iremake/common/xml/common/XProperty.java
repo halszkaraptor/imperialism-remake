@@ -27,6 +27,8 @@ import org.iremake.common.xml.XMLable;
 
 /**
  * Property implementation with a HashMap and XML import/export capability.
+ * 
+ * If you want to use it as a Table, just convert to XTable and back
  */
 // TODO null to XML and back? how is it handled
 // TODO add statistics (how to make them transient)
@@ -197,7 +199,7 @@ public class XProperty implements XMLable {
 
         if (parent == null || !NAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
-            return;
+            return; // TODO more than a LOG entry maybe
         }
 
         map = XMLHandler.XMLToMap(parent);

@@ -18,6 +18,7 @@ package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.ActionMessage;
@@ -58,7 +59,7 @@ public class ClientHandler extends Listener {
                 case Validate:
                     // server wants us to validate, so we send the version, followed by a request to register
                     logger.log("Received request to validate, send version and ask for Registration");
-                    connection.sendTCP(new TextMessage(StartClient.Version, TextMessage.Type.Version));
+                    connection.sendTCP(new TextMessage(Options.Version.get(), TextMessage.Type.Version));
                     connection.sendTCP(ActionMessage.Register);
                     break;
                 }

@@ -47,11 +47,9 @@ import org.iremake.server.network.ServerManager;
 // TODO too many things are done in the EDT, check this and put stuff in WorkerThreads
 public class StartClient {
 
-    public static final String Version = "0.1.1"; // TODO maybe unhardcode or move somewhere else
-
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
 
-    private static XProperty options = new XProperty(0);
+    public static boolean fullscreen = false;
 
     /**
      * No instantiation.
@@ -79,8 +77,8 @@ public class StartClient {
             TerrainLoader.load();
             Settings.load();
 
-            // load preferences
-            StartClient.loadPreferences();
+            // load options
+            Options.load();
             
             // set some variables in the BigBag
             NetworkLogger nLog = new NetworkLogger() {
@@ -133,9 +131,8 @@ public class StartClient {
             BigBag.serverManager.stop();
         }
                 
-
-        // save preferences
-        StartClient.savePreferences();
+        // save options
+        Options.save();
     }
 
     /**
@@ -154,23 +151,5 @@ public class StartClient {
 
         // our first log message (just to get the date and time)
         LOG.log(Level.INFO, "Logger is setup");
-    }
-
-    private static void loadPreferences() {
-        // either load the options or the default options
-        String name = "options.xml";
-        if (Loader.exists(Places.Common, name) == false) {
-            name = "options.default.xml";
-        }
-        String location = Loader.getPath(Places.Common, name);
-
-        // read options from that location
-        XMLHelper.read(location, options);
-    }
-
-    private static void savePreferences() {
-        String location = Loader.getPath(Places.Common, "options.xml");
-
-        XMLHelper.write(location, options);
     }
 }

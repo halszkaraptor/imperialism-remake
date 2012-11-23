@@ -19,6 +19,7 @@ package org.iremake.common.xml.common;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.TableModelEvent;
@@ -49,6 +50,24 @@ public class XTable implements TableModel, XMLable {
     public XTable() {
         headers = new ArrayList<>(4);
         content = new ArrayList<>(4);
+    }
+    
+    public XTable(XProperty property) {
+        // set column names ("Keys" and "Values")
+        headers = new ArrayList<>(2);
+        headers.add("Keys");
+        headers.add("Values");
+        
+        // Iterate over all keys and add a (key, value) pair as row each time
+        Set<String> keys = property.keySet();
+        content = new ArrayList<>(keys.size());
+        
+        for (String key: keys) {
+            List<String> row = new ArrayList<>(2);
+            row.add(key);
+            row.add(property.get(key));
+            content.add(row);
+        }
     }
 
     /**

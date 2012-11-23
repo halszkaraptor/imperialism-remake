@@ -124,6 +124,12 @@ public class MainScreenBuilder {
         // create other buttons
         JToolBar toolBar = CommonElementsFactory.makeToolBar();
         JButton industryDialog = new JButton("Industry");
+        industryDialog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
         toolBar.add(industryDialog);
         
         // create info panel

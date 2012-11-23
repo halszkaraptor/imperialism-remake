@@ -21,7 +21,10 @@ import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.AbstractButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +34,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.Options;
+import org.iremake.client.StartClient;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerStatusListener;
 
@@ -78,6 +83,22 @@ public class OptionsDialogBuilder {
      */
     private static JPanel generalOptionsPanel() {
         JPanel panel = new JPanel();
+        
+        JCheckBox fullscreen = new JCheckBox("Start in Full Screen");
+        fullscreen.setSelected(Options.FullScreenMode.getBoolean());
+        fullscreen.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean selected = e.getStateChange() == ItemEvent.SELECTED;
+                Options.FullScreenMode.putBoolean(selected);
+                // TODO notification that it will be active after next start
+            }
+        });
+        
+        // layout
+        panel.setLayout(new MigLayout());        
+        panel.add(fullscreen);
+        
         return panel;
     }
     

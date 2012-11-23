@@ -124,7 +124,7 @@ public class MiniMapPanel extends JPanel {
         
         size = getSize();
         size.height = size.width * model.getNumberRows() / model.getNumberColumns();
-        setSize(size);
+        setPreferredSize(size);
 
         focus.x = size.width / 2;
         focus.y = size.height / 2;
@@ -134,8 +134,8 @@ public class MiniMapPanel extends JPanel {
 
         notifyFocusChangedListener();
 
-        redrawMap();
-        repaint();
+        redrawMap(); // TODO wait for the actual componenResized event
+        revalidate(); // this will call repaint        
     }
 
     /**

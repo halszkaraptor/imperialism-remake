@@ -19,6 +19,7 @@ package org.iremake.server.network;
 import com.esotericsoftware.kryonet.Connection;
 import java.util.Timer;
 import java.util.TimerTask;
+import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.ActionMessage;
@@ -67,7 +68,7 @@ public final class ServerClientHandler {
             switch (msg.getType()) {
             case Version:
                 // verify version
-                if (StartClient.Version.equals(msg.getText())) {
+                if (Options.Version.get().equals(msg.getText())) {
                     // right version
                     logger.log("Version accepted, promote state to valid.");
                     state = ClientState.Valid;

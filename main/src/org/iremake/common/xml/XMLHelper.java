@@ -121,7 +121,7 @@ public class XMLHelper {
         Resource resource;
         try {
             resource = ResourceUtils.asResource(location);
-            try (OutputStream out = resource.getOutputStream()) {
+            try (OutputStream out = resource.getOutputStream()) { // this will create parent directories if they aren't yet available
                 XMLHelper.write(out, root);
             }
         } catch (IOException ex) {

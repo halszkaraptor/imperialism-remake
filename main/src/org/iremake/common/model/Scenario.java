@@ -40,7 +40,8 @@ public class Scenario implements XMLable {
     private XList<Nation> nations = new XList<>(Nation.class);
     private XList<Province> provinces = new XList<>(Province.class);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
-
+    private XProperty properties = new XProperty(10);
+        
     public Scenario() {
     }
 
@@ -137,6 +138,10 @@ public class Scenario implements XMLable {
     public Nation getNation(int index) {
         return nations.getElementAt(index);
     }
+    
+    public String getTitle() {
+        return properties.get("title");
+    }
 
     /**
      *
@@ -185,11 +190,10 @@ public class Scenario implements XMLable {
     public Element toXML() {
         Element parent = new Element(NAME);
 
-        // add size as list
-        XProperty dimensions = new XProperty(2);
-        dimensions.putInt("rows", rows);
-        dimensions.putInt("columns", columns);
-        parent.appendChild(dimensions.toXML());
+        // update sizes and write properties
+        properties.putInt("rows", rows);
+        properties.putInt("columns", columns);
+        parent.appendChild(properties.toXML());
 
         // assemble map as one big string
         int capacity = rows * columns * 2; // TODO check somewhere that ids have size 2
@@ -221,6 +225,7 @@ public class Scenario implements XMLable {
     public void fromXML(Element parent) {
 
         // clear (?)
+        properties.clear();
 
         if (parent == null || !NAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
@@ -229,11 +234,10 @@ public class Scenario implements XMLable {
 
         Elements children = parent.getChildElements();
 
-        // get size
-        XProperty dimensions = new XProperty(0);
-        dimensions.fromXML(children.get(0));
-        rows = dimensions.getInt("rows");
-        columns = dimensions.getInt("columns");
+        // get properties and readout sizes
+        properties.fromXML(children.get(0));
+        rows = properties.getInt("rows");
+        columns = properties.getInt("columns");
         map = new Tile[rows][columns];
 
         // TODO test size of string with size

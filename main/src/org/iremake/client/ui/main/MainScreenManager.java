@@ -19,7 +19,6 @@ package org.iremake.client.ui.main;
 import java.awt.Dimension;
 import java.awt.Window;
 import javax.swing.JDialog;
-import nu.xom.Element;
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
@@ -30,7 +29,6 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
 import org.iremake.common.MapPosition;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.xml.XMLHelper;
 
 /**
  * Manages all the wirings of the main screen maps.
@@ -39,7 +37,7 @@ import org.iremake.common.xml.XMLHelper;
 // TODO generalize between EditorManager and this class (some code duplicates)
 public class MainScreenManager implements MainMapTileListener, ScenarioUIModelChangedListener {
 
-    private Scenario map;
+    private Scenario scenario;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
     private ScenarioUIModel model;
@@ -74,7 +72,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      * @param model
      */
     public void setScenarioContent(Scenario map, ScenarioUIModel model) {
-        this.map = map;
+        this.scenario = map;
         this.model = model;
 
         // wiring (map tells model, model tells manager)
@@ -87,7 +85,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      */
     public void loadInitialScenario() {
         // map.setEmptyMap(60, 100);
-        loadScenario(Loader.getPath(Places.Scenarios, "scenario.Europe1814.xml"));
+        loadScenario("scenario.Europe1814.xml");
     }
 
     /**
@@ -95,8 +93,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      * @param location
      */
     private void loadScenario(String location) {
-        Element xml = XMLHelper.read(location);
-        map.fromXML(xml);
+        Loader.setFromXML(Places.Scenarios, location, scenario);
     }
 
     /**

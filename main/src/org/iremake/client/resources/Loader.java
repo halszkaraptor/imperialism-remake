@@ -20,6 +20,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,8 +29,12 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import nu.xom.Element;
+import nu.xom.ParsingException;
+import org.iremake.common.resources.Resource;
+import org.iremake.common.resources.ResourceUtils;
 import org.iremake.common.ui.utils.UILoader;
 import org.iremake.common.xml.XMLHelper;
+import org.iremake.common.xml.XMLable;
 
 /**
  * Loads from the data folder.
@@ -95,8 +100,46 @@ public class Loader {
      * @return
      */
     public static Element getAsXML(Places place, String location) {
-        String path = base + place + location;
-        return XMLHelper.read(path);
+        try {
+            return XMLHelper.read(Loader.getAsResource(place, location));
+        } catch (IOException | ParsingException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @param place
+     * @param location
+     * @param target
+     * @return 
+     */
+    public static boolean setFromXML(Places place, String location, XMLable target) {
+        try {
+            XMLHelper.read(Loader.getAsResource(place, location), target);
+        } catch (IOException | ParsingException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * 
+     * @param place
+     * @param location
+     * @param target
+     * @return 
+     */
+    public static boolean saveToXML(Places place, String location, XMLable target) {
+        try {
+            XMLHelper.write(Loader.getAsResource(place, location), target);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -135,10 +178,26 @@ public class Loader {
      * @param location
      * @return
      */
+    // TODO only private
     public static String getPath(Places place, String location) {
         // TODO replace folder separator symbol in path ??
         return base + place + location;
     }
+    
+    /**
+     * 
+     * @param place
+     * @param location
+     * @return 
+     */
+    public static Resource getAsResource(Places place, String location) {
+        try {
+            return ResourceUtils.asResource(Loader.getPath(place, location));
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+        return null;
+   }
 
     /**
      *

@@ -96,6 +96,9 @@ public class MainScreenBuilder {
      */
     private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model) {
         JPanel panel = new JPanel();
+        
+        JPanel infPanel = new JPanel();
+        infPanel.setBorder(new LineBorder(Color.black, 1));
 
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
@@ -137,7 +140,8 @@ public class MainScreenBuilder {
         infoPanel.setBorder(new LineBorder(Color.black, 1));
 
         // layout
-        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][grow][]"));
+        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][][grow][]"));
+        panel.add(infPanel, "growx");
         panel.add(menuBar);
         panel.add(miniMapPanel, "growx"); // because the extra space goes here
         panel.add(toolBar);

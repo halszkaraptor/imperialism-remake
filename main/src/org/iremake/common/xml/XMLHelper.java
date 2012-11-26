@@ -19,9 +19,6 @@ package org.iremake.common.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -29,14 +26,11 @@ import nu.xom.ParsingException;
 import nu.xom.Serializer;
 import nu.xom.ValidityException;
 import org.iremake.common.resources.Resource;
-import org.iremake.common.resources.ResourceUtils;
 
 /**
  * Read/Write to file.
  */
 public class XMLHelper {
-
-    private static final Logger LOG = Logger.getLogger(XMLHelper.class.getName());
 
     /**
      * No instantiation.
@@ -53,7 +47,7 @@ public class XMLHelper {
      * @throws ValidityException
      * @throws IOException
      */
-    public static Element read(InputStream in) throws ParsingException, ValidityException, IOException {
+    public static Element read(InputStream in) throws IOException, ParsingException {
         Builder parser = new Builder();
         Document document = parser.build(in);
         return document.getRootElement();
@@ -65,20 +59,10 @@ public class XMLHelper {
      * @param location
      * @return
      */
-    public static Element read(String location) {
-        // TODO seems no exception is thrown when not existing (FileNotFound)
-        Element root = null;
-        try {
-            Resource resource = ResourceUtils.asResource(location);
-            if (resource.exists()) {
-                try (InputStream in = resource.getInputStream()) {
-                    root = XMLHelper.read(in);
-                }
-            }
-        } catch (ParsingException | IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+    public static Element read(Resource resource) throws IOException, ParsingException {
+        try (InputStream in = resource.getInputStream()) {
+            return XMLHelper.read(in);
         }
-        return root;
     }
 
     /**
@@ -87,11 +71,10 @@ public class XMLHelper {
      * @param location
      * @param target
      */
-    public static void read(String location, XMLable target) {
-        Element xml = XMLHelper.read(location);
+    public static void read(Resource resource, XMLable target) throws IOException, ParsingException {
+        Element xml = XMLHelper.read(resource);
         target.fromXML(xml);
     }
-
 
     /**
      * Low level writing of XML.
@@ -101,7 +84,7 @@ public class XMLHelper {
      * @throws UnsupportedEncodingException
      * @throws IOException
      */
-    public static void write(OutputStream out, Element root) throws UnsupportedEncodingException, IOException {
+    public static void write(OutputStream out, Element root) throws IOException {
         Document document = new Document(root);
 
         Serializer serializer = new Serializer(out, "UTF-8");
@@ -116,26 +99,20 @@ public class XMLHelper {
      * @param location
      * @param root
      */
-    public static void write(String location, Element root) {
-        // get resource and write to it
-        Resource resource;
-        try {
-            resource = ResourceUtils.asResource(location);
-            try (OutputStream out = resource.getOutputStream()) { // this will create parent directories if they aren't yet available
-                XMLHelper.write(out, root);
-            }
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+    public static void write(Resource resource, Element root) throws IOException {
+        try (OutputStream out = resource.getOutputStream()) { // this will create parent directories if they aren't yet available
+            XMLHelper.write(out, root);
         }
     }
 
     /**
      * Convenience method.
+     *
      * @param location
      * @param target
      */
-    public static void write(String location, XMLable target) {
+    public static void write(Resource resource, XMLable target) throws IOException {
         Element xml = target.toXML();
-        XMLHelper.write(location, xml);
+        XMLHelper.write(resource, xml);
     }
 }

@@ -18,6 +18,7 @@ package org.iremake.client;
 
 import org.iremake.client.resources.Loader;
 import org.iremake.client.resources.Places;
+import org.iremake.common.resources.Resource;
 import org.iremake.common.xml.XMLHelper;
 import org.iremake.common.xml.common.XProperty;
 
@@ -67,17 +68,13 @@ public enum Options {
             options.put("version", "0.1.1");
             options.putBoolean("graphics.mode.fullscreen", true);            
         }
-        String location = Loader.getPath(Places.Common, name);
-
-        // read options from that location
-        XMLHelper.read(location, options);
+        
+        Loader.setFromXML(Places.Common, name, options);
         
         StartClient.fullscreen = Options.FullScreenMode.getBoolean();
     }
 
     public static void save() {
-        String location = Loader.getPath(Places.Common, "options.xml");
-
-        XMLHelper.write(location, options);
+        Loader.saveToXML(Places.Common, "options.xml", options);
     }
 }

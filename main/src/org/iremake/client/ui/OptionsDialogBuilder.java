@@ -95,9 +95,12 @@ public class OptionsDialogBuilder {
             }
         });
         
+        JCheckBox controlLeftRight = new JCheckBox("Main Screen controls on right side");
+        
         // layout
-        panel.setLayout(new MigLayout());        
+        panel.setLayout(new MigLayout("flowy"));        
         panel.add(fullscreen);
+        panel.add(controlLeftRight);
         
         return panel;
     }

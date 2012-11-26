@@ -169,7 +169,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      */
     public void loadInitialScenario() {
         // map.setEmptyMap(60, 100);
-        loadScenario(Loader.getPath(Places.Scenarios, "scenario.Europe1814.xml"));
+        loadScenario("scenario.Europe1814.xml");
     }
 
     /**
@@ -178,8 +178,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * @param location
      */
     private void loadScenario(String location) {
-        Element xml = XMLHelper.read(location);
-        scenario.fromXML(xml);
+        Loader.setFromXML(Places.Scenarios, location, scenario);
     }
 
     /**

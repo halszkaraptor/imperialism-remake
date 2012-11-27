@@ -61,7 +61,7 @@ public class NetworkDialogBuilder {
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
 
         // server member list
-        JList serverMemberList = NetworkDialogBuilder.serverInfoList();
+        JList<String> serverMemberList = NetworkDialogBuilder.serverInfoList();
         DefaultListModel<String> model = new DefaultListModel<>();
         model.add(0, "Hallo");
         serverMemberList.setModel(model);
@@ -107,8 +107,8 @@ public class NetworkDialogBuilder {
         return panel;
     }
 
-    private static JList serverInfoList() {
-        JList list = new JList();
+    private static JList<String> serverInfoList() {
+        JList<String> list = new JList<>();
 
         return list;
     }

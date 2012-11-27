@@ -64,7 +64,7 @@ public class StartScreenBuilder {
      */
     public static JFrame makeFrame() {
         JFrame frame = CommonElementsFactory.makeFrame();
-
+        
         // create menu bar and add to frame
         JToolBar menuBar = StartScreenBuilder.menuBar(frame);
         frame.add(menuBar);

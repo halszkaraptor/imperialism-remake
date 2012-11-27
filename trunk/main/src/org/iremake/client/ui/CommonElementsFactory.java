@@ -102,13 +102,13 @@ public class CommonElementsFactory {
 
         // undecorated and maximized
         frame.setUndecorated(true);
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         // turn of usual exiting mechanisms
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         // not resizable
-        frame.setResizable(false);
+        // frame.setResizable(false); // see linux problems
 
         // set title
         frame.setTitle("Imperialism Remake");

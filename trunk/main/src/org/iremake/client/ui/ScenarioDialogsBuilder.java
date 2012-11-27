@@ -67,7 +67,7 @@ public class ScenarioDialogsBuilder {
         final ScenarioScanner scanner = new ScenarioScanner();
         scanner.doScan();
         final List<String> titles = scanner.getScenarios();
-        JList selectList = new JList();
+        JList<String> selectList = new JList<>();
         selectList.setBorder(new LineBorder(Color.black, 1));
         selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // setting up a JList model

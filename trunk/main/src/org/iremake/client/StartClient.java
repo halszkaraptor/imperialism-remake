@@ -20,6 +20,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -29,7 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.network.ClientManager;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.StartScreenBuilder;
@@ -37,8 +38,6 @@ import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.ui.utils.LookAndFeel;
-import org.iremake.common.xml.XMLHelper;
-import org.iremake.common.xml.common.XProperty;
 import org.iremake.server.network.ServerManager;
 
 /**
@@ -111,7 +110,7 @@ public class StartClient {
         FontUIResource r = (FontUIResource) UIManager.get("Label.font");
         Font font = null;
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Loader.getAsInputStream(Places.Graphics, "fonts/Lora-Regular.ttf"));
+            font = Font.createFont(Font.TRUETYPE_FONT, IOManager.getAsInputStream(Places.Graphics, "fonts/Lora-Regular.ttf"));
         } catch (FontFormatException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
@@ -133,6 +132,10 @@ public class StartClient {
                 
         // save options
         Options.save();
+        
+        // save statistics from loader to simple text file
+        List<String> stats = IOManager.getStatistics();
+        // TODO save in text file
     }
 
     /**
@@ -140,11 +143,11 @@ public class StartClient {
      */
     private static void setupLogger() throws IOException {
 
-        Loader.createDirectory("log");
+        IOManager.createDirectory(Places.Log);
         // if log directory not yet existing, create it
 
         // setup of the logger
-        Handler handler = new FileHandler(Loader.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
+        Handler handler = new FileHandler(IOManager.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
         handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
         handler.setLevel(Level.INFO);
         Logger.getLogger("").addHandler(handler);

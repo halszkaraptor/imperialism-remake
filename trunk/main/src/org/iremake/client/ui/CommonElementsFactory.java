@@ -24,7 +24,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 
 /**
@@ -47,7 +47,7 @@ public class CommonElementsFactory {
     public static JButton makeButton(Places base, String iconPath) {
         JButton button = new JButton();
         button.setFocusable(false);
-        button.setIcon(Loader.getAsIcon(base, iconPath));
+        button.setIcon(IOManager.getAsIcon(base, iconPath));
         return button;
     }
 
@@ -114,7 +114,7 @@ public class CommonElementsFactory {
         frame.setTitle("Imperialism Remake");
 
         // set icon
-        frame.setIconImage(Loader.getAsImage(Places.GraphicsIcons, "icon.app.png"));
+        frame.setIconImage(IOManager.getAsImage(Places.GraphicsIcons, "icon.app.png"));
 
         return frame;
     }

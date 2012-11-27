@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import nu.xom.Element;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.common.xml.common.XTable;
 
@@ -41,7 +41,7 @@ public class Settings {
      */
     public static void load() {
 
-        Element xml = Loader.getAsXML(Places.ScenarioSettings, "terrain.xml");
+        Element xml = IOManager.getAsXML(Places.ScenarioSettings, "terrain.xml");
 
         // parse xml and fill table
         XTable table = new XTable();

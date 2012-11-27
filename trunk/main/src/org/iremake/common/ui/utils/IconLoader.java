@@ -19,9 +19,9 @@ package org.iremake.common.ui.utils;
 import javax.swing.Icon;
 
 /**
- *
+ * Helper interface to abstract from the way resources are loaded.
  */
-public interface UILoader {
+public interface IconLoader {
     
     public Icon getAsIcon(String location);
     

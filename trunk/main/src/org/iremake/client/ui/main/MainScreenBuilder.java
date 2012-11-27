@@ -76,7 +76,7 @@ public class MainScreenBuilder {
         manager.setPanels(mainMapPanel);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model);
+        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model, owner);
         
         dialog.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
         dialog.add(mainMapPanel, "grow");
@@ -94,7 +94,7 @@ public class MainScreenBuilder {
      * @param manager
      * @return
      */
-    private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model) {
+    private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model, final JFrame owner) {
         JPanel panel = new JPanel();
         
         JPanel infPanel = new JPanel();
@@ -130,7 +130,12 @@ public class MainScreenBuilder {
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                Dimension s = GraphicsUtils.getScreenSize();
+                int w = 800;
+                int h = 700;
+                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
+                JDialog dialog = CommonElementsFactory.makeDialog(owner, "Industry", true, bounds);
+                dialog.setVisible(true);
             }
         });
         toolBar.add(industryDialog);

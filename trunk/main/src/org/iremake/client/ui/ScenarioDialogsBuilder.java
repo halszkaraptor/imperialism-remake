@@ -21,16 +21,23 @@ import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.main.MainScreenBuilder;
+import org.iremake.common.model.ScenarioScanner;
+import org.iremake.common.resources.Resource;
 
 /**
  * Scenario dialogs wiring.
@@ -57,8 +64,37 @@ public class ScenarioDialogsBuilder {
         JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
 
         // placeholder for the real things
-        JTree selectTree = new JTree();
-        selectTree.setBorder(new LineBorder(Color.black, 1));
+        final ScenarioScanner scanner = new ScenarioScanner();
+        scanner.doScan();
+        final List<String> titles = scanner.getScenarios();
+        JList selectList = new JList();
+        selectList.setBorder(new LineBorder(Color.black, 1));
+        selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // setting up a JList model
+        selectList.setModel(new AbstractListModel<String>() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public int getSize() {
+                return titles.size();
+            }
+
+            @Override
+            public String getElementAt(int index) {
+                return titles.get(index);
+            }
+        });        
+        selectList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int index = e.getFirstIndex();
+                    Resource resource = scanner.getScenarioResource(index);
+                    // TODO load and update info
+                }
+            }
+        });
+
         JPanel mapPanel = makeOverviewMapPanel();
         JPanel infoPanel = ScenarioDialogsBuilder.createInfoPanel();
 
@@ -71,7 +107,7 @@ public class ScenarioDialogsBuilder {
         Container c = dialog.getContentPane();
         c.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
         dialog.add(menuBar);
-        dialog.add(selectTree, "width 200!, split 2");
+        dialog.add(selectList, "width 200!, split 2");
         dialog.add(mapPanel, "grow");
         dialog.add(infoPanel, "height 200!, growx");
 
@@ -89,9 +125,6 @@ public class ScenarioDialogsBuilder {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
-        // load button
-        JButton loadButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
-
         // start button
         JButton startButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.start.png");
         startButton.addActionListener(new ActionListener() {
@@ -102,7 +135,6 @@ public class ScenarioDialogsBuilder {
         });
 
         // add buttons to tool bar
-        bar.add(loadButton);
         bar.add(startButton);
 
         return bar;

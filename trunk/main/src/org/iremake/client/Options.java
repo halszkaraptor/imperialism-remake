@@ -16,7 +16,7 @@
  */
 package org.iremake.client;
 
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.common.resources.Resource;
 import org.iremake.common.xml.XMLHelper;
@@ -61,7 +61,7 @@ public enum Options {
     public static void load() {
         // either load the options or the default options
         String name = "options.xml";
-        if (Loader.exists(Places.Common, name) == false) {
+        if (IOManager.exists(Places.Common, name) == false) {
             name = "options.default.xml"; // TODO this file doesn't exist yet
             
             // TODO this should be deleted and replaced by a XML property editor
@@ -69,12 +69,12 @@ public enum Options {
             options.putBoolean("graphics.mode.fullscreen", true);            
         }
         
-        Loader.setFromXML(Places.Common, name, options);
+        IOManager.setFromXML(Places.Common, name, options);
         
         StartClient.fullscreen = Options.FullScreenMode.getBoolean();
     }
 
     public static void save() {
-        Loader.saveToXML(Places.Common, "options.xml", options);
+        IOManager.saveToXML(Places.Common, "options.xml", options);
     }
 }

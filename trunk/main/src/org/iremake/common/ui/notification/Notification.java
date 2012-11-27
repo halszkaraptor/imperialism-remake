@@ -36,7 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.common.ui.utils.UILoader;
+import org.iremake.common.ui.utils.IconLoader;
 
 /**
  * Small notification at some position within some window.
@@ -50,13 +50,13 @@ public abstract class Notification {
     private float alpha = 1f;
     private Timer timer;
     private int fadeInTime, fadeOutTime, onTime;
-    private UILoader loader;
+    private IconLoader loader;
 
     /**
      *
      * @param message
      */
-    public Notification(String message, UILoader loader) {
+    public Notification(String message, IconLoader loader) {
         this.loader = loader;
         ActionListener cancelAction = new ActionListener() {
             @Override

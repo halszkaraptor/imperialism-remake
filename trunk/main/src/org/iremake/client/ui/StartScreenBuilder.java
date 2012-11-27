@@ -32,7 +32,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
 import org.iremake.client.Options;
 import org.iremake.client.StartClient;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.common.ui.BrowserDialog;
@@ -76,11 +76,11 @@ public class StartScreenBuilder {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.background.png"));    // set image
+        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start.background.png"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(Loader.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
+        logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Options.Version.get());
@@ -175,8 +175,8 @@ public class StartScreenBuilder {
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                URL index = Loader.getURL(Places.Help, "en_index.html");
-                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index, Loader.getAsLoader(Places.GraphicsIcons));
+                URL index = IOManager.getURL(Places.Help, "en_index.html");
+                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index, IOManager.getAsLoader(Places.GraphicsIcons));
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
             }

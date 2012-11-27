@@ -37,7 +37,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.common.ui.utils.UILoader;
+import org.iremake.common.ui.utils.IconLoader;
 
 /**
  * Based on JEditorPane in non-editable, content text/html mode.
@@ -58,7 +58,7 @@ public class BrowserDialog extends JDialog {
     private URL indexURL;
     private Deque<URL> historyList = new LinkedList<>();
     private Deque<URL> forwardList = new LinkedList<>();
-    private UILoader loader;
+    private IconLoader loader;
 
     /**
      * Initializes the Browser.
@@ -69,7 +69,7 @@ public class BrowserDialog extends JDialog {
      * @param index
      * @param start
      */
-    public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start, UILoader loader) {
+    public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start, IconLoader loader) {
         super(parent, title, modal);
         if (index == null || start == null) {
             LOG.log(Level.SEVERE, "BrowserDialog init failed");

@@ -28,7 +28,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import nu.xom.Element;
 import nu.xom.ParsingException;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.map.MainMapPanel;
@@ -60,7 +60,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * Sets the file chooser for the scenarios.
      */
     public EditorManager() {
-        fileChooser = new JFileChooser(Loader.getPath(Places.Scenarios, ""));
+        fileChooser = new JFileChooser(IOManager.getPath(Places.Scenarios, ""));
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileFilter() {
             @Override
@@ -178,7 +178,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * @param location
      */
     private void loadScenario(String location) {
-        Loader.setFromXML(Places.Scenarios, location, scenario);
+        IOManager.setFromXML(Places.Scenarios, location, scenario);
     }
 
     /**

@@ -54,7 +54,7 @@ public class TerrainLoader {
      */
     public static void load() {
 
-        Element xml = Loader.getAsXML(Places.GraphicsTerrain, "terrain.xml");
+        Element xml = IOManager.getAsXML(Places.GraphicsTerrain, "terrain.xml");
 
         // parse xml and fill table
         XTable table = new XTable();
@@ -68,7 +68,7 @@ public class TerrainLoader {
         for (int row = 0; row < n; row++) {
             String id = table.getEntryAt(row, 0);
             String location = table.getEntryAt(row, 1);
-            Image image = Loader.getAsImage(Places.GraphicsTerrain, location);
+            Image image = IOManager.getAsImage(Places.GraphicsTerrain, location);
             Color color = TerrainLoader.ColorFromHex(table.getEntryAt(row, 2));
             TerrainTile tile = new TerrainTile(image, color);
             map.put(id, tile);

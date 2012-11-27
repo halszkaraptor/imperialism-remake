@@ -111,11 +111,13 @@ public class EditorBuilder {
 
         // create and add map panel
         JPanel mapPanel = EditorBuilder.buildMapPanel(dialog, manager);
-        tabPane.addTab("Map", mapPanel);
 
         // create and add nations panel
         JPanel nationPanel = EditorBuilder.buildNationPanel(dialog, manager);
-        tabPane.addTab("Nation", nationPanel);
+        
+        tabPane.addTab("General", nationPanel);
+        tabPane.addTab("Map", mapPanel);        
+        tabPane.setSelectedComponent(mapPanel);
 
 
         // set layout (vertically first menubar, then tabbed pane)

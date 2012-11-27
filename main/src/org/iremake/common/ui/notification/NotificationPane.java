@@ -19,7 +19,7 @@ package org.iremake.common.ui.notification;
 import javax.swing.JLayeredPane;
 import javax.swing.RootPaneContainer;
 import org.iremake.common.ui.utils.GraphicsUtils;
-import org.iremake.common.ui.utils.UILoader;
+import org.iremake.common.ui.utils.IconLoader;
 import org.iremake.common.ui.utils.WindowCorner;
 
 // TODO make it so that if there are other notification panes that the last one is always above all others
@@ -38,7 +38,7 @@ public class NotificationPane extends Notification {
      * @param parent
      * @param message
      */
-    public NotificationPane(RootPaneContainer parent, String message, UILoader loader) {
+    public NotificationPane(RootPaneContainer parent, String message, IconLoader loader) {
         super(message, loader);
 
         pane = parent.getLayeredPane();

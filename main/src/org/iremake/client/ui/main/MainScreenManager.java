@@ -19,7 +19,7 @@ package org.iremake.client.ui.main;
 import java.awt.Dimension;
 import java.awt.Window;
 import javax.swing.JDialog;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.map.MainMapPanel;
@@ -93,7 +93,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      * @param location
      */
     private void loadScenario(String location) {
-        Loader.setFromXML(Places.Scenarios, location, scenario);
+        IOManager.setFromXML(Places.Scenarios, location, scenario);
     }
 
     /**

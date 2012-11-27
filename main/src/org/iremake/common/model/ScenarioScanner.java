@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.ParsingException;
-import org.iremake.client.resources.Loader;
+import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.common.resources.Resource;
 import org.iremake.common.resources.ResourceUtils;
@@ -48,7 +48,7 @@ public class ScenarioScanner {
     public void doScan() {
         Resource dir = null;
         try {
-            dir = ResourceUtils.asResource(Loader.getPath(Places.Scenarios, ""));
+            dir = ResourceUtils.asResource(IOManager.getPath(Places.Scenarios, ""));
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }

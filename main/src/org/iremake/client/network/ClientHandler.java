@@ -19,7 +19,6 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import org.iremake.client.Options;
-import org.iremake.client.StartClient;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;

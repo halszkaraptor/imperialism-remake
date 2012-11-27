@@ -127,6 +127,7 @@ public class MainScreenBuilder {
         // create other buttons
         JToolBar toolBar = CommonElementsFactory.makeToolBar();
         JButton industryDialog = new JButton("Industry");
+        // TODO make industy button also non-focusable (commonelementsfactory)
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

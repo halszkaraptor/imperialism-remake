@@ -17,6 +17,9 @@
 package org.others.swing;
 
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 

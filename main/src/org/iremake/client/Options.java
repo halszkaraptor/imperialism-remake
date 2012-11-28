@@ -18,21 +18,16 @@ package org.iremake.client;
 
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.common.resources.Resource;
-import org.iremake.common.xml.XMLHelper;
 import org.iremake.common.xml.common.XProperty;
 
 /**
  *
  */
 public enum Options {
-    
+
     Version("version"),
     FullScreenMode("graphics.mode.fullscreen");
-    
-    
     private static XProperty options = new XProperty(0);
-
     private String name;
 
     Options(String id) {
@@ -42,35 +37,33 @@ public enum Options {
     @Override
     public String toString() {
         return name;
-    }    
-    
-    
+    }
+
     public String get() {
         return options.get(name);
-    }    
-    
+    }
+
     public boolean getBoolean() {
         return options.getBoolean(name);
-    }    
-    
+    }
+
     public void putBoolean(boolean value) {
         options.putBoolean(name, value);
-    }    
-    
-    
+    }
+
     public static void load() {
         // either load the options or the default options
         String name = "options.xml";
         if (IOManager.exists(Places.Common, name) == false) {
             name = "options.default.xml"; // TODO this file doesn't exist yet
-            
+
             // TODO this should be deleted and replaced by a XML property editor
             options.put("version", "0.1.1");
-            options.putBoolean("graphics.mode.fullscreen", true);            
+            options.putBoolean("graphics.mode.fullscreen", true);
         }
-        
+
         IOManager.setFromXML(Places.Common, name, options);
-        
+
         StartClient.fullscreen = Options.FullScreenMode.getBoolean();
     }
 

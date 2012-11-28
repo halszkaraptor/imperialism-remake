@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,9 +60,9 @@ public class ScenarioDialogsBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeLoadDialog(JFrame owner, String title, Rectangle bounds) {
+    public static JDialog makeLoadDialog(JFrame owner, String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
 
         // placeholder for the real things
         final ScenarioScanner scanner = new ScenarioScanner();

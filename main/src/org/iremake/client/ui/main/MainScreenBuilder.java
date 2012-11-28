@@ -57,10 +57,7 @@ public class MainScreenBuilder {
     public static void build(JFrame owner) {
         final MainScreenManager manager = new MainScreenManager();
 
-        Dimension s = GraphicsUtils.getScreenSize();
-        Rectangle bounds = new Rectangle(0, 0, s.width, s.height);
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, bounds);
-        dialog.setSize(s);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, owner.getSize());
         dialog.setUndecorated(true);
 
         manager.setFrame(dialog);
@@ -72,7 +69,6 @@ public class MainScreenBuilder {
         // Add MapPanel
         MainMapPanel mainMapPanel = new MainMapPanel(model);
 
-        mainMapPanel.setPreferredSize(s);
         manager.setPanels(mainMapPanel);
 
         // add control panel to layered pane and position
@@ -131,11 +127,7 @@ public class MainScreenBuilder {
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = GraphicsUtils.getScreenSize();
-                int w = 800;
-                int h = 700;
-                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = CommonElementsFactory.makeDialog(owner, "Industry", true, bounds);
+                JDialog dialog = CommonElementsFactory.makeDialog(owner, "Industry", true, new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });

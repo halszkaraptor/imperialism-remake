@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
@@ -55,18 +56,26 @@ public class GraphicsUtils {
      */
     private static final String KEYID = "scrambledEggs";
 
+    private static Rectangle ScreenBounds;
+    private static Rectangle MaximumBounds;
+
+    {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = env.getDefaultScreenDevice();
+        GraphicsConfiguration gc = gd.getDefaultConfiguration();
+        ScreenBounds = gc.getBounds();
+
+        Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
+        MaximumBounds.x = ScreenBounds.x + insets.left;
+        MaximumBounds.y = ScreenBounds.y + insets.right;
+        MaximumBounds.width = ScreenBounds.width - insets.left - insets.right;
+        MaximumBounds.height = ScreenBounds.height - insets.top - insets.bottom;
+    }
+
     /**
      * Private constructor to avoid instantiation.
      */
     private GraphicsUtils() {
-    }
-
-    /**
-     *
-     * @return
-     */
-    public static Dimension getScreenSize() {
-        return Toolkit.getDefaultToolkit().getScreenSize();
     }
 
     /**

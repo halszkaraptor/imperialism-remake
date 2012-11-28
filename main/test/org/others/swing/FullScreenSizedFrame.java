@@ -117,7 +117,8 @@ public class FullScreenSizedFrame {
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = Toolkit.getDefaultToolkit().getScreenSize();
+                Toolkit tk = Toolkit.getDefaultToolkit();
+                Dimension s = tk.getScreenSize();
                 frame.setBounds(0, 0, s.width, s.height);
             }
         });

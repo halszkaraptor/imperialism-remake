@@ -17,6 +17,7 @@
 package org.iremake.client.ui;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -50,9 +51,9 @@ public class NetworkDialogBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
+    public static JDialog makeDialog(JFrame owner, String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
 
         // create menu bar and add to dialog
         JToolBar menuBar = NetworkDialogBuilder.menuBar(owner);

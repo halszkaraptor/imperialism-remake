@@ -47,7 +47,6 @@ import org.iremake.server.network.ServerManager;
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
-
     public static boolean fullscreen = false;
 
     /**
@@ -78,7 +77,7 @@ public class StartClient {
 
             // load options
             Options.load();
-            
+
             // set some variables in the BigBag
             NetworkLogger nLog = new NetworkLogger() {
                 @Override
@@ -123,16 +122,16 @@ public class StartClient {
      * Shut down clean up.
      */
     public static void shutDown() {
-        
+
         // if server is still running shut down
         if (BigBag.serverManager.isRunning()) {
             LOG.log(Level.INFO, "Server still running, shut down.");
             BigBag.serverManager.stop();
         }
-                
+
         // save options
         Options.save();
-        
+
         // save statistics from loader to simple text file
         List<String> stats = IOManager.getStatistics();
         // TODO save in text file

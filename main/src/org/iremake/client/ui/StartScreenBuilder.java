@@ -133,11 +133,7 @@ public class StartScreenBuilder {
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = GraphicsUtils.getScreenSize();
-                int w = 800;
-                int h = 700;
-                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog(owner, "Scenario - Start", bounds);
+                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog(owner, "Scenario - Start", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
@@ -147,11 +143,7 @@ public class StartScreenBuilder {
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = GraphicsUtils.getScreenSize();
-                int w = 800;
-                int h = 700;
-                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = NetworkDialogBuilder.makeDialog(owner, "Network center", bounds);
+                JDialog dialog = NetworkDialogBuilder.makeDialog(owner, "Network center", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
@@ -161,11 +153,7 @@ public class StartScreenBuilder {
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = GraphicsUtils.getScreenSize();
-                int w = 800;
-                int h = 700;
-                Rectangle bounds = new Rectangle(s.width / 2 - w / 2, s.height / 2 - h / 2, w, h);
-                JDialog dialog = OptionsDialogBuilder.makeDialog(owner, "Options", bounds);
+                JDialog dialog = OptionsDialogBuilder.makeDialog(owner, "Options", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
@@ -187,9 +175,7 @@ public class StartScreenBuilder {
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dimension s = GraphicsUtils.getScreenSize();
-                Rectangle bounds = new Rectangle(50, 50, s.width - 100, s.height - 100);
-                EditorBuilder.build(owner, "Editor", bounds);
+                EditorBuilder.build(owner, "Editor", owner.getSize());
             }
         });
 

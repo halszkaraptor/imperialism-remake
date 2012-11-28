@@ -17,6 +17,7 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JButton;
@@ -70,7 +71,7 @@ public class CommonElementsFactory {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(Frame owner, String title, boolean modal, Rectangle bounds) {
+    public static JDialog makeDialog(Frame owner, String title, boolean modal, Dimension size) {
         JDialog dialog = new JDialog(owner, title, modal);
 
         // turn of usual exiting mechanisms
@@ -80,6 +81,8 @@ public class CommonElementsFactory {
         dialog.setResizable(false);
 
         // set bounds
+        Rectangle pb = owner.getBounds();
+        Rectangle bounds = new Rectangle(pb.x+pb.width/2-size.width/2,pb.y+pb.height/2-size.height/2,size.width,size.height);
         dialog.setBounds(bounds);
 
         // set background
@@ -99,7 +102,7 @@ public class CommonElementsFactory {
      */
     public static JFrame makeFrame() {
         JFrame frame = new JFrame();
-
+        
         // undecorated and maximized
         frame.setUndecorated(true);
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);

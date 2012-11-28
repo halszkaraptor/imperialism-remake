@@ -19,14 +19,12 @@ package org.iremake.client.ui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -35,8 +33,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.Places;
-import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.common.model.ScenarioScanner;
 import org.iremake.common.resources.Resource;
 
@@ -60,9 +56,9 @@ public class ScenarioDialogsBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeLoadDialog(JFrame owner, String title, Dimension size) {
+    public static JDialog makeLoadDialog(String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
+        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
 
         // placeholder for the real things
         final ScenarioScanner scanner = new ScenarioScanner();
@@ -101,7 +97,7 @@ public class ScenarioDialogsBuilder {
 
 
         // create menu bar and add to dialog
-        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar(owner);
+        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar();
 
 
         // layout - selectTree fixed width, infoPanel fixed height
@@ -122,18 +118,17 @@ public class ScenarioDialogsBuilder {
         return panel;
     }
 
-    private static JToolBar loadMenuBar(final JFrame owner) {
+    private static JToolBar loadMenuBar() {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // start button
-        JButton startButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.start.png");
+        JButton startButton = Button.ScenarioStart.create();
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO use global manager for it
-                owner.dispose();
-                MainScreenBuilder.build();
+                // TODO close this dialog before
+                FrameManager.getInstance().switchToMainScreen();
             }
         });
 

@@ -69,6 +69,7 @@ public class BrowserDialog extends JDialog {
      * @param index
      * @param start
      */
+    // TODO separate from dialog, just make it a component
     public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start, IconLoader loader) {
         super(parent, title, modal);
         if (index == null || start == null) {
@@ -169,7 +170,7 @@ public class BrowserDialog extends JDialog {
         scrollPane = new JScrollPane();
         scrollPane.setViewportView(contentPane);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
+
         // menubar
         JToolBar menuBar = new JToolBar();
         menuBar.setFloatable(false);
@@ -186,7 +187,7 @@ public class BrowserDialog extends JDialog {
         // size and close operations
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE); // TODO do we need this
 
-        setSize(800, 600); // TODO do we need this
+        setSize(800, 600); // TODO set bounds from outside
     }
 
     /**

@@ -73,7 +73,7 @@ public class XMLHelper {
      */
     public static void read(Resource resource, XMLable target) throws IOException, ParsingException {
         Element xml = XMLHelper.read(resource);
-        target.fromXML(xml);
+        target.fromXML(xml); // TODO check target not null
     }
 
     /**

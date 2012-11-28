@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -56,20 +57,18 @@ public class GraphicsUtils {
      */
     private static final String KEYID = "scrambledEggs";
 
-    private static Rectangle ScreenBounds;
-    private static Rectangle MaximumBounds;
+    private final static Rectangle ScreenBounds;
+    private final static Rectangle MaximumBounds;
 
-    {
+    static {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = env.getDefaultScreenDevice();
         GraphicsConfiguration gc = gd.getDefaultConfiguration();
         ScreenBounds = gc.getBounds();
 
         Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
-        MaximumBounds.x = ScreenBounds.x + insets.left;
-        MaximumBounds.y = ScreenBounds.y + insets.right;
-        MaximumBounds.width = ScreenBounds.width - insets.left - insets.right;
-        MaximumBounds.height = ScreenBounds.height - insets.top - insets.bottom;
+        MaximumBounds = new Rectangle(ScreenBounds.x + insets.left, ScreenBounds.y + insets.right,
+                ScreenBounds.width - insets.left - insets.right, ScreenBounds.height - insets.top - insets.bottom);
     }
 
     /**
@@ -309,14 +308,29 @@ public class GraphicsUtils {
      * @param source
      * @return
      */
+    // TODO most certainly they want the bounds, not the dimension because it mustn't start at 0,0
     public static Dimension getBoundingSize(Component source) {
         if (source instanceof Window) {
-            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            Rectangle bounds = env.getMaximumWindowBounds();
-            return new Dimension(bounds.width, bounds.height);
+            return new Dimension(MaximumBounds.width, MaximumBounds.height);
         } else {
             return source.getParent().getSize();
         }
+    }
+
+    /**
+     *
+     * @param frame
+     */
+    public static void setFullScreen(Frame frame) {
+        frame.setBounds(ScreenBounds);
+    }
+
+    /**
+     *
+     * @param frame
+     */
+    public static void setMaximumBounds(Frame frame) {
+        frame.setBounds(MaximumBounds);
     }
 
     /**

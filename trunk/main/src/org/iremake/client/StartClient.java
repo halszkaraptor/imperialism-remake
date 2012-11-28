@@ -26,14 +26,13 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.network.ClientManager;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.StartScreenBuilder;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
@@ -93,8 +92,7 @@ public class StartClient {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JFrame frame = StartScreenBuilder.makeFrame();
-                    frame.setVisible(true);
+                    FrameManager.getInstance().switchToStartScreen();
                 }
             });
         } catch (Exception ex) {

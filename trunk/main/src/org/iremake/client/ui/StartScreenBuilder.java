@@ -24,8 +24,8 @@ import java.net.URL;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JToolBar;
@@ -33,7 +33,6 @@ import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.common.ui.BrowserDialog;
 import org.iremake.common.ui.layout.RelativeLayout;
 import org.iremake.common.ui.layout.RelativeLayoutConstraint;
@@ -60,12 +59,12 @@ public class StartScreenBuilder {
      *
      * @return
      */
-    public static JFrame makeFrame() {
-        JFrame frame = CommonElementsFactory.makeFrame();
+    public static JComponent build() {
+
+        JLayeredPane pane = new JLayeredPane();
 
         // create menu bar and add to frame
-        JToolBar menuBar = StartScreenBuilder.menuBar(frame);
-        frame.add(menuBar);
+        JToolBar menuBar = StartScreenBuilder.menuBar();
 
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
@@ -83,9 +82,6 @@ public class StartScreenBuilder {
         // Version label
         JLabel versionLabel = new JLabel("Version " + Options.Version.get());
         versionLabel.setForeground(Color.WHITE);    // white color
-
-        // get layered pane
-        JLayeredPane pane = frame.getLayeredPane();
 
         RelativeLayout layout = new RelativeLayout();
         pane.setLayout(layout);
@@ -110,10 +106,12 @@ public class StartScreenBuilder {
         pane.add(languageComboBox, new Integer(4));
         layout.addConstraint(languageComboBox, RelativeLayoutConstraint.relative(0.7f, 0.5f));
 
+        pane.setOpaque(true);
+        pane.setBackground(Color.black);
         // set background of content pane (which is also included in layered pane)
-        frame.getContentPane().setBackground(Color.BLACK);  // black background
+        // frame.getContentPane().setBackground(Color.BLACK);  // black background
 
-        return frame;
+        return pane;
     }
 
     /**
@@ -122,69 +120,69 @@ public class StartScreenBuilder {
      * @param owner
      * @return
      */
-    private static JToolBar menuBar(final JFrame owner) {
+    private static JToolBar menuBar() {
         // tool bar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // scenario button
-        JButton scenarioButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.scenario.png");
+        JButton scenarioButton = Button.StartMenuScenario.create();
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog(owner, "Scenario - Start", new Dimension(800, 700));
+                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog("Scenario - Start", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
 
         // network button
-        JButton networkButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.network.png");
+        JButton networkButton = Button.StartMenuNetwork.create();
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = NetworkDialogBuilder.makeDialog(owner, "Network center", new Dimension(800, 700));
+                JDialog dialog = NetworkDialogBuilder.makeDialog("Network center", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
 
         // options button
-        JButton optionsButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.options.png");
+        JButton optionsButton = Button.StartMenuOptions.create();
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = OptionsDialogBuilder.makeDialog(owner, "Options", new Dimension(800, 700));
+                JDialog dialog = OptionsDialogBuilder.makeDialog("Options", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });
 
         // help button
-        JButton helpButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.help.png");
+        JButton helpButton = Button.StartMenuHelp.create();
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
-                BrowserDialog dlg = new BrowserDialog(owner, "Help", false, index, index, IOManager.getAsLoader(Places.GraphicsIcons));
+                BrowserDialog dlg = new BrowserDialog(FrameManager.getInstance().getFrame(), "Help", false, index, index, IOManager.getAsLoader(Places.GraphicsIcons));
                 dlg.setVisible(true);
                 // TODO change decoration of dialog (via look and feel)
             }
         });
 
         // editor button
-        JButton editorButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.editor.png");
+        JButton editorButton = Button.StartMenuEditor.create();
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                owner.dispose();
-                EditorBuilder.build();
-                // TODO first build editor, then dispose start frame, then make editor visible, then load default scenario
+                FrameManager.getInstance().switchToEditorScreen();
+                // EditorBuilder.build();
+                // TODO first build editor, then dispose start frame, then build editor visible, then load default scenario
             }
         });
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "start.button.exit.png");
+        JButton exitButton = Button.StartMenuExit.create();
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
             public void actionPerformed(ActionEvent e) {
-                owner.dispose();
+                FrameManager.getInstance().shutDown();
                 StartClient.shutDown();
             }
         });

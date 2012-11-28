@@ -19,7 +19,6 @@ package org.iremake.client.ui;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -27,7 +26,6 @@ import java.awt.event.ItemListener;
 import javax.swing.AbstractButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -36,7 +34,6 @@ import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Options;
-import org.iremake.client.StartClient;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerStatusListener;
 
@@ -53,14 +50,13 @@ public class OptionsDialogBuilder {
 
     /**
      *
-     * @param owner
      * @param title
-     * @param bounds
+     * @param size
      * @return
      */
-    public static JDialog makeDialog(JFrame owner, String title, Dimension size) {
+    public static JDialog makeDialog(String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
+        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
 
         // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();
@@ -74,7 +70,7 @@ public class OptionsDialogBuilder {
         Container c = dialog.getContentPane();
         c.setLayout(new MigLayout("fill"));
         dialog.add(pane, "grow");
-        
+
         return dialog;
     }
 
@@ -84,7 +80,7 @@ public class OptionsDialogBuilder {
      */
     private static JPanel generalOptionsPanel() {
         JPanel panel = new JPanel();
-        
+
         JCheckBox fullscreen = new JCheckBox("Start in Full Screen");
         fullscreen.setSelected(Options.FullScreenMode.getBoolean());
         fullscreen.addItemListener(new ItemListener() {
@@ -95,17 +91,17 @@ public class OptionsDialogBuilder {
                 // TODO notification that it will be active after next start
             }
         });
-        
+
         JCheckBox controlLeftRight = new JCheckBox("Main Screen controls on right side");
-        
+
         // layout
-        panel.setLayout(new MigLayout("flowy"));        
+        panel.setLayout(new MigLayout("flowy"));
         panel.add(fullscreen);
         panel.add(controlLeftRight);
-        
+
         return panel;
     }
-    
+
     private static JPanel serverOptionsPanel() {
         JPanel panel = new JPanel();
         JToggleButton serverStart = new JToggleButton("Toggle Server");
@@ -113,7 +109,7 @@ public class OptionsDialogBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AbstractButton abstractButton = (AbstractButton) e.getSource();
-                boolean selected = abstractButton.getModel().isSelected();                
+                boolean selected = abstractButton.getModel().isSelected();
                 if (selected) {
                     BigBag.serverManager.start();
                 } else {
@@ -123,10 +119,10 @@ public class OptionsDialogBuilder {
         });
         JToolBar menuBar = new JToolBar();
         menuBar.add(serverStart);
-        
+
         JPanel serverInfoPanel = new JPanel();
         serverInfoPanel.setBorder(new LineBorder(Color.black, 1));
-        
+
         final JLabel status = new JLabel();
         BigBag.serverManager.addStatusListener(new ServerStatusListener() {
             @Override
@@ -135,13 +131,13 @@ public class OptionsDialogBuilder {
             }
         });
         serverInfoPanel.add(status);
-        
+
         // layout
         panel.setLayout(new MigLayout("wrap 1, fillx"));
         panel.add(menuBar);
         panel.add(serverInfoPanel, "height 100!, growx");
-        
+
         return panel;
-        
+
     }
 }

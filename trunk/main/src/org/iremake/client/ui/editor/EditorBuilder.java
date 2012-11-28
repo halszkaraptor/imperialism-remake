@@ -17,13 +17,12 @@
 package org.iremake.client.ui.editor;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -35,9 +34,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.Places;
+import org.iremake.client.ui.Button;
 import org.iremake.client.ui.CommonElementsFactory;
-import org.iremake.client.ui.StartScreenBuilder;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
@@ -60,23 +59,16 @@ public class EditorBuilder {
 
     /**
      *
-     * @param owner
-     * @param title
-     * @param bounds
      */
-    public static void build() {
-        final EditorManager manager = new EditorManager();
+    public static JComponent build() {
 
-        final JFrame frame = CommonElementsFactory.makeFrame();
-        // TODO write title somewhere
-
-        manager.setFrame(frame);
+        JPanel panel = new JPanel();
 
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
 
         // new scenario button
-        JButton newButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.new.png");
+        JButton newButton = Button.ScenarioNew.create();
         newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,32 +78,30 @@ public class EditorBuilder {
         menuBar.add(newButton);
 
         // load scenario button
-        JButton loadButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
+        JButton loadButton = Button.ScenarioLoad.create();
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                manager.loadScenarioDialog();
+                EditorManager.getInstance().loadScenarioDialog();
             }
         });
         menuBar.add(loadButton);
         // save scenario button
-        JButton saveButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.save.png");
+        JButton saveButton = Button.ScenarioSave.create();
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                manager.saveScenarioDialog();
+                EditorManager.getInstance().saveScenarioDialog();
             }
         });
         menuBar.add(saveButton);
 
-        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.exit.png");
+        // TODO hardcode these buttons somewhere?
+        JButton exitButton = Button.Exit.create();
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO tell and cleanup on the manager
-                frame.dispose();
-                JFrame frame = StartScreenBuilder.makeFrame();
-                frame.setVisible(true);
+                FrameManager.getInstance().switchToStartScreen();
             }
         });
         menuBar.add(exitButton);
@@ -120,12 +110,11 @@ public class EditorBuilder {
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-
         // create and add map panel
-        JPanel mapPanel = EditorBuilder.buildMapPanel(frame, manager);
+        JPanel mapPanel = EditorBuilder.buildMapPanel();
 
         // create and add nations panel
-        JPanel nationPanel = EditorBuilder.buildNationPanel(frame, manager);
+        JPanel nationPanel = EditorBuilder.buildNationPanel();
 
         tabPane.addTab("General", nationPanel);
         tabPane.addTab("Map", mapPanel);
@@ -133,16 +122,11 @@ public class EditorBuilder {
 
 
         // set layout (vertically first menubar, then tabbed pane)
-        Container c = frame.getContentPane();
-        c.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
-        frame.add(menuBar);
-        frame.add(tabPane);
+        panel.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
+        panel.add(menuBar);
+        panel.add(tabPane);
 
-        // we make it visible immediately
-        frame.setVisible(true);
-
-        // and load a basic scenario
-        manager.loadInitialScenario();
+        return panel;
     }
 
     /**
@@ -151,7 +135,7 @@ public class EditorBuilder {
      * @param manager
      * @return
      */
-    private static JPanel buildNationPanel(final JFrame parent, final EditorManager manager) {
+    private static JPanel buildNationPanel() {
         JPanel panel = new JPanel();
 
         JPanel nations = new JPanel();
@@ -164,7 +148,7 @@ public class EditorBuilder {
         // create menu bar and add to panel
         JToolBar nationsBar = CommonElementsFactory.makeToolBar();
         // TODO load images
-        JButton addnationButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "generic.button.add.png");
+        JButton addnationButton = Button.GenericAdd.create();
         nationsBar.add(addnationButton);
         JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         nationsBar.add(removenationButton);
@@ -180,7 +164,7 @@ public class EditorBuilder {
         addnationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = JOptionPane.showInputDialog(parent, "Enter new Nation's name:");
+                String name = JOptionPane.showInputDialog(FrameManager.getInstance().getFrame(), "Enter new Nation's name:");
                 if (name != null) {
                     // need new valid id
                     Nation nation = new Nation(0, name, "");
@@ -250,7 +234,7 @@ public class EditorBuilder {
         addprovinceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name = JOptionPane.showInputDialog(parent, "Enter new Province's name:");
+                String name = JOptionPane.showInputDialog(FrameManager.getInstance().getFrame(), "Enter new Province's name:");
                 if (name != null) {
                     // need new valid id
                     // tell the manager
@@ -300,12 +284,12 @@ public class EditorBuilder {
      * @param manager
      * @return
      */
-    private static JPanel buildMapPanel(final JFrame parent, final EditorManager manager) {
+    private static JPanel buildMapPanel() {
         JPanel panel = new JPanel();
 
         ScenarioUIModel model = new ScenarioUIModel();
         Scenario map = new Scenario();
-        manager.setScenarioContent(map, model);
+        EditorManager.getInstance().setScenarioContent(map, model);
 
         // create mini map and add to panel
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
@@ -314,21 +298,21 @@ public class EditorBuilder {
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
 
         // terrain button
-        JButton terrainButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+        JButton terrainButton = Button.EditorTerrain.create();
         terrainButton.setToolTipText("Modify terrain of current tile.");
         terrainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new EditorSelectionTerrainDialog(parent, manager);
+                JDialog dialog = new EditorSelectionTerrainDialog();
                 dialog.setVisible(true);
             }
         });
         menuBar.add(terrainButton);
         // nation button
-        JButton nationButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.nation.png");
+        JButton nationButton = Button.EditorNation.create();
         menuBar.add(nationButton);
         // province button
-        JButton provinceButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.province.png");
+        JButton provinceButton = Button.EditorProvince.create();
         menuBar.add(provinceButton);
 
         // info map panel and add
@@ -338,7 +322,7 @@ public class EditorBuilder {
         MainMapPanel mainMapPanel = new MainMapPanel(model);
 
         // add them to manager
-        manager.setMapTab(mainMapPanel, miniMapPanel, infoPanel);
+        EditorManager.getInstance().setMapTab(mainMapPanel, miniMapPanel, infoPanel);
 
         // set layout
         panel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][grow]"));
@@ -347,7 +331,6 @@ public class EditorBuilder {
         panel.add(mainMapPanel, "span 1 3, grow");
         panel.add(menuBar);
         panel.add(infoPanel, "grow");
-
 
         return panel;
     }

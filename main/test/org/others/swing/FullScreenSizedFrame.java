@@ -46,7 +46,11 @@ import javax.swing.border.LineBorder;
  * shifts the window decoration to the top task bar and frees some vertical
  * space (is Undecorated is false), all other modes give the same result.
  *
- * Under Windows the behavior is different.
+ * Under Windows the behavior is different. Undecorated frames are always in the
+ * foreground, decorated can be behind the task bar. With maximum bounds its
+ * never covering the task bar, maximized is only covering the task bar when
+ * undecorated and the other modes always cover the task bar but might behind
+ * the task bar.
  *
  * So far I could test this only for single monitor system. It will be
  * interesting if there are differences for dual monitor systems.
@@ -146,7 +150,7 @@ public class FullScreenSizedFrame {
         panel.setBorder(new LineBorder(Color.black, 10));
         panel.setLayout(new FlowLayout());
         frame.add(panel);
-        
+
         panel.add(button0);
         panel.add(button1);
         panel.add(button2);

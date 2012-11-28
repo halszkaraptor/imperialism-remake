@@ -38,6 +38,12 @@ import javax.swing.border.LineBorder;
  * In Linux/Ubuntu the task bar is not covered and lower right part of the frame
  * is not displayed because the frame is shifted to the right and below. The
  * size is the size of the screen. Really bad!
+ *
+ * On Windows it works as expected.
+ *
+ * Both however say that FSEM is supported.
+ *
+ * System: OpenJDK/Sun JRE/JDK 7 (1.7.0_09) on Windows 7 or Ubuntu 12.10
  */
 public class FullScreenExclusiveFrame {
 

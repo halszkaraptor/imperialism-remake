@@ -65,10 +65,10 @@ public class EditorBuilder {
      * @param title
      * @param bounds
      */
-    public static void build(JFrame owner, String title, Rectangle bounds) {
+    public static void build(JFrame owner, String title, Dimension size) {
         final EditorManager manager = new EditorManager();
 
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
 
         manager.setFrame(dialog);
 

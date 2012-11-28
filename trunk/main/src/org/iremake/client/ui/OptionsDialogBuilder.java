@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,9 +58,9 @@ public class OptionsDialogBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(JFrame owner, String title, Rectangle bounds) {
+    public static JDialog makeDialog(JFrame owner, String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, bounds);
+        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
 
         // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();

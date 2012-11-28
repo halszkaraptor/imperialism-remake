@@ -32,9 +32,7 @@ import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import org.iremake.common.model.Scenario;
 import org.iremake.common.ui.utils.LookAndFeel;
-import org.iremake.common.xml.XMLHelper;
 import org.iremake.common.xml.common.XProperty;
 
 /**
@@ -189,11 +187,6 @@ public class XMLEditorApp extends JFrame {
     }//GEN-LAST:event_terrainButtonActionPerformed
 
     private void mapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_mapButtonActionPerformed
-
-        Scenario map = new Scenario();
-        map.setEmptyMap(60, 100);
-        // map.setTerrainAt(0, 0, "p1");
-        XMLHelper.write("map.xml", map.toXML());
     }//GEN-LAST:event_mapButtonActionPerformed
 
     private void colorButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_colorButtonActionPerformed

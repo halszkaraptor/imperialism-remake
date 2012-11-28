@@ -21,7 +21,16 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
+ * Tests the behavior of initially maximized frames depending on decoration or
+ * resizability.
  *
+ *
+ * Linux:
+ *
+ * Windows: Frames that are set to state maximal or indeed maximized (and in the
+ * foreground) if they aren't decorated, not dependent of whether they are
+ * resizable or not. If they are decorated, however, they are only maximized if
+ * they are also resizable and they might end up behind the task bar.
  */
 public class MaximizeFrame {
 
@@ -33,12 +42,13 @@ public class MaximizeFrame {
         // create new frame (close with alt+f4)
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
-        // set maximized
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
-        // frame.setResizable(false); // either comment out or leave in
+        // options (set to true or false)
+        frame.setUndecorated(false);
+        frame.setResizable(true);
 
+        // set visible
         frame.setVisible(true);
     }
 }

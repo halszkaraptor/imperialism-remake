@@ -18,9 +18,7 @@ package org.iremake.client.ui.editor;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -39,6 +37,7 @@ import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
@@ -65,12 +64,13 @@ public class EditorBuilder {
      * @param title
      * @param bounds
      */
-    public static void build(JFrame owner, String title, Dimension size) {
+    public static void build() {
         final EditorManager manager = new EditorManager();
 
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
+        final JFrame frame = CommonElementsFactory.makeFrame();
+        // TODO write title somewhere
 
-        manager.setFrame(dialog);
+        manager.setFrame(frame);
 
         // create menu bar and add to frame
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
@@ -104,30 +104,42 @@ public class EditorBuilder {
         });
         menuBar.add(saveButton);
 
+        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.exit.png");
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO tell and cleanup on the manager
+                frame.dispose();
+                JFrame frame = StartScreenBuilder.makeFrame();
+                frame.setVisible(true);
+            }
+        });
+        menuBar.add(exitButton);
+
         // create tabbed pane and add to dialog
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
 
         // create and add map panel
-        JPanel mapPanel = EditorBuilder.buildMapPanel(dialog, manager);
+        JPanel mapPanel = EditorBuilder.buildMapPanel(frame, manager);
 
         // create and add nations panel
-        JPanel nationPanel = EditorBuilder.buildNationPanel(dialog, manager);
-        
+        JPanel nationPanel = EditorBuilder.buildNationPanel(frame, manager);
+
         tabPane.addTab("General", nationPanel);
-        tabPane.addTab("Map", mapPanel);        
+        tabPane.addTab("Map", mapPanel);
         tabPane.setSelectedComponent(mapPanel);
 
 
         // set layout (vertically first menubar, then tabbed pane)
-        Container c = dialog.getContentPane();
+        Container c = frame.getContentPane();
         c.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
-        dialog.add(menuBar);
-        dialog.add(tabPane);
+        frame.add(menuBar);
+        frame.add(tabPane);
 
         // we make it visible immediately
-        dialog.setVisible(true);
+        frame.setVisible(true);
 
         // and load a basic scenario
         manager.loadInitialScenario();
@@ -139,7 +151,7 @@ public class EditorBuilder {
      * @param manager
      * @return
      */
-    private static JPanel buildNationPanel(final Dialog parent, final EditorManager manager) {
+    private static JPanel buildNationPanel(final JFrame parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
         JPanel nations = new JPanel();
@@ -273,8 +285,8 @@ public class EditorBuilder {
         provinces.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
         provinces.add(provinceInfoLabel);
         provinces.add(provinceBar);
-        provinces.add(provinceScrollPane, "grow");        
-        
+        provinces.add(provinceScrollPane, "grow");
+
         // set layout
         panel.setLayout(new MigLayout());
         panel.add(nations);
@@ -288,7 +300,7 @@ public class EditorBuilder {
      * @param manager
      * @return
      */
-    private static JPanel buildMapPanel(final Dialog parent, final EditorManager manager) {
+    private static JPanel buildMapPanel(final JFrame parent, final EditorManager manager) {
         JPanel panel = new JPanel();
 
         ScenarioUIModel model = new ScenarioUIModel();

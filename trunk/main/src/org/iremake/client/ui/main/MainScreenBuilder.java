@@ -18,25 +18,23 @@ package org.iremake.client.ui.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.ui.ClockLabel;
-import org.iremake.common.ui.utils.GraphicsUtils;
 
 /**
  * Builds the main screen.
@@ -54,13 +52,11 @@ public class MainScreenBuilder {
      *
      * @param owner
      */
-    public static void build(JFrame owner) {
+    public static void build() {
         final MainScreenManager manager = new MainScreenManager();
 
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, null, false, owner.getSize());
-        dialog.setUndecorated(true);
-
-        manager.setFrame(dialog);
+        JFrame frame = CommonElementsFactory.makeFrame();
+        manager.setFrame(frame);
 
         ScenarioUIModel model = new ScenarioUIModel();
         Scenario map = new Scenario();
@@ -72,14 +68,14 @@ public class MainScreenBuilder {
         manager.setPanels(mainMapPanel);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model, owner);
-        
-        dialog.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
-        dialog.add(mainMapPanel, "grow");
-        dialog.add(controlPanel, "growy, wmin 300");
+        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model, frame);
+
+        frame.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
+        frame.add(mainMapPanel, "grow");
+        frame.add(controlPanel, "growy, wmin 300");
 
         // we make it visible immediately
-        dialog.setVisible(true);
+        frame.setVisible(true);
 
         // and load a basic scenario
         manager.loadInitialScenario();
@@ -92,7 +88,7 @@ public class MainScreenBuilder {
      */
     private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model, final JFrame owner) {
         JPanel panel = new JPanel();
-        
+
         JPanel infPanel = new JPanel();
         infPanel.setBorder(new LineBorder(Color.black, 1));
 
@@ -105,6 +101,9 @@ public class MainScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 manager.exit();
+                // TODO use global manager
+                JFrame frame = StartScreenBuilder.makeFrame();
+                frame.setVisible(true);
             }
         });
 
@@ -114,12 +113,12 @@ public class MainScreenBuilder {
         // add buttons to toolbar
         menuBar.add(exitButton);
         menuBar.add(saveButton);
-        
+
         // create mini map and add to panel
-        MiniMapPanel miniMapPanel = new MiniMapPanel(model);        
-        
+        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
+
         manager.setMiniMap(miniMapPanel);
-        
+
         // create other buttons
         JToolBar toolBar = CommonElementsFactory.makeToolBar();
         JButton industryDialog = new JButton("Industry");
@@ -132,7 +131,7 @@ public class MainScreenBuilder {
             }
         });
         toolBar.add(industryDialog);
-        
+
         // create info panel
         JPanel infoPanel = new JPanel();
         infoPanel.setBorder(new LineBorder(Color.black, 1));
@@ -145,7 +144,7 @@ public class MainScreenBuilder {
         panel.add(toolBar);
         panel.add(infoPanel, "grow");
         panel.add(new ClockLabel(), "alignx center");
-        
+
         return panel;
     }
 }

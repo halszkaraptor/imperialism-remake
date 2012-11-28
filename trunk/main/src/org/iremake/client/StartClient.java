@@ -37,6 +37,7 @@ import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
+import org.iremake.common.resources.ResourceUtils;
 import org.iremake.common.ui.utils.LookAndFeel;
 import org.iremake.server.network.ServerManager;
 
@@ -134,7 +135,11 @@ public class StartClient {
 
         // save statistics from loader to simple text file
         List<String> stats = IOManager.getStatistics();
-        // TODO save in text file
+        try {
+            ResourceUtils.writeText(stats, IOManager.getAsResource(Places.Log, "file_usage.txt"));
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

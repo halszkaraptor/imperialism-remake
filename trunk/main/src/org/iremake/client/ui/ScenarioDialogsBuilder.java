@@ -84,7 +84,7 @@ public class ScenarioDialogsBuilder {
             public String getElementAt(int index) {
                 return titles.get(index);
             }
-        });        
+        });
         selectList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -131,7 +131,9 @@ public class ScenarioDialogsBuilder {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainScreenBuilder.build(owner);
+                // TODO use global manager for it
+                owner.dispose();
+                MainScreenBuilder.build();
             }
         });
 

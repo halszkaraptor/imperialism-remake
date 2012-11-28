@@ -16,8 +16,8 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -45,7 +45,7 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
      * @param owner
      * @param manager
      */
-    public EditorSelectionTerrainDialog(Dialog owner, EditorManager manager) {
+    public EditorSelectionTerrainDialog(Frame owner, EditorManager manager) {
         super(owner, "Terrain Selection", true);
         this.manager = manager;
         initComponents();

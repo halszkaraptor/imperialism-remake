@@ -18,7 +18,6 @@ package org.iremake.client.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -38,7 +37,6 @@ import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.common.ui.BrowserDialog;
 import org.iremake.common.ui.layout.RelativeLayout;
 import org.iremake.common.ui.layout.RelativeLayoutConstraint;
-import org.iremake.common.ui.utils.GraphicsUtils;
 import org.iremake.common.ui.utils.WindowCorner;
 
 /**
@@ -64,7 +62,7 @@ public class StartScreenBuilder {
      */
     public static JFrame makeFrame() {
         JFrame frame = CommonElementsFactory.makeFrame();
-        
+
         // create menu bar and add to frame
         JToolBar menuBar = StartScreenBuilder.menuBar(frame);
         frame.add(menuBar);
@@ -175,7 +173,9 @@ public class StartScreenBuilder {
         editorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorBuilder.build(owner, "Editor", owner.getSize());
+                owner.dispose();
+                EditorBuilder.build();
+                // TODO first build editor, then dispose start frame, then make editor visible, then load default scenario
             }
         });
 

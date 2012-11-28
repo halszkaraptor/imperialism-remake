@@ -17,7 +17,6 @@
 package org.iremake.client.ui.editor;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -30,24 +29,20 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.common.Settings;
 
 /**
  * New Terrain is Selected. A modal dialog.
  */
+// TODO do not need own class for it, just build it
 public class EditorSelectionTerrainDialog extends JDialog implements ActionListener {
-
-    private EditorManager manager;
-    // TODO could be a listener only
 
     /**
      *
-     * @param owner
-     * @param manager
      */
-    public EditorSelectionTerrainDialog(Frame owner, EditorManager manager) {
-        super(owner, "Terrain Selection", true);
-        this.manager = manager;
+    public EditorSelectionTerrainDialog() {
+        super(FrameManager.getInstance().getFrame(), "Terrain Selection", true);
         initComponents();
     }
 
@@ -103,7 +98,7 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
     @Override
     public void actionPerformed(ActionEvent e) {
         String id = ((JButton) e.getSource()).getName();
-        manager.terrainSelected(id);
+        EditorManager.getInstance().terrainSelected(id);
         dispose();
     }
 }

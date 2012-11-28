@@ -18,11 +18,9 @@ package org.iremake.client.ui;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,7 +29,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.Places;
 
 /**
  *
@@ -51,12 +48,12 @@ public class NetworkDialogBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(JFrame owner, String title, Dimension size) {
+    public static JDialog makeDialog(String title, Dimension size) {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(owner, title, false, size);
+        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
 
         // create menu bar and add to dialog
-        JToolBar menuBar = NetworkDialogBuilder.menuBar(owner);
+        JToolBar menuBar = NetworkDialogBuilder.menuBar();
 
         // client info panel
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
@@ -90,12 +87,12 @@ public class NetworkDialogBuilder {
         return dialog;
     }
 
-    private static JToolBar menuBar(JFrame owner) {
+    private static JToolBar menuBar() {
         // toolbar
         JToolBar bar = CommonElementsFactory.makeToolBar();
 
         // load button
-        JButton serverStartButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "scenario.button.load.png");
+        JButton serverStartButton = Button.ScenarioLoad.create();
 
         // add buttons to tool bar
         bar.add(serverStartButton);

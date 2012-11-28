@@ -20,13 +20,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.WindowConstants;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
 
 /**
  * Some common elements needed.
@@ -42,18 +38,6 @@ public class CommonElementsFactory {
 
     /**
      *
-     * @param iconPath
-     * @return
-     */
-    public static JButton makeButton(Places base, String iconPath) {
-        JButton button = new JButton();
-        button.setFocusable(false);
-        button.setIcon(IOManager.getAsIcon(base, iconPath));
-        return button;
-    }
-
-    /**
-     *
      * @return
      */
     public static JToolBar makeToolBar() {
@@ -65,14 +49,19 @@ public class CommonElementsFactory {
 
     /**
      *
-     * @param owner
      * @param title
+     * @param size
      * @param modal
-     * @param bounds
      * @return
      */
-    public static JDialog makeDialog(Frame owner, String title, boolean modal, Dimension size) {
-        JDialog dialog = new JDialog(owner, title, modal);
+    public static JDialog makeDialog(String title, boolean modal, Dimension size) {
+
+        // TODO make the dialog undecorated but resizable and moveable
+
+
+        final Frame parent = FrameManager.getInstance().getFrame();
+
+        JDialog dialog = new JDialog(parent, title, modal);
 
         // turn of usual exiting mechanisms
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -81,7 +70,7 @@ public class CommonElementsFactory {
         dialog.setResizable(false);
 
         // set bounds
-        Rectangle pb = owner.getBounds();
+        Rectangle pb = parent.getBounds();
         Rectangle bounds = new Rectangle(pb.x+pb.width/2-size.width/2,pb.y+pb.height/2-size.height/2,size.width,size.height);
         dialog.setBounds(bounds);
 
@@ -89,36 +78,5 @@ public class CommonElementsFactory {
         dialog.getContentPane().setBackground(Color.WHITE);    // white color
 
         return dialog;
-    }
-
-    /**
-     *
-     * The frame is maximized via setting the maximized state instead of
-     * something like Dimension s = GraphicsUtils.getScreenSize();
-     * frame.setBounds(0, 0, s.width, s.height); The reason is that some OS like
-     * Ubuntu react funny on these two lines.
-     *
-     * @return
-     */
-    public static JFrame makeFrame() {
-        JFrame frame = new JFrame();
-        
-        // undecorated and maximized
-        frame.setUndecorated(true);
-        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
-        // turn of usual exiting mechanisms
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-        // not resizable
-        // frame.setResizable(false); // see linux problems
-
-        // set title
-        frame.setTitle("Imperialism Remake");
-
-        // set icon
-        frame.setIconImage(IOManager.getAsImage(Places.GraphicsIcons, "icon.app.png"));
-
-        return frame;
     }
 }

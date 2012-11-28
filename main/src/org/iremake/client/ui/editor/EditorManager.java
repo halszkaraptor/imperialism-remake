@@ -31,6 +31,7 @@ import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MainMapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
@@ -47,19 +48,20 @@ import org.iremake.common.xml.XMLHelper;
  */
 public class EditorManager implements MainMapTileListener, ScenarioUIModelChangedListener {
 
-    private Component frame;
     private EditorMapInfoPanel mapInfoPanel;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
-    private Scenario scenario;
+    private Scenario scenario = new Scenario();
     private ScenarioUIModel model;
     private JFileChooser fileChooser;
     private String terrainSelectedID = Settings.getDefaultTerrainID(); // TODO better initial value
 
+    private static EditorManager singleton;
+
     /**
      * Sets the file chooser for the scenarios.
      */
-    public EditorManager() {
+    private EditorManager() {
         fileChooser = new JFileChooser(IOManager.getPath(Places.Scenarios, ""));
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(new FileFilter() {
@@ -76,12 +78,14 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
     }
 
     /**
-     * Sets the frame.
      *
-     * @param frame
+     * @return
      */
-    public void setFrame(Component frame) {
-        this.frame = frame;
+    public static EditorManager getInstance() {
+        if (singleton == null) {
+            singleton = new EditorManager();
+        }
+        return singleton;
     }
 
     /**
@@ -168,7 +172,6 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      *
      */
     public void loadInitialScenario() {
-        // map.setEmptyMap(60, 100);
         loadScenario("scenario.Europe1814.xml");
     }
 
@@ -193,7 +196,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * Loads a scenario. (With file chooser dialog).
      */
     public void loadScenarioDialog() {
-        if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showOpenDialog(FrameManager.getInstance().getFrame()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             // read file and parse to xml
             Element xml;
@@ -214,7 +217,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      */
     // TODO not using saveScenario?
     public void saveScenarioDialog() {
-        if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(FrameManager.getInstance().getFrame()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             String name = f.getAbsolutePath();
             if (!name.endsWith(".xml")) {

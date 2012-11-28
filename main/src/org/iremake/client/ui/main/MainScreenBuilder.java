@@ -27,8 +27,9 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.Places;
+import org.iremake.client.ui.Button;
 import org.iremake.client.ui.CommonElementsFactory;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
@@ -55,7 +56,7 @@ public class MainScreenBuilder {
     public static void build() {
         final MainScreenManager manager = new MainScreenManager();
 
-        JFrame frame = CommonElementsFactory.makeFrame();
+        JFrame frame = new JFrame();
         manager.setFrame(frame);
 
         ScenarioUIModel model = new ScenarioUIModel();
@@ -74,7 +75,7 @@ public class MainScreenBuilder {
         frame.add(mainMapPanel, "grow");
         frame.add(controlPanel, "growy, wmin 300");
 
-        // we make it visible immediately
+        // we build it visible immediately
         frame.setVisible(true);
 
         // and load a basic scenario
@@ -96,19 +97,17 @@ public class MainScreenBuilder {
         JToolBar menuBar = CommonElementsFactory.makeToolBar();
 
         // exit button
-        JButton exitButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.exit.png");
+        JButton exitButton = Button.Exit.create();
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 manager.exit();
-                // TODO use global manager
-                JFrame frame = StartScreenBuilder.makeFrame();
-                frame.setVisible(true);
+                FrameManager.getInstance().switchToStartScreen();
             }
         });
 
         // save button
-        JButton saveButton = CommonElementsFactory.makeButton(Places.GraphicsIcons, "main.button.save.png");
+        JButton saveButton = Button.ScenarioSave.create();
 
         // add buttons to toolbar
         menuBar.add(exitButton);
@@ -122,11 +121,11 @@ public class MainScreenBuilder {
         // create other buttons
         JToolBar toolBar = CommonElementsFactory.makeToolBar();
         JButton industryDialog = new JButton("Industry");
-        // TODO make industy button also non-focusable (commonelementsfactory)
+        // TODO build industy button also non-focusable (commonelementsfactory)
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = CommonElementsFactory.makeDialog(owner, "Industry", true, new Dimension(800, 700));
+                JDialog dialog = CommonElementsFactory.makeDialog("Industry", true, new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });

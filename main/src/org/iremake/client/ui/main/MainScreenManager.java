@@ -19,6 +19,7 @@ package org.iremake.client.ui.main;
 import java.awt.Dimension;
 import java.awt.Window;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
@@ -47,7 +48,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      *
      * @param dialog
      */
-    public void setFrame(JDialog dialog) {
+    public void setFrame(JFrame dialog) {
         window = dialog;
     }
 
@@ -58,12 +59,12 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
     public void setPanels(MainMapPanel mainPanel) {
         mainMapPanel = mainPanel;
         // wiring (main map tells manager, mini map tells main map)
-        mainMapPanel.setTileListener(this);        
+        mainMapPanel.setTileListener(this);
     }
-    
+
     public void setMiniMap(MiniMapPanel miniMapPanel) {
         this.miniMapPanel = miniMapPanel;
-        miniMapPanel.setFocusChangedListener(mainMapPanel); // TODO make sure mainMapPanel is set before, set them together or later        
+        miniMapPanel.setFocusChangedListener(mainMapPanel); // TODO make sure mainMapPanel is set before, set them together or later
     }
 
     /**
@@ -103,10 +104,10 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
     @Override
     public void tileChanged(MapPosition p) {
         // TODO do we need this method? (adapter)
-        
+
         miniMapPanel.tileChanged();
 
-        mainMapPanel.tileChanged(p);        
+        mainMapPanel.tileChanged(p);
     }
 
     /**
@@ -116,13 +117,13 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
     public void mapChanged() {
         // TODO size of map could also have changed!!!
         mainMapPanel.mapChanged();
-        
+
         Dimension size = mainMapPanel.getSize();
         Dimension tileSize = TerrainLoader.getTileSize();
         // tell the minimap about our size
         float fractionRows = (float) size.height / tileSize.height / model.getNumberRows();
         float fractionColumns = (float) size.width / tileSize.width / model.getNumberColumns();
-        miniMapPanel.mapChanged(fractionRows, fractionColumns);        
+        miniMapPanel.mapChanged(fractionRows, fractionColumns);
     }
 
     /**

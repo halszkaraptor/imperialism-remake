@@ -18,10 +18,7 @@ package org.iremake.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -46,7 +43,7 @@ public class FullFrame {
         boolean fullscreen = false;
 
         final JFrame frame = new JFrame();
-        
+
         GraphicsConfiguration gc = frame.getGraphicsConfiguration();
         Rectangle bounds = gc.getBounds();
         if (!fullscreen) {
@@ -55,43 +52,43 @@ public class FullFrame {
             bounds.y += insets.right;
             bounds.width -= insets.left + insets.right;
             bounds.height -= insets.top + insets.bottom;
-            
+
             frame.setResizable(true);
         } else {
             frame.setResizable(false);
         }
-        
+
         frame.setBounds(bounds);
 
         frame.setUndecorated(true);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);        
-        
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.black, 10));
         frame.add(panel);
-        
+
         if (!fullscreen) {
-            
+
             Insets insets = new Insets(0, 10, 10, 10);
             Dimension snap = new Dimension(10, 10);
             ComponentResizer resizer = new ComponentResizer(insets, snap);
             resizer.registerComponent(frame);
-            
+
             ComponentMover cm = new ComponentMover();
             cm.setDragInsets(insets);
             insets = new Insets(-100, -100, -100, -100);
             cm.setEdgeInsets(insets);
             cm.registerComponent(frame);
         }
-        
+
         final Timer timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(frame.getBounds());
             }
-        });        
-        
-        
+        });
+
+
         frame.setVisible(true);
         timer.start();
     }

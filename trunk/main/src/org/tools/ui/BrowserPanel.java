@@ -25,6 +25,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
@@ -43,6 +44,7 @@ import org.tools.ui.utils.IconLoader;
 public class BrowserPanel extends JPanel {
 
     private static final Logger LOG = Logger.getLogger(BrowserPanel.class.getName());
+    private static final long serialVersionUID = 1L;
     private JButton previousButton;
     private JButton nextButton;
     private JButton indexButton;
@@ -129,6 +131,9 @@ public class BrowserPanel extends JPanel {
             }
         });
 
+        JButton exitButton = new JButton();
+        exitButton.setIcon(loader.getAsIcon("browser.button.exit.png"));
+
         // content pane
         contentPane = new JEditorPane();
         contentPane.setContentType("text/html");
@@ -159,10 +164,12 @@ public class BrowserPanel extends JPanel {
         menuBar.add(previousButton);
         menuBar.add(nextButton);
         menuBar.add(indexButton);
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(exitButton);
 
         // layout
         setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
-        add(menuBar);
+        add(menuBar, "growx");
         add(scrollPane, "grow, hmin 300, wmin 400");
     }
 

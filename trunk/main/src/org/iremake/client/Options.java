@@ -56,10 +56,6 @@ public enum Options {
         String name = "options.xml";
         if (IOManager.exists(Places.Common, name) == false) {
             name = "options.default.xml"; // TODO this file doesn't exist yet
-
-            // TODO this should be deleted and replaced by a XML property editor
-            options.put("version", "0.1.1");
-            options.putBoolean("graphics.mode.fullscreen", true);
         }
 
         IOManager.setFromXML(Places.Common, name, options);

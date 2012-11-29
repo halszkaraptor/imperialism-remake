@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -50,7 +51,6 @@ public class MainScreenBuilder {
 
     /**
      *
-     * @param owner
      */
     public static JComponent build() {
 
@@ -103,6 +103,7 @@ public class MainScreenBuilder {
 
         // add buttons to toolbar
         menuBar.add(saveButton);
+        menuBar.add(Box.createHorizontalGlue());
         menuBar.add(exitButton);
 
         // create mini map and add to panel
@@ -130,7 +131,7 @@ public class MainScreenBuilder {
         // layout
         panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][][grow][]"));
         panel.add(infPanel, "growx");
-        panel.add(menuBar);
+        panel.add(menuBar, "growx");
         panel.add(miniMapPanel, "growx"); // because the extra space goes here
         panel.add(toolBar);
         panel.add(infoPanel, "grow");

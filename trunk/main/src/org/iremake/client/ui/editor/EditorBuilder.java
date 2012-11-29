@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -75,7 +76,6 @@ public class EditorBuilder {
                 // TODO create dialog, transfer the manager and start it or simply call (empty map or so)
             }
         });
-        menuBar.add(newButton);
 
         // load scenario button
         JButton loadButton = Button.ScenarioLoad.create();
@@ -85,7 +85,7 @@ public class EditorBuilder {
                 EditorManager.getInstance().loadScenarioDialog();
             }
         });
-        menuBar.add(loadButton);
+
         // save scenario button
         JButton saveButton = Button.ScenarioSave.create();
         saveButton.addActionListener(new ActionListener() {
@@ -94,7 +94,6 @@ public class EditorBuilder {
                 EditorManager.getInstance().saveScenarioDialog();
             }
         });
-        menuBar.add(saveButton);
 
         // TODO hardcode these buttons somewhere?
         JButton exitButton = Button.NormalExit.create();
@@ -104,6 +103,11 @@ public class EditorBuilder {
                 FrameManager.getInstance().switchToStartScreen();
             }
         });
+
+        menuBar.add(newButton);
+        menuBar.add(loadButton);
+        menuBar.add(saveButton);
+        menuBar.add(Box.createHorizontalGlue());
         menuBar.add(exitButton);
 
         // create tabbed pane and add to dialog

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.AbstractListModel;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -52,10 +53,6 @@ public class ScenarioDialogsBuilder {
 
     /**
      *
-     * @param owner
-     * @param title
-     * @param bounds
-     * @return
      */
     public static void makeLoadDialog() {
         // create general dialog
@@ -103,7 +100,7 @@ public class ScenarioDialogsBuilder {
         // layout - selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
         c.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
-        dialog.add(menuBar);
+        dialog.add(menuBar, "growx");
         dialog.add(selectList, "width 200!, split 2");
         dialog.add(mapPanel, "grow");
         dialog.add(infoPanel, "height 200!, growx");
@@ -144,6 +141,7 @@ public class ScenarioDialogsBuilder {
 
         // add buttons to tool bar
         bar.add(startButton);
+        bar.add(Box.createHorizontalGlue());
         bar.add(exitButton);
 
         return bar;

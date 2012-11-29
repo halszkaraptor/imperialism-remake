@@ -33,7 +33,7 @@ import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.client.ui.editor.EditorManager;
 import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.client.ui.main.MainScreenManager;
-import org.iremake.common.ui.utils.GraphicsUtils;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Startframe / Mainframe / Editorframe juggling.

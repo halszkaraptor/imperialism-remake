@@ -34,8 +34,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.common.model.ScenarioScanner;
-import org.iremake.common.resources.Resource;
-import org.iremake.common.ui.utils.GraphicsUtils;
+import org.tools.io.Resource;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Scenario dialogs wiring.

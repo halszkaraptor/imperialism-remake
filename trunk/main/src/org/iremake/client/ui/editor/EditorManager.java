@@ -37,10 +37,10 @@ import org.iremake.client.ui.map.MainMapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.xml.XMLHelper;
+import org.tools.xml.XMLHelper;
 
 /**
  * Editor frame manager. Holds all the various panels together and manages

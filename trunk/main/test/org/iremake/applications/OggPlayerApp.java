@@ -16,7 +16,7 @@
  */
 package org.iremake.applications;
 
-import org.iremake.common.ui.utils.BasicFrame;
+import org.tools.ui.utils.BasicFrame;
 
 /**
  * An Ogg file player with graphical user interface.

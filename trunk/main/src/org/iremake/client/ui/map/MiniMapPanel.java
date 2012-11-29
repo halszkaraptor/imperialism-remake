@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.client.ui.model.ScenarioUIModel;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 
 /**
  * Mini map panel.
@@ -121,7 +121,7 @@ public class MiniMapPanel extends JPanel {
      */
     public void mapChanged(float fractionRows, float fractionColumns) {
 
-        
+
         size = getSize();
         size.height = size.width * model.getNumberRows() / model.getNumberColumns();
         setPreferredSize(size);
@@ -135,7 +135,7 @@ public class MiniMapPanel extends JPanel {
         notifyFocusChangedListener();
 
         redrawMap(); // TODO wait for the actual componenResized event
-        revalidate(); // this will call repaint        
+        revalidate(); // this will call repaint
     }
 
     /**

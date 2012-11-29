@@ -36,8 +36,8 @@ import org.iremake.client.ui.FrameManager;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
-import org.iremake.common.resources.ResourceUtils;
-import org.iremake.common.ui.utils.LookAndFeel;
+import org.tools.io.ResourceUtils;
+import org.tools.ui.utils.LookAndFeel;
 import org.iremake.server.network.ServerManager;
 
 /**

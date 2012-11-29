@@ -16,8 +16,6 @@
  */
 package org.iremake.common.model;
 
-import org.iremake.common.MapPosition;
-
 /**
  * All the ways the scenario can have changed.
  */

@@ -22,11 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
-import org.iremake.common.MapPosition;
 import org.iremake.common.Settings;
-import org.iremake.common.xml.XMLable;
-import org.iremake.common.xml.common.XList;
-import org.iremake.common.xml.common.XProperty;
+import org.tools.xml.XMLable;
+import org.tools.xml.common.XList;
+import org.tools.xml.common.XProperty;
 
 /**
  * The full internal Scenario model.
@@ -41,7 +40,7 @@ public class Scenario implements XMLable {
     private XList<Province> provinces = new XList<>(Province.class);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
     private XProperty properties = new XProperty(10);
-        
+
     public Scenario() {
     }
 
@@ -138,7 +137,7 @@ public class Scenario implements XMLable {
     public Nation getNation(int index) {
         return nations.getElementAt(index);
     }
-    
+
     public String getTitle() {
         return properties.get("title");
     }

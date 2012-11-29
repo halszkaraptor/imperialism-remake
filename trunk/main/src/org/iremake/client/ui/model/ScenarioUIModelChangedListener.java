@@ -16,7 +16,7 @@
  */
 package org.iremake.client.ui.model;
 
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 
 /**
  * All possible ways the ScenarioModel can have changed.

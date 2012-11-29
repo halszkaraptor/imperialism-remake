@@ -33,8 +33,8 @@ import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.ui.ClockLabel;
-import org.iremake.common.ui.utils.GraphicsUtils;
+import org.tools.ui.ClockLabel;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Builds the main screen.

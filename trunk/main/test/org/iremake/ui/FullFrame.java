@@ -28,8 +28,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import org.iremake.common.ui.ComponentMover;
-import org.iremake.common.ui.ComponentResizer;
+import org.tools.ui.ComponentMover;
+import org.tools.ui.ComponentResizer;
 
 /**
  *

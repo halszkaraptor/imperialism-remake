@@ -20,7 +20,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
 

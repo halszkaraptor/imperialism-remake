@@ -35,11 +35,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import nu.xom.Element;
 import nu.xom.ParsingException;
-import org.iremake.common.resources.Resource;
-import org.iremake.common.resources.ResourceUtils;
-import org.iremake.common.ui.utils.IconLoader;
-import org.iremake.common.xml.XMLHelper;
-import org.iremake.common.xml.XMLable;
+import org.tools.io.Resource;
+import org.tools.io.ResourceUtils;
+import org.tools.ui.utils.IconLoader;
+import org.tools.xml.XMLHelper;
+import org.tools.xml.XMLable;
 
 /**
  * Loads from the data folder.
@@ -51,7 +51,7 @@ import org.iremake.common.xml.XMLable;
  */
 // TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class IOManager {
-    
+
     private static Set<String> statistics = new HashSet<>(10);
 
     private static final Logger LOG = Logger.getLogger(IOManager.class.getName());
@@ -92,7 +92,7 @@ public class IOManager {
      */
     public static Image getAsImage(Places place, String location) {
         String path = IOManager.getPath(place, location);
-        statistics.add(path);        
+        statistics.add(path);
         ImageIcon icon = new ImageIcon(path);
         if (icon == null) {
             LOG.log(Level.INFO, "Image {0} not readable.", path);
@@ -116,13 +116,13 @@ public class IOManager {
         }
         return null;
     }
-    
+
     /**
-     * 
+     *
      * @param place
      * @param location
      * @param target
-     * @return 
+     * @return
      */
     public static boolean setFromXML(Places place, String location, XMLable target) {
         try {
@@ -133,13 +133,13 @@ public class IOManager {
         }
         return true;
     }
-    
+
     /**
-     * 
+     *
      * @param place
      * @param location
      * @param target
-     * @return 
+     * @return
      */
     public static boolean saveToXML(Places place, String location, XMLable target) {
         try {
@@ -161,15 +161,15 @@ public class IOManager {
      */
     public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
         String path = IOManager.getPath(place, location);
-        statistics.add(path);        
+        statistics.add(path);
         return new FileInputStream(path);
     }
 
     /**
      * Returns an UILoader for a certain Place.
-     * 
+     *
      * @param places
-     * @return 
+     * @return
      */
     public static IconLoader getAsLoader(Places places) {
         IconLoader loader = new IconLoader() {
@@ -191,16 +191,16 @@ public class IOManager {
     public static String getPath(Places place, String location) {
         return base + place + location;
     }
-    
+
     /**
-     * 
+     *
      * @param place
      * @param location
-     * @return 
+     * @return
      */
     public static Resource getAsResource(Places place, String location) {
             String path = IOManager.getPath(place, location);
-            statistics.add(path);                    
+            statistics.add(path);
         try {
             return ResourceUtils.asResource(path);
         } catch (IOException ex) {
@@ -229,7 +229,7 @@ public class IOManager {
      */
     public static URL getURL(Places place, String location) {
         String path = IOManager.getPath(place, location);
-            statistics.add(path);                    
+            statistics.add(path);
         try {
             return new File(path).toURI().toURL();
         } catch (MalformedURLException ex) {
@@ -245,14 +245,14 @@ public class IOManager {
      * @return
      */
     public static boolean createDirectory(Places place) {
-        String path = IOManager.getPath(place, "");        
+        String path = IOManager.getPath(place, "");
         File file = new File(path);
         return file.mkdirs();
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public static List<String> getStatistics() {
         List<String> stats = new ArrayList<>(statistics);

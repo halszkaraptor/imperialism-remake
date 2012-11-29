@@ -33,11 +33,11 @@ import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.common.ui.BrowserPanel;
-import org.iremake.common.ui.layout.RelativeLayout;
-import org.iremake.common.ui.layout.RelativeLayoutConstraint;
-import org.iremake.common.ui.utils.GraphicsUtils;
-import org.iremake.common.ui.utils.WindowCorner;
+import org.tools.ui.BrowserPanel;
+import org.tools.ui.layout.RelativeLayout;
+import org.tools.ui.layout.RelativeLayoutConstraint;
+import org.tools.ui.utils.GraphicsUtils;
+import org.tools.ui.utils.WindowCorner;
 
 /**
  * Initial building of the start screen.

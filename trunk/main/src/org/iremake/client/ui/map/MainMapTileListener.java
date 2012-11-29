@@ -16,7 +16,7 @@
  */
 package org.iremake.client.ui.map;
 
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 
 /**
  * Changes of the main map, mainly due to mouse actions (moves or clicks).

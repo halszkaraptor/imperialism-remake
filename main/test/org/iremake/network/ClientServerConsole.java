@@ -33,7 +33,7 @@ import javax.swing.WindowConstants;
 import org.iremake.client.network.ClientManager;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.ui.utils.LookAndFeel;
+import org.tools.ui.utils.LookAndFeel;
 import org.iremake.server.network.ServerManager;
 
 /**

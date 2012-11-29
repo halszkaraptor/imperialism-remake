@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.model.TerrainTile;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.model.ScenarioChangedListener;
 

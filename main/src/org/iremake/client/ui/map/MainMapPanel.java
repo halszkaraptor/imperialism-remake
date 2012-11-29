@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.model.ScenarioUIModel;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 
 /**
  * The Main map display, currently used in the editor.

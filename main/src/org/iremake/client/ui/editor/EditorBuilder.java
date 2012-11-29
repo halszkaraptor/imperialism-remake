@@ -42,8 +42,8 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.ui.utils.GraphicsUtils;
-import org.iremake.common.xml.common.XList;
+import org.tools.ui.utils.GraphicsUtils;
+import org.tools.xml.common.XList;
 
 /**
  * Builds the editor as we know it for now.

@@ -18,7 +18,7 @@ package org.iremake.common.model;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import org.iremake.common.xml.XMLable;
+import org.tools.xml.XMLable;
 
 /**
  * A nation has an id (int) and a name and a color.

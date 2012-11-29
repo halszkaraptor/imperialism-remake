@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.common.resources.Resource;
-import org.iremake.common.resources.ResourceUtils;
-import org.iremake.common.xml.XMLHelper;
+import org.tools.io.Resource;
+import org.tools.io.ResourceUtils;
+import org.tools.xml.XMLHelper;
 
 /**
  * Scans for scenarios in the scenario folder and returns a list of file names
@@ -43,7 +43,7 @@ public class ScenarioScanner {
     }
 
     /**
-     * 
+     *
      */
     public void doScan() {
         Resource dir = null;
@@ -52,20 +52,20 @@ public class ScenarioScanner {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         scenarios.clear();
         try {
             scenarios = dir.list("scenario\\.[a-zA-z0-9]+\\.xml");
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         for (Resource resource: scenarios) {
             try {
                 // load it completely
                 Scenario scenario = new Scenario();
                 XMLHelper.read(resource, scenario);
-                titles.add(scenario.getTitle());                
+                titles.add(scenario.getTitle());
             } catch (IOException | ParsingException ex) {
                 LOG.log(Level.SEVERE, null, ex);
                 // TODO a scenario cannot be loaded, delete it from the list later on
@@ -74,17 +74,17 @@ public class ScenarioScanner {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<String> getScenarios() {
         return Collections.unmodifiableList(titles);
     }
 
     /**
-     * 
+     *
      * @param index
-     * @return 
+     * @return
      */
     public Resource getScenarioResource(int index) {
         if (index < 0 || index >= scenarios.size()) {

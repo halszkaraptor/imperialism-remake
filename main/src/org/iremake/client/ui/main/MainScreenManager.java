@@ -25,7 +25,7 @@ import org.iremake.client.ui.map.MainMapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
-import org.iremake.common.MapPosition;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 
 /**

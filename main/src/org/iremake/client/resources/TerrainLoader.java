@@ -27,7 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
 import org.iremake.client.ui.model.TerrainTile;
-import org.iremake.common.xml.common.XTable;
+import org.tools.xml.common.XTable;
 
 /**
  * Loads the terrain tiles from the artwork folder and delivers if needed.

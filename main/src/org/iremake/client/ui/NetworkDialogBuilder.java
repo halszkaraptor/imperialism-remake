@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.common.ui.utils.GraphicsUtils;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  *

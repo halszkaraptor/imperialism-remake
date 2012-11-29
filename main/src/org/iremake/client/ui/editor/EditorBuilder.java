@@ -35,7 +35,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
-import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
@@ -43,6 +42,7 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.ui.utils.GraphicsUtils;
 import org.iremake.common.xml.common.XList;
 
 /**
@@ -65,7 +65,7 @@ public class EditorBuilder {
         JPanel panel = new JPanel();
 
         // create menu bar and add to frame
-        JToolBar menuBar = CommonElementsFactory.makeToolBar();
+        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
 
         // new scenario button
         JButton newButton = Button.ScenarioNew.create();
@@ -97,7 +97,7 @@ public class EditorBuilder {
         menuBar.add(saveButton);
 
         // TODO hardcode these buttons somewhere?
-        JButton exitButton = Button.Exit.create();
+        JButton exitButton = Button.NormalExit.create();
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,9 +146,9 @@ public class EditorBuilder {
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
 
         // create menu bar and add to panel
-        JToolBar nationsBar = CommonElementsFactory.makeToolBar();
+        JToolBar nationsBar = GraphicsUtils.makeToolBar(false, false);
         // TODO load images
-        JButton addnationButton = Button.GenericAdd.create();
+        JButton addnationButton = Button.SmallAdd.create();
         nationsBar.add(addnationButton);
         JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         nationsBar.add(removenationButton);
@@ -215,7 +215,7 @@ public class EditorBuilder {
         JLabel provinceInfoLabel = new JLabel("X Provinces");
 
         // create menu bar and add to panel
-        JToolBar provinceBar = CommonElementsFactory.makeToolBar();
+        JToolBar provinceBar = GraphicsUtils.makeToolBar(false, false);
         // TODO load images
         JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         provinceBar.add(addprovinceButton);
@@ -295,7 +295,7 @@ public class EditorBuilder {
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
         // create menu bar and add to panel
-        JToolBar menuBar = CommonElementsFactory.makeToolBar();
+        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
 
         // terrain button
         JButton terrainButton = Button.EditorTerrain.create();

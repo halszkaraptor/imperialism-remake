@@ -122,6 +122,9 @@ public class StartClient {
      */
     public static void shutDown() {
 
+        // dispose of the screen frame
+        FrameManager.getInstance().getFrame().dispose();
+
         // if server is still running shut down
         if (BigBag.serverManager.isRunning()) {
             LOG.log(Level.INFO, "Server still running, shut down.");

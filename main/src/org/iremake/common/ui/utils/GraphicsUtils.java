@@ -44,6 +44,7 @@ import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
@@ -331,6 +332,22 @@ public class GraphicsUtils {
      */
     public static void setMaximumBounds(Frame frame) {
         frame.setBounds(MaximumBounds);
+    }
+
+    /**
+     * Convenience function.
+     *
+     * @param floatable
+     * @param opaque
+     * @return
+     */
+    public static JToolBar makeToolBar(boolean floatable, boolean opaque) {
+        JToolBar bar = new JToolBar();
+        
+        bar.setFloatable(floatable);  // floatable or fixed
+        bar.setOpaque(opaque);     // transparent or opaque
+
+        return bar;
     }
 
     /**

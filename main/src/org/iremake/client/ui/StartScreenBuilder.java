@@ -33,9 +33,10 @@ import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.common.ui.BrowserDialog;
+import org.iremake.common.ui.BrowserPanel;
 import org.iremake.common.ui.layout.RelativeLayout;
 import org.iremake.common.ui.layout.RelativeLayoutConstraint;
+import org.iremake.common.ui.utils.GraphicsUtils;
 import org.iremake.common.ui.utils.WindowCorner;
 
 /**
@@ -122,15 +123,14 @@ public class StartScreenBuilder {
      */
     private static JToolBar menuBar() {
         // tool bar
-        JToolBar bar = CommonElementsFactory.makeToolBar();
+        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
 
         // scenario button
         JButton scenarioButton = Button.StartMenuScenario.create();
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = ScenarioDialogsBuilder.makeLoadDialog("Scenario - Start", new Dimension(800, 700));
-                dialog.setVisible(true);
+                ScenarioDialogsBuilder.makeLoadDialog();
             }
         });
 
@@ -139,8 +139,7 @@ public class StartScreenBuilder {
         networkButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = NetworkDialogBuilder.makeDialog("Network center", new Dimension(800, 700));
-                dialog.setVisible(true);
+                NetworkDialogBuilder.makeDialog();
             }
         });
 
@@ -149,8 +148,7 @@ public class StartScreenBuilder {
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = OptionsDialogBuilder.makeDialog("Options", new Dimension(800, 700));
-                dialog.setVisible(true);
+                OptionsDialogBuilder.makeDialog();
             }
         });
 
@@ -160,9 +158,10 @@ public class StartScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
-                BrowserDialog dlg = new BrowserDialog(FrameManager.getInstance().getFrame(), "Help", false, index, index, IOManager.getAsLoader(Places.GraphicsIcons));
-                dlg.setVisible(true);
-                // TODO change decoration of dialog (via look and feel)
+                JDialog dialog = FrameManager.getInstance().makeDialog("Help", new Dimension(800, 700));
+                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsIcons));
+                dialog.add(browser);
+                dialog.setVisible(true);
             }
         });
 
@@ -182,7 +181,6 @@ public class StartScreenBuilder {
         exitButton.addActionListener(new ActionListener() {    // add action listener
             @Override
             public void actionPerformed(ActionEvent e) {
-                FrameManager.getInstance().shutDown();
                 StartClient.shutDown();
             }
         });

@@ -33,6 +33,14 @@ import org.iremake.common.ui.ComponentResizer;
 
 /**
  *
+ * Test for full frame support. Two modes (fullscreen always or resizable).
+ *
+ * On Windows you can move them out of the windows area.
+ *
+ * On Linux you cannot put them out of some borders. the coordinates will
+ * continue to be negative but the display position won't. However on
+ * Ubuntu/Unity you can actually shift below the lower border of the screen but
+ * only there. Strange.
  */
 public class FullFrame {
 

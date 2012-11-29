@@ -21,21 +21,20 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
-import org.iremake.client.ui.CommonElementsFactory;
 import org.iremake.client.ui.FrameManager;
-import org.iremake.client.ui.StartScreenBuilder;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.ui.ClockLabel;
+import org.iremake.common.ui.utils.GraphicsUtils;
 
 /**
  * Builds the main screen.
@@ -53,33 +52,27 @@ public class MainScreenBuilder {
      *
      * @param owner
      */
-    public static void build() {
-        final MainScreenManager manager = new MainScreenManager();
+    public static JComponent build() {
 
-        JFrame frame = new JFrame();
-        manager.setFrame(frame);
+        JPanel panel = new JPanel();
 
         ScenarioUIModel model = new ScenarioUIModel();
         Scenario map = new Scenario();
-        manager.setScenarioContent(map, model);
+        MainScreenManager.getInstance().setScenarioContent(map, model);
 
         // Add MapPanel
         MainMapPanel mainMapPanel = new MainMapPanel(model);
 
-        manager.setPanels(mainMapPanel);
+        MainScreenManager.getInstance().setPanels(mainMapPanel);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = MainScreenBuilder.createControlPanel(manager, model, frame);
+        JPanel controlPanel = MainScreenBuilder.createControlPanel(model);
 
-        frame.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
-        frame.add(mainMapPanel, "grow");
-        frame.add(controlPanel, "growy, wmin 300");
+        panel.setLayout(new MigLayout("wrap 2, fill", "[grow][]"));
+        panel.add(mainMapPanel, "grow");
+        panel.add(controlPanel, "growy, wmin 300");
 
-        // we build it visible immediately
-        frame.setVisible(true);
-
-        // and load a basic scenario
-        manager.loadInitialScenario();
+        return panel;
     }
 
     /**
@@ -87,21 +80,20 @@ public class MainScreenBuilder {
      * @param manager
      * @return
      */
-    private static JPanel createControlPanel(final MainScreenManager manager, ScenarioUIModel model, final JFrame owner) {
+    private static JPanel createControlPanel(ScenarioUIModel model) {
         JPanel panel = new JPanel();
 
         JPanel infPanel = new JPanel();
         infPanel.setBorder(new LineBorder(Color.black, 1));
 
         // create menu bar and add to frame
-        JToolBar menuBar = CommonElementsFactory.makeToolBar();
+        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
 
         // exit button
-        JButton exitButton = Button.Exit.create();
+        JButton exitButton = Button.NormalExit.create();
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                manager.exit();
                 FrameManager.getInstance().switchToStartScreen();
             }
         });
@@ -110,22 +102,22 @@ public class MainScreenBuilder {
         JButton saveButton = Button.ScenarioSave.create();
 
         // add buttons to toolbar
-        menuBar.add(exitButton);
         menuBar.add(saveButton);
+        menuBar.add(exitButton);
 
         // create mini map and add to panel
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
-        manager.setMiniMap(miniMapPanel);
+        MainScreenManager.getInstance().setMiniMap(miniMapPanel);
 
         // create other buttons
-        JToolBar toolBar = CommonElementsFactory.makeToolBar();
+        JToolBar toolBar = GraphicsUtils.makeToolBar(false, false);
         JButton industryDialog = new JButton("Industry");
         // TODO build industy button also non-focusable (commonelementsfactory)
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = CommonElementsFactory.makeDialog("Industry", true, new Dimension(800, 700));
+                JDialog dialog = FrameManager.getInstance().makeDialog("Industry", new Dimension(800, 700));
                 dialog.setVisible(true);
             }
         });

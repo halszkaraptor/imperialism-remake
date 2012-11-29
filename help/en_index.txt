@@ -1,9 +1,12 @@
 ﻿# Imperialism remake Help
+Version 0.1.1
 
-Version: 0.1.0
-[Credits](credits.html).   
+Content
 
-Not yet filled with content.
+-  &bull; Item 1
+-  &bull; Item 2
+
+[Credits](credits.html)
 
 
 

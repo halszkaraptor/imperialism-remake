@@ -1,15 +1,6 @@
-- get pencil (http://pencil.evolus.vn/en-US/Home.aspx)
+- GUIMockups.ep - pictures of all flow charts, user interface mockups in the specifications
+  uses pencil (http://pencil.evolus.vn/en-US/Home.aspx)
 
-- open GUIMockups.ep with pencil and export all pages as rasterized pngs
+- GameSpecifications.odt - All game mechanics rules
 
-- open GameSpecifications.odt with libreoffice/..
-
-- export to pdf
-
---------------------------------------------------------------------------
-
-GUIMockups.ep - pictures of all flow charts, user interface mockups in the specifications
-
-GameSpecifications.odt - All game mechanics rules
-
-ProgrammingSpecifications.odt - AI, user interface and general programming specifications
+- ProgrammingSpecifications.odt - AI, user interface and general programming specifications

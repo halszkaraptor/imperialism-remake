@@ -14,7 +14,7 @@ import fnmatch, os, codecs
 
 
 # locate all files matching a name pattern recursively (see os.walk, fnmatch)
-def locate(pattern, root = os.curdir):
+def locate(pattern = '*.*', root = os.curdir):
 
     folders = list()
     names = list()

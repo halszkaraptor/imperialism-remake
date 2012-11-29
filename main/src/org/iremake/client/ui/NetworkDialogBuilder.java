@@ -20,6 +20,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -46,10 +47,6 @@ public class NetworkDialogBuilder {
 
     /**
      *
-     * @param owner
-     * @param title
-     * @param bounds
-     * @return
      */
     public static void makeDialog() {
         // create general dialog
@@ -80,7 +77,7 @@ public class NetworkDialogBuilder {
         // selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
         c.setLayout(new MigLayout("wrap 2, fill", "[][fill, grow]", "[][][fill, grow][]"));
-        dialog.add(menuBar, "span");
+        dialog.add(menuBar, "span, growx");
         dialog.add(clientInfoPanel, "height 100!, growx, span");
         dialog.add(serverMemberList, "wmin 100, hmin 100, growy, span 1 2");
         dialog.add(serverChatPane, "grow");
@@ -108,6 +105,7 @@ public class NetworkDialogBuilder {
 
         // add buttons to tool bar
         bar.add(serverStartButton);
+        bar.add(Box.createHorizontalGlue());
         bar.add(exitButton);
 
         return bar;

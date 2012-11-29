@@ -17,9 +17,12 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -28,6 +31,8 @@ import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.client.ui.editor.EditorManager;
+import org.iremake.client.ui.main.MainScreenBuilder;
+import org.iremake.client.ui.main.MainScreenManager;
 import org.iremake.common.ui.utils.GraphicsUtils;
 
 /**
@@ -36,7 +41,6 @@ import org.iremake.common.ui.utils.GraphicsUtils;
 public class FrameManager {
 
     private static FrameManager singleton;
-
     private JFrame frame;
     private JPanel panel;
     private JComponent content;
@@ -110,8 +114,10 @@ public class FrameManager {
         if (content != null) {
             panel.remove(content);
         }
+
         content = StartScreenBuilder.build();
         panel.add(content, "grow");
+        panel.validate();
     }
 
     /**
@@ -124,6 +130,7 @@ public class FrameManager {
         }
         content = EditorBuilder.build();
         panel.add(content, "grow");
+        panel.validate();
 
         // and load a basic scenario
         EditorManager.getInstance().loadInitialScenario();
@@ -136,16 +143,18 @@ public class FrameManager {
         if (content != null) {
             panel.remove(content);
         }
+
+        content = MainScreenBuilder.build();
+        panel.add(content, "grow");
+        panel.validate();
+
+        // and load a basic scenario
+        MainScreenManager.getInstance().loadInitialScenario();
     }
 
     /**
-     *
-     */
-    public void shutDown() {
-        frame.dispose();
-    }
-
-    /**
+     * Potentially dangerous but the only way unless we import many dialog
+     * creations.
      *
      * @return
      */
@@ -153,5 +162,36 @@ public class FrameManager {
         return frame;
     }
 
+    /**
+     *
+     * @param title
+     * @param size
+     * @param modal
+     * @return
+     */
+    public JDialog makeDialog(String title, Dimension size) {
 
+        // TODO make the dialog undecorated but resizable and moveable
+
+        JDialog dialog = new JDialog(frame, title, true);
+
+        // set undecorated
+        dialog.setUndecorated(true);
+
+        // turn of usual exiting mechanisms
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // resizable
+        dialog.setResizable(true);
+
+        // initial bounds (centered on frame)
+        Rectangle pb = frame.getBounds();
+        Rectangle bounds = new Rectangle(pb.x+pb.width/2-size.width/2,pb.y+pb.height/2-size.height/2,size.width,size.height);
+        dialog.setBounds(bounds);
+
+        // set background
+        dialog.getContentPane().setBackground(Color.WHITE);    // white color
+
+        return dialog;
+    }
 }

@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.common.model.ScenarioScanner;
 import org.iremake.common.resources.Resource;
+import org.iremake.common.ui.utils.GraphicsUtils;
 
 /**
  * Scenario dialogs wiring.
@@ -56,9 +57,9 @@ public class ScenarioDialogsBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeLoadDialog(String title, Dimension size) {
+    public static void makeLoadDialog() {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
+        JDialog dialog = FrameManager.getInstance().makeDialog("Scenario - Start", new Dimension(800, 700));
 
         // placeholder for the real things
         final ScenarioScanner scanner = new ScenarioScanner();
@@ -97,8 +98,7 @@ public class ScenarioDialogsBuilder {
 
 
         // create menu bar and add to dialog
-        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar();
-
+        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar(dialog);
 
         // layout - selectTree fixed width, infoPanel fixed height
         Container c = dialog.getContentPane();
@@ -108,7 +108,7 @@ public class ScenarioDialogsBuilder {
         dialog.add(mapPanel, "grow");
         dialog.add(infoPanel, "height 200!, growx");
 
-        return dialog;
+        dialog.setVisible(true);
     }
 
     private static JPanel makeOverviewMapPanel() {
@@ -118,22 +118,33 @@ public class ScenarioDialogsBuilder {
         return panel;
     }
 
-    private static JToolBar loadMenuBar() {
+    private static JToolBar loadMenuBar(final JDialog dialog) {
         // toolbar
-        JToolBar bar = CommonElementsFactory.makeToolBar();
+        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
 
         // start button
         JButton startButton = Button.ScenarioStart.create();
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO close this dialog before
+                dialog.dispose();
                 FrameManager.getInstance().switchToMainScreen();
             }
         });
 
+        // exit button
+        JButton exitButton = Button.NormalExit.create();
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+
+
         // add buttons to tool bar
         bar.add(startButton);
+        bar.add(exitButton);
 
         return bar;
     }

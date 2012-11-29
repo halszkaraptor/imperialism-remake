@@ -16,8 +16,6 @@
  */
 package org.iremake.common.ui;
 
-import java.awt.Container;
-import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,12 +26,11 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import net.miginfocom.swing.MigLayout;
@@ -41,15 +38,11 @@ import org.iremake.common.ui.utils.IconLoader;
 
 /**
  * Based on JEditorPane in non-editable, content text/html mode.
- *
- * Hides on close, can be reused.
  */
-// TODO customize more (hide on close, dialog, frame)...
-// TODO use composition instead?
-public class BrowserDialog extends JDialog {
+// TODO use composition instead
+public class BrowserPanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private static final Logger LOG = Logger.getLogger(BrowserDialog.class.getName());
+    private static final Logger LOG = Logger.getLogger(BrowserPanel.class.getName());
     private JButton previousButton;
     private JButton nextButton;
     private JButton indexButton;
@@ -60,18 +53,7 @@ public class BrowserDialog extends JDialog {
     private Deque<URL> forwardList = new LinkedList<>();
     private IconLoader loader;
 
-    /**
-     * Initializes the Browser.
-     *
-     * @param parent
-     * @param title
-     * @param modal
-     * @param index
-     * @param start
-     */
-    // TODO separate from dialog, just make it a component
-    public BrowserDialog(Frame parent, String title, boolean modal, URL index, URL start, IconLoader loader) {
-        super(parent, title, modal);
+    public BrowserPanel(URL index, URL start, IconLoader loader) {
         if (index == null || start == null) {
             LOG.log(Level.SEVERE, "BrowserDialog init failed");
             throw new IllegalArgumentException("index or start URL are null");
@@ -179,15 +161,9 @@ public class BrowserDialog extends JDialog {
         menuBar.add(indexButton);
 
         // layout
-        Container c = getContentPane();
-        c.setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
+        setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
         add(menuBar);
-        add(scrollPane, "grow");
-
-        // size and close operations
-        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE); // TODO do we need this
-
-        setSize(800, 600); // TODO set bounds from outside
+        add(scrollPane, "grow, hmin 300, wmin 400");
     }
 
     /**
@@ -201,19 +177,5 @@ public class BrowserDialog extends JDialog {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * After hiding we can make it visible again.
-     * @param url
-     */
-    public void reanimate(URL url) {
-        // clear forward and backward lists
-        forwardList.clear();
-        historyList.clear();
-        // set url
-        setPage(url);
-        // set visible
-        setVisible(true);
     }
 }

@@ -17,9 +17,6 @@
 package org.iremake.client.ui.main;
 
 import java.awt.Dimension;
-import java.awt.Window;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
@@ -42,14 +39,22 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
     private ScenarioUIModel model;
-    private Window window;
+
+    private static MainScreenManager singleton;
+
+    private MainScreenManager() {
+
+    }
 
     /**
      *
-     * @param dialog
+     * @return
      */
-    public void setFrame(JFrame dialog) {
-        window = dialog;
+    public static MainScreenManager getInstance() {
+        if (singleton == null) {
+            singleton = new MainScreenManager();
+        }
+        return singleton;
     }
 
     /**
@@ -124,14 +129,6 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
         float fractionRows = (float) size.height / tileSize.height / model.getNumberRows();
         float fractionColumns = (float) size.width / tileSize.width / model.getNumberColumns();
         miniMapPanel.mapChanged(fractionRows, fractionColumns);
-    }
-
-    /**
-     *
-     */
-    // TODO improve the exit (use frame manager)
-    public void exit() {
-        window.dispose();
     }
 
     @Override

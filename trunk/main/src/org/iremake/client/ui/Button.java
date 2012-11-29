@@ -35,9 +35,14 @@ public enum Button {
     StartMenuEditor("start.button.editor.png"),
     StartMenuExit("start.button.exit.png"),
 
-    GenericAdd("generic.button.add.png"),
-    Exit("main.button.exit.png"),
+    // small sized buttons
+    SmallAdd("generic.button.add.png"),
 
+    // normal sized buttons used everywhere
+    NormalExit("main.button.exit.png"),
+    NormalHelp("main.button.exit.png"), // TODO own icon
+
+    // normal sized buttons used in the editor
     EditorTerrain("editor.button.terrain.png"),
     EditorNation("editor.button.nation.png"),
     EditorProvince("editor.button.province.png"),
@@ -47,7 +52,6 @@ public enum Button {
     ScenarioStart("scenario.button.start.png"),
     ScenarioNew("scenario.button.new.png"),
     ScenarioSave("scenario.button.save.png");
-
 
     /* */
     private String location;

@@ -18,6 +18,8 @@ package org.iremake.client.ui;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -29,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.common.ui.utils.GraphicsUtils;
 
 /**
  *
@@ -48,12 +51,12 @@ public class NetworkDialogBuilder {
      * @param bounds
      * @return
      */
-    public static JDialog makeDialog(String title, Dimension size) {
+    public static void makeDialog() {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
+        JDialog dialog = FrameManager.getInstance().makeDialog("Network center", new Dimension(800, 700));
 
         // create menu bar and add to dialog
-        JToolBar menuBar = NetworkDialogBuilder.menuBar();
+        JToolBar menuBar = NetworkDialogBuilder.menuBar(dialog);
 
         // client info panel
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
@@ -84,18 +87,28 @@ public class NetworkDialogBuilder {
         dialog.add(chatInputField, "height pref!");
 
 
-        return dialog;
+        dialog.setVisible(true);
     }
 
-    private static JToolBar menuBar() {
+    private static JToolBar menuBar(final JDialog dialog) {
         // toolbar
-        JToolBar bar = CommonElementsFactory.makeToolBar();
+        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
 
         // load button
         JButton serverStartButton = Button.ScenarioLoad.create();
 
+        // exit button
+        JButton exitButton = Button.NormalExit.create();
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+
         // add buttons to tool bar
         bar.add(serverStartButton);
+        bar.add(exitButton);
 
         return bar;
     }

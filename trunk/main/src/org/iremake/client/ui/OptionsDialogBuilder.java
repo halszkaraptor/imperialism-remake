@@ -54,9 +54,9 @@ public class OptionsDialogBuilder {
      * @param size
      * @return
      */
-    public static JDialog makeDialog(String title, Dimension size) {
+    public static void makeDialog() {
         // create general dialog
-        JDialog dialog = CommonElementsFactory.makeDialog(title, false, size);
+        JDialog dialog = FrameManager.getInstance().makeDialog("Options", new Dimension(800, 700));
 
         // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();
@@ -71,7 +71,7 @@ public class OptionsDialogBuilder {
         c.setLayout(new MigLayout("fill"));
         dialog.add(pane, "grow");
 
-        return dialog;
+        dialog.setVisible(true);
     }
 
     /**

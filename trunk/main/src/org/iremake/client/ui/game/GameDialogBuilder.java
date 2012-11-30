@@ -16,6 +16,9 @@
  */
 package org.iremake.client.ui.game;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
@@ -31,7 +34,19 @@ public class GameDialogBuilder {
         JPanel content = new JPanel();
 
         JToolBar bar = new JToolBar();
-        // TODO loop over GamePanels and add a button for each
+
+        for (final GamePanel p: GamePanel.values()) {
+            JButton button = new JButton(p.toString());
+            // TODO standard button
+            button.setFocusable(false);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // TODO the action
+                }
+            });
+            bar.add(button);
+        }
 
         JPanel inner = panel.create();
 

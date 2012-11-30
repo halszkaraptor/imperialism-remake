@@ -16,6 +16,8 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -93,6 +95,7 @@ public class NetworkDialogBuilder {
 
     private static JPanel clientInfoPanel() {
         JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
         return panel;
     }
 

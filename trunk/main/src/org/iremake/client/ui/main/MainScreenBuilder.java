@@ -17,13 +17,11 @@
 package org.iremake.client.ui.main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
@@ -115,15 +113,19 @@ public class MainScreenBuilder {
 
         // create other buttons
         JToolBar toolBar = GraphicsUtils.makeToolBar(false, false);
-        JButton industryDialog = new JButton("Industry");
-        // TODO build industy button also non-focusable (commonelementsfactory)
-        industryDialog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameDialogBuilder.build(GamePanel.Industry);
-            }
-        });
-        toolBar.add(industryDialog);
+
+        for (final GamePanel p: GamePanel.values()) {
+            JButton button = new JButton(p.toString());
+            // TODO standard button
+            button.setFocusable(false);
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    GameDialogBuilder.build(p);
+                }
+            });
+            toolBar.add(button);
+        }
 
         // create info panel
         JPanel infoPanel = new JPanel();

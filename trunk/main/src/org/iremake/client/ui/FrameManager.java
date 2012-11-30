@@ -21,7 +21,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -182,14 +182,29 @@ public class FrameManager {
     private final static Color brown = new Color(128, 80, 16);
 
     public void startDialog(JComponent content, String title) {
-        startDialog(content, title, new Dimension(700, 600));
+        startDialog(content, title, new Dimension(700, 600), new Point(0, 0));
     }
 
     public ActionListener getExitDialogListener() {
         return exitDialogListener;
     }
 
-    public void startDialog(JComponent content, String title, Dimension minimumSize) {
+    public void startDialog(JComponent content, String title, Dimension minimumSize, Point location) {
+
+        dialog = new JDialog(frame, title, true);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setResizable(true);
+
+        dialog.setMinimumSize(minimumSize);
+        dialog.add(content);
+        dialog.pack();
+
+        dialog.setLocation(location);
+
+        dialog.setVisible(true);
+    }
+
+    public void startDialogCustom(JComponent content, String title, Dimension minimumSize) {
 
         dialog = new JDialog(frame, true);
         dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -228,38 +243,5 @@ public class FrameManager {
         resizer.registerComponent(dialog);
 
         dialog.setVisible(true);
-    }
-
-    /**
-     *
-     * @param title
-     * @param size
-     * @param modal
-     * @return
-     */
-    public JDialog makeDialog(String title, Dimension size) {
-
-        // TODO make the dialog undecorated but resizable and moveable
-
-        JDialog dialog = new JDialog(frame, title, true);
-
-        // set undecorated
-        dialog.setUndecorated(true);
-
-        // turn of usual exiting mechanisms
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-        // resizable
-        dialog.setResizable(true);
-
-        // initial bounds (centered on frame)
-        Rectangle pb = frame.getBounds();
-        Rectangle bounds = new Rectangle(pb.x+pb.width/2-size.width/2,pb.y+pb.height/2-size.height/2,size.width,size.height);
-        dialog.setBounds(bounds);
-
-        // set background
-        dialog.getContentPane().setBackground(Color.WHITE);    // white color
-
-        return dialog;
     }
 }

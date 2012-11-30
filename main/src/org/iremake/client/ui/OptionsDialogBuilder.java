@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -55,8 +56,6 @@ public class OptionsDialogBuilder {
      * @return
      */
     public static void makeDialog() {
-        // create general dialog
-        JDialog dialog = FrameManager.getInstance().makeDialog("Options", new Dimension(800, 700));
 
         // create JTabbedpane
         JTabbedPane pane = new JTabbedPane();
@@ -66,12 +65,7 @@ public class OptionsDialogBuilder {
         pane.add(OptionsDialogBuilder.generalOptionsPanel(), "General");
         pane.add(OptionsDialogBuilder.serverOptionsPanel(), "Server");
 
-        // layout dialog (use simpel borderlayout);
-        Container c = dialog.getContentPane();
-        c.setLayout(new MigLayout("fill"));
-        dialog.add(pane, "grow");
-
-        dialog.setVisible(true);
+        FrameManager.getInstance().startDialog(pane, "Options");
     }
 
     /**

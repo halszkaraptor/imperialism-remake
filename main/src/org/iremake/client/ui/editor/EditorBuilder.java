@@ -307,8 +307,9 @@ public class EditorBuilder {
         terrainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = new EditorSelectionTerrainDialog();
-                dialog.setVisible(true);
+                JPanel content = new EditorSelectionTerrainPanel();
+                FrameManager.getInstance().startDialog(content, "Terrain Selection", new Dimension(0, 0));
+                // TODO automatically put next to button the location
             }
         });
         menuBar.add(terrainButton);

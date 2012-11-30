@@ -30,6 +30,8 @@ import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.game.GameDialogBuilder;
+import org.iremake.client.ui.game.GamePanel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
@@ -118,8 +120,7 @@ public class MainScreenBuilder {
         industryDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog dialog = FrameManager.getInstance().makeDialog("Industry", new Dimension(800, 700));
-                dialog.setVisible(true);
+                GameDialogBuilder.build(GamePanel.Industry);
             }
         });
         toolBar.add(industryDialog);

@@ -158,10 +158,8 @@ public class StartScreenBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
-                JDialog dialog = FrameManager.getInstance().makeDialog("Help", new Dimension(800, 700));
                 BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsIcons));
-                dialog.add(browser);
-                dialog.setVisible(true);
+                FrameManager.getInstance().startDialog(browser, "Help");
             }
         });
 

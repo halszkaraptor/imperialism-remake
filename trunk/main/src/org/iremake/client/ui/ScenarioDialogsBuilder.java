@@ -17,15 +17,11 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.AbstractListModel;
-import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -55,8 +51,8 @@ public class ScenarioDialogsBuilder {
      *
      */
     public static void makeLoadDialog() {
-        // create general dialog
-        JDialog dialog = FrameManager.getInstance().makeDialog("Scenario - Start", new Dimension(800, 700));
+
+        JPanel content = new JPanel();
 
         // placeholder for the real things
         final ScenarioScanner scanner = new ScenarioScanner();
@@ -95,17 +91,16 @@ public class ScenarioDialogsBuilder {
 
 
         // create menu bar and add to dialog
-        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar(dialog);
+        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar();
 
         // layout - selectTree fixed width, infoPanel fixed height
-        Container c = dialog.getContentPane();
-        c.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
-        dialog.add(menuBar, "growx");
-        dialog.add(selectList, "width 200!, split 2");
-        dialog.add(mapPanel, "grow");
-        dialog.add(infoPanel, "height 200!, growx");
+        content.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
+        content.add(menuBar, "growx");
+        content.add(selectList, "width 200!, split 2");
+        content.add(mapPanel, "grow");
+        content.add(infoPanel, "height 200!, growx");
 
-        dialog.setVisible(true);
+        FrameManager.getInstance().startDialog(content, "Local Scenario");
     }
 
     private static JPanel makeOverviewMapPanel() {
@@ -115,7 +110,7 @@ public class ScenarioDialogsBuilder {
         return panel;
     }
 
-    private static JToolBar loadMenuBar(final JDialog dialog) {
+    private static JToolBar loadMenuBar() {
         // toolbar
         JToolBar bar = GraphicsUtils.makeToolBar(false, false);
 
@@ -124,25 +119,13 @@ public class ScenarioDialogsBuilder {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                FrameManager.getInstance().getExitDialogListener().actionPerformed(null);
                 FrameManager.getInstance().switchToMainScreen();
             }
         });
 
-        // exit button
-        JButton exitButton = Button.NormalExit.create();
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
-            }
-        });
-
-
         // add buttons to tool bar
         bar.add(startButton);
-        bar.add(Box.createHorizontalGlue());
-        bar.add(exitButton);
 
         return bar;
     }

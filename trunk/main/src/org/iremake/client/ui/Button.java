@@ -37,6 +37,7 @@ public enum Button {
 
     // small sized buttons
     SmallAdd("generic.button.add.png"),
+    SmallExit("generic.button.exit.png"),
 
     // normal sized buttons used everywhere
     NormalExit("main.button.exit.png"),

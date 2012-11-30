@@ -16,14 +16,8 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,11 +43,10 @@ public class NetworkDialogBuilder {
      *
      */
     public static void makeDialog() {
-        // create general dialog
-        JDialog dialog = FrameManager.getInstance().makeDialog("Network center", new Dimension(800, 700));
+        JPanel content = new JPanel();
 
         // create menu bar and add to dialog
-        JToolBar menuBar = NetworkDialogBuilder.menuBar(dialog);
+        JToolBar menuBar = NetworkDialogBuilder.menuBar();
 
         // client info panel
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
@@ -75,38 +68,25 @@ public class NetworkDialogBuilder {
 
         // define the layout
         // selectTree fixed width, infoPanel fixed height
-        Container c = dialog.getContentPane();
-        c.setLayout(new MigLayout("wrap 2, fill", "[][fill, grow]", "[][][fill, grow][]"));
-        dialog.add(menuBar, "span, growx");
-        dialog.add(clientInfoPanel, "height 100!, growx, span");
-        dialog.add(serverMemberList, "wmin 100, hmin 100, growy, span 1 2");
-        dialog.add(serverChatPane, "grow");
-        dialog.add(chatInputField, "height pref!");
+        content.setLayout(new MigLayout("wrap 2, fill", "[][fill, grow]", "[][][fill, grow][]"));
+        content.add(menuBar, "span, growx");
+        content.add(clientInfoPanel, "height 100!, growx, span");
+        content.add(serverMemberList, "wmin 100, hmin 100, growy, span 1 2");
+        content.add(serverChatPane, "grow");
+        content.add(chatInputField, "height pref!");
 
-
-        dialog.setVisible(true);
+        FrameManager.getInstance().startDialog(content, "Network center");
     }
 
-    private static JToolBar menuBar(final JDialog dialog) {
+    private static JToolBar menuBar() {
         // toolbar
         JToolBar bar = GraphicsUtils.makeToolBar(false, false);
 
         // load button
         JButton serverStartButton = Button.ScenarioLoad.create();
 
-        // exit button
-        JButton exitButton = Button.NormalExit.create();
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
-            }
-        });
-
         // add buttons to tool bar
         bar.add(serverStartButton);
-        bar.add(Box.createHorizontalGlue());
-        bar.add(exitButton);
 
         return bar;
     }

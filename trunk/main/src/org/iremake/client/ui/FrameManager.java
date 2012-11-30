@@ -17,13 +17,19 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
@@ -33,6 +39,8 @@ import org.iremake.client.ui.editor.EditorBuilder;
 import org.iremake.client.ui.editor.EditorManager;
 import org.iremake.client.ui.main.MainScreenBuilder;
 import org.iremake.client.ui.main.MainScreenManager;
+import org.tools.ui.ComponentMover;
+import org.tools.ui.ComponentResizer;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
@@ -42,6 +50,8 @@ public class FrameManager {
 
     private static FrameManager singleton;
     private JFrame frame;
+    private JDialog dialog;
+    private ActionListener exitDialogListener;
     private JPanel panel;
     private JComponent content;
 
@@ -51,6 +61,12 @@ public class FrameManager {
     private FrameManager() {
         setupMainFrame();
 
+        exitDialogListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        };
     }
 
     /**
@@ -160,6 +176,58 @@ public class FrameManager {
      */
     public Frame getFrame() {
         return frame;
+    }
+
+    private final static Color blue = new Color(160, 224, 255);
+    private final static Color brown = new Color(128, 80, 16);
+
+    public void startDialog(JComponent content, String title) {
+        startDialog(content, title, new Dimension(700, 600));
+    }
+
+    public ActionListener getExitDialogListener() {
+        return exitDialogListener;
+    }
+
+    public void startDialog(JComponent content, String title, Dimension minimumSize) {
+
+        dialog = new JDialog(frame, true);
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        dialog.setUndecorated(true);
+        dialog.setResizable(true);
+
+        dialog.getContentPane().setBackground(brown);
+
+        JPanel top = new JPanel();
+        top.setBackground(blue);
+
+        JButton exitButton = Button.SmallExit.create();
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        exitButton.setBorder(null);
+        exitButton.setBackground(blue);
+        exitButton.addActionListener(exitDialogListener);
+
+        JLabel titleLabel = new JLabel(title);
+
+        top.setLayout(new MigLayout("fill, insets 2"));
+        top.add(titleLabel, "alignx left");
+        top.add(exitButton, "alignx right");
+
+        dialog.setLayout(new MigLayout("wrap 1, fill, insets 0 5 5 5", "", "[][grow]"));
+        dialog.add(top, "growx");
+        dialog.add(content, String.format("grow, hmin %d, wmin %d", minimumSize.height, minimumSize.width));
+
+        // instead of this we should set the bounds from options
+        dialog.pack();
+
+        ComponentMover mover = new ComponentMover();
+        mover.setDestination(dialog);
+        mover.registerComponent(top);
+
+        ComponentResizer resizer = new ComponentResizer(new Insets(5, 5, 5, 5), new Dimension(10, 10));
+        resizer.registerComponent(dialog);
+
+        dialog.setVisible(true);
     }
 
     /**

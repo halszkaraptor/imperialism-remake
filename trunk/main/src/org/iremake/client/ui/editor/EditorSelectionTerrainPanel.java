@@ -17,17 +17,14 @@
 package org.iremake.client.ui.editor;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import javax.swing.border.EmptyBorder;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.common.Settings;
@@ -36,13 +33,12 @@ import org.iremake.common.Settings;
  * New Terrain is Selected. A modal dialog.
  */
 // TODO do not need own class for it, just build it
-public class EditorSelectionTerrainDialog extends JDialog implements ActionListener {
+public class EditorSelectionTerrainPanel extends JPanel implements ActionListener {
 
     /**
      *
      */
-    public EditorSelectionTerrainDialog() {
-        super(FrameManager.getInstance().getFrame(), "Terrain Selection", true);
+    public EditorSelectionTerrainPanel() {
         initComponents();
     }
 
@@ -52,9 +48,6 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
     private void initComponents() {
         final int gap = 10;
         final Dimension tileSize = TerrainLoader.getTileSize();
-
-        setLocationByPlatform(true);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         Set<String> IDs = Settings.getTerrainIDs();
         int n = IDs.size();
@@ -70,10 +63,8 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
             r = l + 1;
             c = l + 1;
         }
-        JPanel panel = new JPanel();
         // here actually GridLayout does exactly the job and we do not need MigLayout
-        panel.setLayout(new GridLayout(r, c, gap, gap));
-        panel.setBorder(new EmptyBorder(gap, gap, gap, gap));
+        setLayout(new MigLayout("wrap " + c));
 
         for (String id : IDs) {
             JButton button = new JButton();
@@ -83,11 +74,8 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
             button.setFocusable(false);
             button.setToolTipText(Settings.getTerrainType(id));
             button.addActionListener(this);
-            panel.add(button);
+            add(button);
         }
-        add(panel);
-
-        pack();
     }
 
     /**
@@ -99,6 +87,6 @@ public class EditorSelectionTerrainDialog extends JDialog implements ActionListe
     public void actionPerformed(ActionEvent e) {
         String id = ((JButton) e.getSource()).getName();
         EditorManager.getInstance().terrainSelected(id);
-        dispose();
+        FrameManager.getInstance().getExitDialogListener().actionPerformed(null);
     }
 }

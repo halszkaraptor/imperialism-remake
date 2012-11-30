@@ -21,17 +21,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
@@ -44,7 +41,7 @@ import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
-import org.tools.ui.utils.GraphicsUtils;
+import org.tools.ui.ButtonBar;
 import org.tools.xml.common.XList;
 
 /**
@@ -65,9 +62,6 @@ public class EditorBuilder {
     public static JComponent build() {
 
         JPanel panel = new JPanel();
-
-        // create menu bar and add to frame
-        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
 
         // new scenario button
         JButton newButton = Button.ScenarioNew.create();
@@ -105,11 +99,8 @@ public class EditorBuilder {
             }
         });
 
-        menuBar.add(newButton);
-        menuBar.add(loadButton);
-        menuBar.add(saveButton);
-        menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(exitButton);
+        ButtonBar bar = new ButtonBar();
+        bar.add(newButton, loadButton, saveButton, exitButton);
 
         // create tabbed pane and add to dialog
         JTabbedPane tabPane = new JTabbedPane();
@@ -128,7 +119,7 @@ public class EditorBuilder {
 
         // set layout (vertically first menubar, then tabbed pane)
         panel.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
-        panel.add(menuBar);
+        panel.add(bar.get());
         panel.add(tabPane);
 
         return panel;
@@ -151,15 +142,16 @@ public class EditorBuilder {
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
 
         // create menu bar and add to panel
-        JToolBar nationsBar = GraphicsUtils.makeToolBar(false, false);
+
         // TODO load images
         JButton addnationButton = Button.SmallAdd.create();
-        nationsBar.add(addnationButton);
-        JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        nationsBar.add(removenationButton);
-        JButton changenationButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        nationsBar.add(changenationButton);
 
+        JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+        JButton changenationButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+
+        ButtonBar nbar = new ButtonBar();
+        nbar.add(addnationButton, removenationButton, changenationButton);        
+        
         // list
         final JList<Nation> nationList = new JList<>();
         nationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -206,7 +198,7 @@ public class EditorBuilder {
         // layout of nations panel
         nations.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
         nations.add(nationsInfoLabel);
-        nations.add(nationsBar);
+        nations.add(nbar.get());
         nations.add(nationScrollPane, "grow");
 
 
@@ -219,16 +211,14 @@ public class EditorBuilder {
         // InfoLabel
         JLabel provinceInfoLabel = new JLabel("X Provinces");
 
-        // create menu bar and add to panel
-        JToolBar provinceBar = GraphicsUtils.makeToolBar(false, false);
         // TODO load images
         JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        provinceBar.add(addprovinceButton);
         JButton removeprovinceButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        provinceBar.add(removeprovinceButton);
         JButton changeprovinceButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        provinceBar.add(changeprovinceButton);
-
+        
+        ButtonBar pbar = new ButtonBar();
+        pbar.add(addprovinceButton, removeprovinceButton, changeprovinceButton);
+        
         // list
         final JList<Province> provinceList = new JList<>();
         provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -273,7 +263,7 @@ public class EditorBuilder {
         // layout of province panel
         provinces.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
         provinces.add(provinceInfoLabel);
-        provinces.add(provinceBar);
+        provinces.add(pbar.get());
         provinces.add(provinceScrollPane, "grow");
 
         // set layout
@@ -299,9 +289,6 @@ public class EditorBuilder {
         // create mini map and add to panel
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
-        // create menu bar and add to panel
-        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
-
         // terrain button
         final JButton terrainButton = Button.EditorTerrain.create();
         terrainButton.setToolTipText("Modify terrain of current tile.");
@@ -317,14 +304,14 @@ public class EditorBuilder {
                 // TODO automatically put next to button the location
             }
         });
-        menuBar.add(terrainButton);
         // nation button
         JButton nationButton = Button.EditorNation.create();
-        menuBar.add(nationButton);
         // province button
         JButton provinceButton = Button.EditorProvince.create();
-        menuBar.add(provinceButton);
-
+        
+        ButtonBar bar = new ButtonBar();
+        bar.add(terrainButton, nationButton, provinceButton);
+        
         // info map panel and add
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel(map);
 
@@ -339,7 +326,7 @@ public class EditorBuilder {
 
         panel.add(miniMapPanel, "width 200:300:, hmin 100");
         panel.add(mainMapPanel, "span 1 3, grow");
-        panel.add(menuBar);
+        panel.add(bar.get());
         panel.add(infoPanel, "grow");
 
         return panel;

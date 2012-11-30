@@ -16,19 +16,22 @@
  */
 package org.others.swing;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 /**
  * Tests the behavior of initially maximized frames depending on decoration or
  * resizability.
  *
- *
- * Linux:
+ * * Linux: Frames are only seen if they resizable. Decoration or not doesn't
+ * make much of a difference. They are resizable under both conditions.
  *
  * Windows: Frames that are set to state maximal or indeed maximized (and in the
  * foreground) if they aren't decorated, not dependent of whether they are
@@ -48,8 +51,13 @@ public class MaximizeFrame {
         frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
 
         // options (set to true or false)
-        frame.setUndecorated(false);
+        frame.setUndecorated(true);
         frame.setResizable(true);
+
+        // add a panel with border
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createLineBorder(Color.black, 20));
+        frame.add(panel);
 
         // set visible
         frame.setVisible(true);

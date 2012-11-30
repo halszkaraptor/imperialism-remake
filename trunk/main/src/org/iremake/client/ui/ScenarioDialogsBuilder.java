@@ -22,9 +22,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -32,7 +32,7 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
-import org.tools.ui.utils.GraphicsUtils;
+import org.tools.ui.ButtonBar;
 
 /**
  * Scenario dialogs wiring.
@@ -91,7 +91,7 @@ public class ScenarioDialogsBuilder {
 
 
         // create menu bar and add to dialog
-        JToolBar menuBar = ScenarioDialogsBuilder.loadMenuBar();
+        JComponent menuBar = ScenarioDialogsBuilder.loadMenuBar();
 
         // layout - selectTree fixed width, infoPanel fixed height
         content.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
@@ -110,10 +110,7 @@ public class ScenarioDialogsBuilder {
         return panel;
     }
 
-    private static JToolBar loadMenuBar() {
-        // toolbar
-        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
-
+    private static JComponent loadMenuBar() {
         // start button
         JButton startButton = Button.ScenarioStart.create();
         startButton.addActionListener(new ActionListener() {
@@ -124,10 +121,10 @@ public class ScenarioDialogsBuilder {
             }
         });
 
-        // add buttons to tool bar
+        ButtonBar bar = new ButtonBar();
         bar.add(startButton);
 
-        return bar;
+        return bar.get();
     }
 
     private static JPanel createInfoPanel() {

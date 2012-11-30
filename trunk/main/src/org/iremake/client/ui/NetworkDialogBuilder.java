@@ -20,15 +20,15 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
-import org.tools.ui.utils.GraphicsUtils;
+import org.tools.ui.ButtonBar;
 
 /**
  *
@@ -48,7 +48,7 @@ public class NetworkDialogBuilder {
         JPanel content = new JPanel();
 
         // create menu bar and add to dialog
-        JToolBar menuBar = NetworkDialogBuilder.menuBar();
+        JComponent menuBar = NetworkDialogBuilder.menuBar();
 
         // client info panel
         JPanel clientInfoPanel = NetworkDialogBuilder.clientInfoPanel();
@@ -80,17 +80,15 @@ public class NetworkDialogBuilder {
         FrameManager.getInstance().startDialog(content, "Network center");
     }
 
-    private static JToolBar menuBar() {
-        // toolbar
-        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
-
+    private static JComponent menuBar() {
         // load button
         JButton serverStartButton = Button.ScenarioLoad.create();
 
         // add buttons to tool bar
+        ButtonBar bar = new ButtonBar();
         bar.add(serverStartButton);
 
-        return bar;
+        return bar.get();
     }
 
     private static JPanel clientInfoPanel() {

@@ -25,17 +25,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 
 /**
  * Testing Java's Full Screen Exclusive Mode API.
  *
- * In Linux/Ubuntu the task bar is not covered and lower right part of the frame
+ * In Linux/Ubuntu the task bar is not covered and lower and right part of the frame
  * is not displayed because the frame is shifted to the right and below. The
  * size is the size of the screen. Really bad!
  *
@@ -84,7 +84,7 @@ public class FullScreenExclusiveFrame {
 
         // just add them in the most simplest layout
         JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.black, 10));
+        panel.setBorder(BorderFactory.createLineBorder(Color.black, 20));
         panel.setLayout(new FlowLayout());
         panel.add(infoLabel);
         frame.add(panel);

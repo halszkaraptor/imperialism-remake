@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,14 +38,13 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 
 /**
  * Tests different ways of maximizing a JFrame.
  *
  * Under Linux/Ubuntu the task bars are never fully covered. Maximizing though
  * shifts the window decoration to the top task bar and frees some vertical
- * space (is Undecorated is false), all other modes give the same result.
+ * space (if Undecorated is false), all other modes give the same result.
  *
  * Under Windows the behavior is different. Undecorated frames are always in the
  * foreground, decorated can be behind the task bar. With maximum bounds its
@@ -67,7 +67,7 @@ public class FullScreenSizedFrame {
         frame.setSize(new Dimension(400, 400));
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLocationByPlatform(true);
-        // frame.setUndecorated(true); // or false
+        frame.setUndecorated(true); // or false
 
         // info label and timer which updates the label with the frames bounds and if it is maximized
         final JLabel infoLabel = new JLabel();
@@ -148,7 +148,7 @@ public class FullScreenSizedFrame {
 
         // just add them in the most simplest layout and in a panel with a border
         JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.black, 10));
+        panel.setBorder(BorderFactory.createLineBorder(Color.black, 20));
         panel.setLayout(new FlowLayout());
         frame.add(panel);
 

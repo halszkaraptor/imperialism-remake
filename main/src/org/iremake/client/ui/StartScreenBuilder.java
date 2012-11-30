@@ -17,7 +17,6 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -25,18 +24,18 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JToolBar;
+import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Options;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.tools.ui.BrowserPanel;
+import org.tools.ui.ButtonBar;
 import org.tools.ui.layout.RelativeLayout;
 import org.tools.ui.layout.RelativeLayoutConstraint;
-import org.tools.ui.utils.GraphicsUtils;
 import org.tools.ui.utils.WindowCorner;
 
 /**
@@ -65,7 +64,7 @@ public class StartScreenBuilder {
         JLayeredPane pane = new JLayeredPane();
 
         // create menu bar and add to frame
-        JToolBar menuBar = StartScreenBuilder.menuBar();
+        JComponent menuBar = StartScreenBuilder.menuBar();
 
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
@@ -121,10 +120,7 @@ public class StartScreenBuilder {
      * @param owner
      * @return
      */
-    private static JToolBar menuBar() {
-        // tool bar
-        JToolBar bar = GraphicsUtils.makeToolBar(false, false);
-
+    private static JComponent menuBar() {
         // scenario button
         JButton scenarioButton = Button.StartMenuScenario.create();
         scenarioButton.addActionListener(new ActionListener() {
@@ -182,15 +178,10 @@ public class StartScreenBuilder {
                 StartClient.shutDown();
             }
         });
+        
+        ButtonBar bar = new ButtonBar();
+        bar.add(scenarioButton, networkButton, optionsButton, helpButton, editorButton, exitButton);
 
-        // add buttons to toolbar
-        bar.add(scenarioButton);
-        bar.add(networkButton);
-        bar.add(optionsButton);
-        bar.add(helpButton);
-        bar.add(editorButton);
-        bar.add(exitButton);
-
-        return bar;
+        return bar.get();
     }
 }

@@ -106,7 +106,8 @@ public class FrameManager {
         frame.setIconImage(IOManager.getAsImage(Places.GraphicsIcons, "icon.app.png"));
 
         // set to bounds of the screen
-        GraphicsUtils.setFullScreen(frame);
+        // GraphicsUtils.setFullScreen(frame);
+        GraphicsUtils.setMaximumBounds(frame);
 
         // create panel with border
         panel = new JPanel();

@@ -23,7 +23,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
@@ -34,8 +33,8 @@ import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.Scenario;
+import org.tools.ui.ButtonBar;
 import org.tools.ui.ClockLabel;
-import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Builds the main screen.
@@ -86,9 +85,6 @@ public class MainScreenBuilder {
         JPanel infPanel = new JPanel();
         infPanel.setBorder(new LineBorder(Color.black, 1));
 
-        // create menu bar and add to frame
-        JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
-
         // exit button
         JButton exitButton = Button.NormalExit.create();
         exitButton.addActionListener(new ActionListener() {
@@ -102,18 +98,15 @@ public class MainScreenBuilder {
         JButton saveButton = Button.ScenarioSave.create();
 
         // add buttons to toolbar
-        menuBar.add(saveButton);
-        menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(exitButton);
+        ButtonBar ubar = new ButtonBar();
+        ubar.add(saveButton, exitButton);
 
         // create mini map and add to panel
         MiniMapPanel miniMapPanel = new MiniMapPanel(model);
 
         MainScreenManager.getInstance().setMiniMap(miniMapPanel);
 
-        // create other buttons
-        JToolBar toolBar = GraphicsUtils.makeToolBar(false, false);
-
+        ButtonBar lbar = new ButtonBar();
         for (final GamePanel p: GamePanel.values()) {
             JButton button = new JButton(p.toString());
             // TODO standard button
@@ -124,7 +117,7 @@ public class MainScreenBuilder {
                     GameDialogBuilder.build(p);
                 }
             });
-            toolBar.add(button);
+            lbar.add(button);
         }
 
         // create info panel
@@ -134,9 +127,9 @@ public class MainScreenBuilder {
         // layout
         panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][][grow][]"));
         panel.add(infPanel, "growx");
-        panel.add(menuBar, "growx");
+        panel.add(ubar.get(), "growx");
         panel.add(miniMapPanel, "growx"); // because the extra space goes here
-        panel.add(toolBar);
+        panel.add(lbar.get());
         panel.add(infoPanel, "grow");
         panel.add(new ClockLabel(), "alignx center");
 

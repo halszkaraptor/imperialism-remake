@@ -156,15 +156,12 @@ public class BrowserPanel extends JPanel {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         // menubar
-        JToolBar menuBar = new JToolBar();
-        menuBar.setFloatable(false);
-        menuBar.add(previousButton);
-        menuBar.add(nextButton);
-        menuBar.add(indexButton);
+        ButtonBar bar = new ButtonBar();
+        bar.add(previousButton, nextButton, indexButton);
 
         // layout
         setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
-        add(menuBar, "growx");
+        add(bar.get(), "growx");
         add(scrollPane, "grow, hmin 300, wmin 400");
     }
 

@@ -16,6 +16,8 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
@@ -73,6 +75,7 @@ public enum Button {
         JButton button = new JButton();
         button.setFocusable(false);
         button.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, location));
+        button.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         return button;
     }
 }

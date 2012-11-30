@@ -68,7 +68,7 @@ public class GraphicsUtils {
         ScreenBounds = gc.getBounds();
 
         Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
-        MaximumBounds = new Rectangle(ScreenBounds.x + insets.left, ScreenBounds.y + insets.right,
+        MaximumBounds = new Rectangle(ScreenBounds.x + insets.left, ScreenBounds.y + insets.top,
                 ScreenBounds.width - insets.left - insets.right, ScreenBounds.height - insets.top - insets.bottom);
     }
 
@@ -332,22 +332,6 @@ public class GraphicsUtils {
      */
     public static void setMaximumBounds(Frame frame) {
         frame.setBounds(MaximumBounds);
-    }
-
-    /**
-     * Convenience function.
-     *
-     * @param floatable
-     * @param opaque
-     * @return
-     */
-    public static JToolBar makeToolBar(boolean floatable, boolean opaque) {
-        JToolBar bar = new JToolBar();
-
-        bar.setFloatable(floatable);  // floatable or fixed
-        bar.setOpaque(opaque);     // transparent or opaque
-
-        return bar;
     }
 
     /**

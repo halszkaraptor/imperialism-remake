@@ -18,6 +18,7 @@ package org.iremake.client.ui.editor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
@@ -302,13 +303,17 @@ public class EditorBuilder {
         JToolBar menuBar = GraphicsUtils.makeToolBar(false, false);
 
         // terrain button
-        JButton terrainButton = Button.EditorTerrain.create();
+        final JButton terrainButton = Button.EditorTerrain.create();
         terrainButton.setToolTipText("Modify terrain of current tile.");
         terrainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JPanel content = new EditorSelectionTerrainPanel();
-                FrameManager.getInstance().startDialog(content, "Terrain Selection", new Dimension(0, 0));
+
+                Point p = terrainButton.getLocationOnScreen();
+                p.x += 50;
+
+                FrameManager.getInstance().startDialog(content, "Terrain Selection", new Dimension(0, 0), p);
                 // TODO automatically put next to button the location
             }
         });

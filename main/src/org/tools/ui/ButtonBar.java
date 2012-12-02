@@ -32,7 +32,7 @@ public class ButtonBar {
 
     public ButtonBar() {
         panel.setOpaque(false);
-        panel.setLayout(new MigLayout());
+        panel.setLayout(new MigLayout("gap related"));
     }
 
     public void add(JButton... buttons) {

@@ -71,11 +71,14 @@ public class BrowserPanel extends JPanel {
      */
     private void initComponents() {
 
+        // TODO generic button maker
+
         // previous in the list button
         previousButton = new JButton();
         previousButton.setToolTipText("Previous page");
         previousButton.setIcon(loader.getAsIcon("browser.button.previous.png"));
         previousButton.setMargin(new Insets(1, 1, 1, 1));
+        previousButton.setFocusable(false);
         previousButton.addActionListener(new ActionListener() {
 
             /*
@@ -99,6 +102,7 @@ public class BrowserPanel extends JPanel {
         nextButton.setToolTipText("Next page");
         nextButton.setIcon(loader.getAsIcon("browser.button.next.png"));
         nextButton.setMargin(new Insets(1, 1, 1, 1));
+        nextButton.setFocusable(false);
         nextButton.addActionListener(new ActionListener() {
 
             /*
@@ -118,7 +122,10 @@ public class BrowserPanel extends JPanel {
         });
 
         // index button
-        indexButton = new JButton("Content");
+        indexButton = new JButton();
+        indexButton.setIcon(loader.getAsIcon("browser.button.home.png"));
+        indexButton.setMargin(new Insets(1, 1, 1, 1));
+        indexButton.setFocusable(false);
         indexButton.addActionListener(new ActionListener() {
             // content button clicked
             @Override

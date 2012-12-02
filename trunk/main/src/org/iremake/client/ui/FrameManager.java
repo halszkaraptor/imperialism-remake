@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
@@ -101,6 +102,9 @@ public class FrameManager {
 
         // set title
         frame.setTitle("Imperialism Remake");
+
+        // set minimum size (1024x768) according to specs
+        frame.setMinimumSize(new Dimension(1024, 768));
 
         // set app icon
         frame.setIconImage(IOManager.getAsImage(Places.GraphicsIcons, "icon.app.png"));
@@ -183,7 +187,10 @@ public class FrameManager {
     private final static Color brown = new Color(128, 80, 16);
 
     public void startDialog(JComponent content, String title) {
-        startDialog(content, title, new Dimension(700, 600), new Point(0, 0));
+        Dimension size = new Dimension(700, 600);
+        Rectangle bounds = frame.getBounds();
+        Point location = new Point(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
+        startDialog(content, title, size, location);
     }
 
     public ActionListener getExitDialogListener() {

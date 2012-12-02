@@ -20,7 +20,9 @@ import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import org.iremake.client.ui.Button;
 
 /**
  *
@@ -56,5 +58,9 @@ public enum GamePanel {
             LOG.log(Level.SEVERE, null, ex);
         }
         return panel;
+    }
+
+    public JButton getButton() {
+        return Button.create(this.name()+"...");
     }
 }

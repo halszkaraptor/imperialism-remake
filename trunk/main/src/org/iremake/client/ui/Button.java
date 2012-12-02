@@ -72,6 +72,10 @@ public enum Button {
      * @return
      */
     public JButton create() {
+        return Button.create(location);
+    }
+
+    public static JButton create(String location) {
         JButton button = new JButton();
         button.setFocusable(false);
         button.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, location));

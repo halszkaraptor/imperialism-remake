@@ -19,7 +19,6 @@ package org.iremake.client.ui.main;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -108,12 +107,11 @@ public class MainScreenBuilder {
 
         ButtonBar lbar = new ButtonBar();
         for (final GamePanel p: GamePanel.values()) {
-            JButton button = new JButton(p.toString());
-            // TODO standard button
-            button.setFocusable(false);
+            JButton button = p.getButton();
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    // TODO only if not active yet, otherwise just change
                     GameDialogBuilder.build(p);
                 }
             });
@@ -124,13 +122,22 @@ public class MainScreenBuilder {
         JPanel infoPanel = new JPanel();
         infoPanel.setBorder(new LineBorder(Color.black, 1));
 
+        JButton turnButton = new JButton("End Turn");
+        turnButton.setFocusable(false);
+        turnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+
         // layout
-        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][][grow][]"));
+        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][][][grow][][]"));
         panel.add(infPanel, "growx");
-        panel.add(ubar.get(), "growx");
+        panel.add(ubar.get());
         panel.add(miniMapPanel, "growx"); // because the extra space goes here
         panel.add(lbar.get());
         panel.add(infoPanel, "grow");
+        panel.add(turnButton, "growx, alignx center");
         panel.add(new ClockLabel(), "alignx center");
 
         return panel;

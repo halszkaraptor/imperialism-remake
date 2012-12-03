@@ -91,11 +91,11 @@ public class FrameManager {
 
         frame = new JFrame();
 
-        // undecorated
-        frame.setUndecorated(true);
+        // undecorated ?
+        frame.setUndecorated(false);
 
-        // no resizing
-        frame.setResizable(false);
+        // resizing ?
+        frame.setResizable(true);
 
         // turn of usual exiting mechanisms
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -115,7 +115,7 @@ public class FrameManager {
 
         // create panel with border
         panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.black, 10));
+        // panel.setBorder(BorderFactory.createLineBorder(Color.black, 10));
         panel.setOpaque(false);
         // set layoutmanager
         panel.setLayout(new MigLayout("fill, gap 0, insets 0"));

@@ -58,20 +58,23 @@ public class NetworkDialogBuilder {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.add(0, "Hallo");
         serverMemberList.setModel(model);
+        serverMemberList.setBorder(BorderFactory.createTitledBorder("Lobby"));
 
         // server chat window
         JTextArea serverChatText = new JTextArea();
         JScrollPane serverChatPane = new JScrollPane();
         serverChatPane.setViewportView(serverChatText);
         serverChatPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        serverChatPane.setBorder(BorderFactory.createTitledBorder("Messages"));
 
         // chat input
         JTextField chatInputField = new JTextField();
+        chatInputField.setBorder(BorderFactory.createTitledBorder("Send message"));
 
         // define the layout
         // selectTree fixed width, infoPanel fixed height
         content.setLayout(new MigLayout("wrap 2, fill", "[][fill, grow]", "[][][fill, grow][]"));
-        content.add(menuBar, "span, growx");
+        content.add(menuBar, "span");
         content.add(clientInfoPanel, "height 100!, growx, span");
         content.add(serverMemberList, "wmin 100, hmin 100, growy, span 1 2");
         content.add(serverChatPane, "grow");

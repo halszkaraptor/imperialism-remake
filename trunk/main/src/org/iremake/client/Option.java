@@ -23,14 +23,19 @@ import org.tools.xml.common.XProperty;
 /**
  *
  */
-public enum Options {
+// TODO server and client options separated?, mayb common options with version number ... too?
+public enum Option {
 
     Version("version"),
-    FullScreenMode("graphics.mode.fullscreen");
+    FullScreenMode("graphics.mode.fullscreen"),
+    NetworkAlias("client.network.alias");
+
+    public static boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");
+
     private static XProperty options = new XProperty(0);
     private String name;
 
-    Options(String id) {
+    Option(String id) {
         this.name = id;
     }
 
@@ -41,6 +46,10 @@ public enum Options {
 
     public String get() {
         return options.get(name);
+    }
+
+    public void put(String value) {
+        options.put(name, value);
     }
 
     public boolean getBoolean() {
@@ -55,12 +64,12 @@ public enum Options {
         // either load the options or the default options
         String name = "options.xml";
         if (IOManager.exists(Places.Common, name) == false) {
-            name = "options.default.xml"; // TODO this file doesn't exist yet
+            IOManager.setFromXML(Places.Common, "options.default.xml", options);
+            // some first time initializations
+            Option.NetworkAlias.put(System.getProperty("user.name"));
+        } else {
+            IOManager.setFromXML(Places.Common, name, options);
         }
-
-        IOManager.setFromXML(Places.Common, name, options);
-
-        StartClient.fullscreen = Options.FullScreenMode.getBoolean();
     }
 
     public static void save() {

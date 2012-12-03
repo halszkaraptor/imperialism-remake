@@ -36,9 +36,9 @@ import org.iremake.client.ui.FrameManager;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
+import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
-import org.iremake.server.network.ServerManager;
 
 /**
  * Main entry point for client.
@@ -47,7 +47,6 @@ import org.iremake.server.network.ServerManager;
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
-    public static boolean fullscreen = false;
 
     /**
      * No instantiation.
@@ -76,7 +75,7 @@ public class StartClient {
             Settings.load();
 
             // load options
-            Options.load();
+            Option.load();
 
             // set some variables in the BigBag
             NetworkLogger nLog = new NetworkLogger() {
@@ -132,7 +131,7 @@ public class StartClient {
         }
 
         // save options
-        Options.save();
+        Option.save();
 
         // save statistics from loader to simple text file
         List<String> stats = IOManager.getStatistics();

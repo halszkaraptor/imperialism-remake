@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.Options;
+import org.iremake.client.Option;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
@@ -80,7 +80,7 @@ public class StartScreenBuilder {
         logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
 
         // Version label
-        JLabel versionLabel = new JLabel("Version " + Options.Version.get());
+        JLabel versionLabel = new JLabel("Version " + Option.Version.get());
         versionLabel.setForeground(Color.WHITE);    // white color
 
         RelativeLayout layout = new RelativeLayout();
@@ -178,7 +178,7 @@ public class StartScreenBuilder {
                 StartClient.shutDown();
             }
         });
-        
+
         ButtonBar bar = new ButtonBar();
         bar.add(scenarioButton, networkButton, optionsButton, helpButton, editorButton, exitButton);
 

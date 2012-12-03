@@ -16,6 +16,7 @@
  */
 package org.tools.ui;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -31,7 +32,8 @@ public class ButtonBar {
     private JPanel panel = new JPanel();
 
     public ButtonBar() {
-        panel.setOpaque(false);
+        panel.setOpaque(true);
+        panel.setBackground(new Color(0.8f, 0.8f, 0.8f, 0.2f));
         panel.setLayout(new MigLayout("gap related"));
     }
 

@@ -21,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -118,9 +119,9 @@ public class EditorBuilder {
 
 
         // set layout (vertically first menubar, then tabbed pane)
-        panel.setLayout(new MigLayout("wrap 1, fill", "[fill, grow]", "[][fill,grow]"));
+        panel.setLayout(new MigLayout("wrap 1, fill", "[]", "[][grow]"));
         panel.add(bar.get());
-        panel.add(tabPane);
+        panel.add(tabPane, "grow");
 
         return panel;
     }
@@ -135,7 +136,7 @@ public class EditorBuilder {
         JPanel panel = new JPanel();
 
         JPanel nations = new JPanel();
-        nations.setBorder(new LineBorder(Color.black, 1));
+        nations.setBorder(BorderFactory.createTitledBorder("Nations"));
         nations.setPreferredSize(new Dimension(200, 400));
 
         // InfoLabel
@@ -150,8 +151,8 @@ public class EditorBuilder {
         JButton changenationButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
 
         ButtonBar nbar = new ButtonBar();
-        nbar.add(addnationButton, removenationButton, changenationButton);        
-        
+        nbar.add(addnationButton, removenationButton, changenationButton);
+
         // list
         final JList<Nation> nationList = new JList<>();
         nationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -205,7 +206,7 @@ public class EditorBuilder {
         // provinces panel
 
         JPanel provinces = new JPanel();
-        provinces.setBorder(new LineBorder(Color.black, 1));
+        provinces.setBorder(BorderFactory.createTitledBorder("Provinces"));
         provinces.setPreferredSize(new Dimension(200, 400));
 
         // InfoLabel
@@ -215,10 +216,10 @@ public class EditorBuilder {
         JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         JButton removeprovinceButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
         JButton changeprovinceButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        
+
         ButtonBar pbar = new ButtonBar();
         pbar.add(addprovinceButton, removeprovinceButton, changeprovinceButton);
-        
+
         // list
         final JList<Province> provinceList = new JList<>();
         provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -308,10 +309,10 @@ public class EditorBuilder {
         JButton nationButton = Button.EditorNation.create();
         // province button
         JButton provinceButton = Button.EditorProvince.create();
-        
+
         ButtonBar bar = new ButtonBar();
         bar.add(terrainButton, nationButton, provinceButton);
-        
+
         // info map panel and add
         EditorMapInfoPanel infoPanel = new EditorMapInfoPanel(map);
 

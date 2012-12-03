@@ -17,24 +17,21 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.AbstractButton;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.Options;
+import org.iremake.client.Option;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerStatusListener;
 
@@ -76,15 +73,19 @@ public class OptionsDialogBuilder {
         JPanel panel = new JPanel();
 
         JCheckBox fullscreen = new JCheckBox("Start in Full Screen");
-        fullscreen.setSelected(Options.FullScreenMode.getBoolean());
+        fullscreen.setSelected(Option.FullScreenMode.getBoolean());
         fullscreen.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 boolean selected = e.getStateChange() == ItemEvent.SELECTED;
-                Options.FullScreenMode.putBoolean(selected);
+                Option.FullScreenMode.putBoolean(selected);
                 // TODO notification that it will be active after next start
             }
         });
+        if (!Option.isOSWindows) {
+            fullscreen.setEnabled(false);
+        }
+
 
         JCheckBox controlLeftRight = new JCheckBox("Main Screen controls on right side");
 
@@ -126,10 +127,15 @@ public class OptionsDialogBuilder {
         });
         serverInfoPanel.add(status);
 
+        JTextField networkAlias = new JTextField();
+        networkAlias.setText(Option.NetworkAlias.get());
+
         // layout
-        panel.setLayout(new MigLayout("wrap 1, fillx"));
-        panel.add(menuBar);
-        panel.add(serverInfoPanel, "height 100!, growx");
+        panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
+        panel.add(menuBar, "span");
+        panel.add(serverInfoPanel, "height 100!, growx, span");
+        panel.add(new JLabel("Default network alias"));
+        panel.add(networkAlias, "wmin 200");
 
         return panel;
 

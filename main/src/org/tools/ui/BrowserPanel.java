@@ -168,7 +168,7 @@ public class BrowserPanel extends JPanel {
 
         // layout
         setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
-        add(bar.get(), "growx");
+        add(bar.get());
         add(scrollPane, "grow, hmin 300, wmin 400");
     }
 

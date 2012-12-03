@@ -17,12 +17,11 @@
 package org.tools.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -42,17 +41,14 @@ public class ClockLabel extends JLabel {
      */
     public ClockLabel() {
 
-        // not opaque, ancestor must paint itself
-        setOpaque(false);
+        // partly opaque
+        setOpaque(true);
 
-        setPreferredSize(new Dimension(60, 30));
-        // TODO non hard-coded size
-
-
-        setHorizontalAlignment(SwingConstants.CENTER);
+        setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         // set background color
-        setBackground(new Color(255, 255, 255, 80));
+        setBackground(new Color(0.8f, 0.8f, 0.8f, 0.2f));
+        setHorizontalAlignment(SwingConstants.CENTER);
 
         // set time format
         format = new SimpleDateFormat("HH:mm");
@@ -76,17 +72,5 @@ public class ClockLabel extends JLabel {
     private void update() {
         // new Date() implicitely calls System.currentTimeMillis()
         setText(format.format(new Date()));
-    }
-
-    /**
-     *
-     * @param g
-     */
-    // TODO move this to common elements
-    @Override
-    protected void paintComponent(Graphics g) {
-        g.setColor(getBackground());
-        g.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
     }
 }

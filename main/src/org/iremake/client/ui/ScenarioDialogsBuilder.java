@@ -95,7 +95,7 @@ public class ScenarioDialogsBuilder {
 
         // layout - selectTree fixed width, infoPanel fixed height
         content.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
-        content.add(menuBar, "growx");
+        content.add(menuBar);
         content.add(selectList, "width 200!, split 2");
         content.add(mapPanel, "grow");
         content.add(infoPanel, "height 200!, growx");

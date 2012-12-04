@@ -19,6 +19,10 @@ package org.iremake.common.network.messages;
 /**
  *
  */
-public enum ActionMessage implements Message {
-    Verify, Register;
+public enum TextMessageType {
+    Version, Error, ClientName;
+
+    public TextMessage create(String text) {
+        return new TextMessage(this, text);
+    }
 }

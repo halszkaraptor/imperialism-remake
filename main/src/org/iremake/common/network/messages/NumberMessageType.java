@@ -19,6 +19,10 @@ package org.iremake.common.network.messages;
 /**
  *
  */
-public enum ActionMessage implements Message {
-    Verify, Register;
+public enum NumberMessageType {
+    ID;
+
+    public NumberMessage create(int number) {
+        return new NumberMessage(this, number);
+    }
 }

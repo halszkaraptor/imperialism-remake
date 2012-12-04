@@ -35,21 +35,16 @@ public class ServerManager {
     private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
     private static final int PORT = 19876;
     private Server server;
-    private NetworkLogger logger;
     private List<ServerStatusListener> listeners = new LinkedList<>();
 
-    public ServerManager(NetworkLogger logger) {
-        this.logger = logger;
-    }
-    
     public void addStatusListener(ServerStatusListener l) {
         listeners.add(l);
     }
-    
+
     public void removeStatusListener(ServerStatusListener l) {
         listeners.remove(l);
     }
-    
+
     private void fireStatusChanged(String message) {
         for (ServerStatusListener l: listeners) {
             l.statusUpdate(message);
@@ -57,7 +52,7 @@ public class ServerManager {
     }
 
     public boolean start() {
-        logger.log("Server start initiated.");
+        ServerLogger.log("Server start initiated.");
         if (server != null) {
             return false;
         }
@@ -72,16 +67,16 @@ public class ServerManager {
             server.bind(PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
-            logger.log("Could not start.");
+            ServerLogger.log("Could not start.");
 
             stop();
 
             return false;
         }
 
-        logger.log("Bound to port.");
+        ServerLogger.log("Bound to port.");
 
-        server.addListener(new ServerHandler(logger));
+        server.addListener(new ServerHandler());
 
         InetAddress own;
         try {
@@ -94,20 +89,20 @@ public class ServerManager {
 
         return true;
     }
-    
+
     public boolean isRunning() {
         return server != null;
     }
 
     public void stop() {
         if (server != null) {
-            logger.log("Will stop.");
+            ServerLogger.log("Will stop.");
             server.stop();
             server = null;
-            
+
             fireStatusChanged("Server not running.");
         } else {
-            logger.log("Already stopped.");
+            ServerLogger.log("Already stopped.");
         }
     }
 }

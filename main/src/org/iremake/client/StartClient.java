@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
@@ -36,6 +37,7 @@ import org.iremake.client.ui.FrameManager;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
+import org.iremake.server.network.ServerLogger;
 import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
@@ -84,8 +86,10 @@ public class StartClient {
                     LOG.log(Level.INFO, message);
                 }
             };
-            BigBag.serverManager = new ServerManager(nLog);
-            BigBag.clientManager = new ClientManager(nLog);
+            BigBag.serverManager = new ServerManager();
+            ServerLogger.setLogger(nLog);
+            BigBag.clientManager = new ClientManager();
+            ClientLogger.setLogger(nLog);
 
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {

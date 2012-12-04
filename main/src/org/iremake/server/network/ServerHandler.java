@@ -20,41 +20,42 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
 import java.util.Map;
-import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
 
 /**
  * Handling of received messages on the server side.
  */
 public class ServerHandler extends Listener {
 
-    private Map<Connection, ServerClientHandler> handlers = new HashMap<>();
-    private NetworkLogger logger;
-
-    public ServerHandler(NetworkLogger logger) {
-        this.logger = logger;
-    }
+    private Map<Connection, ServerClientHandler> clients = new HashMap<>();
 
     @Override
     public void connected(Connection connection) {
-        logger.log("Connection from " + connection.getRemoteAddressTCP());
-        handlers.put(connection, new ServerClientHandler(connection, logger));
+        ServerLogger.log("Connection from " + connection.getRemoteAddressTCP());
+        clients.put(connection, new ServerClientHandler(connection, this));
     }
 
     @Override
     public void disconnected(Connection connection) {
-        logger.log("Disconnection"); // TODO which one
-        handlers.get(connection).setState(ClientState.Disconnected);
+        ServerLogger.log("Disconnection"); // TODO which one
+        // TODO set to disconnected state and later throw out
         // TODO from time to time check and delete all disconnected ones
     }
 
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
-            logger.log("Message arrived: " + object.getClass().getSimpleName());
-            handlers.get(connection).received((Message) object);
+            ServerLogger.log("Message arrived: " + object.getClass().getSimpleName());
+            clients.get(connection).consume((Message) object);
         } else {
             // TODO log unexpected types of objects, should normally not happen
         }
+    }
+
+    void disconnect(Connection connection, TextMessage message) {
+        clients.remove(connection);
+        connection.sendTCP(message);
+        connection.close(); // TODO does it also occur in disconnected?
     }
 }

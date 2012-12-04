@@ -14,11 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages;
+package org.iremake.server.network;
+
+import org.iremake.common.network.NetworkLogger;
 
 /**
  *
  */
-public enum ActionMessage implements Message {
-    Verify, Register;
+public class ServerLogger {
+
+    private static NetworkLogger LOG;
+
+    public static void setLogger(NetworkLogger logger) {
+        LOG = logger;
+    }
+
+    public static void log(String message) {
+        if (LOG != null) {
+            LOG.log(message);
+        }
+    }
+
 }

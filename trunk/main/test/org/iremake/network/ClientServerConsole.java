@@ -30,11 +30,15 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
+import org.iremake.client.Option;
+import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
 import org.iremake.common.network.NetworkLogger;
 import org.iremake.common.network.messages.TextMessage;
-import org.tools.ui.utils.LookAndFeel;
+import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.server.network.ServerLogger;
 import org.iremake.server.network.ServerManager;
+import org.tools.ui.utils.LookAndFeel;
 
 /**
  * Tests the Client and Server via a graphical user interface, and some logging
@@ -59,14 +63,18 @@ public class ClientServerConsole extends JFrame {
                 ClientServerConsole.this.serverMessage(message);
             }
         };
-        server = new ServerManager(serverLogger);
+        server = new ServerManager();
+        ServerLogger.setLogger(serverLogger);
         NetworkLogger clientLogger = new NetworkLogger() {
             @Override
             public void log(String message) {
                 ClientServerConsole.this.clientMessage(message);
             }
         };
-        client = new ClientManager(clientLogger);
+        client = new ClientManager();
+        ClientLogger.setLogger(clientLogger);
+
+        Option.load();
     }
 
     /**
@@ -193,7 +201,7 @@ public class ClientServerConsole extends JFrame {
     }//GEN-LAST:event_clientStartActionPerformed
 
     private void clientNameActionPerformed(ActionEvent evt) {//GEN-FIRST:event_clientNameActionPerformed
-        client.send(new TextMessage("John Doe", TextMessage.Type.ClientName));
+        client.send(TextMessageType.ClientName.create( "John Doe"));
     }//GEN-LAST:event_clientNameActionPerformed
     private int counter = 0;
 

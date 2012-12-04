@@ -20,27 +20,23 @@ package org.iremake.common.network.messages;
  *
  */
 public final class NumberMessage implements Message {
-    
+
     private int number;
-    private Type type;
-    
-    public enum Type {
-        ID;
-    }
-    
+    private NumberMessageType type;
+
     private NumberMessage() {
     }
-    
-    public NumberMessage(int number, Type type) {
-        this.number = number;
+
+    public NumberMessage(NumberMessageType type, int number) {
         this.type = type;
+        this.number = number;
     }
-    
+
     public int getNumber() {
         return number;
     }
-    
-    public Type getType() {
+
+    public NumberMessageType getType() {
         return type;
     }
 }

@@ -14,29 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages;
+package org.iremake.server.network.clients;
+
+import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
+import org.iremake.server.network.ServerClientHandler;
+import org.iremake.server.network.ServerLogger;
 
 /**
- * Just a String and a enumeration indicating which type the message is.
+ *
  */
-public final class TextMessage implements Message {
+public class RegisteredClient extends Client {
 
-    private String text;
-    private TextMessageType type;
-
-    private TextMessage() {
+    public RegisteredClient(ServerClientHandler handler) {
+        super(handler);
     }
 
-    public TextMessage(TextMessageType type, String text) {
-        this.type = type;
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public TextMessageType getType() {
-        return type;
+    @Override
+    public void consume(Message message) {
+        if (message instanceof TextMessage) {
+            TextMessage msg = (TextMessage) message;
+            switch (msg.getType()) {
+                case ClientName:
+                    ServerLogger.log("New client name: " + msg.getText());
+            }
+        }
     }
 }

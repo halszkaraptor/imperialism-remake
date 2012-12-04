@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,6 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.Option;
 import org.tools.ui.ButtonBar;
 
 /**
@@ -96,7 +98,18 @@ public class NetworkDialogBuilder {
 
     private static JPanel clientInfoPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        panel.setBorder(BorderFactory.createTitledBorder("Login"));
+
+        JTextField networkAlias = new JTextField(Option.NetworkAlias.get());
+
+        JTextField serverAdress = new JTextField("127.0.0.1");
+
+        panel.setLayout(new MigLayout("wrap 2"));
+        panel.add(new JLabel("Network alias"));
+        panel.add(networkAlias, "wmin 150");
+        panel.add(new JLabel("Server address"));
+        panel.add(serverAdress, "wmin 150");
+
         return panel;
     }
 

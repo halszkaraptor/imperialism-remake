@@ -14,12 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network;
+package org.iremake.server.network.clients;
+
+import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.ServerClientHandler;
 
 /**
  *
  */
-public enum ClientState {
-    Invalid, Valid, Registered, Disconnected;
+public abstract class Client {
 
+    protected final ServerClientHandler boss;
+
+    public Client(ServerClientHandler boss) {
+        this.boss = boss;
+    }
+
+    public abstract void consume(Message message);
 }

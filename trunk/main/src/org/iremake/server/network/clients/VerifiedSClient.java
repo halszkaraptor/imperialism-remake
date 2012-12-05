@@ -26,11 +26,11 @@ import org.iremake.server.network.ServerLogger;
 /**
  *
  */
-public class VerifiedClient extends Client {
+public class VerifiedSClient extends SClient {
 
     private int id = 1; // TODO get running numbers, possibly from the boss
 
-    public VerifiedClient(ServerClientHandler handler) {
+    public VerifiedSClient(ServerClientHandler handler) {
         super(handler);
     }
 

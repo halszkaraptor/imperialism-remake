@@ -29,14 +29,14 @@ import org.iremake.server.network.ServerLogger;
 /**
  *
  */
-public class UnverifiedClient extends Client {
+public class UnverifiedSClient extends SClient {
 
     private static final int MaxRepeats = 5;
 
     private Timer timer = new Timer();
     private int repeats = 0;
 
-    public UnverifiedClient(ServerClientHandler handler) {
+    public UnverifiedSClient(ServerClientHandler handler) {
         super(handler);
 
         timer.schedule(new TimerTask() {

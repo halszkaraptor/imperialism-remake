@@ -18,21 +18,21 @@ package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import org.iremake.client.Option;
-import org.iremake.common.network.messages.ActionMessage;
+import org.iremake.client.network.clients.Client;
+import org.iremake.client.network.clients.RegisteredClient;
+import org.iremake.client.network.clients.UnregisteredClient;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.NumberMessage;
-import org.iremake.common.network.messages.NumberMessageType;
-import org.iremake.common.network.messages.TextMessageType;
 
 /**
- * Handling of received messages on the client side.
+ * Handling of received messages on the client side. Only one connection.
  */
 public class ClientHandler extends Listener {
 
-    @Override
-    public void connected(Connection connection) {
-        ClientLogger.log("Connection from " + connection.getRemoteAddressTCP());
+    private Client client;
+    private Connection connection;
+
+    public ClientHandler() {
+        client = new UnregisteredClient(this);
     }
 
     @Override
@@ -42,33 +42,22 @@ public class ClientHandler extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
+        if (this.connection == null) {
+            this.connection = connection;
+        }
         if (object instanceof Message) {
             ClientLogger.log("Message arrived: " + object.getClass().getSimpleName());
-
-            // action messages
-            if (object instanceof ActionMessage) {
-                ActionMessage message = (ActionMessage) object;
-                switch (message) {
-                case Verify:
-                    // server wants us to validate, so we send the version, followed by a request to register
-                    ClientLogger.log("Received request to validate, send version and ask for Registration");
-                    connection.sendTCP(TextMessageType.Version.create(Option.Version.get()));
-                    connection.sendTCP(ActionMessage.Register);
-                    break;
-                }
-
-                return;
-            }
-
-            // number messages
-            if (object instanceof NumberMessage) {
-                NumberMessage message = (NumberMessage) object;
-                if (NumberMessageType.ID.equals(message.getType())) {
-                    ClientLogger.log("New ID: " + message.getNumber());
-                }
-            }
+            client.consume((Message) object);
         } else {
             // TODO log unexpected types of objects, should normally not happen
         }
+    }
+
+    public void send(Message message) {
+        connection.sendTCP(message);
+    }
+
+    public void registrationSuccess() {
+        client = new RegisteredClient(this);
     }
 }

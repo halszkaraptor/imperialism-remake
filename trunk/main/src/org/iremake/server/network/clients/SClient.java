@@ -22,11 +22,11 @@ import org.iremake.server.network.ServerClientHandler;
 /**
  *
  */
-public abstract class Client {
+public abstract class SClient {
 
     protected final ServerClientHandler boss;
 
-    public Client(ServerClientHandler boss) {
+    public SClient(ServerClientHandler boss) {
         this.boss = boss;
     }
 

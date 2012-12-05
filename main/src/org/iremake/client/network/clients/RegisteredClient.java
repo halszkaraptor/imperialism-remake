@@ -14,30 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.clients;
+package org.iremake.client.network.clients;
 
+import org.iremake.client.network.ClientHandler;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
-import org.iremake.server.network.ServerClientHandler;
-import org.iremake.server.network.ServerLogger;
 
 /**
  *
  */
 public class RegisteredClient extends Client {
 
-    public RegisteredClient(ServerClientHandler handler) {
+    public RegisteredClient(ClientHandler handler) {
         super(handler);
     }
 
     @Override
     public void consume(Message message) {
-        if (message instanceof TextMessage) {
-            TextMessage msg = (TextMessage) message;
-            switch (msg.getType()) {
-                case ClientName:
-                    ServerLogger.log("New client name: " + msg.getText());
-            }
-        }
     }
 }

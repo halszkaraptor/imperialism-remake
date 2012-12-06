@@ -28,12 +28,12 @@ import org.iremake.common.network.messages.TextMessage;
  */
 public class ServerHandler extends Listener {
 
-    private Map<Connection, ServerClientHandler> clients = new HashMap<>();
+    private Map<Integer, ServerClientHandler> clients = new HashMap<>();
 
     @Override
     public void connected(Connection connection) {
         ServerLogger.log("Connection from " + connection.getRemoteAddressTCP());
-        clients.put(connection, new ServerClientHandler(connection, this));
+        clients.put(connection.getID(), new ServerClientHandler(connection, this));
     }
 
     @Override
@@ -47,14 +47,19 @@ public class ServerHandler extends Listener {
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
             ServerLogger.log("Message arrived: " + object.getClass().getSimpleName());
-            clients.get(connection).consume((Message) object);
+            Integer id = connection.getID();
+            if (clients.containsKey(id)) {
+                clients.get(id).consume((Message) object);
+            } else {
+                // TODO this shouldn't happen, log
+            }
         } else {
             // TODO log unexpected types of objects, should normally not happen
         }
     }
 
     void disconnect(Connection connection, TextMessage message) {
-        clients.remove(connection);
+        clients.remove(connection.getID());
         connection.sendTCP(message);
         connection.close(); // TODO does it also occur in disconnected?
     }

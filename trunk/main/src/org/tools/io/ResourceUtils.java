@@ -119,6 +119,17 @@ public class ResourceUtils {
     }
 
     /**
+     * Convenience method.
+     *
+     * @param res
+     * @return
+     * @throws IOException
+     */
+    public static BufferedReader getReader(Resource res) throws IOException {
+        return getReader(res, DefaultCharset);
+    }
+
+    /**
      * The input stream functionality of a given resource is used to obtain a
      * buffered reader, which is wanted in many applications.
      *
@@ -126,8 +137,19 @@ public class ResourceUtils {
      * @return Buffered reader for this resource
      * @throws IOException
      */
-    public static BufferedReader getReader(Resource res, Charset cs) throws IOException {
-        return new BufferedReader(new InputStreamReader(res.getInputStream(), cs));
+    public static BufferedReader getReader(Resource res, Charset charset) throws IOException {
+        return new BufferedReader(new InputStreamReader(res.getInputStream(), charset));
+    }
+
+    /**
+     * Convenience method.
+     *
+     * @param res
+     * @return
+     * @throws IOException
+     */
+    public static BufferedWriter getWriter(Resource res) throws IOException {
+        return getWriter(res, DefaultCharset);
     }
 
     /**
@@ -138,8 +160,8 @@ public class ResourceUtils {
      * @return Buffered Writer for this resource
      * @throws IOException
      */
-    public static BufferedWriter getWriter(Resource res, Charset cs) throws IOException {
-        return new BufferedWriter(new OutputStreamWriter(res.getOutputStream(), cs));
+    public static BufferedWriter getWriter(Resource res, Charset charset) throws IOException {
+        return new BufferedWriter(new OutputStreamWriter(res.getOutputStream(), charset));
     }
 
     /**
@@ -149,8 +171,8 @@ public class ResourceUtils {
      * @throws IOException
      */
     public static void copyText(Resource in, Resource out) throws IOException {
-        try (BufferedReader reader = ResourceUtils.getReader(in, DefaultCharset);
-             BufferedWriter writer = ResourceUtils.getWriter(out, DefaultCharset)) {
+        try (BufferedReader reader = ResourceUtils.getReader(in);
+                BufferedWriter writer = ResourceUtils.getWriter(out)) {
 
             int i;
             while ((i = reader.read()) != -1) {
@@ -169,7 +191,7 @@ public class ResourceUtils {
      */
     public static List<String> readText(Resource in) throws IOException {
         List<String> text = new LinkedList<>();
-        try (BufferedReader reader = ResourceUtils.getReader(in, DefaultCharset)) {
+        try (BufferedReader reader = ResourceUtils.getReader(in)) {
             String line;
             while ((line = reader.readLine()) != null) {
                 text.add(line);
@@ -186,7 +208,7 @@ public class ResourceUtils {
      * @throws IOException
      */
     public static void writeText(List<String> text, Resource out) throws IOException {
-        try (BufferedWriter writer = ResourceUtils.getWriter(out, DefaultCharset)) {
+        try (BufferedWriter writer = ResourceUtils.getWriter(out)) {
             for (String line : text) {
                 writer.write(line);
                 writer.newLine();

@@ -62,4 +62,8 @@ public class ServerClientHandler {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    public int getID() {
+        return connection.getID();
+    }
+
 }

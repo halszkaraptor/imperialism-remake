@@ -16,7 +16,7 @@
  */
 package org.iremake.applications;
 
-import icons.Loader;
+import icons.TestIOManager;
 import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,7 +36,7 @@ public class OggPlayerApp {
         JFrame frame = new BasicFrame(title);
 
         // icon
-        frame.setIconImage(Loader.getAsImage("/icons/app.icon.png"));
+        frame.setIconImage(TestIOManager.getAsImage("/icons/app.icon.png"));
 
         // components
         JLabel label = new JLabel("Song");

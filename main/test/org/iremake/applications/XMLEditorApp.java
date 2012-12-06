@@ -16,6 +16,7 @@
  */
 package org.iremake.applications;
 
+import icons.Loader;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,6 +48,9 @@ public class XMLEditorApp extends JFrame {
      */
     public XMLEditorApp() {
         initComponents();
+
+        // icon
+        setIconImage(Loader.getAsImage("/icons/app.icon.png"));
     }
 
     /**

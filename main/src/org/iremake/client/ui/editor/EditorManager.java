@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,8 +36,8 @@ import org.iremake.client.ui.map.MainMapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
-import org.iremake.common.model.MapPosition;
 import org.iremake.common.Settings;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 import org.tools.xml.XMLHelper;
 

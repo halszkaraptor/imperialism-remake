@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -30,9 +29,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
@@ -69,7 +68,7 @@ public class EditorBuilder {
         newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO create dialog, transfer the manager and start it or simply call (empty map or so)
+                EditorBuilder.startNewScenarioDialog();
             }
         });
 
@@ -331,5 +330,26 @@ public class EditorBuilder {
         panel.add(infoPanel, "grow");
 
         return panel;
+    }
+
+    private static void startNewScenarioDialog() {
+        JPanel content = new JPanel();
+
+        JTextField nameField = new JTextField();
+        JTextField nRows = new JTextField();
+        JTextField nColumns = new JTextField();
+        JButton create = new JButton("Create");
+
+        content.setLayout(new MigLayout("wrap 2", "[sizegroup a][sizegroup b, fill]"));
+        content.add(new JLabel("Scenario name"));
+        content.add(nameField, "wmin 100");
+        content.add(new JLabel("Width (columns)"));
+        content.add(nColumns);
+        content.add(new JLabel("Height (rows)"));
+        content.add(nRows);
+        content.add(create, "dock south");
+
+        // TODO with pack instead of fixed size
+        FrameManager.getInstance().startDialog(content, "New Scenario");
     }
 }

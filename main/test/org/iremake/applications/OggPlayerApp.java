@@ -16,15 +16,59 @@
  */
 package org.iremake.applications;
 
+import icons.Loader;
+import java.awt.EventQueue;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.JToggleButton;
+import net.miginfocom.swing.MigLayout;
 import org.tools.ui.utils.BasicFrame;
+import org.tools.ui.utils.LookAndFeel;
 
 /**
  * An Ogg file player with graphical user interface.
  */
-public class OggPlayerApp extends BasicFrame {
-    private static final long serialVersionUID = 1L;
+public class OggPlayerApp {
 
     public OggPlayerApp(String title) {
-        super(title);
+        JFrame frame = new BasicFrame(title);
+
+        // icon
+        frame.setIconImage(Loader.getAsImage("/icons/app.icon.png"));
+
+        // components
+        JLabel label = new JLabel("Song");
+        JProgressBar progress = new JProgressBar();
+        JButton load = new JButton("Browse");
+        JToggleButton play = new JToggleButton("Play");
+
+        // layout
+        frame.setLayout(new MigLayout("wrap 2"));
+        frame.add(label, "wmin 200, sg a");
+        frame.add(load, "sg b");
+        frame.add(progress, "sg a");
+        frame.add(play, "sg b");
+
+
+        // pack and set visible
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        LookAndFeel.setSystemLookAndFeel();
+
+        /* Create and display the form */
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new OggPlayerApp("Ogg Player Test");
+            }
+        });
     }
 }

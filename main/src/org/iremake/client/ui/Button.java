@@ -16,8 +16,6 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Color;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
@@ -43,12 +41,15 @@ public enum Button {
 
     // normal sized buttons used everywhere
     NormalExit("main.button.exit.png"),
-    NormalHelp("main.button.exit.png"), // TODO own icon
+    NormalHelp("main.button.help.png"),
 
     // normal sized buttons used in the editor
     EditorTerrain("editor.button.terrain.png"),
     EditorNation("editor.button.nation.png"),
     EditorProvince("editor.button.province.png"),
+
+    // normal size buttons used in the network dialog
+    NetworkConnect("network.button.connect.png"),
 
     // normal sized buttons with general options for a scenario
     ScenarioLoad("scenario.button.load.png"),

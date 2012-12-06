@@ -22,6 +22,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.nio.channels.FileChannel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -37,12 +43,12 @@ import javax.swing.filechooser.FileFilter;
 import org.tools.ui.utils.LookAndFeel;
 
 /**
- * Reads the output from the python map import script and inserts a scenario file
- * accordingly.
+ * Reads the output from the python map import script and inserts a scenario
+ * file accordingly.
  */
 public class OriginalMapImportApp extends JFrame {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     private JFileChooser fileChooser;
 
     /**
@@ -94,7 +100,7 @@ public class OriginalMapImportApp extends JFrame {
         setLocationByPlatform(true);
         setResizable(false);
 
-        importmapTextField.setText("import map file");
+        importmapTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\s0.imported.map");
 
         chooseImportmapButton.setText("...");
         chooseImportmapButton.setToolTipText("Choose import map file");
@@ -104,7 +110,7 @@ public class OriginalMapImportApp extends JFrame {
             }
         });
 
-        scenarioTextField.setText("scenario file");
+        scenarioTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\scenario.Europe1814.xml");
         scenarioTextField.setToolTipText("Will be modified in the process!");
 
         chooseScenarioButton.setText("...");
@@ -190,13 +196,77 @@ public class OriginalMapImportApp extends JFrame {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             String name = f.getPath();
-            importmapTextField.setText(name);
+            scenarioTextField.setText(name);
         }
     }//GEN-LAST:event_chooseScenarioButtonActionPerformed
 
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+        progressBar.setValue(0);
 
+        // test files if they exist
+        File importFile = new File(importmapTextField.getText());
+        if (!importFile.exists() || !importFile.isFile()) {
+            updateStatus("import file not found, will stop");
+            return;
+        }
+
+        File exportFile = new File(scenarioTextField.getText());
+        if (!exportFile.exists() || !exportFile.isFile()) {
+            updateStatus("export file not found, will stop");
+            return;
+        }
+
+        // read map import
+        ByteBuffer bb;
+        try {
+            FileInputStream is = new FileInputStream(importFile);
+            FileChannel ic = is.getChannel();
+            bb = ByteBuffer.allocate((int) ic.size());
+            ic.read(bb);
+        } catch (IOException ex) {
+            updateStatus("could not read import file, will stop");
+            return;
+        }
+        bb.rewind();
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        IntBuffer ib = bb.asIntBuffer();
+        progressBar.setValue(10);
+
+        // analyze map import
+        int columns = ib.get();
+        int rows = ib.get();
+        if (columns < 0 || columns > 200 || rows < 0 || rows > 200) {
+            updateStatus("values for columns/rows out of bounds, will stop");
+            return;
+        }
+        int size = 4 * columns * rows;
+        if (size != ib.remaining()) {
+            updateStatus("size of input data not correct, will stop");
+            return;
+        }
+
+        int chunk = columns * rows;
+
+        int[] terrain_underlay = new int[chunk];
+        ib.get(terrain_underlay);
+
+        int[] terrain_overlay = new int[chunk];
+        ib.get(terrain_overlay);
+
+        int[] resources = new int[chunk];
+        ib.get(resources);
+
+        int[] provinces = new int[chunk];
+        ib.get(provinces);
+        progressBar.setValue(20);
+
+        updateStatus("conversion successful");
+        progressBar.setValue(100);
     }//GEN-LAST:event_importButtonActionPerformed
+
+    private void updateStatus(String message) {
+        statusTextArea.setText(statusTextArea.getText() + "\r\n" + message);
+    }
 
     /**
      * @param args the command line arguments

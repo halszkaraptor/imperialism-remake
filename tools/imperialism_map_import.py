@@ -58,9 +58,11 @@ in_file.close()
 
 # store interesting values for each tile cell (36 bytes long)
 columns = 108
+cut = 8
 rows = 60
 n = columns * rows;
 s = 36;
+
 
 # unique elements for each cell
 find_unique_elements(data, n, s)
@@ -69,12 +71,12 @@ find_unique_elements(data, n, s)
 integrity_tests(data, n, s)
 
 # get interesting data out and crop left columns
-terrain_underlay = crop_left(data[0 : n * s + 0: s], columns, 8)
-terrain_overlay = crop_left(data[19 : n * s + 19: s], columns, 8)
-resources = crop_left(data[17 : n * s + 17: s], columns, 8)
+terrain_underlay = crop_left(data[0 : n * s + 0: s], columns, cut)
+terrain_overlay = crop_left(data[19 : n * s + 19: s], columns, cut)
+resources = crop_left(data[17 : n * s + 17: s], columns, cut)
 
-provinceA = crop_left(data[20 : n * s + 20: s], columns, 8)
-provinceB = crop_left(data[21 : n * s + 21: s], columns, 8)
+provinceA = crop_left(data[20 : n * s + 20: s], columns, cut)
+provinceB = crop_left(data[21 : n * s + 21: s], columns, cut)
 provinces = map(lambda a, b: ord(a) * 256 + ord(b), provinceA, provinceB)
 
 # even more tests
@@ -82,8 +84,8 @@ correlate_unique_elements(terrain_underlay, resources)
 
 # conversion to arrays
 size = array.array('i')
-size.append(100)
-size.append(60)
+size.append(columns - cut)
+size.append(rows)
 
 terrain_underlay = list_to_array(terrain_underlay)
 terrain_overlay = list_to_array(terrain_overlay)

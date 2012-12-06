@@ -86,7 +86,7 @@ public class NetworkDialogBuilder {
 
     private static JComponent menuBar() {
         // load button
-        JButton serverStartButton = Button.ScenarioLoad.create();
+        JButton serverStartButton = Button.NetworkConnect.create();
 
         // add buttons to tool bar
         ButtonBar bar = new ButtonBar();

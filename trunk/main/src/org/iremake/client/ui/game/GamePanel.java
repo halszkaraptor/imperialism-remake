@@ -29,18 +29,19 @@ import org.iremake.client.ui.Button;
  */
 public enum GamePanel {
 
-    Industry("Industry"), Diplomacy("Diplomacy"), Military("Military"), Research("Research"), Statistics("Statistics"), Trade("Trade"), Transport("Transport");
+    Industry("industry"),
+    Diplomacy("diplomacy"),
+    Military("military"),
+    Research("research"),
+    Statistics("statistics"),
+    Trade("trade"),
+    Transport("transport");
 
     private final static Logger LOG = Logger.getLogger(GamePanel.class.getName());
     private String title;
 
     GamePanel(String title) {
         this.title = title;
-    }
-
-    @Override
-    public String toString() {
-        return title;
     }
 
     /**
@@ -61,6 +62,6 @@ public enum GamePanel {
     }
 
     public JButton getButton() {
-        return Button.create(this.name()+"...");
+        return Button.create("game.button." + title + ".png");
     }
 }

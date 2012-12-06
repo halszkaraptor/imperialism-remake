@@ -16,7 +16,7 @@
  */
 package org.iremake.applications;
 
-import icons.Loader;
+import icons.TestIOManager;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -53,7 +53,7 @@ public class OriginalMapImportApp extends JFrame {
         initComponents();
 
         // icon
-        setIconImage(Loader.getAsImage("/icons/app.icon.png"));
+        setIconImage(TestIOManager.getAsImage("/icons/app.icon.png"));
 
         // init file chooser
         fileChooser = new JFileChooser();

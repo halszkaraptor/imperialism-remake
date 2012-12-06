@@ -20,11 +20,14 @@ import java.awt.Image;
 import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.tools.ui.utils.IconLoader;
 
 /**
- *
+ * Loads from the classpath directly. Optimal for all the test suites.
+ * 
+ * Could also be used to load from inside a jar archive.
  */
-public class Loader {
+public class TestIOManager {
 
     /**
      * Loads as ImageIcon.
@@ -69,6 +72,16 @@ public class Loader {
      * @return
      */
     public static URL getAsURL(String location) {
-        return Loader.class.getResource(location);
+        return TestIOManager.class.getResource(location);
+    }
+
+    public static IconLoader getAsLoader() {
+        IconLoader loader = new IconLoader() {
+            @Override
+            public Icon getAsIcon(String location) {
+                return TestIOManager.getAsIcon(location);
+            }
+        };
+        return loader;
     }
 }

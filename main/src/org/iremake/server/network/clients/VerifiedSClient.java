@@ -28,8 +28,6 @@ import org.iremake.server.network.ServerLogger;
  */
 public class VerifiedSClient extends SClient {
 
-    private int id = 1; // TODO get running numbers, possibly from the boss
-
     public VerifiedSClient(ServerClientHandler handler) {
         super(handler);
     }
@@ -39,14 +37,14 @@ public class VerifiedSClient extends SClient {
         if (message instanceof ActionMessage) {
             if (ActionMessage.Register.equals((ActionMessage) message)) {
                 ServerLogger.log("Client wants to register, send an ID. ");
-                boss.send(NumberMessageType.ID.create(id));
+                boss.send(NumberMessageType.ID.create(boss.getID()));
             }
         }
         if (message instanceof NumberMessage) {
             NumberMessage msg = (NumberMessage) message;
             if (NumberMessageType.ID.equals(msg.getType())) {
                 ServerLogger.log("Client sent ID.");
-                if (id == msg.getNumber()) {
+                if (boss.getID() == msg.getNumber()) {
                     // TODO promote to registered client
                     boss.registrationSuccess();
                 } else {

@@ -19,10 +19,10 @@ package org.iremake.server.network;
 import com.esotericsoftware.kryonet.Connection;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
+import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.clients.RegisteredSClient;
 import org.iremake.server.network.clients.SClient;
-import org.iremake.server.network.clients.UnverifiedSClient;
-import org.iremake.server.network.clients.VerifiedSClient;
+import org.iremake.server.network.clients.UnregisteredSClient;
 
 /**
  *
@@ -35,7 +35,7 @@ public class ServerClientHandler {
 
     public ServerClientHandler(Connection connection, ServerHandler boss) {
         this.connection = connection;
-        client = new UnverifiedSClient(this);
+        client = new UnregisteredSClient(this);
     }
 
     public void consume(Message message) {
@@ -46,24 +46,16 @@ public class ServerClientHandler {
         connection.sendTCP(message);
     }
 
-    public void verificationFailed(TextMessage message) {
-        boss.disconnect(connection, message);
+    public void registrationSuccess(String name) {
+        client = new RegisteredSClient(this, name);
     }
 
-    public void verificationSuccess() {
-        client = new VerifiedSClient(this);
-    }
-
-    public void registrationSuccess() {
-        client = new RegisteredSClient(this);
-    }
-
-    public void registrationIncorrectID(int number) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     public int getID() {
         return connection.getID();
     }
 
+    public void registrationFailed(String text) {
+        boss.disconnect(connection, TextMessageType.Error.create(text));
+    }
 }

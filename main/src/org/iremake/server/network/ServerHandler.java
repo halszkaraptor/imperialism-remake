@@ -20,13 +20,18 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 
 /**
  * Handling of received messages on the server side.
  */
+// TODO in case disconnections appear, we have to get an intermediate layer allowing reconnections
 public class ServerHandler extends Listener {
+
+    private static final int DISCONNECT_REMOVAL_DELAY = 10000;
 
     private Map<Integer, ServerClientHandler> clients = new HashMap<>();
 
@@ -37,10 +42,10 @@ public class ServerHandler extends Listener {
     }
 
     @Override
-    public void disconnected(Connection connection) {
-        ServerLogger.log("Disconnection"); // TODO which one
-        // TODO set to disconnected state and later throw out
-        // TODO from time to time check and delete all disconnected ones
+    public void disconnected(final Connection connection) {
+        Integer id = connection.getID();
+        ServerLogger.log("Disconnected ID " + id);
+        clients.remove(id);
     }
 
     @Override

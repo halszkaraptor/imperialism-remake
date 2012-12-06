@@ -19,25 +19,23 @@ package org.iremake.server.network.clients;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.server.network.ServerClientHandler;
-import org.iremake.server.network.ServerLogger;
 
 /**
  *
  */
 public class RegisteredSClient extends SClient {
 
-    public RegisteredSClient(ServerClientHandler handler) {
+    private String name;
+
+    public RegisteredSClient(ServerClientHandler handler, String name) {
         super(handler);
+        this.name = name;
     }
 
     @Override
     public void consume(Message message) {
         if (message instanceof TextMessage) {
-            TextMessage msg = (TextMessage) message;
-            switch (msg.getType()) {
-                case ClientName:
-                    ServerLogger.log("New client name: " + msg.getText());
-            }
+
         }
     }
 }

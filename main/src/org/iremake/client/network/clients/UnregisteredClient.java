@@ -16,6 +16,8 @@
  */
 package org.iremake.client.network.clients;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientHandler;
 import org.iremake.client.network.ClientLogger;
@@ -30,31 +32,22 @@ import org.iremake.common.network.messages.TextMessageType;
  */
 public class UnregisteredClient extends Client {
 
+    private static final int DELAY = 500;
+
     public UnregisteredClient(ClientHandler handler) {
         super(handler);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                boss.send(TextMessageType.Version.create(Option.Version.get()));
+                boss.send(TextMessageType.ClientName.create("Name"));
+            }
+        }, DELAY);
     }
 
     @Override
     public void consume(Message message) {
-            if (message instanceof ActionMessage) {
-                ActionMessage msg = (ActionMessage) message;
-                if (ActionMessage.Verify.equals(msg)) {
-                    // server wants us to validate, so we send the version, followed by a request to register
-                    ClientLogger.log("Received request to validate, send version and ask for Registration");
-                    boss.send(TextMessageType.Version.create(Option.Version.get()));
-                    boss.send(ActionMessage.Register);
-                    // TODO what if those two messages arrive in different order, do we need a system to ensure the order?
-                }
-            }
-
-            // number messages
-            if (message instanceof NumberMessage) {
-                NumberMessage msg = (NumberMessage) message;
-                if (NumberMessageType.ID.equals(msg.getType())) {
-                    ClientLogger.log("New ID: " + msg.getNumber());
-                    boss.registrationSuccess();
-                }
-            }
     }
-
 }

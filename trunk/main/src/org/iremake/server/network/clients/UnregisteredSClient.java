@@ -21,6 +21,8 @@ import java.util.TimerTask;
 import org.iremake.client.Option;
 import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.NumberMessage;
+import org.iremake.common.network.messages.NumberMessageType;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.ServerClientHandler;
@@ -29,43 +31,56 @@ import org.iremake.server.network.ServerLogger;
 /**
  *
  */
-public class UnverifiedSClient extends SClient {
+public class UnregisteredSClient extends SClient {
 
-    private static final int MaxRepeats = 5;
-
+    private static final int TIMEOUT = 10000;
     private Timer timer = new Timer();
-    private int repeats = 0;
+    private boolean versionQuery;
 
-    public UnverifiedSClient(ServerClientHandler handler) {
+    public UnregisteredSClient(ServerClientHandler handler) {
         super(handler);
 
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                repeats++;
-                if (repeats > MaxRepeats) {
-                    timer.cancel();
-                    boss.verificationFailed(TextMessageType.Error.create("Verification time out."));
-                }
-                boss.send(ActionMessage.Verify);
+                boss.registrationFailed("Time out.");
             }
-        }, 500, 2000);
+        }, TIMEOUT);
+
     }
 
     @Override
     public void consume(Message message) {
+
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Version.equals(msg.getType())) {
-                if (Option.Version.get().equals(msg.getText())) {
-                    ServerLogger.log("Version accepted, promote to valid.");
-                    timer.cancel();
-                    boss.verificationSuccess();
-                } else {
-                    timer.cancel();
-                    boss.verificationFailed(TextMessageType.Error.create("Version mismatch."));
-                }
+
+            switch (msg.getType()) {
+                case Version:
+                    // check version
+
+                    if (Option.Version.get().equals(msg.getText())) {
+                        ServerLogger.log("Version accepted.");
+                        versionQuery = true;
+                    } else {
+                        timer.cancel();
+                        boss.registrationFailed("Wrong version.");
+                    }
+
+                    break;
+                case ClientName:
+                    if (!versionQuery) {
+                        boss.registrationFailed("Sent name before version.");
+                    }
+
+                    // now we know the name
+                    ServerLogger.log("New client name: " + msg.getText());
+                    boss.registrationSuccess(msg.getText());
+
+                    break;
             }
+
         }
     }
 }

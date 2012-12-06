@@ -16,15 +16,24 @@
  */
 package org.iremake.applications;
 
+import icons.Loader;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
 import org.tools.ui.utils.LookAndFeel;
 
 /**
@@ -34,11 +43,32 @@ import org.tools.ui.utils.LookAndFeel;
 public class OriginalMapImportApp extends JFrame {
     private static final long serialVersionUID = 1L;
 
+    private JFileChooser fileChooser;
+
     /**
      * Creates new form OriginalMapImportApp
      */
     public OriginalMapImportApp() {
+        // form initialization
         initComponents();
+
+        // icon
+        setIconImage(Loader.getAsImage("/icons/app.icon.png"));
+
+        // init file chooser
+        fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory() || (f.getName().endsWith(".map") || f.getName().endsWith(".xml"));
+            }
+
+            @Override
+            public String getDescription() {
+                return "Map or Scenario Files";
+            }
+        });
     }
 
     /**
@@ -56,6 +86,8 @@ public class OriginalMapImportApp extends JFrame {
         chooseScenarioButton = new JButton();
         importButton = new JButton();
         progressBar = new JProgressBar();
+        statusScrollPane = new JScrollPane();
+        statusTextArea = new JTextArea();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Imperialism Map Import");
@@ -66,35 +98,62 @@ public class OriginalMapImportApp extends JFrame {
 
         chooseImportmapButton.setText("...");
         chooseImportmapButton.setToolTipText("Choose import map file");
+        chooseImportmapButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                chooseImportmapButtonActionPerformed(evt);
+            }
+        });
 
         scenarioTextField.setText("scenario file");
+        scenarioTextField.setToolTipText("Will be modified in the process!");
 
         chooseScenarioButton.setText("...");
         chooseScenarioButton.setToolTipText("Choose scenario file");
+        chooseScenarioButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                chooseScenarioButtonActionPerformed(evt);
+            }
+        });
 
         importButton.setText("Import Now");
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                importButtonActionPerformed(evt);
+            }
+        });
+
+        statusTextArea.setColumns(20);
+        statusTextArea.setFont(new Font("Tahoma", 0, 11)); // NOI18N
+        statusTextArea.setRows(5);
+        statusTextArea.setText("status");
+        statusScrollPane.setViewportView(statusTextArea);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                            .addComponent(scenarioTextField)
-                            .addComponent(importmapTextField))
-                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addComponent(chooseImportmapButton)
-                            .addComponent(chooseScenarioButton, Alignment.TRAILING))))
+                            .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
+                                    .addComponent(scenarioTextField)
+                                    .addComponent(importmapTextField))
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                    .addComponent(chooseImportmapButton)
+                                    .addComponent(chooseScenarioButton, Alignment.TRAILING)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(248, 248, 248)
+                        .addComponent(importButton)
+                        .addGap(0, 253, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(statusScrollPane)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(importButton)
-                .addContainerGap(263, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
@@ -107,7 +166,9 @@ public class OriginalMapImportApp extends JFrame {
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(scenarioTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(chooseScenarioButton))
-                .addPreferredGap(ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(statusScrollPane, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(importButton)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -116,6 +177,26 @@ public class OriginalMapImportApp extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void chooseImportmapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_chooseImportmapButtonActionPerformed
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            String name = f.getPath();
+            importmapTextField.setText(name);
+        }
+    }//GEN-LAST:event_chooseImportmapButtonActionPerformed
+
+    private void chooseScenarioButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_chooseScenarioButtonActionPerformed
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            String name = f.getPath();
+            importmapTextField.setText(name);
+        }
+    }//GEN-LAST:event_chooseScenarioButtonActionPerformed
+
+    private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
+
+    }//GEN-LAST:event_importButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,5 +219,7 @@ public class OriginalMapImportApp extends JFrame {
     private JTextField importmapTextField;
     private JProgressBar progressBar;
     private JTextField scenarioTextField;
+    private JScrollPane statusScrollPane;
+    private JTextArea statusTextArea;
     // End of variables declaration//GEN-END:variables
 }

@@ -28,6 +28,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -40,7 +42,12 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
+import nu.xom.Element;
+import nu.xom.ParsingException;
+import org.tools.io.FileResource;
 import org.tools.ui.utils.LookAndFeel;
+import org.tools.utils.BitBuffer;
+import org.tools.xml.XMLHelper;
 
 /**
  * Reads the output from the python map import script and inserts a scenario
@@ -258,7 +265,28 @@ public class OriginalMapImportApp extends JFrame {
 
         int[] provinces = new int[chunk];
         ib.get(provinces);
+
         progressBar.setValue(20);
+        updateStatus("data imported successfully");
+        Element xml;
+        try {
+            // read second file
+            xml = XMLHelper.read(new FileResource(exportFile));
+        } catch (IOException | ParsingException ex) {
+            updateStatus("could not read and parse scenario file, will stop");
+            return;
+        }
+
+        // fill bitbuffer for map data
+        BitBuffer buffer = new BitBuffer(chunk * 36);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                int bits = 0;
+                buffer.add(bits, 6);
+            }
+        }
+        String map = BitBuffer.fromBuffer(buffer);
+
 
         updateStatus("conversion successful");
         progressBar.setValue(100);

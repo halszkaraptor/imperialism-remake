@@ -81,8 +81,7 @@ public class NetworkDialogBuilder {
         content.add(serverChatPane, "grow");
         content.add(chatInputField, "height pref!");
 
-        UIDialog dialog = new UIDialog();
-        dialog.start(content, "Network center");
+        UIDialog.make(content, "Network center");
     }
 
     private static JComponent menuBar() {

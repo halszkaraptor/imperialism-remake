@@ -124,7 +124,8 @@ public class StartScreenBuilder {
         scenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ScenarioDialogsBuilder.makeLoadDialog();
+                UIDialog dialog = new LocalScenarioDialog();
+                dialog.start();
             }
         });
 
@@ -154,8 +155,7 @@ public class StartScreenBuilder {
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
                 BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsIcons));
-                UIDialog dialog = new UIDialog();
-                dialog.start(browser, "Help");
+                UIDialog.make(browser, "Help");
             }
         });
 

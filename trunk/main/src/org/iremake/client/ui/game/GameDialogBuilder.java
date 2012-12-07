@@ -54,8 +54,7 @@ public class GameDialogBuilder {
         content.add(bar);
         content.add(inner, "grow");
 
-        UIDialog dialog = new UIDialog();
-        dialog.start(content, panel.toString());
+        UIDialog.make(content, panel.toString());
     }
 
 }

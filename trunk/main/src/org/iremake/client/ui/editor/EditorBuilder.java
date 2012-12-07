@@ -71,7 +71,9 @@ public class EditorBuilder {
             public void actionPerformed(ActionEvent e) {
                 Point p = newButton.getLocationOnScreen();
                 p.x += 50;
-                EditorBuilder.startNewScenarioDialog(p);
+                UIDialog dialog = new EditorNewScenarioDialog();
+                dialog.setLocation(p);
+                dialog.start();
             }
         });
 
@@ -298,14 +300,11 @@ public class EditorBuilder {
         terrainButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JPanel content = new EditorSelectionTerrainPanel();
-
                 Point p = terrainButton.getLocationOnScreen();
                 p.x += 50;
-
-                UIDialog dialog = new UIDialog();
-                dialog.setMinimumSize(0, 0);
+                UIDialog dialog = new EditorSelectTerrainDialog();
                 dialog.setLocation(p);
+                dialog.start();
             }
         });
         // nation button
@@ -334,28 +333,5 @@ public class EditorBuilder {
         panel.add(infoPanel, "grow");
 
         return panel;
-    }
-
-    private static void startNewScenarioDialog(Point p) {
-        JPanel content = new JPanel();
-
-        JTextField nameField = new JTextField();
-        JTextField nRows = new JTextField();
-        JTextField nColumns = new JTextField();
-        JButton create = new JButton("Create");
-
-        content.setLayout(new MigLayout("wrap 2", "[sizegroup a][sizegroup b, fill]"));
-        content.add(new JLabel("Scenario name"));
-        content.add(nameField, "wmin 100");
-        content.add(new JLabel("Width (columns)"));
-        content.add(nColumns);
-        content.add(new JLabel("Height (rows)"));
-        content.add(nRows);
-        content.add(create, "dock south");
-
-        UIDialog dialog = new UIDialog();
-        dialog.setMinimumSize(0, 0);
-        dialog.setLocation(p);
-        dialog.start(content, "New Scenario");
     }
 }

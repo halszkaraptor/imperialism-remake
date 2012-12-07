@@ -100,7 +100,8 @@ public class ScenarioDialogsBuilder {
         content.add(mapPanel, "grow");
         content.add(infoPanel, "height 200!, growx");
 
-        FrameManager.getInstance().startDialog(content, "Local Scenario");
+        UIDialog dialog = new UIDialog();
+        dialog.start(content, "Local Scenario");
     }
 
     private static JPanel makeOverviewMapPanel() {

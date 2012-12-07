@@ -28,6 +28,7 @@ public enum Option {
 
     Version("version"),
     FullScreenMode("graphics.mode.fullscreen"),
+    MainScreenControlsRight("graphics.mainscreen.controlsright"),
     NetworkAlias("client.network.alias");
 
     public static boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");

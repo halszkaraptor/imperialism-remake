@@ -35,6 +35,7 @@ import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
@@ -64,11 +65,13 @@ public class EditorBuilder {
         JPanel panel = new JPanel();
 
         // new scenario button
-        JButton newButton = Button.ScenarioNew.create();
+        final JButton newButton = Button.ScenarioNew.create();
         newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorBuilder.startNewScenarioDialog();
+                Point p = newButton.getLocationOnScreen();
+                p.x += 50;
+                EditorBuilder.startNewScenarioDialog(p);
             }
         });
 
@@ -300,8 +303,9 @@ public class EditorBuilder {
                 Point p = terrainButton.getLocationOnScreen();
                 p.x += 50;
 
-                FrameManager.getInstance().startDialog(content, "Terrain Selection", new Dimension(0, 0), p);
-                // TODO automatically put next to button the location
+                UIDialog dialog = new UIDialog();
+                dialog.setMinimumSize(0, 0);
+                dialog.setLocation(p);
             }
         });
         // nation button
@@ -332,7 +336,7 @@ public class EditorBuilder {
         return panel;
     }
 
-    private static void startNewScenarioDialog() {
+    private static void startNewScenarioDialog(Point p) {
         JPanel content = new JPanel();
 
         JTextField nameField = new JTextField();
@@ -349,7 +353,9 @@ public class EditorBuilder {
         content.add(nRows);
         content.add(create, "dock south");
 
-        // TODO with pack instead of fixed size
-        FrameManager.getInstance().startDialog(content, "New Scenario");
+        UIDialog dialog = new UIDialog();
+        dialog.setMinimumSize(0, 0);
+        dialog.setLocation(p);
+        dialog.start(content, "New Scenario");
     }
 }

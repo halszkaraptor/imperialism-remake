@@ -26,8 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
@@ -144,7 +142,8 @@ public class StartScreenBuilder {
         optionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OptionsDialogBuilder.makeDialog();
+                OptionsDialog dialog = new OptionsDialog();
+                dialog.start();
             }
         });
 
@@ -155,7 +154,8 @@ public class StartScreenBuilder {
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
                 BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsIcons));
-                FrameManager.getInstance().startDialog(browser, "Help");
+                UIDialog dialog = new UIDialog();
+                dialog.start(browser, "Help");
             }
         });
 

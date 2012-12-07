@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.UIDialog;
 
 /**
  *
@@ -54,7 +54,8 @@ public class GameDialogBuilder {
         content.add(bar);
         content.add(inner, "grow");
 
-        FrameManager.getInstance().startDialog(content, panel.toString());
+        UIDialog dialog = new UIDialog();
+        dialog.start(content, panel.toString());
     }
 
 }

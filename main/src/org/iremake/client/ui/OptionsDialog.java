@@ -31,13 +31,12 @@ import org.iremake.client.Option;
 /**
  *
  */
-public class OptionsDialog {
-
-    JComponent content;
+public class OptionsDialog extends UIDialog {
 
     private List<OptionsDialogItem> items = new LinkedList<>();
 
     public OptionsDialog() {
+        super("Options");
         // tabbed pane
         JTabbedPane tabs = new JTabbedPane();
         tabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -46,12 +45,12 @@ public class OptionsDialog {
         tabs.add(createGeneralPanel(), "General");
         tabs.add(createServerPanel(), "Server");
 
-        content = tabs;
+        setContent(tabs);
     }
 
+    @Override
     public void start() {
-        UIDialog dialog = new UIDialog();
-        dialog.setClosingListener(new WindowClosingListener() {
+        setClosingListener(new WindowClosingListener() {
             @Override
             public boolean closing() {
                 if (isAnyModified()) {
@@ -63,7 +62,7 @@ public class OptionsDialog {
                 return true;
             }
         });
-        dialog.start(content, "Options");
+        super.start();
     }
 
     private JPanel createGeneralPanel() {

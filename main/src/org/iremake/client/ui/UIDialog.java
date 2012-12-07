@@ -33,12 +33,20 @@ public class UIDialog {
     private Dimension minimumSize;
     private Point location;
     private WindowClosingListener closingListener;
+    private JDialog dialog;
+    private JComponent content;
+    private String title;
 
     /**
      *
      */
-    public UIDialog() {
+    public UIDialog(String title) {
         minimumSize = new Dimension(700, 600);
+        this.title = title;
+    }
+
+    public void setContent(JComponent content) {
+        this.content = content;
     }
 
     /**
@@ -68,13 +76,15 @@ public class UIDialog {
 
     /**
      *
-     * @param content
-     * @param title
      */
-    public void start(JComponent content, String title) {
+    public void start() {
+
+        if (content == null) {
+            return;
+        }
 
         // create dialog
-        final JDialog dialog = new JDialog(FrameManager.getInstance().getFrame(), title, true);
+        dialog = new JDialog(FrameManager.getInstance().getFrame(), title, true);
         dialog.setResizable(true);
 
         // no default close, first ask the listener if there is any
@@ -83,7 +93,7 @@ public class UIDialog {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (closingListener == null || closingListener.closing() == true) {
-                    dialog.dispose();
+                    dispose();
                 }
             }
         });
@@ -106,6 +116,15 @@ public class UIDialog {
         dialog.setVisible(true);
     }
 
+    protected void dispose() {
+        dialog.dispose();
+    }
+
+    public static void make(JComponent content, String title) {
+        UIDialog dialog = new UIDialog(title);
+        dialog.setContent(content);
+        dialog.start();
+    }
 }
 
 

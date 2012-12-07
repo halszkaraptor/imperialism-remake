@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,28 +25,27 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.UIDialog;
 import org.iremake.common.Settings;
 
 /**
- * New Terrain is Selected. A modal dialog.
+ *
  */
-// TODO do not need own class for it, just build it
-public class EditorSelectionTerrainPanel extends JPanel implements ActionListener {
+public class EditorSelectTerrainDialog extends UIDialog {
 
-    /**
-     *
-     */
-    public EditorSelectionTerrainPanel() {
-        initComponents();
-    }
+    public EditorSelectTerrainDialog() {
+        super("Select Terrain");
+        
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        String id = ((JButton) e.getSource()).getName();
+        EditorManager.getInstance().terrainSelected(id);
+        dispose();
+            }
+        };
 
-    /**
-     *
-     */
-    private void initComponents() {
-        final int gap = 10;
-        final Dimension tileSize = TerrainLoader.getTileSize();
+        JPanel panel = new JPanel();
 
         Set<String> IDs = Settings.getTerrainIDs();
         int n = IDs.size();
@@ -64,7 +62,7 @@ public class EditorSelectionTerrainPanel extends JPanel implements ActionListene
             c = l + 1;
         }
         // here actually GridLayout does exactly the job and we do not need MigLayout
-        setLayout(new MigLayout("wrap " + c));
+        panel.setLayout(new MigLayout("wrap " + c));
 
         for (String id : IDs) {
             JButton button = new JButton();
@@ -73,20 +71,11 @@ public class EditorSelectionTerrainPanel extends JPanel implements ActionListene
             button.setName(id);
             button.setFocusable(false);
             button.setToolTipText(Settings.getTerrainType(id));
-            button.addActionListener(this);
-            add(button);
+            button.addActionListener(listener);
+            panel.add(button);
         }
-    }
 
-    /**
-     * Catch the various buttons and tell the manager about it.
-     *
-     * @param e
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        String id = ((JButton) e.getSource()).getName();
-        EditorManager.getInstance().terrainSelected(id);
-        FrameManager.getInstance().getExitDialogListener().actionPerformed(null);
+        setContent(panel);
+        setMinimumSize(0, 0);
     }
 }

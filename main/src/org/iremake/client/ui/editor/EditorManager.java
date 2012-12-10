@@ -119,6 +119,10 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
         model.setScenarioChangedListener(this);
     }
 
+    public Scenario getScenario() {
+        return scenario;
+    }
+
     /**
      *
      * @param p

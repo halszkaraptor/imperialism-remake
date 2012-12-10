@@ -34,6 +34,13 @@ public class Nation implements XMLable {
 
     private static final String NAME = "Nation";
 
+    public Nation() {
+    }
+
+    public Nation(String name) {
+        properties.put("name", name);
+    }
+
     /**
      * Export to XML.
      *
@@ -61,5 +68,10 @@ public class Nation implements XMLable {
 
         properties.fromXML(children.get(0));
         provinceIDs = XMLHandler.toIntegerList(children.get(1));
+    }
+
+    @Override
+    public String toString() {
+        return properties.get("name");
     }
 }

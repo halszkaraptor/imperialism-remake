@@ -18,7 +18,7 @@ package org.iremake.client;
 
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.tools.xml.common.XProperty;
+import org.tools.xml.XProperty;
 
 /**
  *
@@ -33,7 +33,7 @@ public enum Option {
 
     public static boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");
 
-    private static XProperty options = new XProperty(0);
+    private static XProperty options = new XProperty(10);
     private String name;
 
     Option(String id) {

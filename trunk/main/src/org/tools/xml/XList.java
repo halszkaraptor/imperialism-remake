@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.xml.common;
+package org.tools.xml;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +62,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
     private Class<E> clazz;
     private boolean keepSorted = false;
 
+    // TODO node name give as argument, otherwise use default
     /**
      * Empty list with initial capacity.
      */

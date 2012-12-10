@@ -73,6 +73,7 @@ integrity_tests(data, n, s)
 # get interesting data out and crop left columns
 terrain_underlay = crop_left(data[0 : n * s + 0: s], columns, cut)
 terrain_overlay = crop_left(data[19 : n * s + 19: s], columns, cut)
+country = crop_left(data[3 : n * s + 3: s], columns, cut)
 resources = crop_left(data[17 : n * s + 17: s], columns, cut)
 
 provinceA = crop_left(data[20 : n * s + 20: s], columns, cut)
@@ -89,8 +90,8 @@ size.append(rows)
 
 terrain_underlay = list_to_array(terrain_underlay)
 terrain_overlay = list_to_array(terrain_overlay)
+country = list_to_array(country)
 resources = list_to_array(resources)
-
 provinces = array.array('i', provinces)
 
 # save in file

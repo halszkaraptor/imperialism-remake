@@ -43,7 +43,7 @@ import nu.xom.ParsingException;
 import org.tools.ui.utils.BasicFrame;
 import org.tools.ui.notification.NotificationFactory;
 import org.tools.xml.XMLHelper;
-import org.tools.xml.common.XTable;
+import org.tools.xml.XTable;
 
 /**
  * Currently still simple editor, that works on a 2D array of cells, i.e. a table.

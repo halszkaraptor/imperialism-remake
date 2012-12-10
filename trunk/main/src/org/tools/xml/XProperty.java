@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.xml.common;
+package org.tools.xml;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +22,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
-import org.tools.xml.XMLHandler;
-import org.tools.xml.XMLable;
 
 /**
  * Property implementation with a HashMap and XML import/export capability.
@@ -185,7 +183,7 @@ public class XProperty implements XMLable {
      */
     @Override
     public Element toXML() {
-        Element element = XMLHandler.MapToXML(map, NAME);
+        Element element = XMLHandler.fromStringMap(map, NAME);
         return element;
     }
 
@@ -202,6 +200,6 @@ public class XProperty implements XMLable {
             return; // TODO more than a LOG entry maybe
         }
 
-        map = XMLHandler.XMLToMap(parent);
+        map = XMLHandler.toStringMap(parent);
     }
 }

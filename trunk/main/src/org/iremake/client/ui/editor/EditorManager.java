@@ -195,7 +195,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * Loads a scenario. (With file chooser dialog).
      */
     public void loadScenarioDialog() {
-        if (fileChooser.showOpenDialog(FrameManager.getInstance().getFrame()) == JFileChooser.APPROVE_OPTION) {
+        if (FrameManager.getInstance().showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             // read file and parse to xml
             Element xml;
@@ -216,7 +216,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      */
     // TODO not using saveScenario?
     public void saveScenarioDialog() {
-        if (fileChooser.showSaveDialog(FrameManager.getInstance().getFrame()) == JFileChooser.APPROVE_OPTION) {
+        if (FrameManager.getInstance().showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             String name = f.getAbsolutePath();
             if (!name.endsWith(".xml")) {

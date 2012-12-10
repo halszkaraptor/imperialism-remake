@@ -19,7 +19,6 @@ package org.iremake.client.ui;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

@@ -16,42 +16,22 @@
  */
 package org.iremake.common.model;
 
-import nu.xom.Attribute;
+import java.util.ArrayList;
+import java.util.List;
 import nu.xom.Element;
+import nu.xom.Elements;
+import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
+import org.tools.xml.XProperty;
 
 /**
- * A nation has an id (int) and a name and a color.
+ * A nation.
  */
 public class Nation implements XMLable {
 
-    private final int id;
-    private final String name;
-    private final String colorcode;
+    private XProperty properties = new XProperty(10);
+    private List<Integer> provinceIDs = new ArrayList<>();
 
-    /**
-     * Set from values.
-     *
-     * @param id
-     * @param name
-     * @param colorcode
-     */
-    public Nation(int id, String name, String colorcode) {
-        this.id = id;
-        this.name = name;
-        this.colorcode = colorcode;
-    }
-
-    /**
-     * String representation is always the name. Allows easy usage in UI
-     * elements.
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        return name;
-    }
     private static final String NAME = "Nation";
 
     /**
@@ -62,9 +42,9 @@ public class Nation implements XMLable {
     @Override
     public Element toXML() {
         Element element = new Element(NAME);
-        element.addAttribute(new Attribute("id", String.valueOf(id)));
-        element.addAttribute(new Attribute("name", name));
-        element.addAttribute(new Attribute("colorcode", colorcode));
+
+        element.appendChild(properties.toXML());
+        element.appendChild(XMLHandler.fromIntegerList(provinceIDs, "Provinces"));
 
         return element;
     }
@@ -76,6 +56,10 @@ public class Nation implements XMLable {
      */
     @Override
     public void fromXML(Element parent) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Elements children = parent.getChildElements();
+        // TODO checks (null, name)
+
+        properties.fromXML(children.get(0));
+        provinceIDs = XMLHandler.toIntegerList(children.get(1));
     }
 }

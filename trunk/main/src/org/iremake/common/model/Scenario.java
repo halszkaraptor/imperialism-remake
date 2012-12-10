@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,9 +24,10 @@ import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.common.Settings;
+import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
-import org.tools.xml.common.XList;
-import org.tools.xml.common.XProperty;
+import org.tools.xml.XList;
+import org.tools.xml.XProperty;
 
 /**
  * The full internal Scenario model.
@@ -37,7 +39,7 @@ public class Scenario implements XMLable {
     private int columns;
     private Tile[][] map;
     private XList<Nation> nations = new XList<>(Nation.class);
-    private XList<Province> provinces = new XList<>(Province.class);
+    private List<Province> provinces = new ArrayList<>(1024);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
     private XProperty properties = new XProperty(10);
 
@@ -210,7 +212,7 @@ public class Scenario implements XMLable {
         parent.appendChild(nations.toXML());
 
         // provinces list
-        parent.appendChild(provinces.toXML());
+        parent.appendChild(XMLHandler.fromList(provinces, "Provinces"));
 
         return parent;
     }
@@ -223,7 +225,7 @@ public class Scenario implements XMLable {
     @Override
     public void fromXML(Element parent) {
 
-        // clear (?)
+        // TODO clear (?) neccessary?
         properties.clear();
 
         if (parent == null || !NAME.equals(parent.getLocalName())) {
@@ -252,6 +254,9 @@ public class Scenario implements XMLable {
         }
 
         // TODO reading of Nations and Provinces
+        nations.fromXML(children.get(2));
+
+        provinces = XMLHandler.toList(children.get(3), Province.class);
 
         // Of course everything has changed.
         fireMapChanged();

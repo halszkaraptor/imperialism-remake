@@ -28,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
-import org.tools.xml.common.XProperty;
 
 /**
  * XML (Property) read/write test.

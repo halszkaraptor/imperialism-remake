@@ -34,6 +34,8 @@ import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.StartScreen;
+import org.iremake.client.ui.UIFrame;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.common.network.NetworkLogger;
@@ -95,7 +97,8 @@ public class StartClient {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    FrameManager.getInstance().switchToStartScreen();
+                    UIFrame screen = new StartScreen();
+                    screen.switchTo();
                 }
             });
         } catch (Exception ex) {
@@ -126,7 +129,7 @@ public class StartClient {
     public static void shutDown() {
 
         // dispose of the screen frame
-        FrameManager.getInstance().getFrame().dispose();
+        FrameManager.getInstance().dispose();
 
         // if server is still running shut down
         if (BigBag.serverManager.isRunning()) {

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.xml.common;
+package org.tools.xml;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -436,12 +436,12 @@ public class XTable implements TableModel, XMLable {
         Element parent = new Element(NAME);
 
         // store headers as list
-        Element child = XMLHandler.ListToXML(headers, NAME_HEADER);
+        Element child = XMLHandler.fromStringList(headers, NAME_HEADER);
         parent.appendChild(child);
 
         // store each row as list
         for (List<String> row : content) {
-            child = XMLHandler.ListToXML(row, NAME_CONTENT);
+            child = XMLHandler.fromStringList(row, NAME_CONTENT);
             parent.appendChild(child);
         }
 
@@ -468,7 +468,7 @@ public class XTable implements TableModel, XMLable {
         Elements children = parent.getChildElements();
 
         // first child contains the header names as list
-        headers = XMLHandler.XMLToList(children.get(0));
+        headers = XMLHandler.toStringList(children.get(0));
 
         // number of childs - 1 is number of rows
         int rows = children.size() - 1;
@@ -476,7 +476,7 @@ public class XTable implements TableModel, XMLable {
 
         // parse each row (one child) as a list
         for (int i = 0; i < rows; i++) {
-            content.add(XMLHandler.XMLToList(children.get(i + 1)));
+            content.add(XMLHandler.toStringList(children.get(i + 1)));
         }
 
         // check consistency

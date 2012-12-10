@@ -136,8 +136,8 @@ public class Scenario implements XMLable {
         // TODO fire something
     }
 
-    public Nation getNation(int index) {
-        return nations.getElementAt(index);
+    public XList<Nation> getNations() {
+        return nations;
     }
 
     public String getTitle() {

@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -30,6 +32,8 @@ import nu.xom.Elements;
  * appendChild(String) goes directly into the tag
  */
 public class XMLHandler {
+
+    private static final Logger LOG = Logger.getLogger(XMLHandler.class.getName());
 
     /**
      * To avoid instantiation.
@@ -43,7 +47,7 @@ public class XMLHandler {
      * @return
      */
     // TODO does not work with null entries
-    public static Element MapToXML(Map<String, String> map, String name) {
+    public static Element fromStringMap(Map<String, String> map, String name) {
 
         // new parent element
         Element parent = new Element(name);
@@ -64,7 +68,7 @@ public class XMLHandler {
      * @return
      * @throws Exception
      */
-    public static Map<String, String> XMLToMap(Element element) {
+    public static Map<String, String> toStringMap(Element element) {
 
         Elements children = element.getChildElements();
 
@@ -83,11 +87,30 @@ public class XMLHandler {
 
     /**
      *
+     * @param element
+     * @return
+     */
+    public static List<String> toStringList(Element element) {
+
+        // get all child elements
+        Elements children = element.getChildElements();
+        int size = children.size();
+
+        // put them one by one in the natural order into a new array list
+        List<String> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(children.get(i).getValue());
+        }
+        return list;
+    }
+
+    /**
+     *
      * @param list
      * @param name
      * @return
      */
-    public static Element ListToXML(List<String> list, String name) {
+    public static Element fromStringList(List<String> list, String name) {
         Element parent = new Element(name);
         for (String s : list) {
             Element child = new Element("e");
@@ -97,22 +120,65 @@ public class XMLHandler {
         return parent;
     }
 
-    /**
-     *
-     * @param element
-     * @return
-     */
-    public static List<String> XMLToList(Element element) {
+    private final static String IntegerSeparator = ":";
 
-        // get all child elements
-        Elements children = element.getChildElements();
-        int n = children.size();
+    public static List<Integer> toIntegerList(Element element) {
+        Integer size = Integer.valueOf(element.getAttributeValue("size"));
+        List<Integer> list = new ArrayList<>(size);
 
-        // put them one by one in the natural order into a new array list
-        List<String> list = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            list.add(children.get(i).getValue());
+        // TODO check, no childs, end node
+        String[] integers = element.getValue().split(IntegerSeparator);
+        // TODO check integers.length == size
+        for (int i = 0; i < integers.length; i++) {
+            list.add(Integer.valueOf(integers[i]));
         }
+
+        return list;
+    }
+
+    public static Element fromIntegerList(List<Integer> list, String name) {
+        Element parent = new Element(name);
+        int size = list.size();
+        parent.addAttribute(new Attribute("size", Integer.toString(size)));
+        StringBuilder builder = new StringBuilder(size * 3);
+        for (Integer value: list) {
+            builder.append(value);
+            builder.append(IntegerSeparator);
+        }
+        parent.appendChild(builder.toString());
+
+        return parent;
+    }
+
+    public static <T extends XMLable> Element fromList(List<T> list, String name) {
+        Element parent = new Element(name);
+        for (T item: list) {
+            Element child = item.toXML();
+            parent.appendChild(child);
+        }
+        return parent;
+    }
+
+    public static <T extends XMLable> List<T> toList(Element parent, Class<T> clazz) {
+        Elements children = parent.getChildElements();
+
+        int size = children.size();
+        List<T> list = new ArrayList<>(size);
+
+        // parse each child and add to list
+        for (int i = 0; i < size; i++) {
+            // new instance of given class
+            T element = null;
+            try {
+                element = clazz.newInstance();
+            } catch (InstantiationException | IllegalAccessException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+
+            element.fromXML(children.get(i));
+            list.add(element);
+        }
+
         return list;
     }
 }

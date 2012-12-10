@@ -35,17 +35,18 @@ public class UIDialog {
     private WindowClosingListener closingListener;
     private JDialog dialog;
     private JComponent content;
-    private String title;
+    private final String title;
 
     /**
      *
      */
     public UIDialog(String title) {
-        minimumSize = new Dimension(700, 600);
         this.title = title;
+
+        minimumSize = new Dimension(700, 600);
     }
 
-    public void setContent(JComponent content) {
+    protected void setContent(JComponent content) {
         this.content = content;
     }
 
@@ -54,7 +55,7 @@ public class UIDialog {
      * @param width
      * @param height
      */
-    public void setMinimumSize(int width, int height) {
+    protected void setMinimumSize(int width, int height) {
         minimumSize = new Dimension(width, height);
     }
 
@@ -70,7 +71,7 @@ public class UIDialog {
      *
      * @param closingListener
      */
-    public void setClosingListener(WindowClosingListener closingListener) {
+    protected void setClosingListener(WindowClosingListener closingListener) {
         this.closingListener = closingListener;
     }
 
@@ -84,7 +85,7 @@ public class UIDialog {
         }
 
         // create dialog
-        dialog = new JDialog(FrameManager.getInstance().getFrame(), title, true);
+        dialog = FrameManager.getInstance().getDialog(title);
         dialog.setResizable(true);
 
         // no default close, first ask the listener if there is any
@@ -107,9 +108,7 @@ public class UIDialog {
         if (location != null) {
             dialog.setLocation(location);
         } else {
-            Rectangle bounds = FrameManager.getInstance().getBounds();
-            Dimension size = dialog.getSize();
-            dialog.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
+            FrameManager.getInstance().center(dialog);
         }
 
         // start

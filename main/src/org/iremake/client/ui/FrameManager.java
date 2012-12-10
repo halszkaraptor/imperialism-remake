@@ -16,21 +16,20 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Window;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.client.ui.editor.EditorBuilder;
-import org.iremake.client.ui.editor.EditorManager;
-import org.iremake.client.ui.main.MainScreenBuilder;
-import org.iremake.client.ui.main.MainScreenManager;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
@@ -41,34 +40,11 @@ public class FrameManager {
     private static FrameManager singleton;
     private JFrame frame;
     private JPanel panel;
-    private JComponent content;
 
     /**
      *
      */
     private FrameManager() {
-        setupMainFrame();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public static FrameManager getInstance() {
-        if (singleton == null) {
-            singleton = new FrameManager();
-        }
-        return singleton;
-    }
-
-    /**
-     *
-     */
-    private void setupMainFrame() {
-        if (frame != null) {
-            return;
-        }
-
         frame = new JFrame();
 
         // undecorated ?
@@ -109,64 +85,46 @@ public class FrameManager {
 
     /**
      *
-     */
-    public void switchToStartScreen() {
-
-        if (content != null) {
-            panel.remove(content);
-        }
-
-        content = StartScreenBuilder.build();
-        panel.add(content, "grow");
-        panel.validate();
-    }
-
-    /**
-     *
-     */
-    public void switchToEditorScreen() {
-
-        if (content != null) {
-            panel.remove(content);
-        }
-        content = EditorBuilder.build();
-        panel.add(content, "grow");
-        panel.validate();
-
-        // and load a basic scenario
-        EditorManager.getInstance().loadInitialScenario();
-    }
-
-    /**
-     *
-     */
-    public void switchToMainScreen() {
-        if (content != null) {
-            panel.remove(content);
-        }
-
-        content = MainScreenBuilder.build();
-        panel.add(content, "grow");
-        panel.validate();
-
-        // and load a basic scenario
-        MainScreenManager.getInstance().loadInitialScenario();
-    }
-
-    /**
-     * Potentially dangerous but the only way unless we import many dialog
-     * creations.
-     *
      * @return
      */
-    public Frame getFrame() {
-        return frame;
+    public static FrameManager getInstance() {
+        if (singleton == null) {
+            singleton = new FrameManager();
+        }
+        return singleton;
     }
 
-    private final static Color blue = new Color(160, 224, 255);
-    private final static Color brown = new Color(128, 80, 16);
+    public void switchTo(JComponent content) {
+        panel.removeAll();
+        panel.add(content, "grow");
+        panel.validate();
+    }
 
-    public Rectangle getBounds() {
-        return frame.getBounds();
+    public JDialog getDialog(String title) {
+        return new JDialog(frame, title, true);
+    }
+
+    public int showOpenDialog(JFileChooser fileChooser) {
+        return fileChooser.showOpenDialog(frame);
+    }
+
+    public int showSaveDialog(JFileChooser fileChooser) {
+        return fileChooser.showSaveDialog(frame);
+    }
+
+    public String showInputDialog(String text) {
+        return JOptionPane.showInputDialog(frame, text);
+    }
+
+    public void center(Window window) {
+        Rectangle bounds = frame.getBounds();
+        Dimension size = window.getSize();
+        window.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
+    }
+
+    public void dispose() {
+        frame.dispose();
+        panel = null;
+        singleton = null;
     }
 }

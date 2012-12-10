@@ -30,6 +30,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.ui.main.MainScreen;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
@@ -37,9 +38,9 @@ import org.tools.ui.ButtonBar;
 /**
  *
  */
-public class LocalScenarioDialog extends UIDialog {
+public class NewLocalScenarioDialog extends UIDialog {
 
-    public LocalScenarioDialog() {
+    public NewLocalScenarioDialog() {
         super("Local Scenario");
         JPanel content = new JPanel();
 
@@ -106,7 +107,8 @@ public class LocalScenarioDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                FrameManager.getInstance().switchToMainScreen();
+                UIFrame frame = new MainScreen();
+                frame.switchTo();
             }
         });
 

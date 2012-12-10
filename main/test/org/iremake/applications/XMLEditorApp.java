@@ -34,7 +34,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import org.tools.ui.utils.LookAndFeel;
-import org.tools.xml.common.XProperty;
+import org.tools.xml.XProperty;
 
 /**
  * Allows editing of various game XML files. Used for creating and editing them.

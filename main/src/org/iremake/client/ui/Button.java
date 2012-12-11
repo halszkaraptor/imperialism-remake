@@ -80,7 +80,6 @@ public enum Button {
         JButton button = new JButton();
         button.setFocusable(false);
         button.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, location));
-        // button.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
         button.setBorder(null);
         button.setMargin(null);
         return button;

@@ -23,8 +23,10 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.MapPosition;
@@ -37,7 +39,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
-    private MainMapTileListener tileListener;
+    private List<MapTileListener> tileListeners = new LinkedList<>();
     private ScenarioUIModel model;
     private Dimension tileSize;
     private MapPosition offset = new MapPosition();
@@ -58,7 +60,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         hoover.setOff();
 
         setBackground(Color.white);
-        setBorder(new LineBorder(Color.black, 1));
+        setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
@@ -187,8 +189,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      *
      */
     private void notifyTileFocusChangedListeners() {
-        if (tileListener != null) {
-            tileListener.focusChanged(hoover);
+        for (MapTileListener l: tileListeners) {
+            l.focusChanged(hoover);
         }
     }
 
@@ -197,8 +199,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      * @param p
      */
     private void notifyTileClickedListeners(MapPosition p) {
-        if (tileListener != null) {
-            tileListener.tileClicked(p);
+        for (MapTileListener l: tileListeners) {
+            l.tileClicked(p);
         }
     }
 
@@ -206,8 +208,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      *
      * @param l
      */
-    public void setTileListener(MainMapTileListener l) {
-        tileListener = l;
+    public void addTileListener(MapTileListener l) {
+        tileListeners.add(l);
     }
 
     /**

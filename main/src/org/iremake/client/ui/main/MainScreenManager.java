@@ -17,23 +17,31 @@
 package org.iremake.client.ui.main;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.client.ui.map.MainMapTileListener;
+import org.iremake.client.ui.map.MapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
+import org.tools.io.Resource;
+import org.tools.xml.XMLHelper;
 
 /**
  * Manages all the wirings of the main screen maps.
  *
  */
 // TODO generalize between EditorManager and this class (some code duplicates)
-public class MainScreenManager implements MainMapTileListener, ScenarioUIModelChangedListener {
+public class MainScreenManager implements MapTileListener, ScenarioUIModelChangedListener {
+
+    private static final Logger LOG = Logger.getLogger(MainScreenManager.class.getName());
 
     private Scenario scenario;
     private MainMapPanel mainMapPanel;
@@ -64,7 +72,7 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
     public void setPanels(MainMapPanel mainPanel) {
         mainMapPanel = mainPanel;
         // wiring (main map tells manager, mini map tells main map)
-        mainMapPanel.setTileListener(this);
+        mainMapPanel.addTileListener(this);
     }
 
     public void setMiniMap(MiniMapPanel miniMapPanel) {
@@ -100,6 +108,15 @@ public class MainScreenManager implements MainMapTileListener, ScenarioUIModelCh
      */
     private void loadScenario(String location) {
         IOManager.setFromXML(Places.Scenarios, location, scenario);
+    }
+
+    public void loadScenario(Resource location) {
+        try {
+            XMLHelper.read(location, scenario);
+        } catch (IOException | ParsingException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            // TODO message
+        }
     }
 
     /**

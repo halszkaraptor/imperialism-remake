@@ -26,8 +26,8 @@ import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.common.model.MapPosition;
 
@@ -70,7 +70,7 @@ public class MiniMapPanel extends JPanel {
             }
         });
 
-        setBorder(new LineBorder(Color.black, 1));
+        setBorder(BorderFactory.createLineBorder(Color.black, 1));
         setOpaque(true); // by default is not
     }
 

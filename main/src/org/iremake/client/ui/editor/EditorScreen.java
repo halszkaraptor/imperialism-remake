@@ -16,7 +16,6 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -128,10 +126,16 @@ public class EditorScreen extends UIFrame {
      */
     private JPanel createGeneralTab() {
         JPanel panel = new JPanel();
+        panel.setLayout(new MigLayout());
+        panel.add(createNationsPanel(), "sizegroup");
+        panel.add(createProvincesPanel(), "sizegroup");
 
-        JPanel nations = new JPanel();
-        nations.setBorder(BorderFactory.createTitledBorder("Nations"));
-        nations.setPreferredSize(new Dimension(200, 400));
+        return panel;
+    }
+
+    private JComponent createNationsPanel() {
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder("Nations"));
 
         // InfoLabel
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
@@ -160,6 +164,7 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = FrameManager.getInstance().showInputDialog("Enter new Nation's name:");
                 if (name != null) {
+                    // TODO test if already existing
                     scenario.getNations().addElement(new Nation(name));
                 }
             }
@@ -184,24 +189,22 @@ public class EditorScreen extends UIFrame {
             }
         });
 
-
         // ScrollPane
         JScrollPane nationScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         nationScrollPane.setViewportView(nationList);
 
-
         // layout of nations panel
-        nations.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
-        nations.add(nationsInfoLabel);
-        nations.add(nbar.get());
-        nations.add(nationScrollPane, "grow");
+        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
+        panel.add(nationsInfoLabel);
+        panel.add(nbar.get());
+        panel.add(nationScrollPane, "height 400!, width 300!");
 
+        return panel;
+    }
 
-        // provinces panel
-
-        JPanel provinces = new JPanel();
-        provinces.setBorder(BorderFactory.createTitledBorder("Provinces"));
-        provinces.setPreferredSize(new Dimension(200, 400));
+    private JComponent createProvincesPanel() {
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder("Provinces"));
 
         // InfoLabel
         JLabel provinceInfoLabel = new JLabel("X Provinces");
@@ -226,7 +229,6 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = FrameManager.getInstance().showInputDialog("Enter new Province's name:");
                 if (name != null) {
-
                 }
             }
         });
@@ -254,15 +256,10 @@ public class EditorScreen extends UIFrame {
         provinceScrollPane.setViewportView(provinceList);
 
         // layout of province panel
-        provinces.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
-        provinces.add(provinceInfoLabel);
-        provinces.add(pbar.get());
-        provinces.add(provinceScrollPane, "grow");
-
-        // set layout
-        panel.setLayout(new MigLayout());
-        panel.add(nations);
-        panel.add(provinces);
+        panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
+        panel.add(provinceInfoLabel);
+        panel.add(pbar.get());
+        panel.add(provinceScrollPane, "height 400!, width 300!");
 
         return panel;
     }
@@ -322,11 +319,4 @@ public class EditorScreen extends UIFrame {
 
         return panel;
     }
-
-    @Override
-    public void switchTo() {
-        super.switchTo();
-        EditorManager.getInstance().loadInitialScenario();
-    }
-
 }

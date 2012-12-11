@@ -52,7 +52,7 @@ import org.iremake.client.ui.WindowClosingListener;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.model.ScenarioUIView;
+import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
@@ -67,8 +67,7 @@ import org.tools.xml.XMLHelper;
  */
 public class EditorScreen extends UIFrame {
 
-    private Scenario scenario = new Scenario();
-    private ScenarioUIView uiscenario = new ScenarioUIView(scenario);
+    private UIScenario scenario = new UIScenario();
     private String selectedTerrain;
     private JList<Nation> nationsList;
     private MainMapPanel mainMapPanel;
@@ -90,7 +89,7 @@ public class EditorScreen extends UIFrame {
         content.add(createMenuBar(), "wrap");
         content.add(tabPane, "grow");
 
-        scenario.addMapChangedListener(new ScenarioChangedListener() {
+        scenario.addScenarioChangedListener(new ScenarioChangedListener() {
             @Override
             public void tileChanged(MapPosition p, String id) {
                 miniMapPanel.tileChanged();
@@ -353,7 +352,7 @@ public class EditorScreen extends UIFrame {
         JPanel panel = new JPanel();
 
         // create mini map and add to panel
-        miniMapPanel = new MiniMapPanel(uiscenario);
+        miniMapPanel = new MiniMapPanel(scenario);
 
         // terrain button
         final JButton terrainButton = Button.EditorTerrain.create();
@@ -385,7 +384,7 @@ public class EditorScreen extends UIFrame {
         infoPanel = new EditorMapInfoPanel(scenario);
 
         // create main map panel and add
-        mainMapPanel = new MainMapPanel(uiscenario);
+        mainMapPanel = new MainMapPanel(scenario);
         mainMapPanel.addTileListener(new MapTileListener() {
             @Override
             public void focusChanged(MapPosition p) {

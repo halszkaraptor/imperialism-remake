@@ -28,7 +28,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.model.ScenarioUIView;
+import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 
 /**
@@ -40,7 +40,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private List<MapTileListener> tileListeners = new LinkedList<>();
-    private ScenarioUIView model;
+    private UIScenario model;
     private Dimension tileSize;
     private MapPosition offset = new MapPosition();
     private MapPosition hoover = new MapPosition();
@@ -49,7 +49,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      *
      * @param model
      */
-    public MainMapPanel(final ScenarioUIView model) {
+    public MainMapPanel(final UIScenario model) {
 
         this.model = model;
 
@@ -68,7 +68,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 MapPosition p = getPositionFromXY(e.getX(), e.getY());
 
                 // TODO the white pieces at the edge are handled how?
-                if (model.contains(p)) {
+                if (model.containsPosition(p)) {
                     // inside, check if over new tile
                     if (!p.equals(hoover)) {
                         hoover.setFrom(p);
@@ -90,7 +90,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     MapPosition p = getPositionFromXY(e.getX(), e.getY());
 
-                    if (model.contains(p)) {
+                    if (model.containsPosition(p)) {
                         notifyTileClickedListeners(p);
                     }
                 }

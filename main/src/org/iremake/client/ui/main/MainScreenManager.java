@@ -27,7 +27,7 @@ import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.client.ui.model.ScenarioUIView;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
@@ -46,7 +46,7 @@ public class MainScreenManager implements MapTileListener, ScenarioUIModelChange
     private Scenario scenario;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
-    private ScenarioUIModel model;
+    private ScenarioUIView model;
 
     private static MainScreenManager singleton;
 
@@ -85,7 +85,7 @@ public class MainScreenManager implements MapTileListener, ScenarioUIModelChange
      * @param map
      * @param model
      */
-    public void setScenarioContent(Scenario map, ScenarioUIModel model) {
+    public void setScenarioContent(Scenario map, ScenarioUIView model) {
         this.scenario = map;
         this.model = model;
 

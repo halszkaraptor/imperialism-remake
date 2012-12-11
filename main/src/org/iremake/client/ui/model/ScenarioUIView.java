@@ -21,7 +21,6 @@ import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.model.TerrainTile;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.model.ScenarioChangedListener;
@@ -32,9 +31,9 @@ import org.iremake.common.model.ScenarioChangedListener;
  *
  */
 // TODO fine-adjust playing together with Scenario
-public class ScenarioUIModel implements ScenarioChangedListener {
+public class ScenarioUIView implements ScenarioChangedListener {
 
-    private static final Logger LOG = Logger.getLogger(ScenarioUIModel.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScenarioUIView.class.getName());
     private int rows;
     private int columns;
     private TerrainTile[][] map; // first rows, then columns
@@ -43,7 +42,8 @@ public class ScenarioUIModel implements ScenarioChangedListener {
     /**
      *
      */
-    public ScenarioUIModel() {
+    public ScenarioUIView(Scenario scenario) {
+        scenario.addMapChangedListener(this);
     }
 
     /**
@@ -122,7 +122,7 @@ public class ScenarioUIModel implements ScenarioChangedListener {
      * @param gmap
      */
     @Override
-    public void mapChanged(Scenario gmap) {
+    public void scenarioChanged(Scenario gmap) {
         rows = gmap.getNumberRows();
         columns = gmap.getNumberColumns();
         map = new TerrainTile[rows][columns];

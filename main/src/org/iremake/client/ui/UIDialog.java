@@ -18,7 +18,6 @@ package org.iremake.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JComponent;
@@ -71,7 +70,7 @@ public class UIDialog {
      *
      * @param closingListener
      */
-    protected void setClosingListener(WindowClosingListener closingListener) {
+    public void setClosingListener(WindowClosingListener closingListener) {
         this.closingListener = closingListener;
     }
 
@@ -93,9 +92,7 @@ public class UIDialog {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (closingListener == null || closingListener.closing() == true) {
-                    dispose();
-                }
+                close();
             }
         });
 
@@ -115,8 +112,10 @@ public class UIDialog {
         dialog.setVisible(true);
     }
 
-    protected void dispose() {
-        dialog.dispose();
+    protected void close() {
+        if (closingListener == null || closingListener.closing() == true) {
+            dialog.dispose();
+        }
     }
 
     public static void make(JComponent content, String title) {

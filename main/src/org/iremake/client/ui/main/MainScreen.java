@@ -30,8 +30,9 @@ import org.iremake.client.ui.game.GameDialogBuilder;
 import org.iremake.client.ui.game.GamePanel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.client.ui.model.ScenarioUIView;
 import org.iremake.common.model.Scenario;
+import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.ClockLabel;
 
@@ -43,9 +44,9 @@ public class MainScreen extends UIFrame {
     public MainScreen() {
         JPanel panel = new JPanel();
 
-        ScenarioUIModel model = new ScenarioUIModel();
-        Scenario map = new Scenario();
-        MainScreenManager.getInstance().setScenarioContent(map, model);
+        Scenario scenario = new Scenario();
+        ScenarioUIView model = new ScenarioUIView(scenario);
+        MainScreenManager.getInstance().setScenarioContent(scenario, model);
 
         // Add MapPanel
         MainMapPanel mainMapPanel = new MainMapPanel(model);
@@ -62,7 +63,7 @@ public class MainScreen extends UIFrame {
         setContent(panel);
     }
 
-    private JPanel createControlPanel(ScenarioUIModel model) {
+    private JPanel createControlPanel(ScenarioUIView model) {
         JPanel panel = new JPanel();
 
         JPanel infPanel = new JPanel();
@@ -126,5 +127,10 @@ public class MainScreen extends UIFrame {
         panel.add(new ClockLabel(), "alignx center");
 
         return panel;
+    }
+
+    public void switchTo(Resource r) {
+        super.switchTo();
+        MainScreenManager.getInstance().loadScenario(r);
     }
 }

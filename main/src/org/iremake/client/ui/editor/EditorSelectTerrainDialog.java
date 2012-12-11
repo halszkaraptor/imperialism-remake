@@ -33,15 +33,16 @@ import org.iremake.common.Settings;
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 
+    private String selected;
+
     public EditorSelectTerrainDialog() {
         super("Select Terrain");
-        
+
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-        String id = ((JButton) e.getSource()).getName();
-        EditorManager.getInstance().terrainSelected(id);
-        dispose();
+                selected = ((JButton) e.getSource()).getName();
+                close();
             }
         };
 
@@ -77,5 +78,9 @@ public class EditorSelectTerrainDialog extends UIDialog {
 
         setContent(panel);
         setMinimumSize(0, 0);
+    }
+
+    public String getSelection() {
+        return selected;
     }
 }

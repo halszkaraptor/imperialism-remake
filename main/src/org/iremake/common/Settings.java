@@ -33,6 +33,11 @@ public class Settings {
 
     private static Map<String, String> terrainTypes = new HashMap<>(0);
 
+    // TODO get this from xml
+    public static String getDefaultTerrainID() {
+        return "s1";
+    }
+
     private Settings() {
     }
 
@@ -73,14 +78,5 @@ public class Settings {
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
     public static String getTerrainType(String id) {
         return terrainTypes.get(id);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public static String getDefaultTerrainID() {
-        return "s1"; // sea
-        // TODO softcode this
     }
 }

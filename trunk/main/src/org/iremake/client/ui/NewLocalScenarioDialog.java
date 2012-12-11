@@ -31,7 +31,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.main.MainScreen;
-import org.iremake.client.ui.main.MainScreenManager;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
@@ -110,10 +109,9 @@ public class NewLocalScenarioDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selectedScenario != null) {
-                    dispose();
-                    UIFrame frame = new MainScreen();
-                    frame.switchTo();
-                    MainScreenManager.getInstance().loadScenario(selectedScenario);
+                    close();
+                    MainScreen frame = new MainScreen();
+                    frame.switchTo(selectedScenario);
                 }
             }
         });

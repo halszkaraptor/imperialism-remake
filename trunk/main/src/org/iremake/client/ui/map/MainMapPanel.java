@@ -28,7 +28,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.resources.TerrainLoader;
-import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.client.ui.model.ScenarioUIView;
 import org.iremake.common.model.MapPosition;
 
 /**
@@ -40,7 +40,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private List<MapTileListener> tileListeners = new LinkedList<>();
-    private ScenarioUIModel model;
+    private ScenarioUIView model;
     private Dimension tileSize;
     private MapPosition offset = new MapPosition();
     private MapPosition hoover = new MapPosition();
@@ -49,7 +49,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      *
      * @param model
      */
-    public MainMapPanel(final ScenarioUIModel model) {
+    public MainMapPanel(final ScenarioUIView model) {
 
         this.model = model;
 

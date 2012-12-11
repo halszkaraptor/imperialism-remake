@@ -16,12 +16,20 @@
  */
 package org.iremake.client.ui.editor;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -30,24 +38,42 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
+import nu.xom.Element;
+import nu.xom.ParsingException;
+import org.iremake.client.resources.IOManager;
+import org.iremake.client.resources.Places;
+import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.UIFrame;
+import org.iremake.client.ui.WindowClosingListener;
 import org.iremake.client.ui.map.MainMapPanel;
+import org.iremake.client.ui.map.MapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.model.ScenarioUIModel;
+import org.iremake.client.ui.model.ScenarioUIView;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ScenarioChangedListener;
 import org.tools.ui.ButtonBar;
 import org.tools.xml.XList;
+import org.tools.xml.XMLHelper;
 
 /**
  *
  */
 public class EditorScreen extends UIFrame {
+
+    private Scenario scenario = new Scenario();
+    private ScenarioUIView uiscenario = new ScenarioUIView(scenario);
+    private String selectedTerrain;
+    private JList<Nation> nationsList;
+    private MainMapPanel mainMapPanel;
+    private MiniMapPanel miniMapPanel;
+    private EditorMapInfoPanel infoPanel;
 
     public EditorScreen() {
         JPanel content = new JPanel();
@@ -57,13 +83,33 @@ public class EditorScreen extends UIFrame {
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tabPane.addTab("General", createGeneralTab());
         tabPane.addTab("Map", createMapTab());
-        tabPane.setSelectedIndex(1);
+        tabPane.setSelectedIndex(1); // map selected initially
 
         // set layout (vertically first menubar, then tabbed pane)
         content.setLayout(new MigLayout("fill", "[]", "[][grow]"));
         content.add(createMenuBar(), "wrap");
         content.add(tabPane, "grow");
 
+        scenario.addMapChangedListener(new ScenarioChangedListener() {
+            @Override
+            public void tileChanged(MapPosition p, String id) {
+                miniMapPanel.tileChanged();
+                mainMapPanel.tileChanged(p);
+                infoPanel.mainMapTileChanged(p);
+            }
+            @Override
+            public void scenarioChanged(Scenario scenario) {
+                // TODO size of map could also have changed!!!
+                mainMapPanel.mapChanged();
+
+                Dimension size = mainMapPanel.getSize();
+                Dimension tileSize = TerrainLoader.getTileSize();
+                // tell the minimap about our size
+                float fractionRows = (float) size.height / tileSize.height / scenario.getNumberRows();
+                float fractionColumns = (float) size.width / tileSize.width / scenario.getNumberColumns();
+                miniMapPanel.mapChanged(fractionRows, fractionColumns);
+            }
+        });
         setContent(content);
     }
 
@@ -90,7 +136,21 @@ public class EditorScreen extends UIFrame {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorManager.getInstance().loadScenarioDialog();
+                JFileChooser fileChooser = IOManager.getFileChooser();
+                if (FrameManager.getInstance().showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+                    File f = fileChooser.getSelectedFile();
+                    // read file and parse to xml
+                    Element xml;
+                    try (InputStream is = new FileInputStream(f)) {
+                        xml = XMLHelper.read(is);
+                    } catch (ParsingException | IOException ex) {
+                        // LOG.log(Level.SEVERE, null, ex);
+                        // NotificationFactory.createInfoPane(dialog, "Loading failed.");
+                        // TODO also make it working with dialogs
+                        return;
+                    }
+                    scenario.fromXML(xml);
+                }
             }
         });
 
@@ -99,7 +159,25 @@ public class EditorScreen extends UIFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorManager.getInstance().saveScenarioDialog();
+                JFileChooser fileChooser = IOManager.getFileChooser();
+                if (FrameManager.getInstance().showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+                    File f = fileChooser.getSelectedFile();
+                    String name = f.getAbsolutePath();
+                    if (!name.endsWith(".xml")) {
+                        f = new File(name + ".xml");
+                    }
+                    Element xml = scenario.toXML();
+                    OutputStream os;
+                    try {
+                        os = new FileOutputStream(f);
+                        XMLHelper.write(os, xml);
+                    } catch (IOException ex) {
+                        //LOG.log(Level.SEVERE, null, ex);
+                        //NotificationFactory.createInfoPane(TableEditorFrame.this, "Saving failed.");
+                        return;
+                    }
+                    //NotificationFactory.createInfoPane(TableEditorFrame.this, "Table saved.");
+                }
             }
         });
 
@@ -133,6 +211,10 @@ public class EditorScreen extends UIFrame {
         return panel;
     }
 
+    /**
+     *
+     * @return
+     */
     private JComponent createNationsPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Nations"));
@@ -151,12 +233,10 @@ public class EditorScreen extends UIFrame {
         ButtonBar nbar = new ButtonBar();
         nbar.add(addnationButton, removenationButton, changenationButton);
 
-        final Scenario scenario = EditorManager.getInstance().getScenario();
-
         // list
-        final JList<Nation> nationList = new JList<>();
-        nationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        nationList.setModel(scenario.getNations());
+        nationsList = new JList<>();
+        nationsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        nationsList.setModel(scenario.getNations()); // TODO update model when scenario changes
 
         // set button actions
         addnationButton.addActionListener(new ActionListener() {
@@ -172,7 +252,7 @@ public class EditorScreen extends UIFrame {
         removenationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = nationList.getSelectedIndex();
+                int row = nationsList.getSelectedIndex();
                 if (row != -1) {
                     // TODO are you sure?
                     scenario.getNations().removeElementAt(row);
@@ -182,16 +262,16 @@ public class EditorScreen extends UIFrame {
         changenationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = nationList.getSelectedIndex();
+                int row = nationsList.getSelectedIndex();
                 if (row != -1) {
                     // TODO implement
                 }
             }
         });
 
-        // ScrollPane
+        // scrollpane
         JScrollPane nationScrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        nationScrollPane.setViewportView(nationList);
+        nationScrollPane.setViewportView(nationsList);
 
         // layout of nations panel
         panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
@@ -272,12 +352,8 @@ public class EditorScreen extends UIFrame {
     private JPanel createMapTab() {
         JPanel panel = new JPanel();
 
-        ScenarioUIModel model = new ScenarioUIModel();
-        Scenario map = new Scenario();
-        EditorManager.getInstance().setScenarioContent(map, model);
-
         // create mini map and add to panel
-        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
+        miniMapPanel = new MiniMapPanel(uiscenario);
 
         // terrain button
         final JButton terrainButton = Button.EditorTerrain.create();
@@ -287,36 +363,58 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 Point p = terrainButton.getLocationOnScreen();
                 p.x += 50;
-                UIDialog dialog = new EditorSelectTerrainDialog();
+                final EditorSelectTerrainDialog dialog = new EditorSelectTerrainDialog();
+                dialog.setClosingListener(new WindowClosingListener() {
+                    @Override
+                    public boolean closing() {
+                        selectedTerrain = dialog.getSelection();
+                        return true;
+                    }
+                });
                 dialog.setLocation(p);
                 dialog.start();
             }
         });
-        // nation button
-        JButton nationButton = Button.EditorNation.create();
         // province button
         JButton provinceButton = Button.EditorProvince.create();
 
         ButtonBar bar = new ButtonBar();
-        bar.add(terrainButton, nationButton, provinceButton);
+        bar.add(terrainButton, provinceButton);
 
         // info map panel and add
-        EditorMapInfoPanel infoPanel = new EditorMapInfoPanel(map);
+        infoPanel = new EditorMapInfoPanel(scenario);
 
         // create main map panel and add
-        MainMapPanel mainMapPanel = new MainMapPanel(model);
+        mainMapPanel = new MainMapPanel(uiscenario);
+        mainMapPanel.addTileListener(new MapTileListener() {
+            @Override
+            public void focusChanged(MapPosition p) {
+                infoPanel.mainMapTileChanged(p);
+            }
 
-        // add them to manager
-        EditorManager.getInstance().setMapTab(mainMapPanel, miniMapPanel, infoPanel);
+            @Override
+            public void tileClicked(MapPosition p) {
+                if (selectedTerrain != null) {
+                    scenario.setTerrainAt(p, selectedTerrain);
+                }
+            }
+        });
+        miniMapPanel.setFocusChangedListener(mainMapPanel);
 
         // set layout
         panel.setLayout(new MigLayout("wrap 2", "[][grow]", "[][][grow]"));
-
         panel.add(miniMapPanel, "width 200:300:, hmin 100");
         panel.add(mainMapPanel, "span 1 3, grow");
         panel.add(bar.get());
         panel.add(infoPanel, "grow");
 
         return panel;
+    }
+
+    @Override
+    public void switchTo() {
+        super.switchTo();
+        // load initial scenario
+        IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
     }
 }

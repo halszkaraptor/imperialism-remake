@@ -30,7 +30,6 @@ import org.iremake.client.Option;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.client.ui.editor.EditorManager;
 import org.iremake.client.ui.editor.EditorScreen;
 import org.tools.ui.BrowserPanel;
 import org.tools.ui.ButtonBar;
@@ -155,7 +154,6 @@ public class StartScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 UIFrame frame = new EditorScreen();
                 frame.switchTo();
-                EditorManager.getInstance().loadInitialScenario();
             }
         });
 

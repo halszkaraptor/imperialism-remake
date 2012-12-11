@@ -17,7 +17,6 @@
 package org.iremake.client.ui;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
 import javax.swing.JComponent;
@@ -35,6 +34,7 @@ import org.tools.ui.utils.GraphicsUtils;
 /**
  * Startframe / Mainframe / Editorframe juggling.
  */
+// TODO closing listener for clicking on the cross or alt-f4
 public class FrameManager {
 
     private static FrameManager singleton;

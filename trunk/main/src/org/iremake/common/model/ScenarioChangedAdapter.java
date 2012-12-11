@@ -17,21 +17,16 @@
 package org.iremake.common.model;
 
 /**
- * All the ways the scenario can have changed.
+ * Adapter class for the ScenarioChangedListener.
  */
-public interface ScenarioChangedListener {
+public class ScenarioChangedAdapter implements ScenarioChangedListener {
 
-    /**
-     *
-     * @param p
-     * @param id
-     */
-    public void tileChanged(MapPosition p, String id);
+    @Override
+    public void tileChanged(MapPosition p, String id) {
+    }
 
-    /**
-     * Changed completely.
-     *
-     * @param scenario
-     */
-    public void scenarioChanged(Scenario scenario);
+    @Override
+    public void scenarioChanged(Scenario scenario) {
+    }
+
 }

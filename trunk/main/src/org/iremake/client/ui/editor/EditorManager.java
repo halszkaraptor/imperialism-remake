@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
@@ -32,7 +31,7 @@ import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.map.MainMapPanel;
-import org.iremake.client.ui.map.MainMapTileListener;
+import org.iremake.client.ui.map.MapTileListener;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.ScenarioUIModel;
 import org.iremake.client.ui.model.ScenarioUIModelChangedListener;
@@ -45,14 +44,13 @@ import org.tools.xml.XMLHelper;
  * Editor frame manager. Holds all the various panels together and manages
  * actions between them. Kind of dividing the work with the builder.
  */
-public class EditorManager implements MainMapTileListener, ScenarioUIModelChangedListener {
+public class EditorManager implements MapTileListener, ScenarioUIModelChangedListener {
 
     private EditorMapInfoPanel mapInfoPanel;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
     private Scenario scenario = new Scenario();
     private ScenarioUIModel model;
-    private JFileChooser fileChooser;
     private String terrainSelectedID = Settings.getDefaultTerrainID(); // TODO better initial value
 
     private static EditorManager singleton;
@@ -61,19 +59,6 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * Sets the file chooser for the scenarios.
      */
     private EditorManager() {
-        fileChooser = new JFileChooser(IOManager.getPath(Places.Scenarios, ""));
-        fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                return f.isDirectory() || (f.getName().startsWith("scenario.") && f.getName().endsWith(".xml"));
-            }
-
-            @Override
-            public String getDescription() {
-                return "Map files (*.xml)";
-            }
-        });
     }
 
     /**
@@ -100,7 +85,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
         miniMapPanel = miniPanel;
 
         // wiring (main map tells manager, mini map tells main map)
-        mainMapPanel.setTileListener(this);
+        mainMapPanel.addTileListener(this);
         miniMapPanel.setFocusChangedListener(mainMapPanel);
     }
 
@@ -199,6 +184,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      * Loads a scenario. (With file chooser dialog).
      */
     public void loadScenarioDialog() {
+        JFileChooser fileChooser = IOManager.getFileChooser();
         if (FrameManager.getInstance().showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             // read file and parse to xml
@@ -220,6 +206,7 @@ public class EditorManager implements MainMapTileListener, ScenarioUIModelChange
      */
     // TODO not using saveScenario?
     public void saveScenarioDialog() {
+        JFileChooser fileChooser = IOManager.getFileChooser();
         if (FrameManager.getInstance().showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             String name = f.getAbsolutePath();

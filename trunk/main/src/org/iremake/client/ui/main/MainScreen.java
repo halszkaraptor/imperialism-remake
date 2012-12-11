@@ -19,9 +19,9 @@ package org.iremake.client.ui.main;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.StartScreen;
@@ -66,7 +66,7 @@ public class MainScreen extends UIFrame {
         JPanel panel = new JPanel();
 
         JPanel infPanel = new JPanel();
-        infPanel.setBorder(new LineBorder(Color.black, 1));
+        infPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
         // exit button
         JButton exitButton = Button.NormalExit.create();
@@ -105,7 +105,7 @@ public class MainScreen extends UIFrame {
 
         // create info panel
         JPanel infoPanel = new JPanel();
-        infoPanel.setBorder(new LineBorder(Color.black, 1));
+        infoPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
         JButton turnButton = new JButton("End Turn");
         turnButton.setFocusable(false);
@@ -126,13 +126,5 @@ public class MainScreen extends UIFrame {
         panel.add(new ClockLabel(), "alignx center");
 
         return panel;
-    }
-
-    @Override
-    public void switchTo() {
-        super.switchTo();
-
-        // and load a basic scenario
-        MainScreenManager.getInstance().loadInitialScenario();
     }
 }

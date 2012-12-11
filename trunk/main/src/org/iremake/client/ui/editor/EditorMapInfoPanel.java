@@ -16,12 +16,11 @@
  */
 package org.iremake.client.ui.editor;
 
-import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import org.iremake.common.model.MapPosition;
 import org.iremake.common.Settings;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 
 /**
@@ -39,7 +38,7 @@ public class EditorMapInfoPanel extends JPanel {
      * @param map
      */
     public EditorMapInfoPanel(Scenario map) {
-        setBorder(new LineBorder(Color.black, 1));
+        setBorder(BorderFactory.createTitledBorder("Info"));
 
         tile = new JLabel();
         add(tile);

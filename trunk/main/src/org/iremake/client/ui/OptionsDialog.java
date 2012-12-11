@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,7 +66,9 @@ public class OptionsDialog extends UIDialog {
     }
 
     private JPanel createGeneralPanel() {
-        JPanel panel = new JPanel();
+
+        JPanel graphics = new JPanel();
+        graphics.setBorder(BorderFactory.createTitledBorder("Graphics"));
 
         // components
         JCheckBox fullScreen = new JCheckBox("Start in Full Screen");
@@ -77,10 +80,19 @@ public class OptionsDialog extends UIDialog {
         JCheckBox mainControlsRight = new JCheckBox("Main Screen controls on right side");
         items.add(new OptionsDialogCheckBoxItem(mainControlsRight, Option.MainScreenControlsRight));
 
+        // graphics panel layout
+        graphics.setLayout(new MigLayout("flowy"));
+        graphics.add(fullScreen);
+        graphics.add(mainControlsRight);
+
+        JPanel language = new JPanel();
+        language.setBorder(BorderFactory.createTitledBorder("Language"));
+
         // layout
+        JPanel panel = new JPanel();
         panel.setLayout(new MigLayout("flowy"));
-        panel.add(fullScreen);
-        panel.add(mainControlsRight);
+        panel.add(graphics, "sizegroupx");
+        panel.add(language, "sizegroupx");
 
         return panel;
     }

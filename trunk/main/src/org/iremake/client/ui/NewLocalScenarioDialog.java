@@ -21,16 +21,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.main.MainScreen;
+import org.iremake.client.ui.main.MainScreenManager;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
@@ -39,6 +40,8 @@ import org.tools.ui.ButtonBar;
  *
  */
 public class NewLocalScenarioDialog extends UIDialog {
+
+    Resource selectedScenario;
 
     public NewLocalScenarioDialog() {
         super("Local Scenario");
@@ -49,7 +52,7 @@ public class NewLocalScenarioDialog extends UIDialog {
         scanner.doScan();
         final List<String> titles = scanner.getScenarios();
         JList<String> selectList = new JList<>();
-        selectList.setBorder(new LineBorder(Color.black, 1));
+        selectList.setBorder(BorderFactory.createTitledBorder("Scenarios"));
         selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // setting up a JList model
         selectList.setModel(new AbstractListModel<String>() {
@@ -70,7 +73,7 @@ public class NewLocalScenarioDialog extends UIDialog {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     int index = e.getFirstIndex();
-                    Resource resource = scanner.getScenarioResource(index);
+                    selectedScenario = scanner.getScenarioResource(index);
                     // TODO load and update info
                 }
             }
@@ -95,7 +98,7 @@ public class NewLocalScenarioDialog extends UIDialog {
 
     private JPanel makeMapPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.black, 1));
+        panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 
         return panel;
     }
@@ -106,9 +109,12 @@ public class NewLocalScenarioDialog extends UIDialog {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                UIFrame frame = new MainScreen();
-                frame.switchTo();
+                if (selectedScenario != null) {
+                    dispose();
+                    UIFrame frame = new MainScreen();
+                    frame.switchTo();
+                    MainScreenManager.getInstance().loadScenario(selectedScenario);
+                }
             }
         });
 
@@ -120,7 +126,7 @@ public class NewLocalScenarioDialog extends UIDialog {
 
     private JPanel makeInfoPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(new LineBorder(Color.black, 1));
+        panel.setBorder(BorderFactory.createTitledBorder("Info"));
         return panel;
     }
 }

@@ -33,6 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.io.Resource;
@@ -53,16 +55,40 @@ import org.tools.xml.XMLable;
 public class IOManager {
 
     private static Set<String> statistics = new HashSet<>(10);
-
     private static final Logger LOG = Logger.getLogger(IOManager.class.getName());
     private static final String base = "";
     // private static final String base = (new File(Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath())).getParent() + File.separator;
     // private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
+    private static JFileChooser fileChooser;
 
     /**
      * No instantiation.
      */
     private IOManager() {
+    }
+
+    /**
+     * Lazy initialization.
+     *
+     * @return
+     */
+    public static JFileChooser getFileChooser() {
+        if (fileChooser == null) {
+            fileChooser = new JFileChooser(IOManager.getPath(Places.Scenarios, ""));
+            fileChooser.setMultiSelectionEnabled(false);
+            fileChooser.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || (f.getName().startsWith("scenario.") && f.getName().endsWith(".xml"));
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Map files (*.xml)";
+                }
+            });
+        }
+        return fileChooser;
     }
 
     /**
@@ -199,15 +225,15 @@ public class IOManager {
      * @return
      */
     public static Resource getAsResource(Places place, String location) {
-            String path = IOManager.getPath(place, location);
-            statistics.add(path);
+        String path = IOManager.getPath(place, location);
+        statistics.add(path);
         try {
             return ResourceUtils.asResource(path);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
         return null;
-   }
+    }
 
     /**
      *
@@ -229,7 +255,7 @@ public class IOManager {
      */
     public static URL getURL(Places place, String location) {
         String path = IOManager.getPath(place, location);
-            statistics.add(path);
+        statistics.add(path);
         try {
             return new File(path).toURI().toURL();
         } catch (MalformedURLException ex) {

@@ -21,7 +21,7 @@ import org.iremake.common.model.MapPosition;
 /**
  * Changes of the main map, mainly due to mouse actions (moves or clicks).
  */
-public interface MainMapTileListener {
+public interface MapTileListener {
 
     /**
      *

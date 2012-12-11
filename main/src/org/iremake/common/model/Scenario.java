@@ -82,7 +82,7 @@ public class Scenario implements XMLable {
      * @param p
      * @return
      */
-    private boolean containsPosition(MapPosition p) {
+    public boolean containsPosition(MapPosition p) {
         return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
 
@@ -141,7 +141,7 @@ public class Scenario implements XMLable {
      *
      * @param l
      */
-    public void addMapChangedListener(ScenarioChangedListener l) {
+    public void addScenarioChangedListener(ScenarioChangedListener l) {
         listeners.add(l);
     }
 
@@ -149,7 +149,7 @@ public class Scenario implements XMLable {
      *
      * @param l
      */
-    public void removeMapChangedListener(ScenarioChangedListener l) {
+    public void removeScenarioChangedListener(ScenarioChangedListener l) {
         listeners.remove(l);
     }
 

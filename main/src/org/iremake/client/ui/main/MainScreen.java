@@ -17,12 +17,18 @@
 package org.iremake.client.ui.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import nu.xom.ParsingException;
+import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
@@ -30,40 +36,63 @@ import org.iremake.client.ui.game.GameDialogBuilder;
 import org.iremake.client.ui.game.GamePanel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
-import org.iremake.client.ui.model.ScenarioUIView;
+import org.iremake.client.ui.model.UIScenario;
+import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ScenarioChangedListener;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.ClockLabel;
+import org.tools.xml.XMLHelper;
 
 /**
  *
  */
 public class MainScreen extends UIFrame {
 
+    private static final Logger LOG = Logger.getLogger(MainScreen.class.getName());
+    private UIScenario scenario = new UIScenario();
+    private MainMapPanel mainMapPanel;
+    private MiniMapPanel miniMapPanel;
+
     public MainScreen() {
         JPanel panel = new JPanel();
 
-        Scenario scenario = new Scenario();
-        ScenarioUIView model = new ScenarioUIView(scenario);
-        MainScreenManager.getInstance().setScenarioContent(scenario, model);
-
         // Add MapPanel
-        MainMapPanel mainMapPanel = new MainMapPanel(model);
-
-        MainScreenManager.getInstance().setPanels(mainMapPanel);
+        mainMapPanel = new MainMapPanel(scenario);
 
         // add control panel to layered pane and position
-        JPanel controlPanel = createControlPanel(model);
+        JPanel controlPanel = createControlPanel();
 
         panel.setLayout(new MigLayout("fill", "[grow][]"));
         panel.add(mainMapPanel, "grow");
         panel.add(controlPanel, "growy, wmin 300");
 
+        scenario.addScenarioChangedListener(new ScenarioChangedListener() {
+            @Override
+            public void tileChanged(MapPosition p, String id) {
+                miniMapPanel.tileChanged();
+                mainMapPanel.tileChanged(p);
+            }
+
+            @Override
+            public void scenarioChanged(Scenario scenario) {
+                // TODO size of map could also have changed!!!
+                mainMapPanel.mapChanged();
+
+                Dimension size = mainMapPanel.getSize();
+                Dimension tileSize = TerrainLoader.getTileSize();
+                // tell the minimap about our size
+                float fractionRows = (float) size.height / tileSize.height / scenario.getNumberRows();
+                float fractionColumns = (float) size.width / tileSize.width / scenario.getNumberColumns();
+                miniMapPanel.mapChanged(fractionRows, fractionColumns);
+            }
+        });
+
         setContent(panel);
     }
 
-    private JPanel createControlPanel(ScenarioUIView model) {
+    private JPanel createControlPanel() {
         JPanel panel = new JPanel();
 
         JPanel infPanel = new JPanel();
@@ -87,9 +116,9 @@ public class MainScreen extends UIFrame {
         ubar.add(saveButton, exitButton);
 
         // create mini map and add to panel
-        MiniMapPanel miniMapPanel = new MiniMapPanel(model);
+        miniMapPanel = new MiniMapPanel(scenario);
+        miniMapPanel.setFocusChangedListener(mainMapPanel);
 
-        MainScreenManager.getInstance().setMiniMap(miniMapPanel);
 
         ButtonBar lbar = new ButtonBar();
         for (final GamePanel p : GamePanel.values()) {
@@ -131,6 +160,11 @@ public class MainScreen extends UIFrame {
 
     public void switchTo(Resource r) {
         super.switchTo();
-        MainScreenManager.getInstance().loadScenario(r);
+        try {
+            // load given scenario
+            XMLHelper.read(r, scenario);
+        } catch (IOException | ParsingException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import org.iremake.client.ui.model.ScenarioUIView;
+import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 
 /**
@@ -41,14 +41,14 @@ public class MiniMapPanel extends JPanel {
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
     private MiniMapFocusChangedListener focusChangedListener;
-    private ScenarioUIView model;
+    private UIScenario model;
     private BufferedImage miniMap;
 
     /**
      *
      * @param model
      */
-    public MiniMapPanel(ScenarioUIView model) {
+    public MiniMapPanel(UIScenario model) {
 
         this.model = model;
 

@@ -37,6 +37,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
@@ -70,6 +72,8 @@ public class EditorScreen extends UIFrame {
     private UIScenario scenario = new UIScenario();
     private String selectedTerrain;
     private JList<Nation> nationsList;
+    private Nation selectedNation;
+    private JList<Province> provinceList;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
     private EditorMapInfoPanel infoPanel;
@@ -96,6 +100,7 @@ public class EditorScreen extends UIFrame {
                 mainMapPanel.tileChanged(p);
                 infoPanel.mainMapTileChanged(p);
             }
+
             @Override
             public void scenarioChanged(Scenario scenario) {
                 // TODO size of map could also have changed!!!
@@ -107,6 +112,8 @@ public class EditorScreen extends UIFrame {
                 float fractionRows = (float) size.height / tileSize.height / scenario.getNumberRows();
                 float fractionColumns = (float) size.width / tileSize.width / scenario.getNumberColumns();
                 miniMapPanel.mapChanged(fractionRows, fractionColumns);
+
+                nationsList.setModel(scenario.getNations());
             }
         });
         setContent(content);
@@ -235,7 +242,26 @@ public class EditorScreen extends UIFrame {
         // list
         nationsList = new JList<>();
         nationsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        nationsList.setModel(scenario.getNations()); // TODO update model when scenario changes
+
+        nationsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                boolean adjusting = e.getValueIsAdjusting();
+                if (!adjusting) {
+                    XList<Nation> model = (XList<Nation>) nationsList.getModel();
+                    int row = nationsList.getSelectedIndex();
+                    if (row != -1) {
+                        Nation nation = model.getElementAt(row);
+                        selectedNation = nation;
+                        XList<Province> provinces = scenario.getProvinces(nation);
+                        // TODO tell the province panel all about it
+                        provinceList.setModel(provinces);
+                    } else {
+                        selectedNation = null;
+                    }
+                }
+            }
+        });
 
         // set button actions
         addnationButton.addActionListener(new ActionListener() {
@@ -244,7 +270,8 @@ public class EditorScreen extends UIFrame {
                 String name = FrameManager.getInstance().showInputDialog("Enter new Nation's name:");
                 if (name != null) {
                     // TODO test if already existing
-                    scenario.getNations().addElement(new Nation(name));
+                    XList<Nation> model = (XList<Nation>) nationsList.getModel();
+                    model.addElement(new Nation(name));
                 }
             }
         });
@@ -254,7 +281,8 @@ public class EditorScreen extends UIFrame {
                 int row = nationsList.getSelectedIndex();
                 if (row != -1) {
                     // TODO are you sure?
-                    scenario.getNations().removeElementAt(row);
+                    XList<Nation> model = (XList<Nation>) nationsList.getModel();
+                    model.removeElementAt(row);
                 }
             }
         });
@@ -297,10 +325,9 @@ public class EditorScreen extends UIFrame {
         pbar.add(addprovinceButton, removeprovinceButton, changeprovinceButton);
 
         // list
-        final JList<Province> provinceList = new JList<>();
+        provinceList = new JList<>();
         provinceList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        provinceList.setModel(new XList<>(Province.class));
-
+        // provinceList.setModel(new XList<>(Province.class));
 
         // set button actions
         addprovinceButton.addActionListener(new ActionListener() {
@@ -308,6 +335,10 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = FrameManager.getInstance().showInputDialog("Enter new Province's name:");
                 if (name != null) {
+                    // TODO selectedNation could be null, setModel could not have been set, than this will fail
+                    XList<Province> model = (XList<Province>) provinceList.getModel();
+                    Province province = scenario.newProvince(selectedNation, name);
+                    model.addElement(province);
                 }
             }
         });

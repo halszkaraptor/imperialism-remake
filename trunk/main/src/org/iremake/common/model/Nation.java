@@ -30,7 +30,7 @@ import org.tools.xml.XProperty;
 public class Nation implements XMLable {
 
     private XProperty properties = new XProperty(10);
-    private List<Integer> provinceIDs = new ArrayList<>();
+    private List<Integer> provinces = new ArrayList<>();
 
     private static final String NAME = "Nation";
 
@@ -51,7 +51,7 @@ public class Nation implements XMLable {
         Element element = new Element(NAME);
 
         element.appendChild(properties.toXML());
-        element.appendChild(XMLHandler.fromIntegerList(provinceIDs, "Provinces"));
+        element.appendChild(XMLHandler.fromIntegerList(provinces, "Provinces"));
 
         return element;
     }
@@ -67,11 +67,19 @@ public class Nation implements XMLable {
         // TODO checks (null, name)
 
         properties.fromXML(children.get(0));
-        provinceIDs = XMLHandler.toIntegerList(children.get(1));
+        provinces = XMLHandler.toIntegerList(children.get(1));
     }
 
     @Override
     public String toString() {
         return properties.get("name");
+    }
+
+    Iterable<Integer> getProvinces() {
+        return provinces;
+    }
+
+    void addProvince(Integer id) {
+        provinces.add(id);
     }
 }

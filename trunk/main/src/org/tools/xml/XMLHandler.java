@@ -17,6 +17,7 @@
 package org.tools.xml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,10 +127,15 @@ public class XMLHandler {
         Integer size = Integer.valueOf(element.getAttributeValue("size"));
         List<Integer> list = new ArrayList<>(size);
 
+        if (size == 0 & element.getValue().length() == 0) {
+            return list;
+        }
+
         // TODO check, no childs, end node
+
         String[] integers = element.getValue().split(IntegerSeparator);
         // TODO check integers.length == size
-        for (int i = 0; i < integers.length; i++) {
+        for (int i = 0; i < size; i++) {
             list.add(Integer.valueOf(integers[i]));
         }
 
@@ -145,12 +151,13 @@ public class XMLHandler {
             builder.append(value);
             builder.append(IntegerSeparator);
         }
+        builder.deleteCharAt(builder.length() - 1); // delete the last separator
         parent.appendChild(builder.toString());
 
         return parent;
     }
 
-    public static <T extends XMLable> Element fromList(List<T> list, String name) {
+    public static <T extends XMLable> Element fromCollection(Collection<T> list, String name) {
         Element parent = new Element(name);
         for (T item: list) {
             Element child = item.toXML();

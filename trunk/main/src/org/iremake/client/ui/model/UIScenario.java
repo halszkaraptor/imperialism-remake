@@ -95,5 +95,4 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
             }
         }
     }
-
 }

@@ -21,12 +21,25 @@ import nu.xom.Element;
 import org.tools.xml.XMLable;
 
 /**
- * A province has an id (int) and a name.
+ * A province has an id and a name.
  */
 public class Province implements XMLable {
 
-    private int id;
+    private Integer id;
     private String name;
+
+    public Province() {
+    }
+
+    public Province(Integer id, String name) {
+        // TODO check null
+        this.id = id;
+        this.name = name;
+    }
+
+    Integer getID() {
+        return id;
+    }
 
     /**
      * String representation is always the name, makes it easy to use in UI
@@ -48,7 +61,7 @@ public class Province implements XMLable {
     @Override
     public Element toXML() {
         Element element = new Element(NAME);
-        element.addAttribute(new Attribute("id", String.valueOf(id)));
+        element.addAttribute(new Attribute("id", id.toString()));
         element.addAttribute(new Attribute("name", name));
 
         return element;
@@ -61,6 +74,8 @@ public class Province implements XMLable {
      */
     @Override
     public void fromXML(Element parent) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // TODO checks (null, name)
+        id = Integer.valueOf(parent.getAttributeValue("id"));
+        name = parent.getAttributeValue("name");
     }
 }

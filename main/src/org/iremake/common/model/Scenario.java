@@ -16,9 +16,10 @@
  */
 package org.iremake.common.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
@@ -35,15 +36,17 @@ import org.tools.xml.XProperty;
 public class Scenario implements XMLable {
 
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
-    private int rows;
-    private int columns;
+    private int rows = 0;
+    private int columns = 0;
     private Tile[][] map;
-    private XList<Nation> nations = new XList<>(Nation.class);
-    private List<Province> provinces = new ArrayList<>(1024);
-    private List<ScenarioChangedListener> listeners = new LinkedList<>();
     private XProperty properties = new XProperty(10);
+    private XList<Nation> nations = new XList<>(Nation.class);
+    private Map<Integer, Province> provinces = new HashMap<>();
+
+    private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     public Scenario() {
+        nations.setKeepSorted(true);
     }
 
     /**
@@ -52,11 +55,12 @@ public class Scenario implements XMLable {
      * @param rows
      * @param columns
      */
-    public void setEmptyMap(int rows, int columns) {
+    public void createNew(int rows, int columns) {
         if (rows <= 0 || columns <= 0) {
             LOG.log(Level.INFO, "Zero or negative sizes!");
             return;
         }
+        clear();
         this.rows = rows;
         this.columns = columns;
         map = new Tile[rows][columns];
@@ -65,7 +69,20 @@ public class Scenario implements XMLable {
                 map[row][column] = new Tile(Settings.getDefaultTerrainID(), -1, -1);
             }
         }
-        fireMapChanged();
+        fireScenarioChanged();
+    }
+
+    /**
+     * Listeners are not cleared.
+     */
+    private void clear() {
+        properties.clear();
+        nations.clear();
+        provinces.clear();
+        rows = 0;
+        columns = 0;
+        map = null;
+        // TODO notify somebody?
     }
 
     /**
@@ -133,6 +150,47 @@ public class Scenario implements XMLable {
         return nations;
     }
 
+    public XList<Province> getProvinces(Nation nation) {
+
+        if (!nations.contains(nation)) {
+            LOG.log(Level.SEVERE, "Nation {0} not contained in this scenario?!", nation);
+            return null;
+        }
+
+        XList<Province> list = new XList<>(Province.class);
+        list.setKeepSorted(true);
+        for (Integer id: nation.getProvinces()) {
+            list.addElement(provinces.get(id));
+        }
+
+        return list;
+    }
+
+    /**
+     * Need to get unique IDs.
+     *
+     * @param name
+     * @return
+     */
+    public Province newProvince(Nation nation, String name) {
+        if (!nations.contains(nation)) {
+            LOG.log(Level.SEVERE, "Nation {0} not contained in this scenario?!", nation);
+            return null;
+        }
+
+        for (Integer id = 1; id < 1024; id++) {
+            if (!provinces.containsKey(id)) {
+                Province province = new Province(id, name);
+                provinces.put(id, province);
+                nation.addProvince(id);
+                return province;
+            }
+        }
+
+        // all 1024 (10bits storage) province ids are taken, cannot create a new one
+        return null;
+    }
+
     public String getTitle() {
         return properties.get("title");
     }
@@ -167,7 +225,7 @@ public class Scenario implements XMLable {
     /**
      *
      */
-    private void fireMapChanged() {
+    private void fireScenarioChanged() {
         for (ScenarioChangedListener l : listeners) {
             l.scenarioChanged(this);
         }
@@ -204,8 +262,8 @@ public class Scenario implements XMLable {
         // nation list
         parent.appendChild(nations.toXML());
 
-        // provinces list
-        parent.appendChild(XMLHandler.fromList(provinces, "Provinces"));
+        // write provinces
+        parent.appendChild(XMLHandler.fromCollection(provinces.values(), "Provinces"));
 
         return parent;
     }
@@ -219,8 +277,7 @@ public class Scenario implements XMLable {
     public void fromXML(Element parent) {
 
         // TODO clear (?) neccessary?
-        properties.clear();
-
+        clear();
         if (parent == null || !NAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
@@ -246,12 +303,16 @@ public class Scenario implements XMLable {
             }
         }
 
-        // TODO reading of Nations and Provinces
+        // reading of nations
         nations.fromXML(children.get(2));
 
-        provinces = XMLHandler.toList(children.get(3), Province.class);
+        // reading of provinces (first as list, then converting to hashmap with id)
+        List<Province> list = XMLHandler.toList(children.get(3), Province.class);
+        for (Province province: list) {
+            provinces.put(province.getID(), province);
+        }
 
         // Of course everything has changed.
-        fireMapChanged();
+        fireScenarioChanged();
     }
 }

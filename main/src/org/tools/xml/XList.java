@@ -28,7 +28,6 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import nu.xom.Element;
 import nu.xom.Elements;
-import org.tools.xml.XMLable;
 
 /**
  * A List consisting of generic XMLables and also implementing the ListModel
@@ -153,6 +152,16 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
     }
 
     /**
+     * Returns true if the list contains the specific element.
+     * 
+     * @param element
+     * @return
+     */
+    public boolean contains(E element) {
+        return list.contains(element);
+    }
+
+    /**
      * Inserts an element at a specific position, all others shift to the right.
      *
      * @param index
@@ -245,7 +254,8 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
      */
     @Override
     public Element toXML() {
-        Element parent = new Element(NAME + clazz.getSimpleName());
+        String name = NAME + clazz.getSimpleName();
+        Element parent = new Element(name);
 
         // store each element as child
         for (E element : list) {
@@ -267,7 +277,8 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
         // first clear
         clear();
 
-        if (parent == null || !NAME.equals(parent.getLocalName())) {
+        String name = NAME + clazz.getSimpleName();
+        if (parent == null || !name.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }

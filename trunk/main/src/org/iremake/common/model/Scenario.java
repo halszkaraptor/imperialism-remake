@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
-import nu.xom.Elements;
 import org.iremake.common.Settings;
+import org.tools.utils.BitBuffer;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
@@ -35,12 +35,14 @@ import org.tools.xml.XProperty;
  */
 public class Scenario implements XMLable {
 
+    private static final String XMLNAME_NATIONS = "Nations";
+
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
     private int rows = 0;
     private int columns = 0;
     private Tile[][] map;
     private XProperty properties = new XProperty(10);
-    private XList<Nation> nations = new XList<>(Nation.class);
+    private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
     private Map<Integer, Province> provinces = new HashMap<>();
 
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
@@ -66,7 +68,7 @@ public class Scenario implements XMLable {
         map = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                map[row][column] = new Tile(Settings.getDefaultTerrainID(), -1, -1);
+                map[row][column] = new Tile(Settings.getDefaultTerrainID(), Province.NONE);
             }
         }
         fireScenarioChanged();
@@ -159,8 +161,19 @@ public class Scenario implements XMLable {
 
         XList<Province> list = new XList<>(Province.class);
         list.setKeepSorted(true);
+        // TODO instead sort at the end (immutable version maybe also, or only having ListModel)
         for (Integer id: nation.getProvinces()) {
             list.addElement(provinces.get(id));
+        }
+
+        return list;
+    }
+
+    public XList<Province> getAllProvinces() {
+        XList<Province> list = new XList<>(Province.class);
+        list.setKeepSorted(true);
+        for (Province province: provinces.values()) {
+            list.addElement(province);
         }
 
         return list;
@@ -178,7 +191,7 @@ public class Scenario implements XMLable {
             return null;
         }
 
-        for (Integer id = 1; id < 1024; id++) {
+        for (Integer id = Province.NONE + 1; id < 1024; id++) {
             if (!provinces.containsKey(id)) {
                 Province province = new Province(id, name);
                 provinces.put(id, province);
@@ -230,7 +243,7 @@ public class Scenario implements XMLable {
             l.scenarioChanged(this);
         }
     }
-    private static final String NAME = "Scenario";
+    private static final String XMLNAME = "Scenario";
     private static final String NAME_MAP = "Geographical-Map";
 
     /**
@@ -240,7 +253,7 @@ public class Scenario implements XMLable {
      */
     @Override
     public Element toXML() {
-        Element parent = new Element(NAME);
+        Element parent = new Element(XMLNAME);
 
         // update sizes and write properties
         properties.putInt("rows", rows);
@@ -257,6 +270,18 @@ public class Scenario implements XMLable {
         }
         Element child = new Element(NAME_MAP);
         child.appendChild(builder.toString());
+        parent.appendChild(child);
+
+
+        // provinces
+        BitBuffer buffer = new BitBuffer(10 * rows * columns);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                buffer.add(map[row][column].provinceID, 10);
+            }
+        }
+        child = new Element("Provinces-Map");
+        child.appendChild(buffer.toXMLString());
         parent.appendChild(child);
 
         // nation list
@@ -278,36 +303,51 @@ public class Scenario implements XMLable {
 
         // TODO clear (?) neccessary?
         clear();
-        if (parent == null || !NAME.equals(parent.getLocalName())) {
+        // TODO we could also set as new of calling clear
+
+        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }
 
-        Elements children = parent.getChildElements();
-
         // get properties and readout sizes
-        properties.fromXML(children.get(0));
+        properties.fromXML(parent.getFirstChildElement(XProperty.XMLNAME));
         rows = properties.getInt("rows");
         columns = properties.getInt("columns");
         map = new Tile[rows][columns];
 
         // TODO test size of string with size
         // TODO more checks (positivity)
-        String content = children.get(1).getValue();
+        String content = parent.getFirstChildElement(NAME_MAP).getValue();
         int p = 0;
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                Tile tile = new Tile(content.substring(p, p + 2), -1, -1);
+                // map[row][column].terrainID = content.substring(p, p + 2);
+                Tile tile = new Tile(content.substring(p, p + 2), Province.NONE);
                 map[row][column] = tile;
                 p += 2;
             }
         }
 
+        // reading of provinces map
+        content = parent.getFirstChildElement("Provinces-Map").getValue();
+        BitBuffer buffer = BitBuffer.fromXMLString(content);
+        buffer.trimTo(10 * rows * columns);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                map[row][column].provinceID = buffer.get(10);
+            }
+        }
+        // just a test
+        if (buffer.size() != 0) {
+            // TODO more in buffer... not good
+        }
+
         // reading of nations
-        nations.fromXML(children.get(2));
+        nations.fromXML(parent.getFirstChildElement(XMLNAME_NATIONS));
 
         // reading of provinces (first as list, then converting to hashmap with id)
-        List<Province> list = XMLHandler.toList(children.get(3), Province.class);
+        List<Province> list = XMLHandler.toList(parent.getFirstChildElement("Provinces"), Province.class);
         for (Province province: list) {
             provinces.put(province.getID(), province);
         }

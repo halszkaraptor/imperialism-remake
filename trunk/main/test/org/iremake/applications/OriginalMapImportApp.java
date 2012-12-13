@@ -285,7 +285,7 @@ public class OriginalMapImportApp extends JFrame {
                 buffer.add(bits, 6);
             }
         }
-        String map = BitBuffer.fromBuffer(buffer);
+        String map = buffer.toXMLString();
 
 
         updateStatus("conversion successful");

@@ -43,10 +43,10 @@ import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
 import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.ListSelectDialog;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.UIFrame;
@@ -73,6 +73,7 @@ public class EditorScreen extends UIFrame {
     private String selectedTerrain;
     private JList<Nation> nationsList;
     private Nation selectedNation;
+    private Integer selectedProvinceID;
     private JList<Province> provinceList;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
@@ -309,6 +310,10 @@ public class EditorScreen extends UIFrame {
         return panel;
     }
 
+    /**
+     *
+     * @return
+     */
     private JComponent createProvincesPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Provinces"));
@@ -406,7 +411,27 @@ public class EditorScreen extends UIFrame {
             }
         });
         // province button
-        JButton provinceButton = Button.EditorProvince.create();
+        final JButton provinceButton = Button.EditorProvince.create();
+        provinceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Point p = provinceButton.getLocationOnScreen();
+                p.x += 50;
+                final ListSelectDialog<Province> dialog = new ListSelectDialog<>("Select Province", scenario.getAllProvinces());
+                dialog.setClosingListener(new WindowClosingListener() {
+                    @Override
+                    public boolean closing() {
+                        Province province = dialog.getSelectedElement();
+                        if (province != null) {
+                            selectedProvinceID = province.getID();
+                        }
+                        return true;
+                    }
+                });
+                dialog.setLocation(p);
+                dialog.start();
+            }
+        });
 
         ButtonBar bar = new ButtonBar();
         bar.add(terrainButton, provinceButton);
@@ -445,6 +470,7 @@ public class EditorScreen extends UIFrame {
     public void switchTo() {
         super.switchTo();
         // load initial scenario
-        IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        // IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        scenario.createNew(60, 100);
     }
 }

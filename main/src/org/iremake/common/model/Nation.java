@@ -29,10 +29,10 @@ import org.tools.xml.XProperty;
  */
 public class Nation implements XMLable {
 
+    public static final String XMLNAME = "Nation";
+
     private XProperty properties = new XProperty(10);
     private List<Integer> provinces = new ArrayList<>();
-
-    private static final String NAME = "Nation";
 
     public Nation() {
     }
@@ -48,7 +48,7 @@ public class Nation implements XMLable {
      */
     @Override
     public Element toXML() {
-        Element element = new Element(NAME);
+        Element element = new Element(XMLNAME);
 
         element.appendChild(properties.toXML());
         element.appendChild(XMLHandler.fromIntegerList(provinces, "Provinces"));

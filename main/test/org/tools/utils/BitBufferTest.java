@@ -151,10 +151,12 @@ public class BitBufferTest {
 
         BitBuffer copy = buffer.copy();
 
-        String string = BitBuffer.fromBuffer(buffer);
+        int size = buffer.size();
+        String string = buffer.toXMLString();
         System.out.println(string);
 
-        buffer = BitBuffer.fromString(string);
+        buffer = BitBuffer.fromXMLString(string); // doesn't guarantee size
+        buffer.trimTo(size); // bring to same size again
 
         int x = buffer.get(32);
         int y = copy.get(32);

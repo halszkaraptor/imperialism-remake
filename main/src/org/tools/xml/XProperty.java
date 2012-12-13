@@ -32,6 +32,8 @@ import nu.xom.Element;
 // TODO add statistics (how to make them transient)
 public class XProperty implements XMLable {
 
+    public final static String XMLNAME = "Properties";
+
     private static final Logger LOG = Logger.getLogger(XProperty.class.getName());
     private Map<String, String> map;
     private Map<String, Integer> stats = new HashMap<>(0);
@@ -175,15 +177,13 @@ public class XProperty implements XMLable {
 
     }
 
-    private final static String NAME = "Property";
-
     /**
      *
      * @return
      */
     @Override
     public Element toXML() {
-        Element element = XMLHandler.fromStringMap(map, NAME);
+        Element element = XMLHandler.fromStringMap(map, XMLNAME);
         return element;
     }
 
@@ -195,7 +195,7 @@ public class XProperty implements XMLable {
     @Override
     public void fromXML(Element parent) {
 
-        if (parent == null || !NAME.equals(parent.getLocalName())) {
+        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return; // TODO more than a LOG entry maybe
         }

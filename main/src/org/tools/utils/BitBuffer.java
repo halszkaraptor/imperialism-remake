@@ -43,7 +43,6 @@ public class BitBuffer {
      * Private constructor for copying.
      */
     private BitBuffer() {
-
     }
 
     /**
@@ -51,19 +50,15 @@ public class BitBuffer {
      * @param length
      */
     public BitBuffer(int length) {
+
         int len = length / BITS_PER_INT;
         if (length % BITS_PER_INT != 0) {
             len++;
         }
+
         buffer = new int[len];
         capacity = len * BITS_PER_INT;
-        initializeIndices();
-    }
 
-    /**
-     *
-     */
-    private void initializeIndices() {
         start = 0;
         end = 0;
         size = 0;
@@ -84,12 +79,12 @@ public class BitBuffer {
 
     /**
      *
-     * @param bits Integer holding the bits (in lowest bits)
+     * @param values Integer holding the bits (in lowest bits)
      * @param number Number of bits (1-BITS_PER_INT)
      */
-    public void add(int bits, int number) {
+    public void add(int values, int number) {
         if (number < 1 || number > BITS_PER_INT) {
-            throw new IllegalArgumentException("Illegal of bits " + String.valueOf(number));
+            throw new IllegalArgumentException("Illegal number of bits " + String.valueOf(number));
         }
         if (capacity - size < number) {
             throw new IllegalArgumentException("Not enough free capacity " + String.valueOf(capacity - size));
@@ -97,11 +92,11 @@ public class BitBuffer {
         int index = end / BITS_PER_INT;
         int position = end % BITS_PER_INT;
         buffer[index] &= ALL_BITS_SET >>> (BITS_PER_INT - position);
-        buffer[index] += bits << position;
+        buffer[index] += values << position;
 
         int excess = number - (BITS_PER_INT - position);
         if (excess > 0) {
-            buffer[(index + 1) % buffer.length] = bits >>> (number - excess);
+            buffer[(index + 1) % buffer.length] = values >>> (number - excess);
         }
 
         end += number;
@@ -164,7 +159,7 @@ public class BitBuffer {
      * Deletes all the content without changing the capacity.
      */
     public void clear() {
-        initializeIndices();
+        trim(size);
     }
 
     /**
@@ -174,6 +169,45 @@ public class BitBuffer {
      */
     public int size() {
         return size;
+    }
+
+    /**
+     * Delete some bits from the buffer. If number exceeds size, all bits are
+     * deleted. If number is negative nothing is done.
+     *
+     * @param number
+     */
+    public void trim(int number) {
+        // negative number, do nothing
+        if (number < 0) {
+            return;
+        }
+
+        if (number >= size) {
+            // clear all
+            start = 0;
+            end = 0;
+            size = 0;
+        } else {
+            // decrease size and end, but be careful with underflows for end
+            end -= number;
+            if (end < 0) {
+                end += capacity;
+            }
+            size -= number;
+        }
+    }
+
+    /**
+     * Convenience methods. Basically sets a new size by deleting some using
+     * trim() internally.
+     *
+     * @param size
+     */
+    public void trimTo(int size) {
+        if (size >= 0 && size <= this.size) {
+            trim(this.size - size);
+        }
     }
 
     /**
@@ -218,48 +252,45 @@ public class BitBuffer {
         size = oldsize;
     }
 
-    /* */
-    private static final Charset charset = Charset.forName("UTF-8");
-
     /**
-     * For XML writing a BitBuffer must be encoded in a String. We do it by
-     * using UTF-8 encoding and setting the most significant bit always to zero,
-     * i.e. only using 7 bits per byte. Since we cannot write half bytes, the
-     * last byte might contains additionally zeros. So size is not preserved,
-     * cannot be in fact.
+     * For XML writing a BitBuffer must be encoded in a String. Not all UTF-8
+     * characters are valid XML characters, so we restrict ourselves to the
+     * range between 0x20 and 0xD7FF
+     * (http://www.w3.org/TR/2000/REC-xml-20001006#NT-Char) or even a bit less
+     * (0x100-0x8100) that means 15 bits.
+     *
+     * There might be excess space in the last char, so the total size of the
+     * BitBuffer should be stored externally (e.g. in an XML attribute).
      *
      * @param buffer
      * @return
      */
-    public static String fromBuffer(BitBuffer buffer) {
-        int size = buffer.size();
-        int length = size / 7;
-        boolean excess = size % 7 != 0;
-        byte[] bytes = new byte[length + (excess ? 1 : 0)];
+    public String toXMLString() {
+        int length = size / 15;
+        boolean excess = size % 15 != 0;
+        char[] chars = new char[length + (excess ? 1 : 0)];
         for (int i = 0; i < length; i++) {
-            bytes[i] = (byte) buffer.get(7);
+            chars[i] = (char) (get(15) + 256);
         }
         if (excess) {
-            bytes[length] = (byte) buffer.get(buffer.size());
+            chars[length] = (char) (get(size) + 256);
         }
 
-        return new String(bytes, charset);
+        return new String(chars);
     }
 
     /**
-     * A string that is supposedly encoded in UTF-8 and only consists of bytes
-     * with the most significant bit not set (i.e. 7 bits used per byte) is read
-     * into a BitBuffer. This is need when reading a BitBuffer from XML, since
-     * XML is inherently String/Text based.
+     * XML is inherently String based, so we have a way of storing a BitBuffer
+     * in an XML String (see toXMLString) and this is the way back.
      *
      * @param string The Input string.
      * @return A BitBuffer.
      */
-    public static BitBuffer fromString(String string) {
-        byte[] bytes = string.getBytes(charset);
-        BitBuffer buffer = new BitBuffer(bytes.length * 7);
-        for (int i = 0; i < bytes.length; i++) {
-            buffer.add(bytes[i], 7);
+    public static BitBuffer fromXMLString(String string) {
+        char[] chars = string.toCharArray();
+        BitBuffer buffer = new BitBuffer(chars.length * 15);
+        for (int i = 0; i < chars.length; i++) {
+            buffer.add((int) (chars[i] - 256), 15);
         }
         return buffer;
     }
@@ -277,7 +308,7 @@ public class BitBuffer {
         copy.size = size;
         copy.capacity = capacity;
 
-        copy.buffer = buffer.clone(); 
+        copy.buffer = buffer.clone();
 
         return copy;
     }

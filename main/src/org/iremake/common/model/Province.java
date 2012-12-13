@@ -25,6 +25,8 @@ import org.tools.xml.XMLable;
  */
 public class Province implements XMLable {
 
+    public static final Integer NONE = 0;
+
     private Integer id;
     private String name;
 
@@ -37,7 +39,7 @@ public class Province implements XMLable {
         this.name = name;
     }
 
-    Integer getID() {
+    public Integer getID() {
         return id;
     }
 

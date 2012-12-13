@@ -46,6 +46,8 @@ import nu.xom.Elements;
  */
 public class XList<E extends XMLable> implements ListModel<E>, XMLable {
 
+    private final String XMLNAME;
+
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
     /**
      * Standard comparator, compares on the toString methods.
@@ -61,13 +63,15 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
     private Class<E> clazz;
     private boolean keepSorted = false;
 
-    // TODO node name give as argument, otherwise use default
     /**
      * Empty list with initial capacity.
      */
     public XList(Class<E> clazz) {
-        list = new ArrayList<>(4);
-        this.clazz = clazz;
+        this(new ArrayList<E>(4), clazz, "ListOf-" + clazz.getSimpleName());
+    }
+
+    public XList(Class<E> clazz, String XMLName) {
+        this(new ArrayList<E>(4), clazz, XMLName);
     }
 
     /**
@@ -75,9 +79,10 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
      *
      * @param list
      */
-    public XList(List<E> list, Class<E> clazz) {
+    public XList(List<E> list, Class<E> clazz, String XMLName) {
         this.list = list;
         this.clazz = clazz;
+        XMLNAME = XMLName;
     }
 
     /**
@@ -153,7 +158,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
 
     /**
      * Returns true if the list contains the specific element.
-     * 
+     *
      * @param element
      * @return
      */
@@ -245,8 +250,6 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
         }
     }
 
-    private static final String NAME = "ListOf-";
-
     /**
      * Listeners are not saved.
      *
@@ -254,8 +257,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
      */
     @Override
     public Element toXML() {
-        String name = NAME + clazz.getSimpleName();
-        Element parent = new Element(name);
+        Element parent = new Element(XMLNAME);
 
         // store each element as child
         for (E element : list) {
@@ -277,8 +279,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
         // first clear
         clear();
 
-        String name = NAME + clazz.getSimpleName();
-        if (parent == null || !name.equals(parent.getLocalName())) {
+        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }

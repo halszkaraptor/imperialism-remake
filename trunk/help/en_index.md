@@ -3,8 +3,8 @@ Version 0.1.1
 
 Content
 
--  &bull; Item 1
--  &bull; Item 2
+-  &bull; Getting Started
+-  &bull; Contribute
 
 [Credits](credits.html)
 

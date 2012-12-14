@@ -23,7 +23,7 @@ lookup_dir = '..' + os.sep + 'help' # relative to this files location
 install_dir = '..' + os.sep + 'main' + os.sep + 'data' + os.sep + 'help'
 template_dir = 'templates'
 
-lookup_files = '*.txt'
+lookup_files = '*.md'
 header_file = 'header.tpl'
 style_file = "style.css"
 
@@ -82,7 +82,7 @@ for k in range(number):
 
     # construct input and output file paths (output file ending on html, input file having a 3 character extension)
     inf = d + os.sep + f;
-    outf = o + os.sep + f[:-3] + 'html'
+    outf = o + os.sep + f.rsplit(".", 1)[0] + '.html'
 
     # read input file content
     text = tools.read(inf)

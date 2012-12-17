@@ -204,6 +204,19 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    /**
+     * 
+     * @param p
+     * @param transition
+     * @return
+     */
+    public TileBorder getBorder(MapPosition p, TileTransition transition) {
+        if (map[p.row][p.column].provinceID.equals(map[p.row][p.column].provinceID)) {
+            return TileBorder.Province;
+        }
+        return TileBorder.None;
+    }
+
     public String getTitle() {
         return properties.get("title");
     }
@@ -260,6 +273,9 @@ public class Scenario implements XMLable {
         properties.putInt("columns", columns);
         parent.appendChild(properties.toXML());
 
+        Element child = new Element("Maps");
+        parent.appendChild(child);
+
         // assemble map as one big string
         int capacity = rows * columns * 2; // TODO check somewhere that ids have size 2
         StringBuilder builder = new StringBuilder(capacity);
@@ -268,9 +284,9 @@ public class Scenario implements XMLable {
                 builder.append(map[row][column].terrainID);
             }
         }
-        Element child = new Element(NAME_MAP);
-        child.appendChild(builder.toString());
-        parent.appendChild(child);
+        Element schild = new Element("Terrain");
+        schild.appendChild(builder.toString());
+        child.appendChild(schild);
 
 
         // provinces
@@ -280,9 +296,9 @@ public class Scenario implements XMLable {
                 buffer.add(map[row][column].provinceID, 10);
             }
         }
-        child = new Element("Provinces-Map");
-        child.appendChild(buffer.toXMLString());
-        parent.appendChild(child);
+        schild = new Element("Provinces");
+        schild.appendChild(buffer.toXMLString());
+        child.appendChild(schild);
 
         // nation list
         parent.appendChild(nations.toXML());
@@ -316,9 +332,11 @@ public class Scenario implements XMLable {
         columns = properties.getInt("columns");
         map = new Tile[rows][columns];
 
+        Element child = parent.getFirstChildElement("Maps");
+
         // TODO test size of string with size
         // TODO more checks (positivity)
-        String content = parent.getFirstChildElement(NAME_MAP).getValue();
+        String content = child.getFirstChildElement("Terrain").getValue();
         int p = 0;
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
@@ -330,7 +348,7 @@ public class Scenario implements XMLable {
         }
 
         // reading of provinces map
-        content = parent.getFirstChildElement("Provinces-Map").getValue();
+        content = child.getFirstChildElement("Provinces").getValue();
         BitBuffer buffer = BitBuffer.fromXMLString(content);
         buffer.trimTo(10 * rows * columns);
         for (int row = 0; row < rows; row++) {

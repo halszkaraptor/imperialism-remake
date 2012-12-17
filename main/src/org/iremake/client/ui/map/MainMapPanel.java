@@ -154,7 +154,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     // compute left, upper corner (shift is every second, real row)
                     int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
                     int y = r * tileSize.height;
-                    g2d.drawImage(model.getTileAt(p), x, y, null);
+                    g2d.drawImage(model.getTerrainTileAt(p), x, y, null);
+
+                    // draw tile border
+
                 } else {
                     // just take a nearest tile image by projecting towards the nearest map tile in row and column direction
 
@@ -165,7 +168,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     row = Math.min(model.getNumberRows() - 1, row);
                     column = Math.max(0, column);
                     column = Math.min(model.getNumberColumns() - 1, column);
-                    g2d.drawImage(model.getTileAt(new MapPosition(row, column)), x, y, null);
+                    g2d.drawImage(model.getTerrainTileAt(new MapPosition(row, column)), x, y, null);
                 }
             }
         }

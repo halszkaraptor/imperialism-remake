@@ -43,7 +43,7 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
      * @param p
      * @return
      */
-    public Image getTileAt(MapPosition p) {
+    public Image getTerrainTileAt(MapPosition p) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
@@ -56,7 +56,7 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
      * @param p
      * @return
      */
-    public Color getTileColorAt(MapPosition p) {
+    public Color getTerrainTileColorAt(MapPosition p) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;

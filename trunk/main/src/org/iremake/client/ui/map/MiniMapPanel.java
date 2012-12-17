@@ -155,7 +155,7 @@ public class MiniMapPanel extends JPanel {
             for (int y = 0; y < size.height; y++) {
                 int column = model.getNumberColumns() * x / size.width; // rounding down
                 int row = model.getNumberRows() * y / size.height;
-                Color color = model.getTileColorAt(new MapPosition(row, column));
+                Color color = model.getTerrainTileColorAt(new MapPosition(row, column));
                 miniMap.setRGB(x, y, color.getRGB());
             }
         }

@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import nu.xom.Element;
+import nu.xom.Elements;
+import org.iremake.client.resources.IOManager;
+import org.iremake.client.resources.Places;
 import org.tools.xml.XMLable;
 
 /**
@@ -33,6 +36,7 @@ public class ResourceTiles implements XMLable {
 
     private class Tile {
         public Image image;
+        public boolean visible;
 
         @Override
         public int hashCode() {
@@ -49,6 +53,9 @@ public class ResourceTiles implements XMLable {
             }
             final Tile other = (Tile) obj;
             if (!Objects.equals(this.image, other.image)) {
+                return false;
+            }
+            if (this.visible != other.visible) {
                 return false;
             }
             return true;
@@ -80,7 +87,23 @@ public class ResourceTiles implements XMLable {
 
     @Override
     public void fromXML(Element parent) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        map.clear();
 
+        if (parent == null || parent.getLocalName().equals("TerrainTiles"));
+
+        Elements children = parent.getChildElements();
+        for (int i = 0; i < children.size(); i++) {
+            Element child = children.get(i);
+
+            if (!"Tile".equals(child.getLocalName())) {
+                // TODO something is wrong
+            }
+            Integer id = Integer.valueOf(child.getAttributeValue("id"));
+            String location = child.getAttributeValue("location");
+            Tile tile = new Tile();
+            tile.image = IOManager.getAsImage(Places.GraphicsTerrain, location);
+            tile.visible = Boolean.valueOf(child.getAttributeValue("visible"));
+            map.put(id, tile);
+        }
+    }
 }

@@ -24,6 +24,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import nu.xom.Element;
+import nu.xom.Elements;
+import org.iremake.client.resources.IOManager;
+import org.iremake.client.resources.Places;
 import org.tools.xml.XMLable;
 
 /**
@@ -120,15 +123,9 @@ public class TerrainTiles implements XMLable {
         return new Color(r, g, b);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public Element toXML() {
-        Element parent = new Element("Tile");
-
-        return parent;
+        throw new UnsupportedOperationException("This XMLable is read-only.");
     }
 
     /**
@@ -137,5 +134,40 @@ public class TerrainTiles implements XMLable {
      */
     @Override
     public void fromXML(Element parent) {
+
+        map.clear();
+
+        if (parent == null || parent.getLocalName().equals("TerrainTiles"));
+
+        defaultID = Integer.valueOf(parent.getAttributeValue("default-id"));
+
+        Elements children = parent.getChildElements();
+        for (int i = 0; i < children.size(); i++) {
+            Element child = children.get(i);
+
+            if (!"Tile".equals(child.getLocalName())) {
+                // TODO something is wrong
+            }
+            Integer id = Integer.valueOf(child.getAttributeValue("id"));
+            String location = child.getAttributeValue("location");
+            Tile tile = new Tile();
+            tile.image = IOManager.getAsImage(Places.GraphicsTerrain, location);
+            tile.color = TerrainTiles.ColorFromHex(child.getAttributeValue("color"));
+            map.put(id, tile);
+        }
+
+        // TODO check tileSize is the same for all
+        tileSize = null;
+        for (Tile tile : map.values()) {
+            int width = tile.image.getWidth(null);
+            int height = tile.image.getHeight(null);
+            Dimension size = new Dimension(width, height);
+            if (tileSize == null) {
+                tileSize = size;
+            } else if (!tileSize.equals(size)) {
+                // LOG.log(Level.SEVERE, "A terrain tile differs in size");
+                // TODO rescale(?) or exception
+            }
+        }
     }
 }

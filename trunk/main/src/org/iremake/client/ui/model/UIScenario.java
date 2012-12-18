@@ -65,7 +65,7 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
     }
 
     @Override
-    public void tileChanged(MapPosition p, String id) {
+    public void tileChanged(MapPosition p, Integer id) {
         // TODO check size
         TerrainTile tile = TerrainLoader.getTile(id);
         if (tile == null) {
@@ -81,7 +81,7 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
         int columns = scenario.getNumberColumns();
         map = new TerrainTile[rows][columns];
 
-        String id;
+        Integer id;
         TerrainTile tile;
 
         for (int row = 0; row < rows; row++) {

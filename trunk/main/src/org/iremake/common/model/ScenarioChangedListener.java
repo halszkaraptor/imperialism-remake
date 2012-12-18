@@ -26,7 +26,7 @@ public interface ScenarioChangedListener {
      * @param p
      * @param id
      */
-    public void tileChanged(MapPosition p, String id);
+    public void tileChanged(MapPosition p, Integer id);
 
     /**
      * Changed completely. Means either made a new scenario or loaded it.

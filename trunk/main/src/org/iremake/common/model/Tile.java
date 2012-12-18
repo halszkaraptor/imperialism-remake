@@ -16,16 +16,16 @@
  */
 package org.iremake.common.model;
 
+import org.iremake.common.Settings;
+
 /**
  * A tile holds the map together. A map is an array of tiles.
  */
 public class Tile {
 
-    public String terrainID;
-    public Integer provinceID;
-
-    public Tile(String terrainID, Integer provinceID) {
-        this.terrainID = terrainID;
-        this.provinceID = provinceID;
-    }
+    public Integer terrainID = Settings.getDefaultTerrainID();
+    public Integer terrainSubID = 0;
+    public Integer resourceID = 0;
+    public boolean resourceVisible = false;
+    public Integer provinceID = Province.NONE;
 }

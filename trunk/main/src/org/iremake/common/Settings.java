@@ -31,11 +31,11 @@ import org.tools.xml.XTable;
 // TODO unmake static
 public class Settings {
 
-    private static Map<String, String> terrainTypes = new HashMap<>(0);
+    private static Map<Integer, String> terrainTypes = new HashMap<>(0);
 
     // TODO get this from xml
-    public static String getDefaultTerrainID() {
-        return "s1";
+    public static Integer getDefaultTerrainID() {
+        return 3;
     }
 
     private Settings() {
@@ -56,7 +56,7 @@ public class Settings {
         int n = table.getRowCount();
         terrainTypes = new HashMap<>(n);
         for (int row = 0; row < n; row++) {
-            String id = table.getEntryAt(row, 0);
+            Integer id = Integer.valueOf(table.getEntryAt(row, 0));
             String type = table.getEntryAt(row, 1);
             terrainTypes.put(id, type);
         }
@@ -66,7 +66,7 @@ public class Settings {
      *
      * @return
      */
-    public static Set<String> getTerrainIDs() {
+    public static Set<Integer> getTerrainIDs() {
         return terrainTypes.keySet();
     }
 
@@ -76,7 +76,7 @@ public class Settings {
      * @return
      */
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
-    public static String getTerrainType(String id) {
+    public static String getTerrainType(Integer id) {
         return terrainTypes.get(id);
     }
 }

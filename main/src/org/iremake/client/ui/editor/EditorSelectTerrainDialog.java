@@ -33,7 +33,7 @@ import org.iremake.common.Settings;
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 
-    private String selected;
+    private Integer selected;
 
     public EditorSelectTerrainDialog() {
         super("Select Terrain");
@@ -41,14 +41,15 @@ public class EditorSelectTerrainDialog extends UIDialog {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                selected = ((JButton) e.getSource()).getName();
+                String name = ((JButton) e.getSource()).getName();
+                selected = Integer.valueOf(name);
                 close();
             }
         };
 
         JPanel panel = new JPanel();
 
-        Set<String> IDs = Settings.getTerrainIDs();
+        Set<Integer> IDs = Settings.getTerrainIDs();
         int n = IDs.size();
         int l = (int) Math.sqrt(n);
         int r, c;
@@ -65,11 +66,11 @@ public class EditorSelectTerrainDialog extends UIDialog {
         // here actually GridLayout does exactly the job and we do not need MigLayout
         panel.setLayout(new MigLayout("wrap " + c));
 
-        for (String id : IDs) {
+        for (Integer id : IDs) {
             JButton button = new JButton();
             button.setIcon(new ImageIcon(TerrainLoader.getTile(id).getImage()));
             button.setMargin(new Insets(0, 0, 0, 0));
-            button.setName(id);
+            button.setName(String.valueOf(id));
             button.setFocusable(false);
             button.setToolTipText(Settings.getTerrainType(id));
             button.addActionListener(listener);
@@ -80,7 +81,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
         setMinimumSize(0, 0);
     }
 
-    public String getSelection() {
+    public Integer getSelection() {
         return selected;
     }
 }

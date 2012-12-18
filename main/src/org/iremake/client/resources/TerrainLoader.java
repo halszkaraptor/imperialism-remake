@@ -41,7 +41,7 @@ public class TerrainLoader {
     private static Dimension tileSize;
     /**
      *      */
-    private static Map<String, TerrainTile> map = new HashMap<>(0);
+    private static Map<Integer, TerrainTile> map = new HashMap<>(0);
 
     /**
      * Static class, prevent instantiation.
@@ -66,7 +66,7 @@ public class TerrainLoader {
         int n = table.getRowCount();
         map = new HashMap<>(n);
         for (int row = 0; row < n; row++) {
-            String id = table.getEntryAt(row, 0);
+            Integer id = Integer.valueOf(table.getEntryAt(row, 0));
             String location = table.getEntryAt(row, 1);
             Image image = IOManager.getAsImage(Places.GraphicsTerrain, location);
             Color color = TerrainLoader.ColorFromHex(table.getEntryAt(row, 2));
@@ -94,7 +94,7 @@ public class TerrainLoader {
      *
      * @return
      */
-    public static Set<String> getIDs() {
+    public static Set<Integer> getIDs() {
         return map.keySet();
     }
 
@@ -103,7 +103,7 @@ public class TerrainLoader {
      * @param id
      * @return
      */
-    public static TerrainTile getTile(String id) {
+    public static TerrainTile getTile(Integer id) {
         return map.get(id);
     }
 

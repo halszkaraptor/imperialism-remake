@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
-import org.iremake.common.Settings;
 import org.tools.utils.BitBuffer;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHandler;
@@ -68,7 +67,7 @@ public class Scenario implements XMLable {
         map = new Tile[rows][columns];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                map[row][column] = new Tile(Settings.getDefaultTerrainID(), Province.NONE);
+                map[row][column] = new Tile();
             }
         }
         fireScenarioChanged();
@@ -110,7 +109,7 @@ public class Scenario implements XMLable {
      * @param p
      * @param id
      */
-    public void setTerrainAt(MapPosition p, String id) {
+    public void setTerrainAt(MapPosition p, Integer id) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
@@ -124,7 +123,7 @@ public class Scenario implements XMLable {
      * @param p
      * @return
      */
-    public String getTerrainAt(MapPosition p) {
+    public Integer getTerrainAt(MapPosition p) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
@@ -205,7 +204,7 @@ public class Scenario implements XMLable {
     }
 
     /**
-     * 
+     *
      * @param p
      * @param transition
      * @return
@@ -242,7 +241,7 @@ public class Scenario implements XMLable {
      * @param p
      */
     private void fireTileChanged(MapPosition p) {
-        String id = map[p.row][p.column].terrainID;
+        Integer id = map[p.row][p.column].terrainID;
         for (ScenarioChangedListener l : listeners) {
             l.tileChanged(p, id);
         }
@@ -276,28 +275,25 @@ public class Scenario implements XMLable {
         Element child = new Element("Maps");
         parent.appendChild(child);
 
-        // assemble map as one big string
-        int capacity = rows * columns * 2; // TODO check somewhere that ids have size 2
-        StringBuilder builder = new StringBuilder(capacity);
+        BitBuffer terrainMapBuffer = new BitBuffer(5 * rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                builder.append(map[row][column].terrainID);
+                terrainMapBuffer.add(map[row][column].terrainID, 5);
             }
         }
         Element schild = new Element("Terrain");
-        schild.appendChild(builder.toString());
+        schild.appendChild(terrainMapBuffer.toXMLString());
         child.appendChild(schild);
 
-
         // provinces
-        BitBuffer buffer = new BitBuffer(10 * rows * columns);
+        BitBuffer provinceMapBuffer = new BitBuffer(10 * rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                buffer.add(map[row][column].provinceID, 10);
+                provinceMapBuffer.add(map[row][column].provinceID, 10);
             }
         }
         schild = new Element("Provinces");
-        schild.appendChild(buffer.toXMLString());
+        schild.appendChild(provinceMapBuffer.toXMLString());
         child.appendChild(schild);
 
         // nation list
@@ -334,31 +330,28 @@ public class Scenario implements XMLable {
 
         Element child = parent.getFirstChildElement("Maps");
 
+        // reading of provinces map
+        String content = child.getFirstChildElement("Provinces").getValue();
+        BitBuffer buffer = BitBuffer.fromXMLString(content);
+        buffer.trimTo(10 * rows * columns);
+
         // TODO test size of string with size
         // TODO more checks (positivity)
-        String content = child.getFirstChildElement("Terrain").getValue();
-        int p = 0;
+        content = child.getFirstChildElement("Terrain").getValue();
+        BitBuffer terrainMapBuffer = BitBuffer.fromXMLString(content);
+        terrainMapBuffer.trimTo(5 * rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                // map[row][column].terrainID = content.substring(p, p + 2);
-                Tile tile = new Tile(content.substring(p, p + 2), Province.NONE);
+                Tile tile = new Tile();
+                tile.terrainID = terrainMapBuffer.get(5);
+                tile.provinceID = buffer.get(10);
                 map[row][column] = tile;
-                p += 2;
             }
         }
 
-        // reading of provinces map
-        content = child.getFirstChildElement("Provinces").getValue();
-        BitBuffer buffer = BitBuffer.fromXMLString(content);
-        buffer.trimTo(10 * rows * columns);
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                map[row][column].provinceID = buffer.get(10);
-            }
-        }
         // just a test
         if (buffer.size() != 0) {
-            // TODO more in buffer... not good
+            // TODO more in buffer... not good, terrainMapBuffer also
         }
 
         // reading of nations

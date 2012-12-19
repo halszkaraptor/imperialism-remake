@@ -28,7 +28,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.ParsingException;
-import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
@@ -38,7 +37,6 @@ import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
-import org.iremake.common.model.Scenario;
 import org.iremake.common.model.ScenarioChangedListener;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
@@ -76,12 +74,12 @@ public class MainScreen extends UIFrame {
             }
 
             @Override
-            public void scenarioChanged(Scenario scenario) {
+            public void scenarioChanged() {
                 // TODO size of map could also have changed!!!
                 mainMapPanel.mapChanged();
 
                 Dimension size = mainMapPanel.getSize();
-                Dimension tileSize = TerrainLoader.getTileSize();
+                Dimension tileSize = scenario.getTileSize();
                 // tell the minimap about our size
                 float fractionRows = (float) size.height / tileSize.height / scenario.getNumberRows();
                 float fractionColumns = (float) size.width / tileSize.width / scenario.getNumberColumns();

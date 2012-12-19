@@ -17,25 +17,32 @@
 package org.iremake.client.ui.model;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.client.resources.TerrainLoader;
+import org.iremake.client.resources.IOManager;
+import org.iremake.client.resources.Places;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.model.ScenarioChangedListener;
 
 /**
  *
  */
-public class UIScenario extends Scenario implements ScenarioChangedListener {
+public class UIScenario extends Scenario {
 
     private static final Logger LOG = Logger.getLogger(UIScenario.class.getName());
 
-    private TerrainTile[][] map; // first rows, then columns
+    private TerrainTiles terrainTiles = new TerrainTiles();
+    private ResourceOverlays resourceOverlays = new ResourceOverlays();
 
     public UIScenario() {
-        addScenarioChangedListener(this);
+        IOManager.setFromXML(Places.GraphicsTerrain, "terrains.xml", terrainTiles);
+        IOManager.setFromXML(Places.GraphicsTerrain, "resources.xml", resourceOverlays);
+    }
+
+    public Dimension getTileSize() {
+        return terrainTiles.getTileSize();
     }
 
     /**
@@ -48,7 +55,7 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return map[p.row][p.column].getImage();
+        return terrainTiles.getImage(getTerrainAt(p));
     }
 
     /**
@@ -61,38 +68,14 @@ public class UIScenario extends Scenario implements ScenarioChangedListener {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return map[p.row][p.column].getColor();
+        return terrainTiles.getColor(getTerrainAt(p));
     }
 
-    @Override
-    public void tileChanged(MapPosition p, Integer id) {
-        // TODO check size
-        TerrainTile tile = TerrainLoader.getTile(id);
-        if (tile == null) {
-            LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);
-            return;
-        }
-        map[p.row][p.column] = tile;
-    }
-
-    @Override
-    public void scenarioChanged(Scenario scenario) {
-        int rows = scenario.getNumberRows();
-        int columns = scenario.getNumberColumns();
-        map = new TerrainTile[rows][columns];
-
-        Integer id;
-        TerrainTile tile;
-
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                id = scenario.getTerrainAt(new MapPosition(row, column));
-                tile = TerrainLoader.getTile(id);
-                if (tile == null) {
-                    LOG.log(Level.SEVERE, "Unknown tile id {0}.", id);
-                }
-                map[row][column] = tile;
-            }
-        }
+    /**
+     * 
+     * @return
+     */
+    public TerrainTiles getTerrainTiles() {
+        return terrainTiles;
     }
 }

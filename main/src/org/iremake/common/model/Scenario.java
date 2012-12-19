@@ -252,7 +252,7 @@ public class Scenario implements XMLable {
      */
     private void fireScenarioChanged() {
         for (ScenarioChangedListener l : listeners) {
-            l.scenarioChanged(this);
+            l.scenarioChanged();
         }
     }
     private static final String XMLNAME = "Scenario";

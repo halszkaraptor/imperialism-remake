@@ -35,7 +35,6 @@ import org.tools.xml.XMLable;
 public class TerrainTiles implements XMLable {
 
     private Map<Integer, Tile> map = new HashMap<>();
-    private Integer defaultID;
     private Dimension tileSize;
 
     private class Tile {
@@ -90,14 +89,6 @@ public class TerrainTiles implements XMLable {
      *
      * @return
      */
-    public Integer getDefaultID() {
-        return defaultID;
-    }
-
-    /**
-     *
-     * @return
-     */
     public Set<Integer> getIDs() {
         return map.keySet();
     }
@@ -139,8 +130,6 @@ public class TerrainTiles implements XMLable {
 
         if (parent == null || parent.getLocalName().equals("TerrainTiles"));
 
-        defaultID = Integer.valueOf(parent.getAttributeValue("default-id"));
-
         Elements children = parent.getChildElements();
         for (int i = 0; i < children.size(); i++) {
             Element child = children.get(i);
@@ -157,14 +146,14 @@ public class TerrainTiles implements XMLable {
         }
 
         // TODO check tileSize is the same for all
-        tileSize = null;
+        int width = Integer.valueOf(parent.getAttributeValue("tile-width"));
+        int height = Integer.valueOf(parent.getAttributeValue("tile-height"));
+        tileSize = new Dimension(width, height);
         for (Tile tile : map.values()) {
-            int width = tile.image.getWidth(null);
-            int height = tile.image.getHeight(null);
+            width = tile.image.getWidth(null);
+            height = tile.image.getHeight(null);
             Dimension size = new Dimension(width, height);
-            if (tileSize == null) {
-                tileSize = size;
-            } else if (!tileSize.equals(size)) {
+            if (!tileSize.equals(size)) {
                 // LOG.log(Level.SEVERE, "A terrain tile differs in size");
                 // TODO rescale(?) or exception
             }

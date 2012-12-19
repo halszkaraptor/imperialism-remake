@@ -25,7 +25,7 @@ import org.tools.io.ResourceUtils;
 /**
  *
  */
-public class XMLCreateTerrainAndResource {
+public class TilesXMLGenerator {
     /**
      * @param args the command line arguments
      */
@@ -48,7 +48,7 @@ public class XMLCreateTerrainAndResource {
         Element child = new Element("Overlay");
         child.addAttribute(new Attribute("id", String.valueOf(id)));
         child.addAttribute(new Attribute("location", location));
-        child.addAttribute(new Attribute("color", String.valueOf(visible)));
+        child.addAttribute(new Attribute("visible", String.valueOf(visible)));
         return child;
     }
 
@@ -57,9 +57,15 @@ public class XMLCreateTerrainAndResource {
      */
     public static void createTerrain() throws IOException {
         Element parent = new Element("Terrain-Tiles");
-        parent.addAttribute(new Attribute("default-id", "1"));
+        parent.addAttribute(new Attribute("tile-width", "80"));
+        parent.addAttribute(new Attribute("tile-height", "80"));
         parent.appendChild(addTerrainTile(1, "terrain.sea.png", "80a0e0"));
         parent.appendChild(addTerrainTile(2, "terrain.plains.png", "d0f0a0"));
+        parent.appendChild(addTerrainTile(3, "terrain.hills.png", "604020"));
+        parent.appendChild(addTerrainTile(4, "terrain.mountains.png", "909090"));
+        parent.appendChild(addTerrainTile(5, "terrain.tundra.png", "c0c0c0"));
+        parent.appendChild(addTerrainTile(6, "terrain.swamp.png", "309030"));
+        parent.appendChild(addTerrainTile(7, "terrain.desert.png", "c0c0a0"));
 
         Resource resource = ResourceUtils.asResource("terrains.xml");
         XMLHelper.write(resource, parent);

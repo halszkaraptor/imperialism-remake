@@ -32,7 +32,6 @@ import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
@@ -75,7 +74,6 @@ public class StartClient {
             installFonts();
 
             // load terrain and scenario settings
-            TerrainLoader.load();
             Settings.load();
 
             // load options

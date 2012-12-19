@@ -43,7 +43,6 @@ import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.ListSelectDialog;
@@ -103,12 +102,12 @@ public class EditorScreen extends UIFrame {
             }
 
             @Override
-            public void scenarioChanged(Scenario scenario) {
+            public void scenarioChanged() {
                 // TODO size of map could also have changed!!!
                 mainMapPanel.mapChanged();
 
                 Dimension size = mainMapPanel.getSize();
-                Dimension tileSize = TerrainLoader.getTileSize();
+                Dimension tileSize = scenario.getTileSize();
                 // tell the minimap about our size
                 float fractionRows = (float) size.height / tileSize.height / scenario.getNumberRows();
                 float fractionColumns = (float) size.width / tileSize.width / scenario.getNumberColumns();
@@ -398,7 +397,7 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 Point p = terrainButton.getLocationOnScreen();
                 p.x += 50;
-                final EditorSelectTerrainDialog dialog = new EditorSelectTerrainDialog();
+                final EditorSelectTerrainDialog dialog = new EditorSelectTerrainDialog(scenario.getTerrainTiles());
                 dialog.setClosingListener(new WindowClosingListener() {
                     @Override
                     public boolean closing() {

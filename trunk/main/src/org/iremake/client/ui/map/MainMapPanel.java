@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 
@@ -40,20 +39,17 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private List<MapTileListener> tileListeners = new LinkedList<>();
-    private UIScenario model;
-    private Dimension tileSize;
+    private UIScenario scenario;
     private MapPosition offset = new MapPosition();
     private MapPosition hoover = new MapPosition();
 
     /**
      *
-     * @param model
+     * @param scenario
      */
-    public MainMapPanel(final UIScenario model) {
+    public MainMapPanel(final UIScenario scenario) {
 
-        this.model = model;
-
-        tileSize = TerrainLoader.getTileSize();
+        this.scenario = scenario;
 
         setOpaque(true);
 
@@ -68,7 +64,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 MapPosition p = getPositionFromXY(e.getX(), e.getY());
 
                 // TODO the white pieces at the edge are handled how?
-                if (model.containsPosition(p)) {
+                if (scenario.containsPosition(p)) {
                     // inside, check if over new tile
                     if (!p.equals(hoover)) {
                         hoover.setFrom(p);
@@ -90,7 +86,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     MapPosition p = getPositionFromXY(e.getX(), e.getY());
 
-                    if (model.containsPosition(p)) {
+                    if (scenario.containsPosition(p)) {
                         notifyTileClickedListeners(p);
                     }
                 }
@@ -115,6 +111,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      */
     private MapPosition getPositionFromXY(int x, int y) {
         MapPosition p = new MapPosition();
+        Dimension tileSize = scenario.getTileSize();
         p.row = y / tileSize.height + offset.row;
         int shift = p.row % 2 != 0 ? tileSize.width / 2 : 0;
         // -9..9/10 == 0, avoid negative divisions, because rounding is different there
@@ -139,6 +136,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         g2d.fillRect(0, 0, size.width, size.height);
 
         // draw the tiles
+        Dimension tileSize = scenario.getTileSize();
         int drawnRows = size.height / tileSize.height;
         int drawnColumns = size.width / tileSize.width;
         // we draw one more in each direction to also get show half tiles
@@ -150,11 +148,11 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 int column = c + offset.column;
                 MapPosition p = new MapPosition(row, column);
                 // still on the map?
-                if (row >= 0 && row < model.getNumberRows() && column >= 0 && column < model.getNumberColumns()) {
+                if (row >= 0 && row < scenario.getNumberRows() && column >= 0 && column < scenario.getNumberColumns()) {
                     // compute left, upper corner (shift is every second, real row)
                     int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
                     int y = r * tileSize.height;
-                    g2d.drawImage(model.getTerrainTileAt(p), x, y, null);
+                    g2d.drawImage(scenario.getTerrainTileAt(p), x, y, null);
 
                     // draw tile border
 
@@ -165,10 +163,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
                     int y = r * tileSize.height;
                     row = Math.max(0, row);
-                    row = Math.min(model.getNumberRows() - 1, row);
+                    row = Math.min(scenario.getNumberRows() - 1, row);
                     column = Math.max(0, column);
-                    column = Math.min(model.getNumberColumns() - 1, column);
-                    g2d.drawImage(model.getTerrainTileAt(new MapPosition(row, column)), x, y, null);
+                    column = Math.min(scenario.getNumberColumns() - 1, column);
+                    g2d.drawImage(scenario.getTerrainTileAt(new MapPosition(row, column)), x, y, null);
                 }
             }
         }
@@ -223,8 +221,9 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     @Override
     public void newMiniMapFocus(float x, float y) {
         // update offset row/column accordingly
-        int row = (int) (y * model.getNumberRows() - size.height / 2 / tileSize.height);
-        int column = (int) (x * model.getNumberColumns() - size.width / 2 / tileSize.width);
+        Dimension tileSize = scenario.getTileSize();
+        int row = (int) (y * scenario.getNumberRows() - size.height / 2 / tileSize.height);
+        int column = (int) (x * scenario.getNumberColumns() - size.width / 2 / tileSize.width);
         row = Math.max(row, 0);
         column = Math.max(column, 0);
         MapPosition p = new MapPosition(row, column);

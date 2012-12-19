@@ -24,9 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.TerrainLoader;
 import org.iremake.client.ui.UIDialog;
-import org.iremake.common.Settings;
+import org.iremake.client.ui.model.TerrainTiles;
 
 /**
  *
@@ -35,7 +34,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
 
     private Integer selected;
 
-    public EditorSelectTerrainDialog() {
+    public EditorSelectTerrainDialog(TerrainTiles tiles) {
         super("Select Terrain");
 
         ActionListener listener = new ActionListener() {
@@ -49,7 +48,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
 
         JPanel panel = new JPanel();
 
-        Set<Integer> IDs = Settings.getTerrainIDs();
+        Set<Integer> IDs = tiles.getIDs();
         int n = IDs.size();
         int l = (int) Math.sqrt(n);
         int r, c;
@@ -68,11 +67,11 @@ public class EditorSelectTerrainDialog extends UIDialog {
 
         for (Integer id : IDs) {
             JButton button = new JButton();
-            button.setIcon(new ImageIcon(TerrainLoader.getTile(id).getImage()));
+            button.setIcon(new ImageIcon(tiles.getImage(id)));
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setName(String.valueOf(id));
             button.setFocusable(false);
-            button.setToolTipText(Settings.getTerrainType(id));
+            // button.setToolTipText(Settings.getTerrainType(id)); // TODO get names again
             button.addActionListener(listener);
             panel.add(button);
         }

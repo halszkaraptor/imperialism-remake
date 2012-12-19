@@ -14,24 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.tools.xml;
 
 /**
- * All the ways the scenario can have changed.
+ *
  */
-public interface ScenarioChangedListener {
+public class SettingsXMLGenerator {
 
     /**
-     *
-     * @param p
-     * @param id
+     * @param args the command line arguments
      */
-    public void tileChanged(MapPosition p, Integer id);
-
-    /**
-     * Changed completely. Means either made a new scenario or loaded it.
-     *
-     * @param scenario
-     */
-    public void scenarioChanged();
+    public static void main(String[] args) {
+        // TODO code application logic here
+    }
 }

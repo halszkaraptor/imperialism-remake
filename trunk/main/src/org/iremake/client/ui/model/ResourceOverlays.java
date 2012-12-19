@@ -30,7 +30,7 @@ import org.tools.xml.XMLable;
 /**
  *
  */
-public class ResourceTiles implements XMLable {
+public class ResourceOverlays implements XMLable {
 
     private Map<Integer, Tile> map = new HashMap<>();
 

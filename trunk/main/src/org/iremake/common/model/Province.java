@@ -29,6 +29,7 @@ public class Province implements XMLable {
 
     private Integer id;
     private String name;
+    private MapPosition town = new MapPosition();
 
     public Province() {
     }
@@ -41,6 +42,14 @@ public class Province implements XMLable {
 
     public Integer getID() {
         return id;
+    }
+
+    public MapPosition getTownPosition() {
+        return town;
+    }
+
+    public void setTownPosition(MapPosition position) {
+        town = position;
     }
 
     /**
@@ -65,6 +74,8 @@ public class Province implements XMLable {
         Element element = new Element(NAME);
         element.addAttribute(new Attribute("id", id.toString()));
         element.addAttribute(new Attribute("name", name));
+        element.addAttribute(new Attribute("town-row", String.valueOf(town.row)));
+        element.addAttribute(new Attribute("town-column", String.valueOf(town.column)));
 
         return element;
     }
@@ -79,5 +90,8 @@ public class Province implements XMLable {
         // TODO checks (null, name)
         id = Integer.valueOf(parent.getAttributeValue("id"));
         name = parent.getAttributeValue("name");
+        int row = Integer.valueOf(parent.getAttributeValue("town-row"));
+        int column = Integer.valueOf(parent.getAttributeValue("town-column"));
+        town = new MapPosition(row, column);
     }
 }

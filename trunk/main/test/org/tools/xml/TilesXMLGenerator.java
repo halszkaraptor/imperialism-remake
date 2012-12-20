@@ -37,8 +37,17 @@ public class TilesXMLGenerator {
 
     public static void createResources() throws IOException {
         Element parent = new Element("Resource-Overlays");
-        parent.appendChild(addResourceOverlay(1, "terrain.sea.png", true));
-        parent.appendChild(addResourceOverlay(2, "terrain.plains.png", false));
+        parent.addAttribute(new Attribute("tile-width", "80"));
+        parent.addAttribute(new Attribute("tile-height", "80"));
+        parent.appendChild(addResourceOverlay(1, "resource.grain.png", true));
+        parent.appendChild(addResourceOverlay(2, "resource.orchard.png", true));
+        parent.appendChild(addResourceOverlay(3, "resource.cotton.png", true));
+        parent.appendChild(addResourceOverlay(4, "resource.sheep.png", true));
+        parent.appendChild(addResourceOverlay(5, "resource.forest.png", true));
+        parent.appendChild(addResourceOverlay(6, "resource.srubforest.png", true));
+        parent.appendChild(addResourceOverlay(7, "resource.oil.png", false));
+        parent.appendChild(addResourceOverlay(8, "resource.coal.png", false));
+        parent.appendChild(addResourceOverlay(9, "resource.ore.png", false));
 
         Resource resource = ResourceUtils.asResource("resources.xml");
         XMLHelper.write(resource, parent);

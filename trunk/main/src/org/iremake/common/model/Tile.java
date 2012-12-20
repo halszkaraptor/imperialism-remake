@@ -23,9 +23,11 @@ import org.iremake.common.Settings;
  */
 public class Tile {
 
+    public static Integer RESOURCE_NONE = 0;
+
     public Integer terrainID = Settings.getDefaultTerrainID();
     public Integer terrainSubID = 0;
-    public Integer resourceID = 0;
+    public Integer resourceID = RESOURCE_NONE;
     public boolean resourceVisible = false;
     public Integer provinceID = Province.NONE;
 }

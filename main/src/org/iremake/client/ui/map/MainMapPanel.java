@@ -29,6 +29,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
+import org.iremake.common.model.TileBorder;
+import org.iremake.common.model.TileTransition;
 
 /**
  * The Main map display, currently used in the editor.
@@ -154,7 +156,28 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     int y = r * tileSize.height;
                     g2d.drawImage(scenario.getTerrainTileAt(p), x, y, null);
 
+                    // draw resource
+                    if (scenario.isResourceVisibleAt(p)) {
+                        g2d.drawImage(scenario.getResourceOverlayAt(p), x, y, null);
+                    }
+
                     // draw tile border
+                    TileBorder border = scenario.getBorder(p, TileTransition.East);
+                    if (border == TileBorder.Province) {
+                        // white stripe at the right side
+                    }
+                    border = scenario.getBorder(p, TileTransition.SouthEast);
+                    if (border == TileBorder.Province) {
+                        // white half strip on the lower, right side
+                    }
+                    border = scenario.getBorder(p, TileTransition.SouthWest);
+                    if (border == TileBorder.Province) {
+                        // white half stripe on the lower, left side
+                    }
+
+                    // draw city
+                    // g2d.drawImage(null, x, y, null);
+                    g2d.drawString("Name", x, y);
 
                 } else {
                     // just take a nearest tile image by projecting towards the nearest map tile in row and column direction

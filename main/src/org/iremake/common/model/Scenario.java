@@ -35,7 +35,6 @@ import org.tools.xml.XProperty;
 public class Scenario implements XMLable {
 
     private static final String XMLNAME_NATIONS = "Nations";
-
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
     private int rows = 0;
     private int columns = 0;
@@ -43,7 +42,6 @@ public class Scenario implements XMLable {
     private XProperty properties = new XProperty(10);
     private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
     private Map<Integer, Province> provinces = new HashMap<>();
-
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     public Scenario() {
@@ -100,6 +98,19 @@ public class Scenario implements XMLable {
      * @param p
      * @return
      */
+    public boolean isResourceVisibleAt(MapPosition p) {
+        if (!containsPosition(p)) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return false;
+        }
+        return map[p.row][p.column].resourceVisible;
+    }
+
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean containsPosition(MapPosition p) {
         return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
@@ -132,6 +143,20 @@ public class Scenario implements XMLable {
     }
 
     /**
+     * Only restricted access.
+     *
+     * @param p
+     * @return
+     */
+    public Tile getTileAt(MapPosition p) {
+        if (!containsPosition(p)) {
+            LOG.log(Level.INFO, "Position outside of map.");
+            return null;
+        }
+        return map[p.row][p.column];
+    }
+
+    /**
      *
      * @return
      */
@@ -161,7 +186,7 @@ public class Scenario implements XMLable {
         XList<Province> list = new XList<>(Province.class);
         list.setKeepSorted(true);
         // TODO instead sort at the end (immutable version maybe also, or only having ListModel)
-        for (Integer id: nation.getProvinces()) {
+        for (Integer id : nation.getProvinces()) {
             list.addElement(provinces.get(id));
         }
 
@@ -171,7 +196,7 @@ public class Scenario implements XMLable {
     public XList<Province> getAllProvinces() {
         XList<Province> list = new XList<>(Province.class);
         list.setKeepSorted(true);
-        for (Province province: provinces.values()) {
+        for (Province province : provinces.values()) {
             list.addElement(province);
         }
 
@@ -212,6 +237,7 @@ public class Scenario implements XMLable {
     public TileBorder getBorder(MapPosition p, TileTransition transition) {
         if (map[p.row][p.column].provinceID.equals(map[p.row][p.column].provinceID)) {
             return TileBorder.Province;
+            // TODO TileBorder Nation
         }
         return TileBorder.None;
     }
@@ -275,14 +301,28 @@ public class Scenario implements XMLable {
         Element child = new Element("Maps");
         parent.appendChild(child);
 
-        BitBuffer terrainMapBuffer = new BitBuffer(5 * rows * columns);
+        // terrain map
+        BitBuffer terrainMapBuffer = new BitBuffer(10 * rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 terrainMapBuffer.add(map[row][column].terrainID, 5);
+                terrainMapBuffer.add(map[row][column].terrainSubID, 5);
             }
         }
-        Element schild = new Element("Terrain");
+        Element schild = new Element("Terrains");
         schild.appendChild(terrainMapBuffer.toXMLString());
+        child.appendChild(schild);
+
+        // resources map
+        BitBuffer resourcesMapBuffer = new BitBuffer(6 * rows * columns);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                resourcesMapBuffer.add(map[row][column].resourceID, 5);
+                resourcesMapBuffer.add(map[row][column].resourceVisible);
+            }
+        }
+        schild = new Element("Resources");
+        schild.appendChild(resourcesMapBuffer.toXMLString());
         child.appendChild(schild);
 
         // provinces
@@ -326,31 +366,42 @@ public class Scenario implements XMLable {
         properties.fromXML(parent.getFirstChildElement(XProperty.XMLNAME));
         rows = properties.getInt("rows");
         columns = properties.getInt("columns");
+        int size = rows * columns;
         map = new Tile[rows][columns];
 
         Element child = parent.getFirstChildElement("Maps");
 
+        // readingt of terrain map
+        String content = child.getFirstChildElement("Terrains").getValue();
+        BitBuffer terbuffer = BitBuffer.fromXMLString(content);
+        terbuffer.trimTo(10 * size);
+
+        // readingt of terrain map
+        content = child.getFirstChildElement("Resources").getValue();
+        BitBuffer resbuffer = BitBuffer.fromXMLString(content);
+        resbuffer.trimTo(6 * size);
+
         // reading of provinces map
-        String content = child.getFirstChildElement("Provinces").getValue();
-        BitBuffer buffer = BitBuffer.fromXMLString(content);
-        buffer.trimTo(10 * rows * columns);
+        content = child.getFirstChildElement("Provinces").getValue();
+        BitBuffer probuffer = BitBuffer.fromXMLString(content);
+        probuffer.trimTo(10 * size);
 
         // TODO test size of string with size
         // TODO more checks (positivity)
-        content = child.getFirstChildElement("Terrain").getValue();
-        BitBuffer terrainMapBuffer = BitBuffer.fromXMLString(content);
-        terrainMapBuffer.trimTo(5 * rows * columns);
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 Tile tile = new Tile();
-                tile.terrainID = terrainMapBuffer.get(5);
-                tile.provinceID = buffer.get(10);
+                tile.terrainID = terbuffer.get(5);
+                tile.terrainSubID = terbuffer.get(5);
+                tile.resourceID = resbuffer.get(5);
+                tile.resourceVisible = resbuffer.get();
+                tile.provinceID = probuffer.get(10);
                 map[row][column] = tile;
             }
         }
 
         // just a test
-        if (buffer.size() != 0) {
+        if (terbuffer.size() != 0) {
             // TODO more in buffer... not good, terrainMapBuffer also
         }
 
@@ -359,7 +410,7 @@ public class Scenario implements XMLable {
 
         // reading of provinces (first as list, then converting to hashmap with id)
         List<Province> list = XMLHandler.toList(parent.getFirstChildElement("Provinces"), Province.class);
-        for (Province province: list) {
+        for (Province province : list) {
             provinces.put(province.getID(), province);
         }
 

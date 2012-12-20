@@ -32,7 +32,6 @@ import org.iremake.common.model.Scenario;
 public class UIScenario extends Scenario {
 
     private static final Logger LOG = Logger.getLogger(UIScenario.class.getName());
-
     private TerrainTiles terrainTiles = new TerrainTiles();
     private ResourceOverlays resourceOverlays = new ResourceOverlays();
 
@@ -41,8 +40,25 @@ public class UIScenario extends Scenario {
         IOManager.setFromXML(Places.GraphicsTerrain, "resources.xml", resourceOverlays);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Dimension getTileSize() {
         return terrainTiles.getTileSize();
+    }
+
+    /**
+     *
+     * @param p
+     * @return
+     */
+    public Image getResourceOverlayAt(MapPosition p) {
+        if (!containsPosition(p)) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return null;
+        }
+        return resourceOverlays.getImage(getTileAt(p).resourceID);
     }
 
     /**
@@ -72,10 +88,11 @@ public class UIScenario extends Scenario {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public TerrainTiles getTerrainTiles() {
+        // TODO later replace it to more restricted calls
         return terrainTiles;
     }
 }

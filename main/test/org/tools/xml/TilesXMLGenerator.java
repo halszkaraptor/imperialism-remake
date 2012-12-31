@@ -28,13 +28,18 @@ import org.tools.io.ResourceUtils;
 public class TilesXMLGenerator {
     /**
      * @param args the command line arguments
+     * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
-        createTerrain();
 
+        createTerrain();
         createResources();
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public static void createResources() throws IOException {
         Element parent = new Element("Resource-Overlays");
         parent.addAttribute(new Attribute("tile-width", "80"));
@@ -53,7 +58,14 @@ public class TilesXMLGenerator {
         XMLHelper.write(resource, parent);
     }
 
-    public static Element addResourceOverlay(Integer id, String location, boolean visible) {
+    /**
+     *
+     * @param id
+     * @param location
+     * @param visible
+     * @return
+     */
+    public static Element addResourceOverlay(int id, String location, boolean visible) {
         Element child = new Element("Overlay");
         child.addAttribute(new Attribute("id", String.valueOf(id)));
         child.addAttribute(new Attribute("location", location));
@@ -63,6 +75,7 @@ public class TilesXMLGenerator {
 
     /**
      *
+     * @throws IOException
      */
     public static void createTerrain() throws IOException {
         Element parent = new Element("Terrain-Tiles");
@@ -80,7 +93,14 @@ public class TilesXMLGenerator {
         XMLHelper.write(resource, parent);
     }
 
-    public static Element addTerrainTile(Integer id, String location, String color) {
+    /**
+     *
+     * @param id
+     * @param location
+     * @param color
+     * @return
+     */
+    public static Element addTerrainTile(int id, String location, String color) {
         Element child = new Element("Tile");
         child.addAttribute(new Attribute("id", String.valueOf(id)));
         child.addAttribute(new Attribute("location", location));

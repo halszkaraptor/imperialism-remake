@@ -57,7 +57,6 @@ import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
-import org.iremake.common.model.Scenario;
 import org.iremake.common.model.ScenarioChangedListener;
 import org.tools.ui.ButtonBar;
 import org.tools.xml.XList;
@@ -72,7 +71,7 @@ public class EditorScreen extends UIFrame {
     private Integer selectedTerrain;
     private JList<Nation> nationsList;
     private Nation selectedNation;
-    private Integer selectedProvinceID;
+    private int selectedProvinceID;
     private JList<Province> provinceList;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
@@ -95,7 +94,7 @@ public class EditorScreen extends UIFrame {
 
         scenario.addScenarioChangedListener(new ScenarioChangedListener() {
             @Override
-            public void tileChanged(MapPosition p, Integer id) {
+            public void tileChanged(MapPosition p, int id) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
                 infoPanel.mainMapTileChanged(p);

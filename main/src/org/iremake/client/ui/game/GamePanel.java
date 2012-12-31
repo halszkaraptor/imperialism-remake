@@ -50,6 +50,7 @@ public enum GamePanel {
      *
      * @return
      */
+    // TODO do we want it that way?
     public JPanel create() {
         JPanel panel = null;
         try {

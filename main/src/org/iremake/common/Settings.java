@@ -34,7 +34,7 @@ public class Settings {
     private static Map<Integer, String> terrainTypes = new HashMap<>(0);
 
     // TODO get this from xml
-    public static Integer getDefaultTerrainID() {
+    public static int getDefaultTerrainID() {
         return 3;
     }
 

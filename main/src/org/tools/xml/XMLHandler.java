@@ -67,7 +67,6 @@ public class XMLHandler {
      *
      * @param element
      * @return
-     * @throws Exception
      */
     public static Map<String, String> toStringMap(Element element) {
 
@@ -123,8 +122,13 @@ public class XMLHandler {
 
     private final static String IntegerSeparator = ":";
 
+    /**
+     *
+     * @param element
+     * @return
+     */
     public static List<Integer> toIntegerList(Element element) {
-        Integer size = Integer.valueOf(element.getAttributeValue("size"));
+        int size = Integer.parseInt(element.getAttributeValue("size"));
         List<Integer> list = new ArrayList<>(size);
 
         if (size == 0 & element.getValue().length() == 0) {
@@ -142,6 +146,12 @@ public class XMLHandler {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     * @param name
+     * @return
+     */
     public static Element fromIntegerList(List<Integer> list, String name) {
         Element parent = new Element(name);
         int size = list.size();
@@ -157,6 +167,13 @@ public class XMLHandler {
         return parent;
     }
 
+    /**
+     *
+     * @param <T>
+     * @param list
+     * @param name
+     * @return
+     */
     public static <T extends XMLable> Element fromCollection(Collection<T> list, String name) {
         Element parent = new Element(name);
         for (T item: list) {
@@ -166,6 +183,13 @@ public class XMLHandler {
         return parent;
     }
 
+    /**
+     *
+     * @param <T>
+     * @param parent
+     * @param clazz
+     * @return
+     */
     public static <T extends XMLable> List<T> toList(Element parent, Class<T> clazz) {
         Elements children = parent.getChildElements();
 

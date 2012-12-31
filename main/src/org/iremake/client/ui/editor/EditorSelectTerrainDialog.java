@@ -32,8 +32,12 @@ import org.iremake.client.ui.model.TerrainTiles;
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 
-    private Integer selected;
+    private int selected;
 
+    /**
+     * 
+     * @param tiles
+     */
     public EditorSelectTerrainDialog(TerrainTiles tiles) {
         super("Select Terrain");
 
@@ -41,7 +45,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = ((JButton) e.getSource()).getName();
-                selected = Integer.valueOf(name);
+                selected = Integer.parseInt(name);
                 close();
             }
         };
@@ -69,7 +73,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
             JButton button = new JButton();
             button.setIcon(new ImageIcon(tiles.getImage(id)));
             button.setMargin(new Insets(0, 0, 0, 0));
-            button.setName(String.valueOf(id));
+            button.setName(id.toString());
             button.setFocusable(false);
             // button.setToolTipText(Settings.getTerrainType(id)); // TODO get names again
             button.addActionListener(listener);
@@ -80,7 +84,11 @@ public class EditorSelectTerrainDialog extends UIDialog {
         setMinimumSize(0, 0);
     }
 
-    public Integer getSelection() {
+    /**
+     *
+     * @return
+     */
+    public int getSelection() {
         return selected;
     }
 }

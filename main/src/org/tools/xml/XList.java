@@ -43,6 +43,7 @@ import nu.xom.Elements;
  * de-serialization which is not supported for now.
  *
  * Also the List can be kept sorted at all times if wished.
+ * @param <E>
  */
 public class XList<E extends XMLable> implements ListModel<E>, XMLable {
 
@@ -65,6 +66,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
 
     /**
      * Empty list with initial capacity.
+     * @param clazz
      */
     public XList(Class<E> clazz) {
         this(new ArrayList<E>(4), clazz, "ListOf-" + clazz.getSimpleName());
@@ -78,6 +80,8 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
      * Sets the list from outside. Remains as is.
      *
      * @param list
+     * @param clazz
+     * @param XMLName
      */
     public XList(List<E> list, Class<E> clazz, String XMLName) {
         this.list = list;

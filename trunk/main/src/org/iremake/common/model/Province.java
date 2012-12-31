@@ -25,22 +25,22 @@ import org.tools.xml.XMLable;
  */
 public class Province implements XMLable {
 
-    public static final Integer NONE = 0;
+    public static final int NONE = 0;
 
-    private Integer id;
+    private int id;
     private String name;
     private MapPosition town = new MapPosition();
 
     public Province() {
     }
 
-    public Province(Integer id, String name) {
+    public Province(int id, String name) {
         // TODO check null
         this.id = id;
         this.name = name;
     }
 
-    public Integer getID() {
+    public int getID() {
         return id;
     }
 
@@ -72,7 +72,7 @@ public class Province implements XMLable {
     @Override
     public Element toXML() {
         Element element = new Element(NAME);
-        element.addAttribute(new Attribute("id", id.toString()));
+        element.addAttribute(new Attribute("id", Integer.toString(id)));
         element.addAttribute(new Attribute("name", name));
         element.addAttribute(new Attribute("town-row", String.valueOf(town.row)));
         element.addAttribute(new Attribute("town-column", String.valueOf(town.column)));
@@ -88,10 +88,10 @@ public class Province implements XMLable {
     @Override
     public void fromXML(Element parent) {
         // TODO checks (null, name)
-        id = Integer.valueOf(parent.getAttributeValue("id"));
+        id = Integer.parseInt(parent.getAttributeValue("id"));
         name = parent.getAttributeValue("name");
-        int row = Integer.valueOf(parent.getAttributeValue("town-row"));
-        int column = Integer.valueOf(parent.getAttributeValue("town-column"));
+        int row = Integer.parseInt(parent.getAttributeValue("town-row"));
+        int column = Integer.parseInt(parent.getAttributeValue("town-column"));
         town = new MapPosition(row, column);
     }
 }

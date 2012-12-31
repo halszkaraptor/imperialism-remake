@@ -27,8 +27,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import nu.xom.Element;
 import nu.xom.Elements;
-import org.tools.xml.XMLHandler;
-import org.tools.xml.XMLable;
 
 /**
  * Table (two-dimensional array of strings plus list of column heading strings).

@@ -19,12 +19,8 @@ package org.iremake.server.network.clients;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.iremake.client.Option;
-import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.NumberMessage;
-import org.iremake.common.network.messages.NumberMessageType;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.ServerClientHandler;
 import org.iremake.server.network.ServerLogger;
 
@@ -40,7 +36,6 @@ public class UnregisteredSClient extends SClient {
     public UnregisteredSClient(ServerClientHandler handler) {
         super(handler);
 
-        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

@@ -146,8 +146,8 @@ public class TerrainTiles implements XMLable {
         }
 
         // TODO check tileSize is the same for all
-        int width = Integer.valueOf(parent.getAttributeValue("tile-width"));
-        int height = Integer.valueOf(parent.getAttributeValue("tile-height"));
+        int width = Integer.parseInt(parent.getAttributeValue("tile-width"));
+        int height = Integer.parseInt(parent.getAttributeValue("tile-height"));
         tileSize = new Dimension(width, height);
         for (Tile tile : map.values()) {
             width = tile.image.getWidth(null);

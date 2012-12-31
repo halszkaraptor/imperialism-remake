@@ -68,7 +68,7 @@ public class MainScreen extends UIFrame {
 
         scenario.addScenarioChangedListener(new ScenarioChangedListener() {
             @Override
-            public void tileChanged(MapPosition p, Integer id) {
+            public void tileChanged(MapPosition p, int id) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
             }

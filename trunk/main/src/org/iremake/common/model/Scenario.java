@@ -120,7 +120,7 @@ public class Scenario implements XMLable {
      * @param p
      * @param id
      */
-    public void setTerrainAt(MapPosition p, Integer id) {
+    public void setTerrainAt(MapPosition p, int id) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
@@ -215,7 +215,7 @@ public class Scenario implements XMLable {
             return null;
         }
 
-        for (Integer id = Province.NONE + 1; id < 1024; id++) {
+        for (int id = Province.NONE + 1; id < 1024; id++) {
             if (!provinces.containsKey(id)) {
                 Province province = new Province(id, name);
                 provinces.put(id, province);
@@ -235,7 +235,8 @@ public class Scenario implements XMLable {
      * @return
      */
     public TileBorder getBorder(MapPosition p, TileTransition transition) {
-        if (map[p.row][p.column].provinceID.equals(map[p.row][p.column].provinceID)) {
+        // TODO this is not right here yet6
+        if (map[p.row][p.column].provinceID == map[p.row][p.column].provinceID) {
             return TileBorder.Province;
             // TODO TileBorder Nation
         }

@@ -20,11 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientHandler;
-import org.iremake.client.network.ClientLogger;
-import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.NumberMessage;
-import org.iremake.common.network.messages.NumberMessageType;
 import org.iremake.common.network.messages.TextMessageType;
 
 /**

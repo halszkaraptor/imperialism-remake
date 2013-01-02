@@ -14,21 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.xml;
+package org.iremake.xml;
 
 import java.io.IOException;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
+import org.tools.xml.XMLHelper;
 
 /**
  *
  */
 public class TilesXMLGenerator {
+
     /**
      * @param args the command line arguments
-     * @throws IOException 
+     * @throws IOException
      */
     public static void main(String[] args) throws IOException {
 
@@ -46,13 +48,14 @@ public class TilesXMLGenerator {
         parent.addAttribute(new Attribute("tile-height", "80"));
         parent.appendChild(addResourceOverlay(1, "resource.grain.png", true));
         parent.appendChild(addResourceOverlay(2, "resource.orchard.png", true));
-        parent.appendChild(addResourceOverlay(3, "resource.cotton.png", true));
-        parent.appendChild(addResourceOverlay(4, "resource.sheep.png", true));
-        parent.appendChild(addResourceOverlay(5, "resource.forest.png", true));
-        parent.appendChild(addResourceOverlay(6, "resource.srubforest.png", true));
-        parent.appendChild(addResourceOverlay(7, "resource.oil.png", false));
-        parent.appendChild(addResourceOverlay(8, "resource.coal.png", false));
-        parent.appendChild(addResourceOverlay(9, "resource.ore.png", false));
+        parent.appendChild(addResourceOverlay(3, "resource.buffalo.png", true));
+        parent.appendChild(addResourceOverlay(4, "resource.cotton.png", true));
+        parent.appendChild(addResourceOverlay(5, "resource.sheep.png", true));
+        parent.appendChild(addResourceOverlay(6, "resource.forest.png", true));
+        parent.appendChild(addResourceOverlay(7, "resource.srubforest.png", true));
+        parent.appendChild(addResourceOverlay(8, "resource.oil.png", false));
+        parent.appendChild(addResourceOverlay(9, "resource.coal.png", false));
+        parent.appendChild(addResourceOverlay(10, "resource.ore.png", false));
 
         Resource resource = ResourceUtils.asResource("resources.xml");
         XMLHelper.write(resource, parent);

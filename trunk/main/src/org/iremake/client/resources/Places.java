@@ -24,16 +24,17 @@ public enum Places {
     None(""),
     Log("log/"),
     Help("data/help/"),
-    
+
     Common("data/game/common/"),
-    
+
     Scenarios("data/game/scenarios/"),
-    ScenarioSettings(Scenarios + "settings/"),
-    
+
     Graphics("data/game/artwork/graphics/"),
+    GraphicsTerrains(Graphics + "terrains/"),
+    GraphicsResources(Graphics + "resources/"),
     GraphicsIcons(Graphics + "ui/"),
-    GraphicsTerrain(Graphics + "terrain/");
-    
+    GraphicsBrowserIcons(GraphicsIcons + "browser/");
+
     private String id;
 
     Places(String id) {

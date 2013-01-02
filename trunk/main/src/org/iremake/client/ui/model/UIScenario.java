@@ -36,12 +36,12 @@ public class UIScenario extends Scenario {
     private ResourceOverlays resourceOverlays = new ResourceOverlays();
 
     public UIScenario() {
-        IOManager.setFromXML(Places.GraphicsTerrain, "terrains.xml", terrainTiles);
-        IOManager.setFromXML(Places.GraphicsTerrain, "resources.xml", resourceOverlays);
+        IOManager.setFromXML(Places.GraphicsTerrains, "terrains.xml", terrainTiles);
+        IOManager.setFromXML(Places.GraphicsResources, "resources.xml", resourceOverlays);
     }
 
     /**
-     * 
+     *
      * @return
      */
     public Dimension getTileSize() {

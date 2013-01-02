@@ -140,7 +140,7 @@ public class TerrainTiles implements XMLable {
             Integer id = Integer.valueOf(child.getAttributeValue("id"));
             String location = child.getAttributeValue("location");
             Tile tile = new Tile();
-            tile.image = IOManager.getAsImage(Places.GraphicsTerrain, location);
+            tile.image = IOManager.getAsImage(Places.GraphicsTerrains, location);
             tile.color = TerrainTiles.ColorFromHex(child.getAttributeValue("color"));
             map.put(id, tile);
         }

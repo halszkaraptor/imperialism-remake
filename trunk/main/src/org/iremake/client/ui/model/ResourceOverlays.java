@@ -101,7 +101,7 @@ public class ResourceOverlays implements XMLable {
             Integer id = Integer.valueOf(child.getAttributeValue("id"));
             String location = child.getAttributeValue("location");
             Tile tile = new Tile();
-            tile.image = IOManager.getAsImage(Places.GraphicsTerrain, location);
+            tile.image = IOManager.getAsImage(Places.GraphicsResources, location);
             tile.visible = Boolean.valueOf(child.getAttributeValue("visible"));
             map.put(id, tile);
         }

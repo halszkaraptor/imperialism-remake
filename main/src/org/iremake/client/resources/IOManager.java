@@ -194,14 +194,14 @@ public class IOManager {
     /**
      * Returns an UILoader for a certain Place.
      *
-     * @param places
+     * @param place
      * @return
      */
-    public static IconLoader getAsLoader(Places places) {
+    public static IconLoader getAsLoader(final Places place) {
         IconLoader loader = new IconLoader() {
             @Override
             public Icon getAsIcon(String location) {
-                return IOManager.getAsIcon(Places.GraphicsIcons, location);
+                return IOManager.getAsIcon(place, location);
             }
         };
         return loader;

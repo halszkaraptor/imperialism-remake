@@ -56,11 +56,11 @@ public class StartScreen extends UIFrame {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start.background.png"));    // set image
+        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.png"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start.logo.png"));    // set image
+        logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.logo.png"));    // set image
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.Version.get());
@@ -142,7 +142,7 @@ public class StartScreen extends UIFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
-                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsIcons));
+                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsBrowserIcons));
                 UIDialog.make(browser, "Help");
             }
         });

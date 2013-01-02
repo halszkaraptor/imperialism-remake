@@ -24,10 +24,13 @@ import org.tools.ui.utils.IconLoader;
 
 /**
  * Loads from the classpath directly. Optimal for all the test suites.
- * 
+ *
  * Could also be used to load from inside a jar archive.
  */
 public class TestIOManager {
+
+    private TestIOManager() {
+    }
 
     /**
      * Loads as ImageIcon.

@@ -28,34 +28,34 @@ import org.iremake.client.resources.Places;
 public enum Button {
 
     // big buttons in the start menu
-    StartMenuScenario("start.button.scenario.png"),
-    StartMenuNetwork("start.button.network.png"),
-    StartMenuOptions("start.button.options.png"),
-    StartMenuHelp("start.button.help.png"),
-    StartMenuEditor("start.button.editor.png"),
-    StartMenuExit("start.button.exit.png"),
+    StartMenuScenario("start/start.button.scenario.png"),
+    StartMenuNetwork("start/start.button.network.png"),
+    StartMenuOptions("start/start.button.options.png"),
+    StartMenuHelp("start/start.button.help.png"),
+    StartMenuEditor("start/start.button.editor.png"),
+    StartMenuExit("start/start.button.exit.png"),
 
     // small sized buttons
-    SmallAdd("generic.button.add.png"),
-    SmallExit("generic.button.exit.png"),
+    SmallAdd("misc/generic.button.add.png"),
+    SmallExit("misc/generic.button.exit.png"),
 
     // normal sized buttons used everywhere
-    NormalExit("main.button.exit.png"),
-    NormalHelp("main.button.help.png"),
+    NormalExit("misc/main.button.exit.png"),
+    NormalHelp("misc/main.button.help.png"),
 
     // normal sized buttons used in the editor
-    EditorTerrain("editor.button.terrain.png"),
-    EditorNation("editor.button.nation.png"),
-    EditorProvince("editor.button.province.png"),
+    EditorTerrain("editor/editor.button.terrain.png"),
+    EditorNation("editor/editor.button.nation.png"),
+    EditorProvince("editor/editor.button.province.png"),
 
     // normal size buttons used in the network dialog
-    NetworkConnect("network.button.connect.png"),
+    NetworkConnect("misc/network.button.connect.png"),
 
     // normal sized buttons with general options for a scenario
-    ScenarioLoad("scenario.button.load.png"),
-    ScenarioStart("scenario.button.start.png"),
-    ScenarioNew("scenario.button.new.png"),
-    ScenarioSave("scenario.button.save.png");
+    ScenarioLoad("misc/scenario.button.load.png"),
+    ScenarioStart("misc/scenario.button.start.png"),
+    ScenarioNew("misc/scenario.button.new.png"),
+    ScenarioSave("misc/scenario.button.save.png");
 
     /* */
     private String location;

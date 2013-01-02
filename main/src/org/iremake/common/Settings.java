@@ -46,8 +46,8 @@ public class Settings {
      */
     public static void load() {
 
-        Element xml = IOManager.getAsXML(Places.ScenarioSettings, "terrain.xml");
-
+        Element xml = IOManager.getAsXML(Places.Common, "settings.xml");
+        // TODO this will not work
         // parse xml and fill table
         XTable table = new XTable();
         table.fromXML(xml);

@@ -44,6 +44,7 @@ public class SettingsXMLGenerator {
 
     private static Element createTerrainSettings() {
         Element parent = new Element("Terrains");
+        parent.addAttribute(new Attribute("default-id", "1"));
         parent.appendChild(addTerrainType(1, "Sea"));
         parent.appendChild(addTerrainType(2, "Plains"));
         parent.appendChild(addTerrainType(3, "Hills"));

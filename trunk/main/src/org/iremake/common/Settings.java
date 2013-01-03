@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import nu.xom.Element;
+import nu.xom.Elements;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
-import org.tools.xml.XTable;
 
 /**
  * Reads some settings, like ids of Terrain...
@@ -31,11 +31,13 @@ import org.tools.xml.XTable;
 // TODO unmake static
 public class Settings {
 
-    private static Map<Integer, String> terrainTypes = new HashMap<>(0);
+    private static Map<Integer, String> terrainNames;
+    private static Map<Integer, String> resourceNames;
+    private static int defaultID;
 
     // TODO get this from xml
     public static int getDefaultTerrainID() {
-        return 3;
+        return defaultID;
     }
 
     private Settings() {
@@ -47,18 +49,28 @@ public class Settings {
     public static void load() {
 
         Element xml = IOManager.getAsXML(Places.Common, "settings.xml");
-        // TODO this will not work
-        // parse xml and fill table
-        XTable table = new XTable();
-        table.fromXML(xml);
 
-        // load terrain images, combine colors and fill map
-        int n = table.getRowCount();
-        terrainTypes = new HashMap<>(n);
-        for (int row = 0; row < n; row++) {
-            Integer id = Integer.valueOf(table.getEntryAt(row, 0));
-            String type = table.getEntryAt(row, 1);
-            terrainTypes.put(id, type);
+        // terrains
+        Element child = xml.getFirstChildElement("Terrains");
+        defaultID = Integer.parseInt(child.getAttributeValue("default-id"));
+        Elements elements = child.getChildElements("Terrain");
+        terrainNames = new HashMap<>(elements.size());
+        for (int i = 0; i < elements.size(); i++) {
+            Element element = elements.get(i);
+            int id = Integer.parseInt(element.getAttributeValue("id"));
+            String name = element.getAttributeValue("name");
+            terrainNames.put(id, name);
+        }
+
+        // resources
+        child = xml.getFirstChildElement("Resources");
+        elements = child.getChildElements("Resource");
+        resourceNames = new HashMap<>(elements.size());
+        for (int i = 0; i < elements.size(); i++) {
+            Element element = elements.get(i);
+            int id = Integer.parseInt(element.getAttributeValue("id"));
+            String name = element.getAttributeValue("name");
+            resourceNames.put(id, name);
         }
     }
 
@@ -67,7 +79,7 @@ public class Settings {
      * @return
      */
     public static Set<Integer> getTerrainIDs() {
-        return terrainTypes.keySet();
+        return terrainNames.keySet();
     }
 
     /**
@@ -76,7 +88,7 @@ public class Settings {
      * @return
      */
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
-    public static String getTerrainType(Integer id) {
-        return terrainTypes.get(id);
+    public static String getTerrainName(Integer id) {
+        return terrainNames.get(id);
     }
 }

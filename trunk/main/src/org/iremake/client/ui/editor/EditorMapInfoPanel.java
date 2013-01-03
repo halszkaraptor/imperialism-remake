@@ -55,7 +55,7 @@ public class EditorMapInfoPanel extends JPanel {
         if (p.isOff()) {
             tile.setText("");
         } else {
-            tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column) + "  " + Settings.getTerrainType(map.getTerrainAt(p)));
+            tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column) + "  " + Settings.getTerrainName(map.getTerrainAt(p)));
         }
     }
 }

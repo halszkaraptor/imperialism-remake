@@ -228,6 +228,15 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    public String getTownAt(MapPosition p) {
+        for (Province province: provinces.values()) {
+            if (province.getTownPosition().equals(p)) {
+                return "town";
+            }
+        }
+        return null;
+    }
+
     /**
      *
      * @param p
@@ -235,8 +244,25 @@ public class Scenario implements XMLable {
      * @return
      */
     public TileBorder getBorder(MapPosition p, TileTransition transition) {
-        // TODO this is not right here yet6
-        if (map[p.row][p.column].provinceID == map[p.row][p.column].provinceID) {
+        int id = map[p.row][p.column].provinceID;
+        int row = 0, column = 0;
+        switch (transition) {
+            case East:
+                row = p.row + 1;
+                column = p.column;
+                break;
+            case SouthEast:
+                // TODO slightly wrong, depends on even or odd row if column is shifted
+                row = p.row + 1;
+                column = p.column + 1;
+                break;
+            case SouthWest:
+                // TODO slightly wrong, depends on even or odd row if column is shifted
+                row = p.row + 1;
+                column = p.column - 1;
+                break;
+        }
+        if (id == map[row][column].provinceID) {
             return TileBorder.Province;
             // TODO TileBorder Nation
         }

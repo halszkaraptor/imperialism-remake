@@ -162,22 +162,28 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     }
 
                     // draw tile border
+                    g2d.setColor(Color.white);
                     TileBorder border = scenario.getBorder(p, TileTransition.East);
                     if (border == TileBorder.Province) {
                         // white stripe at the right side
+                        g2d.drawLine(x + tileSize.width - 1, y, x + tileSize.width - 1, y + tileSize.height);
                     }
                     border = scenario.getBorder(p, TileTransition.SouthEast);
                     if (border == TileBorder.Province) {
                         // white half strip on the lower, right side
+                        g2d.drawLine(x + tileSize.width / 2, y + tileSize.height - 1, x + tileSize.width - 1, y + tileSize.height - 1);
                     }
                     border = scenario.getBorder(p, TileTransition.SouthWest);
                     if (border == TileBorder.Province) {
                         // white half stripe on the lower, left side
+                        g2d.drawLine(x, y + tileSize.height - 1, x + tileSize.width / 2, y + tileSize.height - 1);
                     }
 
                     // draw city
-                    // g2d.drawImage(null, x, y, null);
-                    g2d.drawString("Name", x, y);
+                    String name = scenario.getTownAt(p);
+                    if (name != null) {
+                        g2d.drawString(name, x, y);
+                    }
 
                 } else {
                     // just take a nearest tile image by projecting towards the nearest map tile in row and column direction

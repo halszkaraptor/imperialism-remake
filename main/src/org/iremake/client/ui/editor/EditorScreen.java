@@ -35,6 +35,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
@@ -210,8 +211,27 @@ public class EditorScreen extends UIFrame {
     private JPanel createGeneralTab() {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout());
+        panel.add(createGeneralPanel(), "wrap");
         panel.add(createNationsPanel(), "sizegroup");
         panel.add(createProvincesPanel(), "sizegroup");
+
+        return panel;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private JComponent createGeneralPanel() {
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder("General"));
+
+        JTextField name = new JTextField();
+        name.setText(scenario.getTitle());
+
+        panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
+        panel.add(new JLabel("Scenario Name"));
+        panel.add(name, "wmin 200");
 
         return panel;
     }

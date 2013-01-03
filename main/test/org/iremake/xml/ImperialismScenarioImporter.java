@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.applications;
+package org.iremake.xml;
 
 import icons.TestIOManager;
 import java.awt.EventQueue;
@@ -28,6 +28,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -45,23 +47,25 @@ import javax.swing.filechooser.FileFilter;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.io.FileResource;
+import org.tools.io.Resource;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.utils.BitBuffer;
 import org.tools.xml.XMLHelper;
+import org.tools.xml.XProperty;
 
 /**
  * Reads the output from the python map import script and inserts a scenario
  * file accordingly.
  */
-public class OriginalMapImportApp extends JFrame {
+public class ImperialismScenarioImporter extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JFileChooser fileChooser;
 
     /**
-     * Creates new form OriginalMapImportApp
+     * Creates new form ImperialismScenarioImporter
      */
-    public OriginalMapImportApp() {
+    public ImperialismScenarioImporter() {
         // form initialization
         initComponents();
 
@@ -246,7 +250,9 @@ public class OriginalMapImportApp extends JFrame {
             updateStatus("values for columns/rows out of bounds, will stop");
             return;
         }
-        int size = 4 * columns * rows;
+        updateStatus(String.format("map size %dx%d", rows, columns));
+        // 5 chunks coming
+        int size = 6 * columns * rows;
         if (size != ib.remaining()) {
             updateStatus("size of input data not correct, will stop");
             return;
@@ -260,33 +266,66 @@ public class OriginalMapImportApp extends JFrame {
         int[] terrain_overlay = new int[chunk];
         ib.get(terrain_overlay);
 
+        int[] countries = new int[chunk];
+        ib.get(countries);
+
         int[] resources = new int[chunk];
         ib.get(resources);
 
         int[] provinces = new int[chunk];
         ib.get(provinces);
 
+        int[] cities = new int[chunk];
+        ib.get(cities);
+
         progressBar.setValue(20);
         updateStatus("data imported successfully");
         Element xml;
+        Resource resource = null;
         try {
             // read second file
-            xml = XMLHelper.read(new FileResource(exportFile));
+            resource = new FileResource(exportFile);
+            xml = XMLHelper.read(resource);
         } catch (IOException | ParsingException ex) {
             updateStatus("could not read and parse scenario file, will stop");
             return;
         }
 
-        // fill bitbuffer for map data
-        BitBuffer buffer = new BitBuffer(chunk * 36);
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                int bits = 0;
-                buffer.add(bits, 6);
+        Element child, element;
+
+        // write rows and columns
+        child = xml.getFirstChildElement("Properties");
+        XProperty property = new XProperty(20);
+        property.fromXML(child);
+        property.putInt("rows", rows);
+        property.putInt("columns", columns);
+        xml.replaceChild(child, property.toXML());
+
+        // check that if terrain_underlay is ocean also terrain_overlay is ocean
+        for (int i = 0; i < chunk; i++) {
+            if (terrain_underlay[i] == 5 ^ terrain_overlay[i] == 0) {
+                updateStatus("terrain underlay and overlay differ in ocean description, will stop");
+                return;
             }
         }
-        String map = buffer.toXMLString();
 
+        // detect countries
+        Set<Integer> uc = new HashSet<>(20);
+        for (int i = 0; i < chunk; i++) {
+            if (terrain_underlay[i] != 5 && countries[i] != 0) {
+                uc.add(countries[i]);
+            }
+        }
+        updateStatus(String.format("contains %d nations", uc.size()));
+
+        // overwrite to file
+        /*
+        try {
+            XMLHelper.write(resource, xml);
+        } catch (IOException ex) {
+            updateStatus("could not write to scenario file");
+            return;
+        }*/
 
         updateStatus("conversion successful");
         progressBar.setValue(100);
@@ -306,7 +345,7 @@ public class OriginalMapImportApp extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new OriginalMapImportApp().setVisible(true);
+                new ImperialismScenarioImporter().setVisible(true);
             }
         });
     }

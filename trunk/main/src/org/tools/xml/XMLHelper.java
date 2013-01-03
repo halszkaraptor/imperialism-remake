@@ -44,7 +44,6 @@ public class XMLHelper {
      * @param in Not closed afterwards.
      * @return
      * @throws ParsingException
-     * @throws ValidityException
      * @throws IOException
      */
     public static Element read(InputStream in) throws IOException, ParsingException {
@@ -56,8 +55,10 @@ public class XMLHelper {
     /**
      * High level reading to XML.
      *
-     * @param location
+     * @param resource
      * @return
+     * @throws IOException
+     * @throws ParsingException
      */
     public static Element read(Resource resource) throws IOException, ParsingException {
         try (InputStream in = resource.getInputStream()) {
@@ -68,8 +69,10 @@ public class XMLHelper {
     /**
      * Convenience method, the XMLable must be created before.
      *
-     * @param location
+     * @param resource
      * @param target
+     * @throws IOException
+     * @throws ParsingException
      */
     public static void read(Resource resource, XMLable target) throws IOException, ParsingException {
         Element xml = XMLHelper.read(resource);
@@ -81,11 +84,15 @@ public class XMLHelper {
      *
      * @param out Not closed afterwards.
      * @param root
-     * @throws UnsupportedEncodingException
      * @throws IOException
      */
     public static void write(OutputStream out, Element root) throws IOException {
-        Document document = new Document(root);
+
+        // get document, if not existing create new with this as the root node
+        Document document = root.getDocument();
+        if (document == null) {
+            document = new Document(root);
+        }
 
         Serializer serializer = new Serializer(out, "UTF-8");
         serializer.setIndent(1);
@@ -96,8 +103,9 @@ public class XMLHelper {
     /**
      * High level writing.
      *
-     * @param location
+     * @param resource
      * @param root
+     * @throws IOException
      */
     public static void write(Resource resource, Element root) throws IOException {
         try (OutputStream out = resource.getOutputStream()) { // this will create parent directories if they aren't yet available
@@ -108,8 +116,9 @@ public class XMLHelper {
     /**
      * Convenience method.
      *
-     * @param location
+     * @param resource
      * @param target
+     * @throws IOException
      */
     public static void write(Resource resource, XMLable target) throws IOException {
         Element xml = target.toXML();

@@ -28,7 +28,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,10 +48,16 @@ import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 import nu.xom.Element;
 import nu.xom.ParsingException;
+import org.iremake.common.model.MapPosition;
+import org.iremake.common.model.Nation;
+import org.iremake.common.model.Province;
+import org.iremake.common.model.Scenario;
+import org.iremake.common.model.Tile;
 import org.tools.io.FileResource;
 import org.tools.io.Resource;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.utils.BitBuffer;
+import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.XProperty;
 
@@ -280,30 +288,13 @@ public class ImperialismScenarioImporter extends JFrame {
 
         progressBar.setValue(20);
         updateStatus("data imported successfully");
-        Element xml;
-        Resource resource = null;
-        try {
-            // read second file
-            resource = new FileResource(exportFile);
-            xml = XMLHelper.read(resource);
-        } catch (IOException | ParsingException ex) {
-            updateStatus("could not read and parse scenario file, will stop");
-            return;
-        }
 
-        Element child, element;
-
-        // write rows and columns
-        child = xml.getFirstChildElement("Properties");
-        XProperty property = new XProperty(20);
-        property.fromXML(child);
-        property.putInt("rows", rows);
-        property.putInt("columns", columns);
-        xml.replaceChild(child, property.toXML());
+        Scenario scenario = new Scenario();
+        scenario.createNew(rows, columns);
 
         // check that if terrain_underlay is ocean also terrain_overlay is ocean
         for (int i = 0; i < chunk; i++) {
-            if (terrain_underlay[i] == 5 ^ terrain_overlay[i] == 0) {
+            if ((terrain_underlay[i] == 5) != (terrain_overlay[i] == 0)) {
                 updateStatus("terrain underlay and overlay differ in ocean description, will stop");
                 return;
             }
@@ -312,20 +303,100 @@ public class ImperialismScenarioImporter extends JFrame {
         // detect countries
         Set<Integer> uc = new HashSet<>(20);
         for (int i = 0; i < chunk; i++) {
-            if (terrain_underlay[i] != 5 && countries[i] != 0) {
+            if (terrain_underlay[i] != 5) {
                 uc.add(countries[i]);
             }
         }
         updateStatus(String.format("contains %d nations", uc.size()));
 
-        // overwrite to file
-        /*
+        // put countries into list
+        XList<Nation> nations = scenario.getNations();
+        Map<Integer, Nation> nmap = new HashMap<>();
+        int id = 1;
+        for (Integer i : uc) {
+            String name = String.format("Nation %d", id);
+            Nation nation = new Nation(name);
+            nmap.put(i, nation);
+            nations.addElement(nation);
+            id++;
+        }
+
+        // detect provinces
+        Set<Integer> up = new HashSet<>(1000);
+        for (int i = 0; i < chunk; i++) {
+            if (terrain_underlay[i] != 5) {
+                up.add(provinces[i]);
+            }
+        }
+        updateStatus(String.format("contains %d provinces", up.size()));
+
+        // generate province names
+        Map<Integer, String> pmap = new HashMap<>();
+        id = 1;
+        for (Integer i : up) {
+            String name = String.format("Province %d", id);
+            pmap.put(i, name);
+            id++;
+        }
+
+        // add provinces to scenario
+        Set<Integer> processed = new HashSet<>(1000);
+        for (int i = 0; i < chunk; i++) {
+            if (terrain_underlay[i] != 5) {
+                if (!processed.contains(provinces[i])) {
+                    Nation nation = nmap.get(countries[i]);
+                    String name = pmap.get(provinces[i]);
+                    scenario.newProvince(nation, name);
+                    processed.add(provinces[i]);
+                }
+            }
+        }
+
+        // set terrain
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                MapPosition pos = new MapPosition(row, column);
+                Tile tile = scenario.getTileAt(pos);
+                // set terrain
+                int i = column + row * columns;
+                // sea
+                if (terrain_underlay[i] == 5) {
+                    tile.terrainID = 1;
+                }
+                // plains
+                if (terrain_underlay[i] == 0 || terrain_underlay[i] == 1 || terrain_underlay[i] == 7) {
+                    tile.terrainID = 2;
+                }
+                // hills
+                if (terrain_underlay[i] == 2) {
+                    tile.terrainID = 3;
+                }
+                // mountains
+                if (terrain_underlay[i] == 3) {
+                    tile.terrainID = 4;
+                }
+                // tundra
+                if (terrain_underlay[i] == 6 && terrain_overlay[i] == 12) {
+                    tile.terrainID = 5;
+                }
+                // swamp
+                if (terrain_underlay[i] == 4) {
+                    tile.terrainID = 6;
+                }
+                // desert
+                if (terrain_underlay[i] == 6 && terrain_overlay[i] == 11) {
+                    tile.terrainID = 7;
+                }
+            }
+        }
+
         try {
-            XMLHelper.write(resource, xml);
+            Resource resource = new FileResource(exportFile);
+            XMLHelper.write(resource, scenario);
         } catch (IOException ex) {
             updateStatus("could not write to scenario file");
             return;
-        }*/
+        }
 
         updateStatus("conversion successful");
         progressBar.setValue(100);

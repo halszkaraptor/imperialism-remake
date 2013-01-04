@@ -77,6 +77,7 @@ public class EditorScreen extends UIFrame {
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
     private EditorMapInfoPanel infoPanel;
+    private JTextField scenarioTitle;
 
     public EditorScreen() {
         JPanel content = new JPanel();
@@ -98,7 +99,7 @@ public class EditorScreen extends UIFrame {
             public void tileChanged(MapPosition p, int id) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
-                infoPanel.mainMapTileChanged(p);
+                infoPanel.mainMapTileChanged(p, scenario);
             }
 
             @Override
@@ -165,6 +166,10 @@ public class EditorScreen extends UIFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                // update title
+                scenario.setTitle(scenarioTitle.getText());
+
                 JFileChooser fileChooser = IOManager.getFileChooser();
                 if (FrameManager.getInstance().showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
                     File f = fileChooser.getSelectedFile();
@@ -226,12 +231,12 @@ public class EditorScreen extends UIFrame {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("General"));
 
-        JTextField name = new JTextField();
-        name.setText(scenario.getTitle());
+        scenarioTitle = new JTextField();
+        scenarioTitle.setText(scenario.getTitle());
 
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
         panel.add(new JLabel("Scenario Name"));
-        panel.add(name, "wmin 200");
+        panel.add(scenarioTitle, "wmin 200");
 
         return panel;
     }
@@ -454,15 +459,14 @@ public class EditorScreen extends UIFrame {
         ButtonBar bar = new ButtonBar();
         bar.add(terrainButton, provinceButton);
 
-        // info map panel and add
-        infoPanel = new EditorMapInfoPanel(scenario);
+        infoPanel = new EditorMapInfoPanel();
 
         // create main map panel and add
         mainMapPanel = new MainMapPanel(scenario);
         mainMapPanel.addTileListener(new MapTileListener() {
             @Override
             public void focusChanged(MapPosition p) {
-                infoPanel.mainMapTileChanged(p);
+                infoPanel.mainMapTileChanged(p, scenario);
             }
 
             @Override

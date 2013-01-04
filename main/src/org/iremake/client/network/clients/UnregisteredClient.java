@@ -24,7 +24,7 @@ import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessageType;
 
 /**
- *
+ * Automatically tries to register.
  */
 public class UnregisteredClient extends Client {
 

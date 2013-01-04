@@ -21,28 +21,32 @@ package org.iremake.client.resources;
  */
 public enum Places {
 
+    // the places
     None(""),
     Log("log/"),
     Help("data/help/"),
-
     Common("data/game/common/"),
-
     Scenarios("data/game/scenarios/"),
-
     Graphics("data/game/artwork/graphics/"),
     GraphicsTerrains(Graphics + "terrains/"),
     GraphicsResources(Graphics + "resources/"),
     GraphicsIcons(Graphics + "ui/"),
     GraphicsBrowserIcons(GraphicsIcons + "browser/");
+    /* the location of the place*/
+    private String location;
 
-    private String id;
-
-    Places(String id) {
-        this.id = id;
+    Places(String location) {
+        this.location = location;
+        // TODO must end with '/', otherwise throw exception
     }
 
+    /**
+     * We use the toString method to naturally return the location.
+     * 
+     * @return
+     */
     @Override
     public String toString() {
-        return id;
+        return location;
     }
 }

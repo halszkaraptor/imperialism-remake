@@ -28,18 +28,34 @@ import org.iremake.common.network.messages.Message;
  */
 public class ClientHandler extends Listener {
 
+    /* Current state client */
     private Client client;
+    /* Active connection */
     private Connection connection;
 
+    /**
+     * Start with unregistered client.
+     */
     public ClientHandler() {
         client = new UnregisteredClient(this);
     }
 
+    /**
+     * Connection has been disconnected (or did we do it?).
+     *
+     * @param connection
+     */
     @Override
     public void disconnected(Connection connection) {
         ClientLogger.log("Disconnection");
     }
 
+    /**
+     * Message received, delegate to client.
+     *
+     * @param connection
+     * @param object
+     */
     @Override
     public void received(Connection connection, Object object) {
         if (this.connection == null) {
@@ -53,10 +69,18 @@ public class ClientHandler extends Listener {
         }
     }
 
+    /**
+     * Send a message over the connection.
+     *
+     * @param message
+     */
     public void send(Message message) {
         connection.sendTCP(message);
     }
 
+    /**
+     * Change client state.
+     */
     public void registrationSuccess() {
         client = new RegisteredClient(this);
     }

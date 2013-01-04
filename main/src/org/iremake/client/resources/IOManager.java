@@ -50,16 +50,25 @@ import org.tools.xml.XMLable;
  * for easier editing and size considerations, everything is loaded from a same
  * parent folder as the executing jar folder, but with different sub directories
  * (Places).
+ *
+ * We always have a place (enum=subdirectory) and a location within that place.
+ *
+ * We have a statistics feature, so we can test if resources were requested
+ * which aren't existing or to see which existing resources weren't requested.
  */
 // TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class IOManager {
 
+    /* keeping track of which resource was asked for */
     private static Set<String> statistics = new HashSet<>(10);
+    /* a file chooser for loading and saving */
+    private static JFileChooser fileChooser;
     private static final Logger LOG = Logger.getLogger(IOManager.class.getName());
+
+    /* path to the folder where the jar resides */
     private static final String base = "";
     // private static final String base = (new File(Loader.class.getProtectionDomain().getCodeSource().getLocation().getPath())).getParent() + File.separator;
     // private static final String base = System.getProperty("user.dir") + File.separator; // starting from within NetBeans
-    private static JFileChooser fileChooser;
 
     /**
      * No instantiation.
@@ -68,7 +77,7 @@ public class IOManager {
     }
 
     /**
-     * Lazy initialization.
+     * Obtains the file chooser. Uses lazy initialization.
      *
      * @return
      */
@@ -128,7 +137,7 @@ public class IOManager {
     }
 
     /**
-     * Load from an XML file.
+     * Loads as a XML element presentation.
      *
      * @param place
      * @param location
@@ -144,6 +153,8 @@ public class IOManager {
     }
 
     /**
+     * Reads directly into a XMLable variable. The variable must have been
+     * created before.
      *
      * @param place
      * @param location
@@ -161,6 +172,7 @@ public class IOManager {
     }
 
     /**
+     * Saves directly from a XMLable variable.
      *
      * @param place
      * @param location
@@ -178,7 +190,7 @@ public class IOManager {
     }
 
     /**
-     * Just an InputStream from a file.
+     * Obtain an InputStream. Needed for example in Font.createFont().
      *
      * @param place
      * @param location
@@ -192,33 +204,7 @@ public class IOManager {
     }
 
     /**
-     * Returns an UILoader for a certain Place.
-     *
-     * @param place
-     * @return
-     */
-    public static IconLoader getAsLoader(final Places place) {
-        IconLoader loader = new IconLoader() {
-            @Override
-            public Icon getAsIcon(String location) {
-                return IOManager.getAsIcon(place, location);
-            }
-        };
-        return loader;
-    }
-
-    /**
-     * Just the path. place and base are ending with separators already.
-     *
-     * @param place
-     * @param location
-     * @return
-     */
-    public static String getPath(Places place, String location) {
-        return base + place + location;
-    }
-
-    /**
+     * Obtain a resource. This allows to even read from inside archives.
      *
      * @param place
      * @param location
@@ -236,6 +222,37 @@ public class IOManager {
     }
 
     /**
+     * Returns an IconLoader hiding the getAsIcon function above used in
+     * packages org.tools.xxx to bridge to the IOManager without referring to
+     * it.
+     *
+     * @param place
+     * @return
+     */
+    public static IconLoader getAsLoader(final Places place) {
+        IconLoader loader = new IconLoader() {
+            @Override
+            public Icon getAsIcon(String location) {
+                return IOManager.getAsIcon(place, location);
+            }
+        };
+        return loader;
+    }
+
+    /**
+     * Path construction. Place and base are supposed to end with separators
+     * already.
+     *
+     * @param place
+     * @param location
+     * @return
+     */
+    public static String getPath(Places place, String location) {
+        return base + place + location;
+    }
+
+    /**
+     * Tests for existence. Only works on files though.
      *
      * @param place
      * @param location
@@ -247,7 +264,7 @@ public class IOManager {
     }
 
     /**
-     * The path as URL.
+     * The path as URL. E.g. needed in JEditorPane.setPage().
      *
      * @param place
      * @param location
@@ -277,6 +294,8 @@ public class IOManager {
     }
 
     /**
+     * Returns the collected statistics, an ordered list of paths that were
+     * requested.
      *
      * @return
      */

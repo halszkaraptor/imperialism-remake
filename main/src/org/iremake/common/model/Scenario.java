@@ -274,6 +274,10 @@ public class Scenario implements XMLable {
         return properties.get("title");
     }
 
+    public void setTitle(String title) {
+        properties.put("title", title);
+    }
+
     /**
      *
      * @param l

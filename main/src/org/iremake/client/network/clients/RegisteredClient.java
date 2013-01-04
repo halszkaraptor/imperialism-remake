@@ -20,7 +20,7 @@ import org.iremake.client.network.ClientHandler;
 import org.iremake.common.network.messages.Message;
 
 /**
- *
+ * Registration successful.
  */
 public class RegisteredClient extends Client {
 

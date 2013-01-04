@@ -19,6 +19,7 @@ package org.iremake.client.ui.editor;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import org.iremake.common.Settings;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
@@ -30,20 +31,35 @@ import org.iremake.common.model.Scenario;
 public class EditorMapInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JLabel tile;
-    private Scenario map;
+    private JLabel tile = new JLabel();
+    private JLabel terrain = new JLabel();
+    private JLabel resource = new JLabel();
+    private JLabel nation = new JLabel();
+    private JLabel province = new JLabel();
 
     /**
      *
      * @param map
      */
-    public EditorMapInfoPanel(Scenario map) {
+    public EditorMapInfoPanel() {
         setBorder(BorderFactory.createTitledBorder("Info"));
 
-        tile = new JLabel();
+        setLayout(new MigLayout("wrap 1"));
         add(tile);
+        add(terrain);
+        add(resource);
+        add(nation);
+        add(province);
 
-        this.map = map;
+        init();
+    }
+
+    private void init() {
+        tile.setText("Tile: None");
+        terrain.setText("Terrain: None");
+        resource.setText("Resource: None");
+        nation.setText("Nation: None");
+        province.setText("Province: None");
     }
 
     /**
@@ -51,11 +67,12 @@ public class EditorMapInfoPanel extends JPanel {
      *
      * @param p
      */
-    public void mainMapTileChanged(MapPosition p) {
+    public void mainMapTileChanged(MapPosition p, Scenario scenario) {
         if (p.isOff()) {
-            tile.setText("");
+            init();
         } else {
-            tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column) + "  " + Settings.getTerrainName(map.getTerrainAt(p)));
+            tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column));
+            terrain.setText("Terrain: " + Settings.getTerrainName(scenario.getTerrainAt(p)));
         }
     }
 }

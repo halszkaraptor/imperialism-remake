@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.model.TerrainTiles;
+import org.iremake.common.Settings;
 
 /**
  *
@@ -35,7 +36,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
     private int selected;
 
     /**
-     * 
+     *
      * @param tiles
      */
     public EditorSelectTerrainDialog(TerrainTiles tiles) {
@@ -75,7 +76,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setName(id.toString());
             button.setFocusable(false);
-            // button.setToolTipText(Settings.getTerrainType(id)); // TODO get names again
+            button.setToolTipText(Settings.getTerrainName(id));
             button.addActionListener(listener);
             panel.add(button);
         }

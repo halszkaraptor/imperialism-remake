@@ -20,6 +20,6 @@ package org.iremake.common.network;
  *
  */
 public interface NetworkLogger {
-    
+
     public void log(String message);
 }

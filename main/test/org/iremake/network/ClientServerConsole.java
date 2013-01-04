@@ -45,8 +45,8 @@ import org.tools.ui.utils.LookAndFeel;
  * output to some text areas.
  */
 public class ClientServerConsole extends JFrame {
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     private ServerManager server;
     private ClientManager client;
 
@@ -204,7 +204,7 @@ public class ClientServerConsole extends JFrame {
     }//GEN-LAST:event_clientStartActionPerformed
 
     private void clientNameActionPerformed(ActionEvent evt) {//GEN-FIRST:event_clientNameActionPerformed
-        client.send(TextMessageType.ClientName.create( "John Doe"));
+        client.send(TextMessageType.ClientName.create("John Doe"));
     }//GEN-LAST:event_clientNameActionPerformed
     private int counter = 0;
 

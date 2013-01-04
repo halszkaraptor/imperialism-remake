@@ -20,6 +20,7 @@ package org.iremake.common.network.messages;
  *
  */
 public enum NumberMessageType {
+
     Unused;
 
     public NumberMessage create(int number) {

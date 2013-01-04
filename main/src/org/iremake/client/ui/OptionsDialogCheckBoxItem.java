@@ -34,7 +34,6 @@ public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
         item.setSelected(option.getBoolean());
     }
 
-
     @Override
     public boolean isModified() {
         return !(option.getBoolean() == item.isSelected());
@@ -44,5 +43,4 @@ public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
     public void updateOption() {
         option.putBoolean(item.isSelected());
     }
-
 }

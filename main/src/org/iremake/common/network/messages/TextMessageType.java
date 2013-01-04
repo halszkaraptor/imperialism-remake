@@ -20,6 +20,7 @@ package org.iremake.common.network.messages;
  *
  */
 public enum TextMessageType {
+
     Version, Error, ClientName, Chat;
 
     public TextMessage create(String text) {

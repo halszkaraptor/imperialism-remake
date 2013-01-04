@@ -20,5 +20,6 @@ package org.tools.ui.utils;
  * Used for specifying sides of windows/frames.
  */
 public enum WindowSide {
+
     North, South, East, West, None
 }

@@ -24,5 +24,4 @@ import javax.swing.Icon;
 public interface IconLoader {
 
     public Icon getAsIcon(String location);
-
 }

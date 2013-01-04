@@ -59,6 +59,4 @@ public class OverlayProvider {
             return true;
         }
     }
-
-
 }

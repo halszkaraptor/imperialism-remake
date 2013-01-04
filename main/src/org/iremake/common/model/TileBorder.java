@@ -22,5 +22,4 @@ package org.iremake.common.model;
 public enum TileBorder {
 
     None, Province, Nation;
-
 }

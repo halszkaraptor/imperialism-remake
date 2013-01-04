@@ -97,8 +97,6 @@ public class StartScreen extends UIFrame {
         setContent(pane);
     }
 
-
-
     /**
      * Makes the menu bar.
      *

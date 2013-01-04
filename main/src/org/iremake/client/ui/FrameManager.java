@@ -32,7 +32,9 @@ import org.iremake.client.resources.Places;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
- * Startframe / Mainframe / Editorframe juggling.
+ * There is one JFrame that holds various screens (start, editor and main game
+ * screens) which need to be switched in between. This Manager here in the
+ * singleton pattern does it.
  */
 // TODO closing listener for clicking on the cross or alt-f4
 public class FrameManager {
@@ -42,7 +44,8 @@ public class FrameManager {
     private JPanel panel;
 
     /**
-     *
+     * Creates the main frame. Because it is private we can control how often it
+     * is called. Only once in this case.
      */
     private FrameManager() {
         frame = new JFrame();
@@ -84,8 +87,10 @@ public class FrameManager {
     }
 
     /**
+     * Returns the instance (singleton) of this manager using lazy
+     * initialization.
      *
-     * @return
+     * @return The singleton instance.
      */
     public static FrameManager getInstance() {
         if (singleton == null) {
@@ -94,37 +99,73 @@ public class FrameManager {
         return singleton;
     }
 
+    /**
+     * Disposes the singleton and the frame before.
+     */
+    public static void dispose() {
+        singleton.frame.dispose();
+        singleton = null;
+    }
+
+    /**
+     * Removes old content and adds new one.
+     *
+     * @param content The component holding the new (full frame) content.
+     */
     public void switchTo(JComponent content) {
         panel.removeAll();
         panel.add(content, "grow");
         panel.validate();
     }
 
+    /**
+     * Creates a new, modal dialog with the frame as parent.
+     *
+     * @param title The title;
+     * @return
+     */
     public JDialog getDialog(String title) {
         return new JDialog(frame, title, true);
     }
 
+    /**
+     * Shows the open dialog of a file chooser with the frame as parent.
+     *
+     * @param fileChooser A file chooser.
+     * @return The return value of showOpenDialog()
+     */
     public int showOpenDialog(JFileChooser fileChooser) {
         return fileChooser.showOpenDialog(frame);
     }
 
+    /**
+     * Shows the save dialog of a file chooser with the frame as parent.
+     *
+     * @param fileChooser A file chooser.
+     * @return The return value of showSaveDialog()
+     */
     public int showSaveDialog(JFileChooser fileChooser) {
         return fileChooser.showSaveDialog(frame);
     }
 
+    /**
+     * A simple input dialog with the frame as parent.
+     *
+     * @param text The dialogs text.
+     * @return The return value of JOptionPane.showInputDialog()
+     */
     public String showInputDialog(String text) {
         return JOptionPane.showInputDialog(frame, text);
     }
 
+    /**
+     * Centers a window relative to this frame.
+     *
+     * @param window The window to be centered.
+     */
     public void center(Window window) {
         Rectangle bounds = frame.getBounds();
         Dimension size = window.getSize();
         window.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
-    }
-
-    public void dispose() {
-        frame.dispose();
-        panel = null;
-        singleton = null;
     }
 }

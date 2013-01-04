@@ -68,7 +68,8 @@ public class RelativeLayoutConstraint {
     }
 
     /**
-     * Calculate the bounds of the component given its preferred size and the parent's size.
+     * Calculate the bounds of the component given its preferred size and the
+     * parent's size.
      *
      * @param parentSize
      * @param componentPreferredSize
@@ -114,14 +115,14 @@ public class RelativeLayoutConstraint {
      */
     public static RelativeLayoutConstraint corner(WindowCorner corner, int gx, int gy) {
         switch (corner) {
-            case NorthWest:
-                return new RelativeLayoutConstraint(1f, -1f, -gx, 0f, 0f, gy);
-            case NorthEast:
-                return new RelativeLayoutConstraint(0f, 0f, gx, 0f, 0f, gy);
-            case SouthWest:
-                return new RelativeLayoutConstraint(1f, -1f, -gx, 1f, -1f, -gy);
-            case SouthEast:
-                return new RelativeLayoutConstraint(0f, 0f, gx, 1f, -1f, -gy);
+        case NorthWest:
+            return new RelativeLayoutConstraint(1f, -1f, -gx, 0f, 0f, gy);
+        case NorthEast:
+            return new RelativeLayoutConstraint(0f, 0f, gx, 0f, 0f, gy);
+        case SouthWest:
+            return new RelativeLayoutConstraint(1f, -1f, -gx, 1f, -1f, -gy);
+        case SouthEast:
+            return new RelativeLayoutConstraint(0f, 0f, gx, 1f, -1f, -gy);
         }
         return null;
     }

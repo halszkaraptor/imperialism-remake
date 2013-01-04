@@ -119,7 +119,6 @@ public class XMLHandler {
         }
         return parent;
     }
-
     private final static String IntegerSeparator = ":";
 
     /**
@@ -157,7 +156,7 @@ public class XMLHandler {
         int size = list.size();
         parent.addAttribute(new Attribute("size", Integer.toString(size)));
         StringBuilder builder = new StringBuilder(size * 3);
-        for (Integer value: list) {
+        for (Integer value : list) {
             builder.append(value);
             builder.append(IntegerSeparator);
         }
@@ -175,7 +174,7 @@ public class XMLHandler {
      */
     public static <T extends XMLable> Element fromCollection(Collection<T> list, String name) {
         Element parent = new Element(name);
-        for (T item: list) {
+        for (T item : list) {
             Element child = item.toXML();
             parent.appendChild(child);
         }

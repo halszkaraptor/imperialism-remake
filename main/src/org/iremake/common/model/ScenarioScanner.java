@@ -60,7 +60,7 @@ public class ScenarioScanner {
             LOG.log(Level.SEVERE, null, ex);
         }
 
-        for (Resource resource: scenarios) {
+        for (Resource resource : scenarios) {
             try {
                 // load it completely
                 Scenario scenario = new Scenario();

@@ -24,8 +24,7 @@ import org.iremake.server.network.ServerManager;
  */
 // TODO needs to be replaced!, currently just a big holder of static global variables
 public class BigBag {
-    
+
     public static ClientManager clientManager;
     public static ServerManager serverManager;
-    
 }

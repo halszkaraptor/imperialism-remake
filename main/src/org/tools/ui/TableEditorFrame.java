@@ -46,7 +46,8 @@ import org.tools.xml.XMLHelper;
 import org.tools.xml.XTable;
 
 /**
- * Currently still simple editor, that works on a 2D array of cells, i.e. a table.
+ * Currently still simple editor, that works on a 2D array of cells, i.e. a
+ * table.
  *
  */
 // TODO copy and paste between cells,

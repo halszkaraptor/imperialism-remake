@@ -34,8 +34,9 @@ public class GameDialogBuilder {
         JPanel content = new JPanel();
 
         JToolBar bar = new JToolBar();
+        bar.setFloatable(false);
 
-        for (final GamePanel p: GamePanel.values()) {
+        for (final GamePanel p : GamePanel.values()) {
             JButton button = new JButton(p.toString());
             // TODO standard button
             button.setFocusable(false);
@@ -57,4 +58,6 @@ public class GameDialogBuilder {
         UIDialog.make(content, panel.toString());
     }
 
+    private GameDialogBuilder() {
+    }
 }

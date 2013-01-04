@@ -36,7 +36,6 @@ public enum GamePanel {
     Statistics("statistics"),
     Trade("trade"),
     Transport("transport");
-
     private final static Logger LOG = Logger.getLogger(GamePanel.class.getName());
     private String title;
 
@@ -63,6 +62,6 @@ public enum GamePanel {
     }
 
     public JButton getButton() {
-        return Button.create("game.button." + title + ".png");
+        return Button.create("game/game.button." + title + ".png");
     }
 }

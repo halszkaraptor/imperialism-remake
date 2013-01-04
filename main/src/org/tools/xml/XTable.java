@@ -60,7 +60,7 @@ public class XTable implements TableModel, XMLable {
         Set<String> keys = property.keySet();
         content = new ArrayList<>(keys.size());
 
-        for (String key: keys) {
+        for (String key : keys) {
             List<String> row = new ArrayList<>(2);
             row.add(key);
             row.add(property.get(key));

@@ -31,5 +31,4 @@ public interface OptionsDialogItem {
      *
      */
     public void updateOption();
-
 }

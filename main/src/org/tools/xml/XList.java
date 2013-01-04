@@ -19,6 +19,7 @@ package org.tools.xml;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -43,12 +44,12 @@ import nu.xom.Elements;
  * de-serialization which is not supported for now.
  *
  * Also the List can be kept sorted at all times if wished.
+ *
  * @param <E>
  */
-public class XList<E extends XMLable> implements ListModel<E>, XMLable {
+public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLable {
 
     private final String XMLNAME;
-
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
     /**
      * Standard comparator, compares on the toString methods.
@@ -66,6 +67,7 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
 
     /**
      * Empty list with initial capacity.
+     *
      * @param clazz
      */
     public XList(Class<E> clazz) {
@@ -214,6 +216,11 @@ public class XList<E extends XMLable> implements ListModel<E>, XMLable {
         // no sorting neccessary after deletion
 
         fireListChanged();
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return list.iterator();
     }
 
     /**

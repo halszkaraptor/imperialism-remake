@@ -35,7 +35,6 @@ public class RegisteredSClient extends SClient {
     @Override
     public void consume(Message message) {
         if (message instanceof TextMessage) {
-
         }
     }
 }

@@ -26,5 +26,4 @@ public interface WindowClosingListener {
      * @return True if window should be disposed, False otherwise
      */
     public boolean closing();
-
 }

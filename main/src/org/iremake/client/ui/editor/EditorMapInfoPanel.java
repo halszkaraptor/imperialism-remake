@@ -23,6 +23,7 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.common.Settings;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.Tile;
 
 /**
  * The map info panel, located at the left lower part of the map tab.
@@ -71,8 +72,12 @@ public class EditorMapInfoPanel extends JPanel {
         if (p.isOff()) {
             init();
         } else {
+            Tile t = scenario.getTileAt(p);
             tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column));
-            terrain.setText("Terrain: " + Settings.getTerrainName(scenario.getTerrainAt(p)));
+            terrain.setText("Terrain: " + Settings.getTerrainName(t.terrainID));
+            resource.setText("Resource: " + Settings.getResourceName(t.resourceID));
+            nation.setText("Nation: " + scenario.getNationAt(p));
+            province.setText("Province: " + scenario.getProvinceAt(p));
         }
     }
 }

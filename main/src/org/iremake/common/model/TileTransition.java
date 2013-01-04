@@ -22,5 +22,4 @@ package org.iremake.common.model;
 public enum TileTransition {
 
     East, NorthEast, NorthWest, West, SouthWest, SouthEast;
-
 }

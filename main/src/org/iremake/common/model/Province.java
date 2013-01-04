@@ -26,7 +26,6 @@ import org.tools.xml.XMLable;
 public class Province implements XMLable {
 
     public static final int NONE = 0;
-
     private int id;
     private String name;
     private MapPosition town = new MapPosition();

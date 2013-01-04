@@ -112,9 +112,8 @@ public class OptionsDialog extends UIDialog {
         return panel;
     }
 
-
     private boolean isAnyModified() {
-        for (OptionsDialogItem item: items) {
+        for (OptionsDialogItem item : items) {
             if (item.isModified()) {
                 return true;
             }
@@ -123,9 +122,8 @@ public class OptionsDialog extends UIDialog {
     }
 
     private void updateOptions() {
-        for (OptionsDialogItem item: items) {
+        for (OptionsDialogItem item : items) {
             item.updateOption();
         }
     }
-
 }

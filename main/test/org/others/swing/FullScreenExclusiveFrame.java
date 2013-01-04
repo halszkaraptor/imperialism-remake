@@ -35,9 +35,9 @@ import javax.swing.WindowConstants;
 /**
  * Testing Java's Full Screen Exclusive Mode API.
  *
- * In Linux/Ubuntu the task bar is not covered and lower and right part of the frame
- * is not displayed because the frame is shifted to the right and below. The
- * size is the size of the screen. Really bad!
+ * In Linux/Ubuntu the task bar is not covered and lower and right part of the
+ * frame is not displayed because the frame is shifted to the right and below.
+ * The size is the size of the screen. Really bad!
  *
  * On Windows it works as expected.
  *

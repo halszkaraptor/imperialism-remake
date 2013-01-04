@@ -32,8 +32,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -46,8 +44,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
-import nu.xom.Element;
-import nu.xom.ParsingException;
 import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
@@ -56,10 +52,8 @@ import org.iremake.common.model.Tile;
 import org.tools.io.FileResource;
 import org.tools.io.Resource;
 import org.tools.ui.utils.LookAndFeel;
-import org.tools.utils.BitBuffer;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
-import org.tools.xml.XProperty;
 
 /**
  * Reads the output from the python map import script and inserts a scenario
@@ -340,13 +334,15 @@ public class ImperialismScenarioImporter extends JFrame {
         }
 
         // add provinces to scenario
+        Map<Integer, Province> ppmap = new HashMap<>();
         Set<Integer> processed = new HashSet<>(1000);
         for (int i = 0; i < chunk; i++) {
             if (terrain_underlay[i] != 5) {
                 if (!processed.contains(provinces[i])) {
                     Nation nation = nmap.get(countries[i]);
                     String name = pmap.get(provinces[i]);
-                    scenario.newProvince(nation, name);
+                    Province province = scenario.newProvince(nation, name);
+                    ppmap.put(provinces[i], province);
                     processed.add(provinces[i]);
                 }
             }
@@ -357,8 +353,9 @@ public class ImperialismScenarioImporter extends JFrame {
             for (int column = 0; column < columns; column++) {
                 MapPosition pos = new MapPosition(row, column);
                 Tile tile = scenario.getTileAt(pos);
-                // set terrain
                 int i = column + row * columns;
+
+                // set terrains
                 // sea
                 if (terrain_underlay[i] == 5) {
                     tile.terrainID = 1;
@@ -386,6 +383,70 @@ public class ImperialismScenarioImporter extends JFrame {
                 // desert
                 if (terrain_underlay[i] == 6 && terrain_overlay[i] == 11) {
                     tile.terrainID = 7;
+                }
+
+                // set resources
+                // grain
+                tile.resourceVisible = false;
+                if (resources[i] == 17) {
+                    tile.resourceID = 1;
+                    tile.resourceVisible = true;
+                }
+                // orchard
+                if (resources[i] == 18) {
+                    tile.resourceID = 2;
+                    tile.resourceVisible = true;
+                }
+                // buffalo
+                if (resources[i] == 20) {
+                    tile.resourceID = 3;
+                    tile.resourceVisible = true;
+                }
+                // cotton
+                if (resources[i] == 0) {
+                    tile.resourceID = 4;
+                    tile.resourceVisible = true;
+                }
+                // sheep
+                if (resources[i] == 1) {
+                    tile.resourceID = 5;
+                    tile.resourceVisible = true;
+                }
+                // forest
+                if (resources[i] == 2 && terrain_overlay[i] == 13) {
+                    tile.resourceID = 6;
+                    tile.resourceVisible = true;
+                }
+                // scrubforest
+                if (resources[i] == 17 && terrain_overlay[i] == 15) {
+                    tile.resourceID = 7;
+                    tile.resourceVisible = true;
+                }
+                // oil
+                if (resources[i] == 6) {
+                    tile.resourceID = 8;
+                }
+                // coal
+                if (resources[i] == 3) {
+                    tile.resourceID = 9;
+                }
+                // ore
+                if (resources[i] == 4) {
+                    tile.resourceID = 10;
+                }
+
+                // set provinces
+                if (terrain_underlay[i] != 5) {
+                    tile.provinceID = ppmap.get(provinces[i]).getID();
+                }
+
+                // if city at this position, tell province about
+                if (cities[i] != 0) {
+                    ppmap.get(provinces[i]).setTownPosition(pos);
+                }
+                // if capital, tell nation about
+                if (cities[i] == 35) {
+                    nmap.get(countries[i]).setCapitalProvince(ppmap.get(provinces[i]).getID());
                 }
             }
         }

@@ -46,16 +46,16 @@ public class TilesXMLGenerator {
         Element parent = new Element("Resource-Overlays");
         parent.addAttribute(new Attribute("tile-width", "80"));
         parent.addAttribute(new Attribute("tile-height", "80"));
-        parent.appendChild(addResourceOverlay(1, "resource.grain.png", true));
-        parent.appendChild(addResourceOverlay(2, "resource.orchard.png", true));
-        parent.appendChild(addResourceOverlay(3, "resource.buffalo.png", true));
-        parent.appendChild(addResourceOverlay(4, "resource.cotton.png", true));
-        parent.appendChild(addResourceOverlay(5, "resource.sheep.png", true));
-        parent.appendChild(addResourceOverlay(6, "resource.forest.png", true));
-        parent.appendChild(addResourceOverlay(7, "resource.srubforest.png", true));
-        parent.appendChild(addResourceOverlay(8, "resource.oil.png", false));
-        parent.appendChild(addResourceOverlay(9, "resource.coal.png", false));
-        parent.appendChild(addResourceOverlay(10, "resource.ore.png", false));
+        parent.appendChild(addResourceOverlay(1, "resource.grain.png"));
+        parent.appendChild(addResourceOverlay(2, "resource.orchard.png"));
+        parent.appendChild(addResourceOverlay(3, "resource.buffalo.png"));
+        parent.appendChild(addResourceOverlay(4, "resource.cotton.png"));
+        parent.appendChild(addResourceOverlay(5, "resource.sheep.png"));
+        parent.appendChild(addResourceOverlay(6, "resource.forest.png"));
+        parent.appendChild(addResourceOverlay(7, "resource.srubforest.png"));
+        parent.appendChild(addResourceOverlay(8, "resource.oil.png"));
+        parent.appendChild(addResourceOverlay(9, "resource.coal.png"));
+        parent.appendChild(addResourceOverlay(10, "resource.ore.png"));
 
         Resource resource = ResourceUtils.asResource("resources.xml");
         XMLHelper.write(resource, parent);
@@ -68,11 +68,10 @@ public class TilesXMLGenerator {
      * @param visible
      * @return
      */
-    public static Element addResourceOverlay(int id, String location, boolean visible) {
+    public static Element addResourceOverlay(int id, String location) {
         Element child = new Element("Overlay");
         child.addAttribute(new Attribute("id", String.valueOf(id)));
         child.addAttribute(new Attribute("location", location));
-        child.addAttribute(new Attribute("visible", String.valueOf(visible)));
         return child;
     }
 

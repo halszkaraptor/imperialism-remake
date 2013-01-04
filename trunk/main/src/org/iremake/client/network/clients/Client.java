@@ -20,16 +20,27 @@ import org.iremake.client.network.ClientHandler;
 import org.iremake.common.network.messages.Message;
 
 /**
- *
+ * A client state. It has access to the boss for sending messages and changing
+ * the state. It is able to consume messages.
  */
 public abstract class Client {
-    
+
+    /* The central handler of messages */
     protected final ClientHandler boss;
 
+    /**
+     * Initializes the client.
+     *
+     * @param boss
+     */
     public Client(ClientHandler boss) {
         this.boss = boss;
     }
 
+    /**
+     * Consumes a message object.
+     *
+     * @param message the message
+     */
     public abstract void consume(Message message);
-
 }

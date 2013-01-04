@@ -19,10 +19,7 @@ package org.iremake.client.network;
 import org.iremake.common.network.NetworkLogger;
 
 /**
- *
- */
-/**
- *
+ * Just logs something.
  */
 public class ClientLogger {
 
@@ -37,5 +34,4 @@ public class ClientLogger {
             LOG.log(message);
         }
     }
-
 }

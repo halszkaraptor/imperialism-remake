@@ -64,23 +64,24 @@ public class SettingsXMLGenerator {
 
     private static Element createResourceSettings() {
         Element parent = new Element("Resources");
-        parent.appendChild(addResourceType(1, "Grain"));
-        parent.appendChild(addResourceType(2, "Orchard"));
-        parent.appendChild(addResourceType(3, "Buffalo"));
-        parent.appendChild(addResourceType(4, "Cotton"));
-        parent.appendChild(addResourceType(5, "Sheep"));
-        parent.appendChild(addResourceType(6, "Forest"));
-        parent.appendChild(addResourceType(7, "Scrub forest"));
-        parent.appendChild(addResourceType(8, "Oil"));
-        parent.appendChild(addResourceType(9, "Coal"));
-        parent.appendChild(addResourceType(10, "Ore"));
+        parent.appendChild(addResourceType(1, "Grain", true));
+        parent.appendChild(addResourceType(2, "Orchard", true));
+        parent.appendChild(addResourceType(3, "Buffalo", true));
+        parent.appendChild(addResourceType(4, "Cotton", true));
+        parent.appendChild(addResourceType(5, "Sheep", true));
+        parent.appendChild(addResourceType(6, "Forest", true));
+        parent.appendChild(addResourceType(7, "Scrub forest", true));
+        parent.appendChild(addResourceType(8, "Oil", false));
+        parent.appendChild(addResourceType(9, "Coal", false));
+        parent.appendChild(addResourceType(10, "Ore", false));
         return parent;
     }
 
-    private static Element addResourceType(int id, String name) {
+    private static Element addResourceType(int id, String name, boolean visible) {
         Element child = new Element("Resource");
         child.addAttribute(new Attribute("id", String.valueOf(id)));
         child.addAttribute(new Attribute("name", name));
+        child.addAttribute(new Attribute("visible", String.valueOf(visible)));
         return child;
     }
 }

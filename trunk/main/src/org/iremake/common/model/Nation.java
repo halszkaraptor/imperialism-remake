@@ -75,11 +75,15 @@ public class Nation implements XMLable {
         return properties.get("name");
     }
 
-    Iterable<Integer> getProvinces() {
+    public Iterable<Integer> getProvinces() {
         return provinces;
     }
 
-    void addProvince(Integer id) {
+    public void addProvince(Integer id) {
         provinces.add(id);
+    }
+
+    public void setCapitalProvince(int id) {
+        properties.putInt("capital province", id);
     }
 }

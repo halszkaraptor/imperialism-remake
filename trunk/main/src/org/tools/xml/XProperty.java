@@ -99,11 +99,12 @@ public class XProperty implements XMLable {
     }
 
     /**
-     *
+     * If the key is not existing the return is false without any warning.
      * @param key
      * @return
      */
     public boolean getBoolean(String key) {
+        // if key is not existing we have parseBoolean(null) == false
         return Boolean.parseBoolean(get(key));
     }
 

@@ -23,15 +23,23 @@ import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
 
 /**
- *
+ * Fires up network connection for the client.
  */
 public class ClientManager {
 
+    /* Server port */
     private static final int PORT = 19876;
+    /* Timeout in ms for connection */
     private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
+    /* Kryonet client */
     private Client client;
 
+    /**
+     * Connects to server.
+     *
+     * @return
+     */
     public boolean start() {
         ClientLogger.log("Client start initiated.");
         if (client != null) {
@@ -62,6 +70,12 @@ public class ClientManager {
         return true;
     }
 
+    /**
+     * Send message.
+     *
+     * @param message
+     */
+    // TODO do we need this here?
     public void send(Message message) {
         if (client != null && client.isConnected()) {
             ClientLogger.log("Send message: " + message.getClass().getSimpleName());
@@ -69,6 +83,9 @@ public class ClientManager {
         }
     }
 
+    /**
+     * Stops the client.
+     */
     public void stop() {
         // TODO what happens to operations being sent
         if (client != null) {

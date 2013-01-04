@@ -80,6 +80,8 @@ provinceA = crop_left(data[20 : n * s + 20: s], columns, cut)
 provinceB = crop_left(data[21 : n * s + 21: s], columns, cut)
 provinces = map(lambda a, b: ord(a) * 256 + ord(b), provinceA, provinceB)
 
+cities = crop_left(data[29 : n * s + 29: s], columns, cut)
+
 # even more tests
 correlate_unique_elements(terrain_underlay, resources)
 
@@ -93,14 +95,20 @@ terrain_overlay = list_to_array(terrain_overlay)
 country = list_to_array(country)
 resources = list_to_array(resources)
 provinces = array.array('i', provinces)
+cities = list_to_array(cities)
 
 # save in file
 out_name = map_name[:-4] + '.imported.map'
 out = open(out_name, 'wb')
 out.write(size)
+
+# 6 more chunks comin
 out.write(terrain_underlay)
 out.write(terrain_overlay)
+out.write(country)
 out.write(resources)
 out.write(provinces)
+out.write(cities)
+
 out.close()
 

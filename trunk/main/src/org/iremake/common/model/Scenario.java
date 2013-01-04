@@ -32,6 +32,7 @@ import org.tools.xml.XProperty;
 /**
  * The full internal Scenario model.
  */
+// TODO this class has not enough methods and therefore exposes local variables ???
 public class Scenario implements XMLable {
 
     private static final String XMLNAME_NATIONS = "Nations";
@@ -41,7 +42,7 @@ public class Scenario implements XMLable {
     private Tile[][] map;
     private XProperty properties = new XProperty(10);
     private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
-    private Map<Integer, Province> provinces = new HashMap<>();
+    private Map<Integer, Province> provinces = new HashMap<>(1000);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     public Scenario() {

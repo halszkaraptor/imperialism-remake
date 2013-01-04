@@ -161,7 +161,6 @@ public class XMLHandler {
             builder.append(value);
             builder.append(IntegerSeparator);
         }
-        builder.deleteCharAt(builder.length() - 1); // delete the last separator
         parent.appendChild(builder.toString());
 
         return parent;

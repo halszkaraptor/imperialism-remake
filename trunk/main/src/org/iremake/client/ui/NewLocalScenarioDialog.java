@@ -40,7 +40,7 @@ import org.tools.ui.ButtonBar;
  */
 public class NewLocalScenarioDialog extends UIDialog {
 
-    Resource selectedScenario;
+    private Resource selectedScenario;
 
     public NewLocalScenarioDialog() {
         super("Local Scenario");

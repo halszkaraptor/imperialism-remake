@@ -52,28 +52,28 @@ public class UnregisteredSClient extends SClient {
             TextMessage msg = (TextMessage) message;
 
             switch (msg.getType()) {
-                case Version:
-                    // check version
+            case Version:
+                // check version
 
-                    if (Option.Version.get().equals(msg.getText())) {
-                        ServerLogger.log("Version accepted.");
-                        versionQuery = true;
-                    } else {
-                        timer.cancel();
-                        boss.registrationFailed("Wrong version.");
-                    }
+                if (Option.Version.get().equals(msg.getText())) {
+                    ServerLogger.log("Version accepted.");
+                    versionQuery = true;
+                } else {
+                    timer.cancel();
+                    boss.registrationFailed("Wrong version.");
+                }
 
-                    break;
-                case ClientName:
-                    if (!versionQuery) {
-                        boss.registrationFailed("Sent name before version.");
-                    }
+                break;
+            case ClientName:
+                if (!versionQuery) {
+                    boss.registrationFailed("Sent name before version.");
+                }
 
-                    // now we know the name
-                    ServerLogger.log("New client name: " + msg.getText());
-                    boss.registrationSuccess(msg.getText());
+                // now we know the name
+                ServerLogger.log("New client name: " + msg.getText());
+                boss.registrationSuccess(msg.getText());
 
-                    break;
+                break;
             }
 
         }

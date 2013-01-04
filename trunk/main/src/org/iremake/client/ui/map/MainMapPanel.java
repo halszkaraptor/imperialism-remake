@@ -182,7 +182,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     // draw city
                     String name = scenario.getTownAt(p);
                     if (name != null) {
-                        g2d.drawString(name, x, y);
+                        // TODO draw on half translucent rounded rectangle below city
+                        g2d.drawString(name, x + 20, y + 40);
                     }
 
                 } else {
@@ -219,7 +220,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      *
      */
     private void notifyTileFocusChangedListeners() {
-        for (MapTileListener l: tileListeners) {
+        for (MapTileListener l : tileListeners) {
             l.focusChanged(hoover);
         }
     }
@@ -229,7 +230,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
      * @param p
      */
     private void notifyTileClickedListeners(MapPosition p) {
-        for (MapTileListener l: tileListeners) {
+        for (MapTileListener l : tileListeners) {
             l.tileClicked(p);
         }
     }

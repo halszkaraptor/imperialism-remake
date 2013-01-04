@@ -50,7 +50,6 @@ public class ServerClientHandler {
         client = new RegisteredSClient(this, name);
     }
 
-
     public int getID() {
         return connection.getID();
     }

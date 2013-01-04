@@ -256,9 +256,8 @@ public class EditorScreen extends UIFrame {
 
         // TODO load images
         JButton addnationButton = Button.SmallAdd.create();
-
-        JButton removenationButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        JButton changenationButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+        JButton removenationButton = Button.SmallDelete.create();
+        JButton changenationButton = Button.SmallEdit.create();
 
         ButtonBar nbar = new ButtonBar();
         nbar.add(addnationButton, removenationButton, changenationButton);
@@ -345,9 +344,9 @@ public class EditorScreen extends UIFrame {
         JLabel provinceInfoLabel = new JLabel("X Provinces");
 
         // TODO load images
-        JButton addprovinceButton = new JButton("Add");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        JButton removeprovinceButton = new JButton("Remove");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
-        JButton changeprovinceButton = new JButton("Change");// CommonElementsFactory.makeButton(Places.GraphicsIcons, "editor.button.terrain.png");
+        JButton addprovinceButton = Button.SmallAdd.create();
+        JButton removeprovinceButton = Button.SmallDelete.create();
+        JButton changeprovinceButton = Button.SmallEdit.create();
 
         ButtonBar pbar = new ButtonBar();
         pbar.add(addprovinceButton, removeprovinceButton, changeprovinceButton);

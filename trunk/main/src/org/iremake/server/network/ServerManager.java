@@ -45,7 +45,7 @@ public class ServerManager {
     }
 
     private void fireStatusChanged(String message) {
-        for (ServerStatusListener l: listeners) {
+        for (ServerStatusListener l : listeners) {
             l.statusUpdate(message);
         }
     }

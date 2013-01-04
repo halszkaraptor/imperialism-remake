@@ -20,7 +20,6 @@ package org.iremake.server.network;
  *
  */
 public interface ServerStatusListener {
-    
+
     public void statusUpdate(String message);
-    
 }

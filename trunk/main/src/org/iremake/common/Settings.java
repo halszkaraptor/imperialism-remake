@@ -88,7 +88,11 @@ public class Settings {
      * @return
      */
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
-    public static String getTerrainName(Integer id) {
+    public static String getTerrainName(int id) {
         return terrainNames.get(id);
+    }
+
+    public static String getResourceName(int id) {
+        return resourceNames.get(id);
     }
 }

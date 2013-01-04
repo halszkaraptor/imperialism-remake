@@ -327,15 +327,15 @@ public class NotificationExample extends JFrame implements NotificationListener 
         if (framePositionRadioButton.isSelected()) {
             WindowCorner corner = WindowCorner.NorthWest;
             switch (frameOrientationComboBox.getSelectedIndex()) {
-                case 1:
-                    corner = WindowCorner.NorthEast;
-                    break;
-                case 2:
-                    corner = WindowCorner.SouthWest;
-                    break;
-                case 3:
-                    corner = WindowCorner.SouthEast;
-                    break;
+            case 1:
+                corner = WindowCorner.NorthEast;
+                break;
+            case 2:
+                corner = WindowCorner.SouthWest;
+                break;
+            case 3:
+                corner = WindowCorner.SouthEast;
+                break;
             }
             dlg.setLocationRelativeTo(this, corner);
 
@@ -343,15 +343,15 @@ public class NotificationExample extends JFrame implements NotificationListener 
         } else if (desktopPositionRadioButton.isSelected()) {
             WindowCorner corner = WindowCorner.NorthWest;
             switch (desktopOrientationComboBox.getSelectedIndex()) {
-                case 1:
-                    corner = WindowCorner.NorthEast;
-                    break;
-                case 2:
-                    corner = WindowCorner.SouthWest;
-                    break;
-                case 3:
-                    corner = WindowCorner.SouthEast;
-                    break;
+            case 1:
+                corner = WindowCorner.NorthEast;
+                break;
+            case 2:
+                corner = WindowCorner.SouthWest;
+                break;
+            case 3:
+                corner = WindowCorner.SouthEast;
+                break;
             }
             dlg.setLocationRelativeToDesktop(corner);
         }
@@ -387,15 +387,15 @@ public class NotificationExample extends JFrame implements NotificationListener 
         if (framePositionRadioButton.isSelected()) {
             WindowCorner corner = WindowCorner.NorthWest;
             switch (frameOrientationComboBox.getSelectedIndex()) {
-                case 1:
-                    corner = WindowCorner.NorthEast;
-                    break;
-                case 2:
-                    corner = WindowCorner.SouthWest;
-                    break;
-                case 3:
-                    corner = WindowCorner.SouthEast;
-                    break;
+            case 1:
+                corner = WindowCorner.NorthEast;
+                break;
+            case 2:
+                corner = WindowCorner.SouthWest;
+                break;
+            case 3:
+                corner = WindowCorner.SouthEast;
+                break;
             }
             pane.setLocation(corner);
         }

@@ -49,6 +49,10 @@ public class Scenario implements XMLable {
         nations.setKeepSorted(true);
     }
 
+    private Tile getTile(MapPosition p) {
+        return map[p.row][p.column];
+    }
+
     /**
      * A sea(1) map.
      *
@@ -104,7 +108,7 @@ public class Scenario implements XMLable {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return false;
         }
-        return map[p.row][p.column].resourceVisible;
+        return getTile(p).resourceVisible;
     }
 
     /**
@@ -126,7 +130,7 @@ public class Scenario implements XMLable {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return;
         }
-        map[p.row][p.column].terrainID = id;
+        getTile(p).terrainID = id;
         fireTileChanged(p);
     }
 
@@ -140,7 +144,7 @@ public class Scenario implements XMLable {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return map[p.row][p.column].terrainID;
+        return getTile(p).terrainID;
     }
 
     /**
@@ -154,7 +158,7 @@ public class Scenario implements XMLable {
             LOG.log(Level.INFO, "Position outside of map.");
             return null;
         }
-        return map[p.row][p.column];
+        return getTile(p);
     }
 
     /**
@@ -229,13 +233,53 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    public Nation getNationAt(MapPosition p) {
+        int id = getTile(p).provinceID;
+        for (Nation nation: nations) {
+            for (Integer id2: nation.getProvinces()) {
+                if (id == id2) {
+                    return nation;
+                }
+            }
+        }
+        return null;
+    }
+
     public String getTownAt(MapPosition p) {
-        for (Province province: provinces.values()) {
+        for (Province province : provinces.values()) {
             if (province.getTownPosition().equals(p)) {
                 return "town";
             }
         }
         return null;
+    }
+
+    public Province getProvinceAt(MapPosition p) {
+        return provinces.get(getTile(p).provinceID);
+    }
+
+    private MapPosition getNeighbourPosition(MapPosition p, TileTransition transition) {
+        int row, column, shift;
+        switch (transition) {
+        case East:
+            row = p.row;
+            column = p.column + 1;
+            break;
+        case SouthEast:
+            row = p.row + 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column + 1 - shift;
+            break;
+        case SouthWest:
+            row = p.row + 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column - shift;
+            break;
+        default:
+            row = -1;
+            column = -1;
+        }
+        return new MapPosition(row, column);
     }
 
     /**
@@ -245,25 +289,14 @@ public class Scenario implements XMLable {
      * @return
      */
     public TileBorder getBorder(MapPosition p, TileTransition transition) {
-        int id = map[p.row][p.column].provinceID;
-        int row = 0, column = 0;
-        switch (transition) {
-            case East:
-                row = p.row + 1;
-                column = p.column;
-                break;
-            case SouthEast:
-                // TODO slightly wrong, depends on even or odd row if column is shifted
-                row = p.row + 1;
-                column = p.column + 1;
-                break;
-            case SouthWest:
-                // TODO slightly wrong, depends on even or odd row if column is shifted
-                row = p.row + 1;
-                column = p.column - 1;
-                break;
+        if (getTile(p).provinceID == Province.NONE) {
+            return TileBorder.None;
         }
-        if (id == map[row][column].provinceID) {
+        MapPosition p2 = getNeighbourPosition(p, transition);
+        if (!containsPosition(p2) || getTile(p2).provinceID == Province.NONE) {
+            return TileBorder.None;
+        }
+        if (getTile(p).provinceID != getTile(p2).provinceID) {
             return TileBorder.Province;
             // TODO TileBorder Nation
         }
@@ -299,7 +332,7 @@ public class Scenario implements XMLable {
      * @param p
      */
     private void fireTileChanged(MapPosition p) {
-        Integer id = map[p.row][p.column].terrainID;
+        Integer id = getTile(p).terrainID;
         for (ScenarioChangedListener l : listeners) {
             l.tileChanged(p, id);
         }

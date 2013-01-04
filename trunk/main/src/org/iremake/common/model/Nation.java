@@ -30,7 +30,6 @@ import org.tools.xml.XProperty;
 public class Nation implements XMLable {
 
     public static final String XMLNAME = "Nation";
-
     private XProperty properties = new XProperty(10);
     private List<Integer> provinces = new ArrayList<>();
 

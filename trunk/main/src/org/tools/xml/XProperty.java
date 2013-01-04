@@ -33,7 +33,6 @@ import nu.xom.Element;
 public class XProperty implements XMLable {
 
     public final static String XMLNAME = "Properties";
-
     private static final Logger LOG = Logger.getLogger(XProperty.class.getName());
     private Map<String, String> map;
     private Map<String, Integer> stats = new HashMap<>(0);
@@ -100,6 +99,7 @@ public class XProperty implements XMLable {
 
     /**
      * If the key is not existing the return is false without any warning.
+     *
      * @param key
      * @return
      */

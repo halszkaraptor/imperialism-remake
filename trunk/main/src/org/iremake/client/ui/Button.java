@@ -21,6 +21,9 @@ import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 
 /**
+ * Factory for buttons. Loads the icon from the location specified by the
+ * argument of the enum and from a specified place. Sets a few standard
+ * properties. Creates a new JButton.
  *
  * As an alternative this could hold a property and store the association in an
  * xml file.
@@ -34,33 +37,31 @@ public enum Button {
     StartMenuHelp("start/start.button.help.png"),
     StartMenuEditor("start/start.button.editor.png"),
     StartMenuExit("start/start.button.exit.png"),
-
     // small sized buttons
     SmallAdd("misc/generic.button.add.png"),
+    SmallDelete("misc/generic.button.delete.png"),
+    SmallEdit("misc/generic.button.edit.png"),
     SmallExit("misc/generic.button.exit.png"),
-
     // normal sized buttons used everywhere
     NormalExit("misc/main.button.exit.png"),
     NormalHelp("misc/main.button.help.png"),
-
     // normal sized buttons used in the editor
     EditorTerrain("editor/editor.button.terrain.png"),
     EditorNation("editor/editor.button.nation.png"),
     EditorProvince("editor/editor.button.province.png"),
-
     // normal size buttons used in the network dialog
     NetworkConnect("misc/network.button.connect.png"),
-
     // normal sized buttons with general options for a scenario
     ScenarioLoad("misc/scenario.button.load.png"),
     ScenarioStart("misc/scenario.button.start.png"),
     ScenarioNew("misc/scenario.button.new.png"),
     ScenarioSave("misc/scenario.button.save.png");
 
-    /* */
+    /* Location of the button icon. */
     private String location;
 
     /**
+     * Sets the location.
      *
      * @param location
      */
@@ -69,6 +70,7 @@ public enum Button {
     }
 
     /**
+     * Creates the button for a specific enum constant. Refers to the static method.
      *
      * @return
      */
@@ -76,12 +78,23 @@ public enum Button {
         return Button.create(location);
     }
 
+    /**
+     * Creates a new button with a given location.
+     *
+     * @param location
+     * @return
+     */
     public static JButton create(String location) {
         JButton button = new JButton();
-        button.setFocusable(false);
+
+        // load and set icon
         button.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, location));
+
+        // standard properties
+        button.setFocusable(false);
         button.setBorder(null);
         button.setMargin(null);
+
         return button;
     }
 }

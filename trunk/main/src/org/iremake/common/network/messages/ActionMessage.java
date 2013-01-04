@@ -20,5 +20,6 @@ package org.iremake.common.network.messages;
  *
  */
 public enum ActionMessage implements Message {
+
     Unused;
 }

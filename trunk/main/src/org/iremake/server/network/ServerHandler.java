@@ -32,7 +32,6 @@ import org.iremake.common.network.messages.TextMessage;
 public class ServerHandler extends Listener {
 
     private static final int DISCONNECT_REMOVAL_DELAY = 10000;
-
     private Map<Integer, ServerClientHandler> clients = new HashMap<>();
 
     @Override

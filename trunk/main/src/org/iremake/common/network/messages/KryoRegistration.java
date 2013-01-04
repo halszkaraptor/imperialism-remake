@@ -32,5 +32,4 @@ public class KryoRegistration {
         kryo.register(NumberMessage.class);
         kryo.register(NumberMessageType.class);
     }
-
 }

@@ -57,7 +57,6 @@ public class GraphicsUtils {
      *
      */
     private static final String KEYID = "scrambledEggs";
-
     private final static Rectangle ScreenBounds;
     private final static Rectangle MaximumBounds;
 
@@ -119,22 +118,22 @@ public class GraphicsUtils {
      */
     private static void setLocation(Component A, Rectangle boundsA, Rectangle boundsB, WindowCorner corner) {
         switch (corner) {
-            case NorthWest:
-                boundsA.x = boundsB.x;
-                boundsA.y = boundsB.y;
-                break;
-            case NorthEast:
-                boundsA.x = boundsB.x + boundsB.width - boundsA.width;
-                boundsA.y = boundsB.y;
-                break;
-            case SouthWest:
-                boundsA.x = boundsB.x;
-                boundsA.y = boundsB.y + boundsB.height - boundsA.height;
-                break;
-            case SouthEast:
-                boundsA.x = boundsB.x + boundsB.width - boundsA.width;
-                boundsA.y = boundsB.y + boundsB.height - boundsA.height;
-                break;
+        case NorthWest:
+            boundsA.x = boundsB.x;
+            boundsA.y = boundsB.y;
+            break;
+        case NorthEast:
+            boundsA.x = boundsB.x + boundsB.width - boundsA.width;
+            boundsA.y = boundsB.y;
+            break;
+        case SouthWest:
+            boundsA.x = boundsB.x;
+            boundsA.y = boundsB.y + boundsB.height - boundsA.height;
+            break;
+        case SouthEast:
+            boundsA.x = boundsB.x + boundsB.width - boundsA.width;
+            boundsA.y = boundsB.y + boundsB.height - boundsA.height;
+            break;
         }
 
         A.setBounds(boundsA);
@@ -345,51 +344,51 @@ public class GraphicsUtils {
     public static int getResizeCursorForSide(WindowSide vertical, WindowSide horizontal) {
         int type = -1;
         switch (vertical) {
-            case North:
-                switch (horizontal) {
-                    case East:
-                        // N+E
-                        type = Cursor.NE_RESIZE_CURSOR;
-                        break;
-                    case West:
-                        // N+W
-                        type = Cursor.NW_RESIZE_CURSOR;
-                        break;
-                    case None:
-                        // N alone
-                        type = Cursor.N_RESIZE_CURSOR;
-                        break;
-                }
+        case North:
+            switch (horizontal) {
+            case East:
+                // N+E
+                type = Cursor.NE_RESIZE_CURSOR;
                 break;
-            case South:
-                switch (horizontal) {
-                    case East:
-                        // S+E
-                        type = Cursor.SE_RESIZE_CURSOR;
-                        break;
-                    case West:
-                        // S+W
-                        type = Cursor.SW_RESIZE_CURSOR;
-                        break;
-                    case None:
-                        // S alone
-                        type = Cursor.S_RESIZE_CURSOR;
-                        break;
-                }
+            case West:
+                // N+W
+                type = Cursor.NW_RESIZE_CURSOR;
                 break;
             case None:
-                // assume that neither North nor South, most probably Null
-                switch (horizontal) {
-                    case East:
-                        // E alone
-                        type = Cursor.E_RESIZE_CURSOR;
-                        break;
-                    case West:
-                        // W alone
-                        type = Cursor.W_RESIZE_CURSOR;
-                        break;
-                }
+                // N alone
+                type = Cursor.N_RESIZE_CURSOR;
                 break;
+            }
+            break;
+        case South:
+            switch (horizontal) {
+            case East:
+                // S+E
+                type = Cursor.SE_RESIZE_CURSOR;
+                break;
+            case West:
+                // S+W
+                type = Cursor.SW_RESIZE_CURSOR;
+                break;
+            case None:
+                // S alone
+                type = Cursor.S_RESIZE_CURSOR;
+                break;
+            }
+            break;
+        case None:
+            // assume that neither North nor South, most probably Null
+            switch (horizontal) {
+            case East:
+                // E alone
+                type = Cursor.E_RESIZE_CURSOR;
+                break;
+            case West:
+                // W alone
+                type = Cursor.W_RESIZE_CURSOR;
+                break;
+            }
+            break;
         }
         return type;
     }

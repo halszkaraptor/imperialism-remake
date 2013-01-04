@@ -35,6 +35,11 @@ public enum Places {
     /* the location of the place*/
     private String location;
 
+    /**
+     * Store the location.
+     * 
+     * @param location
+     */
     Places(String location) {
         this.location = location;
         // TODO must end with '/', otherwise throw exception
@@ -42,7 +47,7 @@ public enum Places {
 
     /**
      * We use the toString method to naturally return the location.
-     * 
+     *
      * @return
      */
     @Override

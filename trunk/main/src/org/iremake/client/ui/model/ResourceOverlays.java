@@ -35,6 +35,7 @@ public class ResourceOverlays implements XMLable {
     private Map<Integer, Tile> map = new HashMap<>();
 
     private class Tile {
+
         public Image image;
         public boolean visible;
 

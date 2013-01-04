@@ -95,8 +95,7 @@ public class OggPlayer {
 
         LOG.log(Level.INFO, "play stream: {0}", is);
 
-        loop:
-        while (true) {
+loop:   while (true) {
             int eos = 0;
 
             int index = oy.buffer(BUFSIZE);

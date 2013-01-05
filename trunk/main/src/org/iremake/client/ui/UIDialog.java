@@ -25,7 +25,13 @@ import javax.swing.JDialog;
 import javax.swing.WindowConstants;
 
 /**
+ * Base class for having a single modal dialog on the main frame. Allows
+ * adjusting of the position, minimum size, closing behavior and content/title
+ * without exposing anything beyond listeners and a content panel.
  *
+ * Before this class is garbage collected, the dialog should be closed, most
+ * probably by a call to close() with either no closing listener or a closing
+ * listener returning true.
  */
 public class UIDialog {
 
@@ -37,49 +43,64 @@ public class UIDialog {
     private final String title;
 
     /**
+     * A title must be given. Standard minimum size is 700x600.
      *
+     * @param title the title
      */
     public UIDialog(String title) {
         this.title = title;
-
         minimumSize = new Dimension(700, 600);
     }
 
+    /**
+     * Stores the content component. Preferably call at the end of the
+     * constructor of classes extending this class.
+     *
+     * @param content a component
+     */
     protected void setContent(JComponent content) {
         this.content = content;
     }
 
     /**
+     * Sets a new minimum size.
      *
-     * @param width
-     * @param height
+     * @param width minimum width
+     * @param height minimum height
      */
     protected void setMinimumSize(int width, int height) {
         minimumSize = new Dimension(width, height);
     }
 
     /**
+     * Sets a specific location. The location is relative to the parent frame.
+     * Otherwise the dialog will be centered.
      *
-     * @param location
+     * @param location the location
      */
     public void setLocation(Point location) {
         this.location = location;
     }
 
     /**
+     * Sets a new closing listener. This listener is invoked when the user
+     * clicks on the cross of the window decoration or otherwise. A close action
+     * might be invoked if the closing listener wants it.
      *
-     * @param closingListener
+     * @param closingListener new closing listener
      */
     public void setClosingListener(WindowClosingListener closingListener) {
         this.closingListener = closingListener;
     }
 
     /**
-     *
+     * Constructs the dialog and sets it visible. Content must be specified,
+     * otherwise nothing is done.
      */
     public void start() {
 
         if (content == null) {
+            // TODO log it
             return;
         }
 
@@ -112,12 +133,23 @@ public class UIDialog {
         dialog.setVisible(true);
     }
 
+    /**
+     * If there is no closing listener or it returns true, disposes the dialog.
+     * Do not forget to dispose the dialog!
+     */
     protected void close() {
         if (closingListener == null || closingListener.closing() == true) {
             dialog.dispose();
         }
     }
 
+    /**
+     * Convenience method, if we have simple content and do not want to extend
+     * UIDialog.
+     *
+     * @param content a component
+     * @param title the title
+     */
     public static void make(JComponent content, String title) {
         UIDialog dialog = new UIDialog(title);
         dialog.setContent(content);

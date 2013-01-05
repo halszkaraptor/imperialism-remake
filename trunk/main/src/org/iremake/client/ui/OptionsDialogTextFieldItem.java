@@ -20,13 +20,21 @@ import javax.swing.JTextField;
 import org.iremake.client.Option;
 
 /**
- *
+ * Item with a text field. Internal state is String.
  */
 public class OptionsDialogTextFieldItem implements OptionsDialogItem {
 
+    /* the ui element */
     private JTextField item;
+    /* the option */
     private Option option;
 
+    /**
+     * Initializes the text field.
+     *
+     * @param item the ui element
+     * @param option the option
+     */
     public OptionsDialogTextFieldItem(JTextField item, Option option) {
         this.item = item;
         this.option = option;
@@ -34,11 +42,17 @@ public class OptionsDialogTextFieldItem implements OptionsDialogItem {
         item.setText(option.get());
     }
 
+    /**
+     * @return  True if the option's text not equals the text from the text field.
+     */
     @Override
     public boolean isModified() {
         return !(option.get().equals(item.getText()));
     }
 
+    /**
+     * Stores the text of the text field in the option.
+     */
     @Override
     public void updateOption() {
         option.put(item.getText());

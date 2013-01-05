@@ -38,10 +38,17 @@ import org.tools.ui.layout.RelativeLayoutConstraint;
 import org.tools.ui.utils.WindowCorner;
 
 /**
+ * Setup of the start screen with a big background image, a logo and some nice
+ * big buttons for various game modes, all in layered layout.
  *
+ * We are not using MigLayout, because at the time of writing it had problems
+ * with LayeredPanes. http://migcalendar.com/forums/viewtopic.php?f=8&t=4075
  */
 public class StartScreen extends UIFrame {
 
+    /**
+     * Setup of the elements and layout.
+     */
     public StartScreen() {
 
         JLayeredPane pane = new JLayeredPane();
@@ -95,6 +102,13 @@ public class StartScreen extends UIFrame {
         // frame.getContentPane().setBackground(Color.BLACK);  // black background
 
         setContent(pane);
+
+        FrameManager.getInstance().setClosingListener(new FrameCloseListener() {
+            @Override
+            public void close() {
+                StartClient.shutDown();
+            }
+        });
     }
 
     /**

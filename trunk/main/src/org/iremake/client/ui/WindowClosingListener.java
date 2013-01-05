@@ -17,11 +17,14 @@
 package org.iremake.client.ui;
 
 /**
- *
+ * In UIDialogs if the user wants the dialog closed, this listener is used to
+ * check if closing should really happen. Also all actions before closing can be
+ * executed here.
  */
 public interface WindowClosingListener {
 
     /**
+     * User wants to close, do all neccessary actions here.
      *
      * @return True if window should be disposed, False otherwise
      */

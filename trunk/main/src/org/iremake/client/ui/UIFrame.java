@@ -19,16 +19,25 @@ package org.iremake.client.ui;
 import javax.swing.JComponent;
 
 /**
- *
+ * Base class for all frame filling screens. Keeps a component and if needed replaces it in the frame.
  */
 public class UIFrame {
 
+    /* the ui element containing all the content */
     private JComponent content;
 
+    /**
+     * Sets the content.
+     *
+     * @param content a component
+     */
     public void setContent(JComponent content) {
         this.content = content;
     }
 
+    /**
+     * Displays the content in the programm frame.
+     */
     public void switchTo() {
         FrameManager.getInstance().switchTo(content);
     }

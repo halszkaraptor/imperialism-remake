@@ -21,6 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <div></div>
+        <div>We have one frame which is filled with different content each time.
+            This frame is stored in the FrameManager and all content must be
+            derived from UIFrame (Naming: XXXScreen as in StartScreen).</div>
+        <div>This frame can have at most one modal dialog. Such a dialog must be
+        derived from UIDialog.</div>
+
     </body>
 </html>

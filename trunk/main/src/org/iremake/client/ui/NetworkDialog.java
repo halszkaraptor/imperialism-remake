@@ -32,10 +32,14 @@ import org.iremake.client.Option;
 import org.tools.ui.ButtonBar;
 
 /**
- *
+ * Dialog for the network setup. Connecting to the server, seeing who else is
+ * on. Chatting. Proposing a game.
  */
 public class NetworkDialog extends UIDialog {
 
+    /**
+     * Setup of the dialog, layout of all components.
+     */
     public NetworkDialog() {
         super("Network center");
 
@@ -51,6 +55,11 @@ public class NetworkDialog extends UIDialog {
         setContent(content);
     }
 
+    /**
+     * The menu bar.
+     *
+     * @return a component
+     */
     private JComponent createMenuBar() {
         // load button
         JButton serverStartButton = Button.NetworkConnect.create();
@@ -62,6 +71,11 @@ public class NetworkDialog extends UIDialog {
         return bar.get();
     }
 
+    /**
+     * The current connection info panel.
+     *
+     * @return a component
+     */
     private JComponent createInfoPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
@@ -79,6 +93,11 @@ public class NetworkDialog extends UIDialog {
         return panel;
     }
 
+    /**
+     * The member list on the server.
+     *
+     * @return a component
+     */
     private JComponent createMemberList() {
         JList<String> list = new JList<>();
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -88,6 +107,11 @@ public class NetworkDialog extends UIDialog {
         return list;
     }
 
+    /**
+     * The chat pane that contains all previous chat messages.
+     *
+     * @return
+     */
     private JComponent createChatPane() {
         // server chat window
         JTextArea chatText = new JTextArea();
@@ -98,6 +122,11 @@ public class NetworkDialog extends UIDialog {
         return chatPane;
     }
 
+    /**
+     * Creates the chat input text line. Based on JTextField.
+     *
+     * @return a component
+     */
     private JComponent createChatInput() {
         // chat input
         JTextField chatInput = new JTextField();

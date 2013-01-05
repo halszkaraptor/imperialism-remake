@@ -36,19 +36,24 @@ import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
 
 /**
- *
+ * Selecting and starting a local scenario (all players are AI and the server runs locally).
  */
 public class NewLocalScenarioDialog extends UIDialog {
 
+    /* pointing to the selected scenario */
     private Resource selectedScenario;
 
+    /**
+     * Setup of the dialog. Also starts the scanner and searches for scenarios.
+     */
     public NewLocalScenarioDialog() {
         super("Local Scenario");
         JPanel content = new JPanel();
 
-        // placeholder for the real things
+        // create a scanner for scenarios and scan
         final ScenarioScanner scanner = new ScenarioScanner();
         scanner.doScan();
+        // put them in a list
         final List<String> titles = scanner.getScenarios();
         JList<String> selectList = new JList<>();
         selectList.setBorder(BorderFactory.createTitledBorder("Scenarios"));
@@ -67,6 +72,7 @@ public class NewLocalScenarioDialog extends UIDialog {
                 return titles.get(index);
             }
         });
+        // listen to the list and update the selected scenario upon selection
         selectList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -78,10 +84,6 @@ public class NewLocalScenarioDialog extends UIDialog {
             }
         });
 
-        JPanel mapPanel = makeMapPanel();
-        JPanel infoPanel = makeInfoPanel();
-
-
         // create menu bar and add to dialog
         JComponent menuBar = makeMenuBar();
 
@@ -89,12 +91,16 @@ public class NewLocalScenarioDialog extends UIDialog {
         content.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
         content.add(menuBar);
         content.add(selectList, "width 200!, split 2");
-        content.add(mapPanel, "grow");
-        content.add(infoPanel, "height 200!, growx");
+        content.add(makeMapPanel(), "grow");
+        content.add(makeInfoPanel(), "height 200!, growx");
 
         setContent(content);
     }
 
+    /**
+     * Map panel.
+     * @return
+     */
     private JPanel makeMapPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
@@ -102,6 +108,11 @@ public class NewLocalScenarioDialog extends UIDialog {
         return panel;
     }
 
+    /**
+     * Menu bar holding all possible actions.
+     *
+     * @return
+     */
     private JComponent makeMenuBar() {
         // start button
         JButton startButton = Button.ScenarioStart.create();
@@ -122,6 +133,10 @@ public class NewLocalScenarioDialog extends UIDialog {
         return bar.get();
     }
 
+    /**
+     * Info panel for the selected scenario. Also to adjust parameters.
+     * @return
+     */
     private JPanel makeInfoPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Info"));

@@ -29,7 +29,7 @@ import org.iremake.client.ui.model.TerrainTiles;
 import org.iremake.common.Settings;
 
 /**
- *
+ * Selection of a new terrain.
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 

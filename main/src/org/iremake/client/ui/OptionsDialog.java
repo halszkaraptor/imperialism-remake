@@ -29,12 +29,19 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
 
 /**
- *
+ * Dialog for displaying and modifying options in a tabbed pane style. The
+ * update and check for modified values is done by iterating over a list of
+ * OptionsDIalogItems. Therefore we avoid abundant use of listeners. Anyway we
+ * only want to check the options upon exit of the dialogt.
  */
 public class OptionsDialog extends UIDialog {
 
+    /* list holding all items */
     private List<OptionsDialogItem> items = new LinkedList<>();
 
+    /**
+     * Setup of the dialog, add the tabs to the tabbed pane.
+     */
     public OptionsDialog() {
         super("Options");
         // tabbed pane
@@ -46,10 +53,7 @@ public class OptionsDialog extends UIDialog {
         tabs.add(createServerPanel(), "Server");
 
         setContent(tabs);
-    }
 
-    @Override
-    public void start() {
         setClosingListener(new WindowClosingListener() {
             @Override
             public boolean closing() {
@@ -62,9 +66,13 @@ public class OptionsDialog extends UIDialog {
                 return true;
             }
         });
-        super.start();
     }
 
+    /**
+     * Setup of general options tab.
+     *
+     * @return
+     */
     private JPanel createGeneralPanel() {
 
         JPanel graphics = new JPanel();
@@ -97,6 +105,11 @@ public class OptionsDialog extends UIDialog {
         return panel;
     }
 
+    /**
+     * Setup of server options tab.
+     *
+     * @return
+     */
     private JPanel createServerPanel() {
         JPanel panel = new JPanel();
 
@@ -112,6 +125,11 @@ public class OptionsDialog extends UIDialog {
         return panel;
     }
 
+    /**
+     * Check upon closing if any option is modified. Iterates over the list of items.
+     *
+     * @return
+     */
     private boolean isAnyModified() {
         for (OptionsDialogItem item : items) {
             if (item.isModified()) {
@@ -121,6 +139,9 @@ public class OptionsDialog extends UIDialog {
         return false;
     }
 
+    /**
+     * We want to save the changes, so we do it.
+     */
     private void updateOptions() {
         for (OptionsDialogItem item : items) {
             item.updateOption();

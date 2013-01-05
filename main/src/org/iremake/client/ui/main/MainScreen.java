@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.ParsingException;
 import org.iremake.client.ui.Button;
+import org.iremake.client.ui.FrameCloseListener;
+import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
 import org.iremake.client.ui.game.GameDialogBuilder;
@@ -88,6 +90,14 @@ public class MainScreen extends UIFrame {
         });
 
         setContent(panel);
+
+        FrameManager.getInstance().setClosingListener(new FrameCloseListener() {
+            @Override
+            public void close() {
+                UIFrame frame = new StartScreen();
+                frame.switchTo();
+            }
+        });
     }
 
     private JPanel createControlPanel() {

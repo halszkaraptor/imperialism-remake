@@ -24,10 +24,13 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.UIDialog;
 
 /**
- *
+ * Dialog for creating a new (and mostly empty) scenario.
  */
 public class EditorNewScenarioDialog extends UIDialog {
 
+    /**
+     * Setup.
+     */
     public EditorNewScenarioDialog() {
         super("New Scenario");
 

@@ -17,18 +17,19 @@
 package org.iremake.client.ui;
 
 /**
- *
+ * Interface for a option item in an option dialog.
  */
 public interface OptionsDialogItem {
 
     /**
+     * Is this element been modified.
      *
-     * @return
+     * @return True if modified.
      */
     public boolean isModified();
 
     /**
-     *
+     * Writes the modified value back to the options.
      */
     public void updateOption();
 }

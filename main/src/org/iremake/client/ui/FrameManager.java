@@ -19,6 +19,8 @@ package org.iremake.client.ui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -42,6 +44,7 @@ public class FrameManager {
     private static FrameManager singleton;
     private JFrame frame;
     private JPanel panel;
+    private FrameCloseListener closingListener;
 
     /**
      * Creates the main frame. Because it is private we can control how often it
@@ -58,6 +61,14 @@ public class FrameManager {
 
         // turn of usual exiting mechanisms
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (closingListener != null) {
+                    closingListener.close();
+                }
+            }
+        });
 
         // set title
         frame.setTitle("Imperialism Remake");
@@ -116,6 +127,16 @@ public class FrameManager {
         panel.removeAll();
         panel.add(content, "grow");
         panel.validate();
+    }
+
+    /**
+     * Set a new closing listener handling pressing the x on the frame
+     * decoration if not in fullscreen. Set to null if not needed.
+     *
+     * @param closingListener
+     */
+    public void setClosingListener(FrameCloseListener closingListener) {
+        this.closingListener = closingListener;
     }
 
     /**

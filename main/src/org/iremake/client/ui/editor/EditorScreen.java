@@ -43,8 +43,10 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
+import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.ui.Button;
+import org.iremake.client.ui.FrameCloseListener;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.ListSelectDialog;
 import org.iremake.client.ui.StartScreen;
@@ -99,7 +101,7 @@ public class EditorScreen extends UIFrame {
             public void tileChanged(MapPosition p, int id) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
-                infoPanel.mainMapTileChanged(p, scenario);
+                infoPanel.update(p, scenario);
             }
 
             @Override
@@ -118,6 +120,14 @@ public class EditorScreen extends UIFrame {
             }
         });
         setContent(content);
+
+        FrameManager.getInstance().setClosingListener(new FrameCloseListener() {
+            @Override
+            public void close() {
+                UIFrame frame = new StartScreen();
+                frame.switchTo();
+            }
+        });
     }
 
     /**
@@ -465,7 +475,7 @@ public class EditorScreen extends UIFrame {
         mainMapPanel.addTileListener(new MapTileListener() {
             @Override
             public void focusChanged(MapPosition p) {
-                infoPanel.mainMapTileChanged(p, scenario);
+                infoPanel.update(p, scenario);
             }
 
             @Override

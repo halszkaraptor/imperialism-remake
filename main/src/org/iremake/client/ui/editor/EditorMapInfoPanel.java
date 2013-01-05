@@ -26,8 +26,7 @@ import org.iremake.common.model.Scenario;
 import org.iremake.common.model.Tile;
 
 /**
- * The map info panel, located at the left lower part of the map tab.
- *
+ * The map info panel, located at the left lower part of the map tab. Infos about the current tile and ways to modify it.
  */
 public class EditorMapInfoPanel extends JPanel {
 
@@ -39,8 +38,7 @@ public class EditorMapInfoPanel extends JPanel {
     private JLabel province = new JLabel();
 
     /**
-     *
-     * @param map
+     * Setup of the panel and layout.
      */
     public EditorMapInfoPanel() {
         setBorder(BorderFactory.createTitledBorder("Info"));
@@ -52,10 +50,13 @@ public class EditorMapInfoPanel extends JPanel {
         add(nation);
         add(province);
 
-        init();
+        reset();
     }
 
-    private void init() {
+    /**
+     * When no tile is in focus, we need to reset the display.
+     */
+    private void reset() {
         tile.setText("Tile: None");
         terrain.setText("Terrain: None");
         resource.setText("Resource: None");
@@ -64,13 +65,14 @@ public class EditorMapInfoPanel extends JPanel {
     }
 
     /**
-     * Focus changed of main map.
+     * Focus changed of main map. A new tile (of none) is in focus now. Need to update.
      *
-     * @param p
+     * @param p the map position
+     * @param scenario the scenario
      */
-    public void mainMapTileChanged(MapPosition p, Scenario scenario) {
+    public void update(MapPosition p, Scenario scenario) {
         if (p.isOff()) {
-            init();
+            reset();
         } else {
             Tile t = scenario.getTileAt(p);
             tile.setText("Tile: " + Integer.toString(p.row) + ", " + Integer.toString(p.column));

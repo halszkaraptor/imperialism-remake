@@ -45,6 +45,7 @@ import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.client.StartClient;
 import org.iremake.client.resources.IOManager;
+import org.iremake.client.resources.Places;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.FrameCloseListener;
 import org.iremake.client.ui.FrameManager;
@@ -66,10 +67,11 @@ import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
 
 /**
- *
+ * Setup of the editor screen
  */
 public class EditorScreen extends UIFrame {
 
+    /** The scenario with all the additonal ui functionalities */
     private UIScenario scenario = new UIScenario();
     private Integer selectedTerrain;
     private JList<Nation> nationsList;
@@ -81,6 +83,9 @@ public class EditorScreen extends UIFrame {
     private EditorMapInfoPanel infoPanel;
     private JTextField scenarioTitle;
 
+    /**
+     * Setup of the tabs and buttons.
+     */
     public EditorScreen() {
         JPanel content = new JPanel();
 
@@ -131,8 +136,9 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * Upper menu bar.
      *
-     * @return
+     * @return a component
      */
     private JComponent createMenuBar() {
         // new scenario button
@@ -218,15 +224,14 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * General properties tab.
      *
-     * @param parent
-     * @param manager
-     * @return
+     * @return a component
      */
-    private JPanel createGeneralTab() {
+    private JComponent createGeneralTab() {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout());
-        panel.add(createGeneralPanel(), "wrap");
+        panel.add(createGeneralPropertiesPanel(), "wrap");
         panel.add(createNationsPanel(), "sizegroup");
         panel.add(createProvincesPanel(), "sizegroup");
 
@@ -234,10 +239,11 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * General properties panel in general tab.
      *
-     * @return
+     * @return a component
      */
-    private JComponent createGeneralPanel() {
+    private JComponent createGeneralPropertiesPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("General"));
 
@@ -252,8 +258,9 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * Nations panel in general tab.
      *
-     * @return
+     * @return a component
      */
     private JComponent createNationsPanel() {
         JPanel panel = new JPanel();
@@ -343,8 +350,9 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * Provinces panel in generals tab.
      *
-     * @return
+     * @return a component
      */
     private JComponent createProvincesPanel() {
         JPanel panel = new JPanel();
@@ -412,11 +420,11 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     * Map tab.
      *
-     * @param manager
-     * @return
+     * @return a component
      */
-    private JPanel createMapTab() {
+    private JComponent createMapTab() {
         JPanel panel = new JPanel();
 
         // create mini map and add to panel
@@ -497,11 +505,14 @@ public class EditorScreen extends UIFrame {
         return panel;
     }
 
+    /**
+     * On start we load a scenario.
+     */
     @Override
     public void switchTo() {
         super.switchTo();
         // load initial scenario
-        // IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
-        scenario.createNew(60, 100);
+        IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        // scenario.createNew(60, 100);
     }
 }

@@ -33,7 +33,8 @@ import org.iremake.common.Settings;
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 
-    private int selected;
+    /* Keeps track of the selected terrain */
+    private int selected = -1;
 
     /**
      *
@@ -42,17 +43,21 @@ public class EditorSelectTerrainDialog extends UIDialog {
     public EditorSelectTerrainDialog(TerrainTiles tiles) {
         super("Select Terrain");
 
+        // this listener is added to every button, the button is coded in the name
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String name = ((JButton) e.getSource()).getName();
                 selected = Integer.parseInt(name);
+                // we close immediately after a selection
                 close();
             }
         };
 
+        // the new panel
         JPanel panel = new JPanel();
 
+        // get all available tiles and find out which rectangular form is closest to a square
         Set<Integer> IDs = tiles.getIDs();
         int n = IDs.size();
         int l = (int) Math.sqrt(n);
@@ -67,9 +72,12 @@ public class EditorSelectTerrainDialog extends UIDialog {
             r = l + 1;
             c = l + 1;
         }
-        // here actually GridLayout does exactly the job and we do not need MigLayout
+
+        // here actually GridLayout does exactly the job and we not need Miglayout
+        // but for consistens borders everywhere we also use MigLayout
         panel.setLayout(new MigLayout("wrap " + c));
 
+        // add a button for each terrain tile and set tooltip text and name accordingly
         for (Integer id : IDs) {
             JButton button = new JButton();
             button.setIcon(new ImageIcon(tiles.getImage(id)));
@@ -82,12 +90,15 @@ public class EditorSelectTerrainDialog extends UIDialog {
         }
 
         setContent(panel);
+
+        // this means the true size is just enough to hold all the content
         setMinimumSize(0, 0);
     }
 
     /**
+     * Return the selected element.
      *
-     * @return
+     * @return id of the element or -1 if not yet selected
      */
     public int getSelection() {
         return selected;

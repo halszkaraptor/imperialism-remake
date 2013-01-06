@@ -27,6 +27,7 @@ import org.iremake.client.ui.UIDialog;
 /**
  *
  */
+// TODO unstatic
 public class GameDialogBuilder {
 
     public static void build(GamePanel panel) {

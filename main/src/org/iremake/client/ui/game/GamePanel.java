@@ -25,7 +25,14 @@ import javax.swing.JPanel;
 import org.iremake.client.ui.Button;
 
 /**
+ * Holds all the game panels as enums which simplifies the access in the code.
  *
+ * A game panel is the specific content of the modal dialog that can be accessed
+ * by presseing one of the "industry", "diplomacy", ... buttons in the main
+ * screen right below the mini map.
+ *
+ * It is created by the namePanel classes in the org.iremake.client.ui.game
+ * package.
  */
 public enum GamePanel {
 
@@ -37,17 +44,22 @@ public enum GamePanel {
     Trade("trade"),
     Transport("transport");
     private final static Logger LOG = Logger.getLogger(GamePanel.class.getName());
-    private String title;
+    private String name;
 
-    GamePanel(String title) {
-        this.title = title;
+    /**
+     * Sets the name.
+     *
+     * @param name name of the panel.
+     */
+    GamePanel(String name) {
+        this.name = name;
     }
 
     /**
      * Just instantiating the right class which is the name of the enum plus
      * "Panel".
      *
-     * @return
+     * @return the content panel
      */
     // TODO do we want it that way?
     public JPanel create() {
@@ -61,7 +73,13 @@ public enum GamePanel {
         return panel;
     }
 
+    /**
+     * We also return a button with generating the location of the button image
+     * by using the name variable.
+     *
+     * @return button for each panel.
+     */
     public JButton getButton() {
-        return Button.create("game/game.button." + title + ".png");
+        return Button.create("game/game.button." + name + ".png");
     }
 }

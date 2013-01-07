@@ -17,12 +17,18 @@
 package org.iremake.common.network.messages;
 
 /**
- *
+ * A type for text messages. It's specified by an enum.
  */
 public enum TextMessageType {
 
     Version, Error, ClientName, Chat;
 
+    /**
+     * Directly creates a TextMessage of that type.
+     *
+     * @param text the text
+     * @return the TextMessage
+     */
     public TextMessage create(String text) {
         return new TextMessage(this, text);
     }

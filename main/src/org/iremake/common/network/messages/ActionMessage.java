@@ -17,7 +17,7 @@
 package org.iremake.common.network.messages;
 
 /**
- *
+ * A Message solely consisting of an enum, indicating a certain action.
  */
 public enum ActionMessage implements Message {
 

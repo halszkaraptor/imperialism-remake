@@ -24,14 +24,16 @@ import org.iremake.common.model.MapPosition;
 public interface MapTileListener {
 
     /**
+     * The mouse hoovers now above a different tile.
      *
-     * @param p
+     * @param p position of the tile
      */
     public void focusChanged(MapPosition p);
 
     /**
+     * The mouse clicked on a specific tile.
      *
-     * @param p
+     * @param p position of the tile
      */
     public void tileClicked(MapPosition p);
 }

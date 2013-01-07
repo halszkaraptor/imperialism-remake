@@ -44,7 +44,6 @@ import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 
@@ -60,6 +59,7 @@ public class GraphicsUtils {
     private final static Rectangle ScreenBounds;
     private final static Rectangle MaximumBounds;
 
+    /* We determine the screen bounds once at the start of the programm in this static initialization section */
     static {
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = env.getDefaultScreenDevice();

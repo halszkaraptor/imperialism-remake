@@ -17,7 +17,6 @@
 package org.tools.xml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,9 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 /**
- * Static methods for converting standard variables to DOM and forth
+ * Static methods for converting standard variables to XML and back. Includes
+ * generic solutions for maps, lists, ... therefore ensuring compatibility of
+ * conversion.
  *
  * appendChild(String) goes directly into the tag
  */
@@ -43,6 +44,11 @@ public class XMLHandler {
     }
 
     /**
+     * Conversion: Map<String, String> -> xml
+     *
+     * For each <Key,Value> entry a new xml node is created and key, value are
+     * stored as attributes.
+     *
      * @param map
      * @param name
      * @return
@@ -55,15 +61,16 @@ public class XMLHandler {
 
         // loop over map entries and add new elements with according attributes
         for (Map.Entry<String, String> e : map.entrySet()) {
-            Element entry = new Element("entry");
-            entry.addAttribute(new Attribute("key", e.getKey()));
-            entry.addAttribute(new Attribute("value", e.getValue()));
-            parent.appendChild(entry);
+            Element child = new Element("entry");
+            child.addAttribute(new Attribute("key", e.getKey()));
+            child.addAttribute(new Attribute("value", e.getValue()));
+            parent.appendChild(child);
         }
         return parent;
     }
 
     /**
+     * Conversion: xml -> Map<String, String>
      *
      * @param element
      * @return
@@ -86,6 +93,24 @@ public class XMLHandler {
     }
 
     /**
+     * Conversion: List<String> -> xml
+     *
+     * @param list
+     * @param name
+     * @return
+     */
+    public static Element fromStringList(List<String> list, String name) {
+        Element parent = new Element(name);
+        for (String s : list) {
+            Element child = new Element("e");
+            child.appendChild(s);
+            parent.appendChild(child);
+        }
+        return parent;
+    }
+
+    /**
+     * Conversion: xml -> List<String>
      *
      * @param element
      * @return
@@ -103,25 +128,31 @@ public class XMLHandler {
         }
         return list;
     }
+    private final static String IntegerSeparator = ":";
 
     /**
+     * Conversion: List<Integer> -> xml
      *
      * @param list
      * @param name
      * @return
      */
-    public static Element fromStringList(List<String> list, String name) {
+    public static Element fromIntegerList(List<Integer> list, String name) {
         Element parent = new Element(name);
-        for (String s : list) {
-            Element child = new Element("e");
-            child.appendChild(s);
-            parent.appendChild(child);
+        int size = list.size();
+        parent.addAttribute(new Attribute("size", Integer.toString(size)));
+        StringBuilder builder = new StringBuilder(size * 3);
+        for (Integer value : list) {
+            builder.append(value);
+            builder.append(IntegerSeparator);
         }
+        parent.appendChild(builder.toString());
+
         return parent;
     }
-    private final static String IntegerSeparator = ":";
 
     /**
+     * Conversion: xml -> List<Integer>
      *
      * @param element
      * @return
@@ -146,33 +177,17 @@ public class XMLHandler {
     }
 
     /**
+     * Conversion: Iterable<T extends XMLAble> -> xml
      *
-     * @param list
-     * @param name
-     * @return
-     */
-    public static Element fromIntegerList(List<Integer> list, String name) {
-        Element parent = new Element(name);
-        int size = list.size();
-        parent.addAttribute(new Attribute("size", Integer.toString(size)));
-        StringBuilder builder = new StringBuilder(size * 3);
-        for (Integer value : list) {
-            builder.append(value);
-            builder.append(IntegerSeparator);
-        }
-        parent.appendChild(builder.toString());
-
-        return parent;
-    }
-
-    /**
+     * Each item of the Iterable is converted to its own xml node and all nodes
+     * are appended to a freshly created node.
      *
      * @param <T>
      * @param list
      * @param name
      * @return
      */
-    public static <T extends XMLable> Element fromCollection(Collection<T> list, String name) {
+    public static <T extends XMLable> Element fromCollection(Iterable<T> list, String name) {
         Element parent = new Element(name);
         for (T item : list) {
             Element child = item.toXML();
@@ -182,6 +197,7 @@ public class XMLHandler {
     }
 
     /**
+     * Conversion: xml -> List<T extends XMLAble>
      *
      * @param <T>
      * @param parent

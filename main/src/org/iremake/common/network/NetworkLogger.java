@@ -17,7 +17,8 @@
 package org.iremake.common.network;
 
 /**
- *
+ * Another logging framework additionally to the standard logger, so one can
+ * test the network part better in a GUI.
  */
 public interface NetworkLogger {
 

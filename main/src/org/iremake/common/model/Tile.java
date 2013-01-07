@@ -20,13 +20,16 @@ import org.iremake.common.Settings;
 
 /**
  * A tile holds the map together. A map is an array of tiles.
+ *
+ * Useful default values are set.
  */
 public class Tile {
 
-    public static int RESOURCE_NONE = 0;
     public int terrainID = Settings.getDefaultTerrainID();
-    public int terrainSubID = 0;
-    public int resourceID = RESOURCE_NONE;
+    public int terrainSubID = 0; // TODO not used right now
+
+    public int resourceID = Settings.RESOURCE_NONE;
     public boolean resourceVisible = false;
+
     public int provinceID = Province.NONE;
 }

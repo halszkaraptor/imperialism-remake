@@ -31,6 +31,7 @@ import javax.swing.Timer;
  * semi-transparent background.
  */
 // TODO round corners
+// TODO opaque(true) does not paint below, typical artifacts when using transparency the wrong way
 public class ClockLabel extends JLabel {
 
     private static final long serialVersionUID = 1L;

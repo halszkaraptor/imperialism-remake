@@ -17,9 +17,15 @@
 package org.iremake.common.model;
 
 /**
+ * Possible transition between two tiles in the staggered layout that we use.
  *
+ * Meaning is self explaining due to use of compass orientations. For efficiency
+ * reason often only East, SoutEast, SouthWest will be used because many
+ * properties like borders or railroads are symmetric, i.e. tile a <-> b has the
+ * same property as tile b <-> a and the corresponding transition can be defined
+ * by only three directions.
  */
-public enum TileBorder {
+public enum TilesTransition {
 
-    None, Province, Nation;
+    East, NorthEast, NorthWest, West, SouthWest, SouthEast;
 }

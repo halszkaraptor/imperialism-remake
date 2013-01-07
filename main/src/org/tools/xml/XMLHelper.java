@@ -24,11 +24,10 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
-import nu.xom.ValidityException;
 import org.tools.io.Resource;
 
 /**
- * Read/Write to file.
+ * Read/Write to/from file/resources/variables.
  */
 public class XMLHelper {
 

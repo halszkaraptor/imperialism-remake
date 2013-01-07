@@ -16,6 +16,7 @@
  */
 package org.iremake.common;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -25,21 +26,34 @@ import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
 
 /**
- * Reads some settings, like ids of Terrain...
+ * Holds the settings, which only (in opposition to options) effect the game
+ * model.
+ *
+ * One example are the ids of terrain and resources and their descriptions. They
+ * are defined in the UI client part again, but this is intentional because the
+ * client has to make sure by himself that for all terrains defined in the
+ * setting there is a terrain image entry existing in the terrain image
+ * definition.
+ *
+ * If we want to switch between different settings we might want to make this
+ * class non-static.
  */
-// TODO do we need to know the ids here? (they are defined twice, in the terrain set and in the scenario settings)
-// TODO unmake static
 public class Settings {
 
+    /* common port for the network communication */
+    public static final int NETWORK_PORT = 19357;
+    /* mapping: id -> description of terrain types */
     private static Map<Integer, String> terrainNames;
+    /* default terrain id */
+    private static int defaultTerrainID;
+    /* mapping: id -> description of resource types */
     private static Map<Integer, String> resourceNames;
-    private static int defaultID;
+    /* the default (none) resource id */
+    public static int RESOURCE_NONE = 0;
 
-    // TODO get this from xml
-    public static int getDefaultTerrainID() {
-        return defaultID;
-    }
-
+    /**
+     * No instantiation.
+     */
     private Settings() {
     }
 
@@ -52,7 +66,7 @@ public class Settings {
 
         // terrains
         Element child = xml.getFirstChildElement("Terrains");
-        defaultID = Integer.parseInt(child.getAttributeValue("default-id"));
+        defaultTerrainID = Integer.parseInt(child.getAttributeValue("default-id"));
         Elements elements = child.getChildElements("Terrain");
         terrainNames = new HashMap<>(elements.size());
         for (int i = 0; i < elements.size(); i++) {
@@ -75,24 +89,42 @@ public class Settings {
     }
 
     /**
+     * Get a set of all possible terrain IDs.
      *
-     * @return
+     * @return the set
      */
     public static Set<Integer> getTerrainIDs() {
-        return terrainNames.keySet();
+        return Collections.unmodifiableSet(terrainNames.keySet());
     }
 
     /**
+     * Returns the description of the terrain id.
      *
-     * @param id
-     * @return
+     * @param id the id
+     * @return the description or null if id is not contained
      */
     // TODO check that the set of ids from the graphical tiles set is identical with the id set here
     public static String getTerrainName(int id) {
         return terrainNames.get(id);
     }
 
+    /**
+     * Returns the description of the resource id.
+     *
+     * @param id the id
+     * @return the description or null if id is not contained
+     */
     public static String getResourceName(int id) {
         return resourceNames.get(id);
+    }
+
+    /**
+     * Returns the default id for terrain, e.g. used in new project without a
+     * predefined map.
+     *
+     * @return the default id
+     */
+    public static int getDefaultTerrainID() {
+        return defaultTerrainID;
     }
 }

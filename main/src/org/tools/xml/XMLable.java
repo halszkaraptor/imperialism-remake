@@ -28,13 +28,15 @@ public interface XMLable {
     /**
      * Save the current state of the object into a XML node.
      *
-     * @return The current state in a XML node.
+     * @return new xml node
      */
     public Element toXML();
 
     /**
+     * Sets the current state of an object according to the content of the given
+     * XML node.
      *
-     * @param parent
+     * @param parent a xml node
      */
     public void fromXML(Element parent);
 }

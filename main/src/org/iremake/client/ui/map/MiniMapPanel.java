@@ -32,7 +32,8 @@ import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
 
 /**
- * Mini map panel.
+ * Mini map panel. Provides overview maps and can change the view of the main
+ * map.
  */
 // TODO different views (political, geographical)
 public class MiniMapPanel extends JPanel {
@@ -41,16 +42,19 @@ public class MiniMapPanel extends JPanel {
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
     private MiniMapFocusChangedListener focusChangedListener;
-    private UIScenario model;
-    private BufferedImage miniMap;
+    /* client scenario */
+    private UIScenario scenario;
+    /* the image is stored so it doesn't need to be calculated for every repaint */
+    private BufferedImage buffer;
 
     /**
+     * Feed it an scenario.
      *
-     * @param model
+     * @param scenario the scenario
      */
-    public MiniMapPanel(UIScenario model) {
+    public MiniMapPanel(UIScenario scenario) {
 
-        this.model = model;
+        this.scenario = scenario;
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -75,16 +79,17 @@ public class MiniMapPanel extends JPanel {
     }
 
     /**
+     * Pain the mini map.
      *
-     * @param g
+     * @param g graphics context
      */
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
         // draw background
-        if (miniMap != null) {
-            g2d.drawImage(miniMap, 0, 0, this);
+        if (buffer != null) {
+            g2d.drawImage(buffer, 0, 0, this);
         }
 
         // the main map has told us their size, we can draw the focus rectangle
@@ -98,32 +103,34 @@ public class MiniMapPanel extends JPanel {
     }
 
     /**
-     *
+     * tell the listener that we have a new focus
      */
     private void notifyFocusChangedListener() {
         if (focusChangedListener != null && focus.width > 0) {
-            focusChangedListener.newMiniMapFocus((float) focus.x / size.width, (float) focus.y / size.height);
+            focusChangedListener.miniMapFocusChanged((float) focus.x / size.width, (float) focus.y / size.height);
         }
     }
 
     /**
+     * sets the focus changed listener
      *
-     * @param l
+     * @param l the listener
      */
     public void setFocusChangedListener(MiniMapFocusChangedListener l) {
         focusChangedListener = l;
     }
 
     /**
+     * somebody tells us what the correct size for the view rectangle is in normalized [0,1] coordinates.
      *
-     * @param fractionRows
-     * @param fractionColumns
+     * @param fractionRows fraction of rows that fit into the main map
+     * @param fractionColumns fraction of columns that fit into the main map
      */
     public void mapChanged(float fractionRows, float fractionColumns) {
 
 
         size = getSize();
-        size.height = size.width * model.getNumberRows() / model.getNumberColumns();
+        size.height = size.width * scenario.getNumberRows() / scenario.getNumberColumns();
         setPreferredSize(size);
 
         focus.x = size.width / 2;
@@ -139,24 +146,25 @@ public class MiniMapPanel extends JPanel {
     }
 
     /**
-     *
+     * somebody tells us that a tile changed
      */
     public void tileChanged() {
+        // TODO is there a more clever way then redrawing everything?
         redrawMap();
         repaint();
     }
 
     /**
-     *
+     * Put new map content in buffer image.
      */
     private void redrawMap() {
-        miniMap = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+        buffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < size.width; x++) {
             for (int y = 0; y < size.height; y++) {
-                int column = model.getNumberColumns() * x / size.width; // rounding down
-                int row = model.getNumberRows() * y / size.height;
-                Color color = model.getTerrainTileColorAt(new MapPosition(row, column));
-                miniMap.setRGB(x, y, color.getRGB());
+                int column = scenario.getNumberColumns() * x / size.width; // rounding down
+                int row = scenario.getNumberRows() * y / size.height;
+                Color color = scenario.getTerrainTileColorAt(new MapPosition(row, column));
+                buffer.setRGB(x, y, color.getRGB());
             }
         }
     }

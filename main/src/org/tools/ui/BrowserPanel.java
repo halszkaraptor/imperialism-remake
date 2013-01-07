@@ -36,7 +36,8 @@ import net.miginfocom.swing.MigLayout;
 import org.tools.ui.utils.IconLoader;
 
 /**
- * Based on JEditorPane in non-editable, content text/html mode.
+ * A panel consisting of a few buttons and a JEditorPane to display
+ * (non-editable) text/html content.
  */
 // TODO use composition instead
 public class BrowserPanel extends JPanel {

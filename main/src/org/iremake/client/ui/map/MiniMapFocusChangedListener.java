@@ -27,5 +27,5 @@ public interface MiniMapFocusChangedListener {
      * @param x
      * @param y
      */
-    public void newMiniMapFocus(float x, float y);
+    public void miniMapFocusChanged(float x, float y);
 }

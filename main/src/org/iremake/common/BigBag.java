@@ -20,7 +20,8 @@ import org.iremake.client.network.ClientManager;
 import org.iremake.server.network.ServerManager;
 
 /**
- *
+ * Convenience solution for having some global storage of variables. This must be
+ * replaced at some point.
  */
 // TODO needs to be replaced!, currently just a big holder of static global variables
 public class BigBag {

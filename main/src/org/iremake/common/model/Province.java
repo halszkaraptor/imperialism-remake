@@ -21,32 +21,58 @@ import nu.xom.Element;
 import org.tools.xml.XMLable;
 
 /**
- * A province has an id and a name.
+ * A province, currently with id, name and town position.
  */
 public class Province implements XMLable {
 
+    /* Sea tiles have a default value which is defined here and not in the xml */
     public static final int NONE = 0;
+    public static final String XMLNAME = "Province";
     private int id;
     private String name;
     private MapPosition town = new MapPosition();
 
+    /**
+     * Empty constructor for creation in XList<E>.fromXML() using class.newInstance().
+     */
     public Province() {
     }
 
+    /**
+     * Set id and name.
+     *
+     * @param id the id
+     * @param name the name
+     */
     public Province(int id, String name) {
-        // TODO check null
+        // TODO check null or ID == NONE
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Returns the id.
+     *
+     * @return the id
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * Returns the town's position.
+     *
+     * @return the position
+     */
     public MapPosition getTownPosition() {
         return town;
     }
 
+    /**
+     * Sets a new town position
+     *
+     * @param position the new position
+     */
     public void setTownPosition(MapPosition position) {
         town = position;
     }
@@ -55,22 +81,21 @@ public class Province implements XMLable {
      * String representation is always the name, makes it easy to use in UI
      * elements.
      *
-     * @return
+     * @return the name
      */
     @Override
     public String toString() {
         return name;
     }
-    public static final String NAME = "Province";
 
     /**
      * Export to XML.
      *
-     * @return
+     * @return xml object
      */
     @Override
     public Element toXML() {
-        Element element = new Element(NAME);
+        Element element = new Element(XMLNAME);
         element.addAttribute(new Attribute("id", Integer.toString(id)));
         element.addAttribute(new Attribute("name", name));
         element.addAttribute(new Attribute("town-row", String.valueOf(town.row)));
@@ -82,7 +107,7 @@ public class Province implements XMLable {
     /**
      * Import from XML.
      *
-     * @param parent
+     * @param parent xml object
      */
     @Override
     public void fromXML(Element parent) {

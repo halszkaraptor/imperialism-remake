@@ -20,7 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 /**
- * Just sets the basic properties of probably all Frames we are going to use.
+ * Just sets the basic properties of probably all Frames we are going to use in
+ * the org.tools.xxx packages.
  *
  */
 public class BasicFrame extends JFrame {

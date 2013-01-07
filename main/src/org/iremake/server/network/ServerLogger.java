@@ -19,7 +19,7 @@ package org.iremake.server.network;
 import org.iremake.common.network.NetworkLogger;
 
 /**
- *
+ * Implementation of the network logger to better test the network part.
  */
 public class ServerLogger {
 

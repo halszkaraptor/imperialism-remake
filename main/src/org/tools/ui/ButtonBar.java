@@ -25,24 +25,36 @@ import net.miginfocom.swing.MigLayout;
  * JToolBar has the disadvantage that it cannot be made invisible, because it
  * contains at least one internal JPanel (tested on Linux). Therefore we need a
  * replacement that holds together some buttons in a line with some reasonable
- * gaps.
+ * gaps. As a treat you can use varargs to add the components.
  */
 public class ButtonBar {
 
+    /* the panel holding the buttons together */
     private JPanel panel = new JPanel();
 
+    /**
+     * Initialize the panel
+     */
     public ButtonBar() {
         panel.setOpaque(true);
         panel.setBackground(new Color(0.8f, 0.8f, 0.8f, 0.2f));
         panel.setLayout(new MigLayout("gap related"));
     }
 
+    /**
+     * Add some buttons to the bar.
+     *
+     * @param buttons the buttons to add
+     */
     public void add(JButton... buttons) {
         for (JButton button : buttons) {
             panel.add(button);
         }
     }
 
+    /**
+     * @return the panel holding the buttons
+     */
     public JPanel get() {
         return panel;
     }

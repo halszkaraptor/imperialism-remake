@@ -103,7 +103,7 @@ public class EditorScreen extends UIFrame {
 
         scenario.addScenarioChangedListener(new ScenarioChangedListener() {
             @Override
-            public void tileChanged(MapPosition p, int id) {
+            public void tileChanged(MapPosition p) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
                 infoPanel.update(p, scenario);

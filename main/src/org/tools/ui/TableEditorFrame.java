@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -41,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.ui.utils.BasicFrame;
-import org.tools.ui.notification.NotificationFactory;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.XTable;
 

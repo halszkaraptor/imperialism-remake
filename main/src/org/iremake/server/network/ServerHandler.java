@@ -20,13 +20,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 
 /**
- * Handling of received messages on the server side.
+ * Handling of the connected clients and the incoming message on the server
+ * side. Each message is bound to a connection with a unique integer ID. We will
+ * store a map: id -> client and forward each incoming Message accordingly.
  */
 // TODO in case disconnections appear, we have to get an intermediate layer allowing reconnections
 public class ServerHandler extends Listener {
@@ -34,19 +34,37 @@ public class ServerHandler extends Listener {
     private static final int DISCONNECT_REMOVAL_DELAY = 10000;
     private Map<Integer, ServerClientHandler> clients = new HashMap<>();
 
+    /**
+     * A new connection arrived. Accept into the list and create a new client
+     * handler.
+     *
+     * @param connection the new connection.
+     */
     @Override
     public void connected(Connection connection) {
         ServerLogger.log("Connection from " + connection.getRemoteAddressTCP());
         clients.put(connection.getID(), new ServerClientHandler(connection, this));
     }
 
+    /**
+     * A connection disconnected, remove immediately.
+     *
+     * @param connection the disconnected connection
+     */
     @Override
-    public void disconnected(final Connection connection) {
+    public void disconnected(Connection connection) {
         Integer id = connection.getID();
         ServerLogger.log("Disconnected ID " + id);
         clients.remove(id);
     }
 
+    /**
+     * A message has been received. First check for type Message, then delegate
+     * to the server client associated with this connection.
+     *
+     * @param connection the connection
+     * @param object the received object
+     */
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof Message) {
@@ -62,6 +80,13 @@ public class ServerHandler extends Listener {
         }
     }
 
+    /**
+     * A certain connection shall be disconnected as a decision on our side, we
+     * send a message before disconnecting.
+     *
+     * @param connection the connection
+     * @param message the farewell message
+     */
     void disconnect(Connection connection, TextMessage message) {
         clients.remove(connection.getID());
         connection.sendTCP(message);

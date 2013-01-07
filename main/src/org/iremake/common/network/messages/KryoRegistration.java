@@ -19,10 +19,18 @@ package org.iremake.common.network.messages;
 import com.esotericsoftware.kryo.Kryo;
 
 /**
- * Registration of Message classes to the Kryo serializer.
+ * Registration of Message classes to the Kryo serializer. All objects that are
+ * sent by the Kryonet library must be registered here and they must contain a
+ * private empty constructor. Also they have to be registered on both sides with
+ * the same order which is easily achieved by using only this class for
+ * registration.
  */
 public class KryoRegistration {
 
+    /**
+     * Registers all necessary classes for our network communication.
+     * @param kryo the kryo object
+     */
     public static void register(Kryo kryo) {
         kryo.register(ActionMessage.class);
 

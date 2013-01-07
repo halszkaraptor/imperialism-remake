@@ -18,42 +18,67 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
-import org.iremake.server.network.clients.RegisteredSClient;
-import org.iremake.server.network.clients.SClient;
-import org.iremake.server.network.clients.UnregisteredSClient;
+import org.iremake.server.network.clients.RegisteredServerClient;
+import org.iremake.server.network.clients.ServerClient;
+import org.iremake.server.network.clients.UnregisteredServerClient;
 
 /**
- *
+ * A handler for handling different server client states on one connection.
  */
 public class ServerClientHandler {
 
     private Connection connection;
     private ServerHandler boss;
-    private SClient client;
+    private ServerClient client;
 
     public ServerClientHandler(Connection connection, ServerHandler boss) {
         this.connection = connection;
-        client = new UnregisteredSClient(this);
+        client = new UnregisteredServerClient(this);
     }
 
+    /**
+     * Delegate the message to the current client state.
+     *
+     * @param message the message
+     */
     public void consume(Message message) {
         client.consume(message);
     }
 
+    /**
+     * Send a new message over the network.
+     *
+     * @param message the message
+     */
     public void send(Message message) {
         connection.sendTCP(message);
     }
 
+    /**
+     * Promote client to ...
+     *
+     * @param name
+     */
     public void registrationSuccess(String name) {
-        client = new RegisteredSClient(this, name);
+        client = new RegisteredServerClient(this, name);
     }
 
+    /**
+     * Return id of the connection, will also be the id for the client on the
+     * client side.
+     *
+     * @return the id
+     */
     public int getID() {
         return connection.getID();
     }
 
+    /**
+     * Demote server client ...
+     *
+     * @param text
+     */
     public void registrationFailed(String text) {
         boss.disconnect(connection, TextMessageType.Error.create(text));
     }

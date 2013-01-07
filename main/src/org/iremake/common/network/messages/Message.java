@@ -17,7 +17,8 @@
 package org.iremake.common.network.messages;
 
 /**
- * Marker interface
+ * Marker interface for Objects being sent over the network by the Kryonet
+ * library.
  */
 public interface Message {
 }

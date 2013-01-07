@@ -17,7 +17,7 @@
 package org.iremake.common.network.messages;
 
 /**
- * Just a String and a enumeration indicating which type the message is.
+ * A message consisting of some text and a type (given by an enum).
  */
 public final class TextMessage implements Message {
 

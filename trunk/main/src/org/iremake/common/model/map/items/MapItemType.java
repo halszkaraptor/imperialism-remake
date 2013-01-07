@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
-
-import org.iremake.common.model.map.MapPosition;
+package org.iremake.common.model.map.items;
 
 /**
- * All the ways the scenario can have changed.
+ *
  */
-public interface ScenarioChangedListener {
+public enum MapItemType {
 
-    /**
-     * A tile changed.
-     *
-     * @param p position of the changed tile
-     */
-    public void tileChanged(MapPosition p);
+    Engineer, Army, Fleet, City;
 
-    /**
-     * Changed completely. Means either made a new scenario or loaded it.
-     */
-    public void scenarioChanged();
 }

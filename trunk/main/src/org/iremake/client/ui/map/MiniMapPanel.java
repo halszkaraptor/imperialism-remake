@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.ui.model.UIScenario;
-import org.iremake.common.model.MapPosition;
+import org.iremake.common.model.map.MapPosition;
 
 /**
  * Mini map panel. Provides overview maps and can change the view of the main

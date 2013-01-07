@@ -21,9 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.common.Settings;
-import org.iremake.common.model.MapPosition;
+import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.Scenario;
-import org.iremake.common.model.Tile;
+import org.iremake.common.model.map.Tile;
 
 /**
  * The map info panel, located at the left lower part of the map tab. Infos about the current tile and ways to modify it.

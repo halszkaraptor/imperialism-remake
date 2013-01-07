@@ -39,7 +39,7 @@ import org.iremake.client.ui.game.GamePanel;
 import org.iremake.client.ui.map.MainMapPanel;
 import org.iremake.client.ui.map.MiniMapPanel;
 import org.iremake.client.ui.model.UIScenario;
-import org.iremake.common.model.MapPosition;
+import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.ScenarioChangedListener;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;

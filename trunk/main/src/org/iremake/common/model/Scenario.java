@@ -16,6 +16,10 @@
  */
 package org.iremake.common.model;
 
+import org.iremake.common.model.map.Tile;
+import org.iremake.common.model.map.TilesBorder;
+import org.iremake.common.model.map.TilesTransition;
+import org.iremake.common.model.map.MapPosition;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -362,6 +366,13 @@ public class Scenario implements XMLable {
         return TilesBorder.None;
     }
 
+    public boolean hasRailRoad(MapPosition p, TilesTransition transition) {
+        if (!containsPosition(p)) {
+            return false;
+        }
+        return (getTile(p).railroadConfig & (1 << transition.order())) != 0;
+    }
+
     /**
      * Returns the title of the scenario.
      *
@@ -470,6 +481,17 @@ public class Scenario implements XMLable {
         schild.appendChild(provinceMapBuffer.toXMLString());
         child.appendChild(schild);
 
+        // railroads
+        BitBuffer railMapBuffer = new BitBuffer(3 * rows * columns);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                railMapBuffer.add(map[row][column].railroadConfig, 3);
+            }
+        }
+        schild = new Element("Railroads");
+        schild.appendChild(railMapBuffer.toXMLString());
+        child.appendChild(schild);
+
         // nation list
         parent.appendChild(nations.toXML());
 
@@ -520,6 +542,11 @@ public class Scenario implements XMLable {
         BitBuffer probuffer = BitBuffer.fromXMLString(content);
         probuffer.trimTo(10 * size);
 
+        // reading of railroads map
+        content = child.getFirstChildElement("Railroads").getValue();
+        BitBuffer railbuffer = BitBuffer.fromXMLString(content);
+        railbuffer.trimTo(3 * size);
+
         // TODO test size of string with size
         // TODO more checks (positivity)
         for (int row = 0; row < rows; row++) {
@@ -530,6 +557,7 @@ public class Scenario implements XMLable {
                 tile.resourceID = resbuffer.get(5);
                 tile.resourceVisible = resbuffer.get();
                 tile.provinceID = probuffer.get(10);
+                tile.railroadConfig = railbuffer.get(3);
                 map[row][column] = tile;
             }
         }

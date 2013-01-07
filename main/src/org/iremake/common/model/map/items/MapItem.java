@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.common.model.map.items;
 
-import org.iremake.common.Settings;
+import org.tools.xml.XMLable;
 
 /**
- * A tile holds the map together. A map is an array of tiles.
- *
- * Useful default values are set.
+ * Base for all map units.
  */
-public class Tile {
+public abstract class MapItem implements XMLable {
 
-    public int terrainID = Settings.getDefaultTerrainID();
-    public int terrainSubID = 0; // TODO not used right now
-
-    public int resourceID = Settings.RESOURCE_NONE;
-    public boolean resourceVisible = false;
-
-    public int provinceID = Province.NONE;
 }

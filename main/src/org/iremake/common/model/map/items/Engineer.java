@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.common.model.map.items;
 
+import nu.xom.Element;
 import org.iremake.common.model.map.MapPosition;
 
 /**
- * All the ways the scenario can have changed.
+ *
  */
-public interface ScenarioChangedListener {
+public class Engineer extends MapItem {
 
-    /**
-     * A tile changed.
-     *
-     * @param p position of the changed tile
-     */
-    public void tileChanged(MapPosition p);
+    private MapPosition position;
 
-    /**
-     * Changed completely. Means either made a new scenario or loaded it.
-     */
-    public void scenarioChanged();
+    @Override
+    public Element toXML() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void fromXML(Element parent) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

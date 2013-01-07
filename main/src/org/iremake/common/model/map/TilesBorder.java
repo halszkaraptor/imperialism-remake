@@ -14,24 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
-
-import org.iremake.common.model.map.MapPosition;
+package org.iremake.common.model.map;
 
 /**
- * All the ways the scenario can have changed.
+ * Possible choice for a border between two tiles. Within a province there is no
+ * border, between two provinces of the same nation a provincial border and
+ * between two provinces of different nations a national border.
  */
-public interface ScenarioChangedListener {
+public enum TilesBorder {
 
-    /**
-     * A tile changed.
-     *
-     * @param p position of the changed tile
-     */
-    public void tileChanged(MapPosition p);
-
-    /**
-     * Changed completely. Means either made a new scenario or loaded it.
-     */
-    public void scenarioChanged();
+    None, Province, Nation;
 }

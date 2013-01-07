@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
+import org.iremake.common.model.map.items.MapItem;
 import org.tools.xml.XMLHandler;
 import org.tools.xml.XMLable;
 import org.tools.xml.XProperty;
@@ -35,6 +36,8 @@ public class Nation implements XMLable {
     private XProperty properties = new XProperty(10);
     /* list of owned provinces */
     private List<Integer> provinces = new ArrayList<>();
+    /* list of engineers, ... */
+    private List<MapItem> items = new ArrayList<>();;
 
     /**
      * Need an empty constructor for creation in fromXML in scenario, i.e.

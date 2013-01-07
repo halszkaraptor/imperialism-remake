@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.common.model.map;
 
 /**
  * Possible transition between two tiles in the staggered layout that we use.
@@ -27,5 +27,15 @@ package org.iremake.common.model;
  */
 public enum TilesTransition {
 
-    East, NorthEast, NorthWest, West, SouthWest, SouthEast;
+    East(0), SouthEast(1), SouthWest(2);
+
+    int order;
+
+    TilesTransition(int order) {
+        this.order = order;
+    }
+
+    public int order() {
+        return order;
+    }
 }

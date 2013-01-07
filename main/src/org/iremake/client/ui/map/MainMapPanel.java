@@ -28,9 +28,9 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.ui.model.UIScenario;
-import org.iremake.common.model.MapPosition;
-import org.iremake.common.model.TilesBorder;
-import org.iremake.common.model.TilesTransition;
+import org.iremake.common.model.map.MapPosition;
+import org.iremake.common.model.map.TilesBorder;
+import org.iremake.common.model.map.TilesTransition;
 
 /**
  * The Main map display, currently used in the editor.
@@ -185,6 +185,21 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                         g2d.drawLine(x, y + tileSize.height - 1, x + tileSize.width / 2, y + tileSize.height - 1);
                     }
 
+                    // draw railroad
+                    g2d.setColor(Color.black);
+                    int xc = x + tileSize.width / 2;
+                    int yc = y + tileSize.height / 2;
+                    if (scenario.hasRailRoad(p, TilesTransition.East)) {
+                        g2d.drawLine(xc, yc, xc + tileSize.width, yc);
+                    }
+                    if (scenario.hasRailRoad(p, TilesTransition.SouthEast)) {
+                        g2d.drawLine(xc, yc, xc + tileSize.width / 2, yc + tileSize.height);
+                    }
+                    if (scenario.hasRailRoad(p, TilesTransition.SouthWest)) {
+                        g2d.drawLine(xc, yc, xc - tileSize.width / 2, yc + tileSize.height);
+                    }
+
+
                     // draw city
                     String name = scenario.getTownAt(p);
                     if (name != null) {
@@ -208,6 +223,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
         // TODO gray areas (outside of map) fill with nearest image, just paint something useful
         // TODO general transformation row, column to x, y
+
+        // draw units
 
         // draw hoover rectangle
         if (!hoover.isOff()) {

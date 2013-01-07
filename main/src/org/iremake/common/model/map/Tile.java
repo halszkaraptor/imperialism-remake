@@ -14,14 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.common.model.map;
+
+import org.iremake.common.model.Province;
+import org.iremake.common.Settings;
 
 /**
- * Possible choice for a border between two tiles. Within a province there is no
- * border, between two provinces of the same nation a provincial border and
- * between two provinces of different nations a national border.
+ * A tile holds the map together. A map is an array of tiles.
+ *
+ * Useful default values are set.
  */
-public enum TilesBorder {
+public class Tile {
 
-    None, Province, Nation;
+    public int terrainID = Settings.getDefaultTerrainID();
+    public int terrainSubID = 0; // TODO not used right now
+
+    public int resourceID = Settings.RESOURCE_NONE;
+    public boolean resourceVisible = false;
+
+    public int provinceID = Province.NONE;
+
+    public int railroadConfig;
 }

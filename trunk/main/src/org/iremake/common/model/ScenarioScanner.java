@@ -33,17 +33,20 @@ import org.tools.xml.XMLHelper;
  * Scans for scenarios in the scenario folder and returns a list of file names
  * and corresponding titles.
  */
+// TODO what if two titles are equal. Need map: Resource -> title instead.
 public class ScenarioScanner {
 
     private static final Logger LOG = Logger.getLogger(ScenarioScanner.class.getName());
+    /* list of resources for scenarios */
     private List<Resource> scenarios = new LinkedList<>();
+    /* list of titles with equal length to list above */
     private List<String> titles = new LinkedList<>();
 
     public ScenarioScanner() {
     }
 
     /**
-     *
+     * First looks at a specific directory for all files named scenario.XXX.xml, then loads them all and puts the scenario titles in a list.
      */
     public void doScan() {
         Resource dir = null;
@@ -63,6 +66,7 @@ public class ScenarioScanner {
         for (Resource resource : scenarios) {
             try {
                 // load it completely
+                // TODO instead of loading and parsing completely there might be a simpler function that only loads the title
                 Scenario scenario = new Scenario();
                 XMLHelper.read(resource, scenario);
                 titles.add(scenario.getTitle());
@@ -74,6 +78,7 @@ public class ScenarioScanner {
     }
 
     /**
+     * Get the list of all titles.
      *
      * @return
      */
@@ -82,6 +87,7 @@ public class ScenarioScanner {
     }
 
     /**
+     * Returns the resource for a specified index.
      *
      * @param index
      * @return

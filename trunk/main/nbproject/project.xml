@@ -22,7 +22,17 @@
             </reference>
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>enum</word>
+            <word>generics</word>
+            <word>ids</word>
+            <word>iterable</word>
+            <word>Kryo</word>
+            <word>Kryonet</word>
+            <word>Linux</word>
             <word>resizable</word>
+            <word>serializer</word>
+            <word>varargs</word>
+            <word>xml</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

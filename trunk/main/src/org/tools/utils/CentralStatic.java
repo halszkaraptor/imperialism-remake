@@ -34,6 +34,7 @@ import java.util.NoSuchElementException;
  * Apart from this fallback, it can be sometimes handy (e.g. for storing global
  * language properties object).
  */
+// TODO store the class additionally for ensuring runtime cast safety (Class<T> class)
 public class CentralStatic {
 
     /**

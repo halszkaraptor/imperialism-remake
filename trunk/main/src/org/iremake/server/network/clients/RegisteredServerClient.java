@@ -14,12 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.server.network.clients;
+
+import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
+import org.iremake.server.network.ServerClientHandler;
 
 /**
- *
+ * Not doing much for now. But we know the name of the client.
  */
-public enum TileTransition {
+public class RegisteredServerClient extends ServerClient {
 
-    East, NorthEast, NorthWest, West, SouthWest, SouthEast;
+    private String name;
+
+    public RegisteredServerClient(ServerClientHandler handler, String name) {
+        super(handler);
+        this.name = name;
+    }
+
+    @Override
+    public void consume(Message message) {
+        if (message instanceof TextMessage) {
+        }
+    }
 }

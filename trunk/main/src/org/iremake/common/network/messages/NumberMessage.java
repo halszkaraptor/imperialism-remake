@@ -17,7 +17,7 @@
 package org.iremake.common.network.messages;
 
 /**
- *
+ * A message consisting of a number and a specific type given by an enum.
  */
 public final class NumberMessage implements Message {
 

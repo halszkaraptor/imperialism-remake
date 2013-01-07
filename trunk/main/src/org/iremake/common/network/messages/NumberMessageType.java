@@ -17,12 +17,18 @@
 package org.iremake.common.network.messages;
 
 /**
- *
+ * A type for the numbers in the NumberMessage. We use an enum.
  */
 public enum NumberMessageType {
 
     Unused;
 
+    /**
+     * Directly create a NumberMessage of a specific type.
+     *
+     * @param number the number to store.
+     * @return the NumberMessage
+     */
     public NumberMessage create(int number) {
         return new NumberMessage(this, number);
     }

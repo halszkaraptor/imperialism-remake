@@ -16,20 +16,16 @@
  */
 package org.iremake.client.ui.game;
 
-import javax.swing.JDialog;
+import org.iremake.client.ui.UIDialog;
 
 /**
- * Not based on GameDialog.
+ * Dialog for displaying the newspaper.
  *
+ * Not based on GameDialog.
  */
-public class NewsPaperDialog extends JDialog {
-
-    private static final long serialVersionUID = 1L;
+public class NewsPaperDialog extends UIDialog {
 
     public NewsPaperDialog() {
-        initComponents();
-    }
-
-    private void initComponents() {
+        super("");
     }
 }

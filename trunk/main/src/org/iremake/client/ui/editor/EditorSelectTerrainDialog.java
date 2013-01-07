@@ -58,7 +58,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
         JPanel panel = new JPanel();
 
         // get all available tiles and find out which rectangular form is closest to a square
-        Set<Integer> IDs = tiles.getIDs();
+        Set<Integer> IDs = Settings.getTerrainIDs();
         int n = IDs.size();
         int l = (int) Math.sqrt(n);
         int r, c;

@@ -17,9 +17,9 @@
 package org.iremake.client.ui.model;
 
 import java.awt.Image;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -28,66 +28,52 @@ import org.iremake.client.resources.Places;
 import org.tools.xml.XMLable;
 
 /**
+ * UI part of the resource tiles, holding the image for each overlay.
  *
+ * More specific a map: id -> image is stored that allows to retrieve overlay
+ * images for each id.
  */
 public class ResourceOverlays implements XMLable {
 
-    private Map<Integer, Tile> map = new HashMap<>();
-
-    private class Tile {
-
-        public Image image;
-        public boolean visible;
-
-        @Override
-        public int hashCode() {
-            return image.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            final Tile other = (Tile) obj;
-            if (!Objects.equals(this.image, other.image)) {
-                return false;
-            }
-            if (this.visible != other.visible) {
-                return false;
-            }
-            return true;
-        }
-    }
+    /* the map storing the ui overlay image for each id */
+    private Map<Integer, Image> map = new HashMap<>();
 
     /**
+     * Returns the image for a given id.
      *
-     * @param id
-     * @return
+     * @param id id
+     * @return an image or null if id not existing
      */
     public Image getImage(Integer id) {
-        // TODO id not contained
-        return map.get(id).image;
+        return map.get(id);
     }
 
     /**
+     * Returns an unmodifiable set of ids in the map.
      *
-     * @return
+     * @return set of ids
      */
     public Set<Integer> getIDs() {
-        return map.keySet();
+        return Collections.unmodifiableSet(map.keySet());
     }
 
+    /**
+     * We never write.
+     */
     @Override
     public Element toXML() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Reading the content from a xml object.
+     *
+     * @param parent
+     */
     @Override
     public void fromXML(Element parent) {
+
+        // clear the map
         map.clear();
 
         if (parent == null || parent.getLocalName().equals("TerrainTiles"));
@@ -101,10 +87,8 @@ public class ResourceOverlays implements XMLable {
             }
             Integer id = Integer.valueOf(child.getAttributeValue("id"));
             String location = child.getAttributeValue("location");
-            Tile tile = new Tile();
-            tile.image = IOManager.getAsImage(Places.GraphicsResources, location);
-            tile.visible = Boolean.valueOf(child.getAttributeValue("visible"));
-            map.put(id, tile);
+            Image image = IOManager.getAsImage(Places.GraphicsResources, location);
+            map.put(id, image);
         }
     }
 }

@@ -22,15 +22,14 @@ package org.iremake.common.model;
 public interface ScenarioChangedListener {
 
     /**
+     * A tile changed.
      *
-     * @param p
-     * @param id
+     * @param p position of the changed tile
      */
-    public void tileChanged(MapPosition p, int id);
+    public void tileChanged(MapPosition p);
 
     /**
      * Changed completely. Means either made a new scenario or loaded it.
-     *
      */
     public void scenarioChanged();
 }

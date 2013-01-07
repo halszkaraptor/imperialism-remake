@@ -19,6 +19,7 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Client;
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.iremake.common.Settings;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
 
@@ -27,8 +28,6 @@ import org.iremake.common.network.messages.Message;
  */
 public class ClientManager {
 
-    /* Server port */
-    private static final int PORT = 19876;
     /* Timeout in ms for connection */
     private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
@@ -53,7 +52,7 @@ public class ClientManager {
         client.start();
 
         try {
-            client.connect(TIMEOUT, "localhost", PORT);
+            client.connect(TIMEOUT, "localhost", Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
             ClientLogger.log("Could not connect.");

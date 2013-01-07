@@ -30,11 +30,17 @@ import org.tools.xml.XMLable;
 import org.tools.xml.XProperty;
 
 /**
- * The full internal Scenario model.
+ * The full internal Scenario model. It can hold all data structures related to
+ * a game and can read from a scenario file and store into it again.
+ *
+ * There should be much more documentation here, but unfortunately so far there
+ * isn't.
  */
-// TODO this class has not enough methods and therefore exposes local variables ???
+// TODO this class has not enough methods and therefore exposes local variables
 public class Scenario implements XMLable {
 
+    private static final String XMLNAME = "Scenario";
+    private static final String XMLNAME_MAP = "Geographical-Map";
     private static final String XMLNAME_NATIONS = "Nations";
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
     private int rows = 0;
@@ -45,21 +51,20 @@ public class Scenario implements XMLable {
     private Map<Integer, Province> provinces = new HashMap<>(1000);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
+    /**
+     * The list of nations shall be kept sorted internally.
+     */
     public Scenario() {
         nations.setKeepSorted(true);
     }
 
-    private Tile getTile(MapPosition p) {
-        return map[p.row][p.column];
-    }
-
     /**
-     * A sea(1) map.
+     * An empty map consisting of default values for the tile at each position.
      *
-     * @param rows
-     * @param columns
+     * @param rows number of rows of the new map
+     * @param columns number of columns of the new map
      */
-    public void createNew(int rows, int columns) {
+    public void createEmptyMap(int rows, int columns) {
         if (rows <= 0 || columns <= 0) {
             LOG.log(Level.INFO, "Zero or negative sizes!");
             return;
@@ -91,14 +96,26 @@ public class Scenario implements XMLable {
 
     /**
      *
+     * @param p
      * @return
      */
-    public boolean checkConsistency() {
-        // TODO size and length of map are consistent, ids are valid and only 2 letters long
-        return true;
+    public boolean containsPosition(MapPosition p) {
+        return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
     }
 
     /**
+     * Internal function allowing for easier syntax and direct use of
+     * MapPosition.
+     *
+     * @param p the map position
+     * @return the tile
+     */
+    private Tile getTile(MapPosition p) {
+        return map[p.row][p.column];
+    }
+
+    /**
+     * Is resource visible.
      *
      * @param p
      * @return
@@ -112,15 +129,7 @@ public class Scenario implements XMLable {
     }
 
     /**
-     *
-     * @param p
-     * @return
-     */
-    public boolean containsPosition(MapPosition p) {
-        return p.row >= 0 && p.row < rows && p.column >= 0 && p.column < columns;
-    }
-
-    /**
+     * Changes the terrain at a specific position.
      *
      * @param p
      * @param id
@@ -135,6 +144,7 @@ public class Scenario implements XMLable {
     }
 
     /**
+     * Returns the terrain at a specific position.
      *
      * @param p
      * @return
@@ -148,7 +158,7 @@ public class Scenario implements XMLable {
     }
 
     /**
-     * Only restricted access.
+     * Convenience function for now. Allows too much access.
      *
      * @param p
      * @return
@@ -162,25 +172,33 @@ public class Scenario implements XMLable {
     }
 
     /**
-     *
-     * @return
+     * @return number of rows of the map
      */
     public int getNumberRows() {
         return rows;
     }
 
     /**
-     *
-     * @return
+     * @return number of columns of the map
      */
     public int getNumberColumns() {
         return columns;
     }
 
+    /**
+     * @return list of nations, can be used as model for JList
+     */
     public XList<Nation> getNations() {
         return nations;
     }
 
+    /**
+     * Returns all the provinces belonging to a certain nation as a sorted
+     * XList.
+     *
+     * @param nation a specific nation
+     * @return a XList
+     */
     public XList<Province> getProvinces(Nation nation) {
 
         if (!nations.contains(nation)) {
@@ -198,6 +216,12 @@ public class Scenario implements XMLable {
         return list;
     }
 
+    /**
+     * Returns all the provinces of the scenario in an XList, copies the
+     * internal list.
+     *
+     * @return a XList
+     */
     public XList<Province> getAllProvinces() {
         XList<Province> list = new XList<>(Province.class);
         list.setKeepSorted(true);
@@ -209,10 +233,12 @@ public class Scenario implements XMLable {
     }
 
     /**
-     * Need to get unique IDs.
+     * Need to get unique IDs. So new Provinces must be created here. A Nation
+     * and a name must be given.
      *
-     * @param name
-     * @return
+     * @param nation the nation
+     * @param name the name
+     * @return a new province
      */
     public Province newProvince(Nation nation, String name) {
         if (!nations.contains(nation)) {
@@ -233,10 +259,17 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    /**
+     * Returns the nation at a specific position.
+     *
+     * @param p the position
+     * @return the nation
+     */
     public Nation getNationAt(MapPosition p) {
         int id = getTile(p).provinceID;
-        for (Nation nation: nations) {
-            for (Integer id2: nation.getProvinces()) {
+        // need to go through all nations until we find the province, because no map: position -> nation is stored
+        for (Nation nation : nations) {
+            for (Integer id2 : nation.getProvinces()) {
                 if (id == id2) {
                     return nation;
                 }
@@ -245,6 +278,13 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    /**
+     * Returns the name of the town at a specific position or null if not
+     * existing.
+     *
+     * @param p
+     * @return
+     */
     public String getTownAt(MapPosition p) {
         for (Province province : provinces.values()) {
             if (province.getTownPosition().equals(p)) {
@@ -254,100 +294,129 @@ public class Scenario implements XMLable {
         return null;
     }
 
+    /**
+     * Returns the province at a specific position.
+     *
+     * @param p
+     * @return
+     */
     public Province getProvinceAt(MapPosition p) {
         return provinces.get(getTile(p).provinceID);
     }
 
-    private MapPosition getNeighbourPosition(MapPosition p, TileTransition transition) {
+    /**
+     * Calculates neighbored positions for a given map position of a map in
+     * staggered layout (i.e. every second row is shifted by half a tile) and
+     * for a given transition, where only 3 transitions are actually taken into
+     * account so far.
+     *
+     * The new position might not be on the map any more.
+     *
+     * @param p the position
+     * @param transition the transition
+     * @return the position of the neighbor
+     */
+    private MapPosition getNeighbourPosition(MapPosition p, TilesTransition transition) {
         int row, column, shift;
         switch (transition) {
-        case East:
-            row = p.row;
-            column = p.column + 1;
-            break;
-        case SouthEast:
-            row = p.row + 1;
-            shift = p.row % 2 == 0 ? 1 : 0;
-            column = p.column + 1 - shift;
-            break;
-        case SouthWest:
-            row = p.row + 1;
-            shift = p.row % 2 == 0 ? 1 : 0;
-            column = p.column - shift;
-            break;
-        default:
-            row = -1;
-            column = -1;
+            case East:
+                row = p.row;
+                column = p.column + 1;
+                break;
+            case SouthEast:
+                row = p.row + 1;
+                shift = p.row % 2 == 0 ? 1 : 0;
+                column = p.column + 1 - shift;
+                break;
+            case SouthWest:
+                row = p.row + 1;
+                shift = p.row % 2 == 0 ? 1 : 0;
+                column = p.column - shift;
+                break;
+            default:
+                row = -1;
+                column = -1;
         }
         return new MapPosition(row, column);
     }
 
     /**
+     * Returns the border for a given position and a given tile transition.
      *
-     * @param p
-     * @param transition
-     * @return
+     * @param p the position
+     * @param transition the transition
+     * @return the type of the border
      */
-    public TileBorder getBorder(MapPosition p, TileTransition transition) {
+    public TilesBorder getBorder(MapPosition p, TilesTransition transition) {
         if (getTile(p).provinceID == Province.NONE) {
-            return TileBorder.None;
+            return TilesBorder.None;
         }
         MapPosition p2 = getNeighbourPosition(p, transition);
         if (!containsPosition(p2) || getTile(p2).provinceID == Province.NONE) {
-            return TileBorder.None;
+            return TilesBorder.None;
         }
         if (getTile(p).provinceID != getTile(p2).provinceID) {
-            return TileBorder.Province;
+            return TilesBorder.Province;
             // TODO TileBorder Nation
         }
-        return TileBorder.None;
+        return TilesBorder.None;
     }
 
+    /**
+     * Returns the title of the scenario.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return properties.get("title");
     }
 
+    /**
+     * Sets the title of the scenario.
+     *
+     * @param title the new title
+     */
     public void setTitle(String title) {
         properties.put("title", title);
     }
 
     /**
+     * Adds a listener.
      *
-     * @param l
+     * @param l the listener
      */
     public void addScenarioChangedListener(ScenarioChangedListener l) {
         listeners.add(l);
     }
 
     /**
+     * Removes a listener.
      *
-     * @param l
+     * @param l the listener
      */
     public void removeScenarioChangedListener(ScenarioChangedListener l) {
         listeners.remove(l);
     }
 
     /**
+     * Tells all listeners that a specific tile has changed.
      *
-     * @param p
+     * @param p the position of the tile
      */
     private void fireTileChanged(MapPosition p) {
-        Integer id = getTile(p).terrainID;
         for (ScenarioChangedListener l : listeners) {
-            l.tileChanged(p, id);
+            l.tileChanged(p);
         }
     }
 
     /**
-     *
+     * Tells all listeners that everything has changed.
      */
     private void fireScenarioChanged() {
         for (ScenarioChangedListener l : listeners) {
             l.scenarioChanged();
         }
     }
-    private static final String XMLNAME = "Scenario";
-    private static final String NAME_MAP = "Geographical-Map";
 
     /**
      * Export to XML.

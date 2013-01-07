@@ -24,32 +24,53 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.Settings;
 import org.iremake.common.network.messages.KryoRegistration;
 
 /**
- *
+ * Starts the server.
  */
 public class ServerManager {
 
     private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
-    private static final int PORT = 19876;
+    /* port on which we listen to clients */
     private Server server;
     private List<ServerStatusListener> listeners = new LinkedList<>();
 
+    /**
+     * Adds a listener.
+     *
+     * @param l the listener
+     */
     public void addStatusListener(ServerStatusListener l) {
         listeners.add(l);
     }
 
+    /**
+     * Removes a listener.
+     *
+     * @param l the listener
+     */
     public void removeStatusListener(ServerStatusListener l) {
         listeners.remove(l);
     }
 
+    /**
+     * Tell all listeners that the status changed.
+     * 
+     * @param message
+     */
     private void fireStatusChanged(String message) {
         for (ServerStatusListener l : listeners) {
             l.statusUpdate(message);
         }
     }
 
+    /**
+     * Starts the server.
+     *
+     * @return
+     */
     public boolean start() {
         ServerLogger.log("Server start initiated.");
         if (server != null) {
@@ -63,7 +84,7 @@ public class ServerManager {
         server.start();
 
         try {
-            server.bind(PORT);
+            server.bind(Settings.NETWORK_PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
             ServerLogger.log("Could not start.");
@@ -89,10 +110,18 @@ public class ServerManager {
         return true;
     }
 
+    /**
+     * Tells whether the server has been started.
+     *
+     * @return True if it is running
+     */
     public boolean isRunning() {
         return server != null;
     }
 
+    /**
+     * Stops the server.
+     */
     public void stop() {
         if (server != null) {
             ServerLogger.log("Will stop.");

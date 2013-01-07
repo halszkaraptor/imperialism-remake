@@ -28,7 +28,7 @@ import org.iremake.client.ui.Button;
  * Holds all the game panels as enums which simplifies the access in the code.
  *
  * A game panel is the specific content of the modal dialog that can be accessed
- * by presseing one of the "industry", "diplomacy", ... buttons in the main
+ * by pressing one of the "industry", "diplomacy", ... buttons in the main
  * screen right below the mini map.
  *
  * It is created by the namePanel classes in the org.iremake.client.ui.game

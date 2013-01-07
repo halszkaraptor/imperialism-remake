@@ -20,13 +20,15 @@ import org.iremake.common.network.messages.Message;
 import org.iremake.server.network.ServerClientHandler;
 
 /**
- *
+ * A server client - that is the counterpart of a client, but on the server
+ * side. It can consist of different state/specializations and at least has a
+ * boss (ServerClientHandler) and can consume and send Messages.
  */
-public abstract class SClient {
+public abstract class ServerClient {
 
     protected final ServerClientHandler boss;
 
-    public SClient(ServerClientHandler boss) {
+    public ServerClient(ServerClientHandler boss) {
         this.boss = boss;
     }
 

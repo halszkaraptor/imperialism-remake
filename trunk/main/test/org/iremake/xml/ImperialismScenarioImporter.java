@@ -284,7 +284,7 @@ public class ImperialismScenarioImporter extends JFrame {
         updateStatus("data imported successfully");
 
         Scenario scenario = new Scenario();
-        scenario.createNew(rows, columns);
+        scenario.createEmptyMap(rows, columns);
 
         // check that if terrain_underlay is ocean also terrain_overlay is ocean
         for (int i = 0; i < chunk; i++) {

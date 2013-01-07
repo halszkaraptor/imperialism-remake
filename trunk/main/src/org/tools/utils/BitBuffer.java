@@ -16,8 +16,6 @@
  */
 package org.tools.utils;
 
-import java.nio.charset.Charset;
-
 /**
  * Circular bit buffer allowing reading and writing chunks up to 32 bits to and
  * from the buffer at the same time. It's length is not self-adjusting but the

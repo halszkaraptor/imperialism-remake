@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.ParsingException;
@@ -46,31 +47,33 @@ import org.tools.ui.ClockLabel;
 import org.tools.xml.XMLHelper;
 
 /**
- *
+ * Main game screen.
  */
 public class MainScreen extends UIFrame {
 
     private static final Logger LOG = Logger.getLogger(MainScreen.class.getName());
+
+    /* client ui scenario */
     private UIScenario scenario = new UIScenario();
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
 
+    /**
+     * Setup of the whole screen.
+     */
     public MainScreen() {
         JPanel panel = new JPanel();
 
         // Add MapPanel
         mainMapPanel = new MainMapPanel(scenario);
 
-        // add control panel to layered pane and position
-        JPanel controlPanel = createControlPanel();
-
         panel.setLayout(new MigLayout("fill", "[grow][]"));
         panel.add(mainMapPanel, "grow");
-        panel.add(controlPanel, "growy, wmin 300");
+        panel.add(createControlPanel(), "growy, wmin 300");
 
         scenario.addScenarioChangedListener(new ScenarioChangedListener() {
             @Override
-            public void tileChanged(MapPosition p, int id) {
+            public void tileChanged(MapPosition p) {
                 miniMapPanel.tileChanged();
                 mainMapPanel.tileChanged(p);
             }
@@ -100,7 +103,12 @@ public class MainScreen extends UIFrame {
         });
     }
 
-    private JPanel createControlPanel() {
+    /**
+     * Control panel which is everything apart from the main map.
+     *
+     * @return a component
+     */
+    private JComponent createControlPanel() {
         JPanel panel = new JPanel();
 
         JPanel infPanel = new JPanel();
@@ -166,11 +174,16 @@ public class MainScreen extends UIFrame {
         return panel;
     }
 
-    public void switchTo(Resource r) {
+    /**
+     * On start the scenario is loaded.
+     *
+     * @param resource Resource pointing to the scenario.
+     */
+    public void switchTo(Resource resource) {
         super.switchTo();
         try {
             // load given scenario
-            XMLHelper.read(r, scenario);
+            XMLHelper.read(resource, scenario);
         } catch (IOException | ParsingException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }

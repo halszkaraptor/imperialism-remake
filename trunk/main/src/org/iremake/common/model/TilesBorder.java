@@ -14,27 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.clients;
-
-import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
-import org.iremake.server.network.ServerClientHandler;
+package org.iremake.common.model;
 
 /**
- *
+ * Possible choice for a border between two tiles. Within a province there is no
+ * border, between two provinces of the same nation a provincial border and
+ * between two provinces of different nations a national border.
  */
-public class RegisteredSClient extends SClient {
+public enum TilesBorder {
 
-    private String name;
-
-    public RegisteredSClient(ServerClientHandler handler, String name) {
-        super(handler);
-        this.name = name;
-    }
-
-    @Override
-    public void consume(Message message) {
-        if (message instanceof TextMessage) {
-        }
-    }
+    None, Province, Nation;
 }

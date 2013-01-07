@@ -25,15 +25,21 @@ import org.iremake.server.network.ServerClientHandler;
 import org.iremake.server.network.ServerLogger;
 
 /**
+ * The default state of a server client at the beginning. It will wait for 10
+ * seconds in the beginning and if no message arrived from the client, will
+ * close the connection.
  *
+ * If the client sends his version, it will check it against its version and
+ * either disconnect if the version is wrong or wait for the name. If a name is
+ * send, the server client will be promoted to a registered client.
  */
-public class UnregisteredSClient extends SClient {
+public class UnregisteredServerClient extends ServerClient {
 
     private static final int TIMEOUT = 10000;
     private Timer timer = new Timer();
     private boolean versionQuery;
 
-    public UnregisteredSClient(ServerClientHandler handler) {
+    public UnregisteredServerClient(ServerClientHandler handler) {
         super(handler);
 
         timer.schedule(new TimerTask() {
@@ -52,28 +58,28 @@ public class UnregisteredSClient extends SClient {
             TextMessage msg = (TextMessage) message;
 
             switch (msg.getType()) {
-            case Version:
-                // check version
+                case Version:
+                    // check version
 
-                if (Option.Version.get().equals(msg.getText())) {
-                    ServerLogger.log("Version accepted.");
-                    versionQuery = true;
-                } else {
-                    timer.cancel();
-                    boss.registrationFailed("Wrong version.");
-                }
+                    if (Option.Version.get().equals(msg.getText())) {
+                        ServerLogger.log("Version accepted.");
+                        versionQuery = true;
+                    } else {
+                        timer.cancel();
+                        boss.registrationFailed("Wrong version.");
+                    }
 
-                break;
-            case ClientName:
-                if (!versionQuery) {
-                    boss.registrationFailed("Sent name before version.");
-                }
+                    break;
+                case ClientName:
+                    if (!versionQuery) {
+                        boss.registrationFailed("Sent name before version.");
+                    }
 
-                // now we know the name
-                ServerLogger.log("New client name: " + msg.getText());
-                boss.registrationSuccess(msg.getText());
+                    // now we know the name
+                    ServerLogger.log("New client name: " + msg.getText());
+                    boss.registrationSuccess(msg.getText());
 
-                break;
+                    break;
             }
 
         }

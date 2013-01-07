@@ -27,7 +27,7 @@ import org.iremake.common.model.MapPosition;
 import org.iremake.common.model.Scenario;
 
 /**
- *
+ * The client scenario extending the model scenario.
  */
 public class UIScenario extends Scenario {
 
@@ -35,12 +35,16 @@ public class UIScenario extends Scenario {
     private TerrainTiles terrainTiles = new TerrainTiles();
     private ResourceOverlays resourceOverlays = new ResourceOverlays();
 
+    /**
+     * Load terrain and resource files.
+     */
     public UIScenario() {
         IOManager.setFromXML(Places.GraphicsTerrains, "terrains.xml", terrainTiles);
         IOManager.setFromXML(Places.GraphicsResources, "resources.xml", resourceOverlays);
     }
 
     /**
+     * Returns the tile size.
      *
      * @return
      */
@@ -49,9 +53,10 @@ public class UIScenario extends Scenario {
     }
 
     /**
+     * Returns the resource at a specific position.
      *
-     * @param p
-     * @return
+     * @param p the tile position
+     * @return the image or null if position is outside of the map
      */
     public Image getResourceOverlayAt(MapPosition p) {
         if (!containsPosition(p)) {
@@ -62,9 +67,10 @@ public class UIScenario extends Scenario {
     }
 
     /**
+     * Returns the terrain image at a specific position.
      *
-     * @param p
-     * @return
+     * @param p the tile position
+     * @return the image or null if position is outside of the map
      */
     public Image getTerrainTileAt(MapPosition p) {
         if (!containsPosition(p)) {
@@ -75,9 +81,10 @@ public class UIScenario extends Scenario {
     }
 
     /**
+     * Returns the terrain color at a specific position.
      *
-     * @param p
-     * @return
+     * @param p the tile position
+     * @return the image of null if position is outside of the map
      */
     public Color getTerrainTileColorAt(MapPosition p) {
         if (!containsPosition(p)) {
@@ -88,6 +95,8 @@ public class UIScenario extends Scenario {
     }
 
     /**
+     * This gives away an internal variable which is bad style, but it was the
+     * shortest way for now. Should be changed.
      *
      * @return
      */

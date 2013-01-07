@@ -29,8 +29,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.MapPosition;
-import org.iremake.common.model.TileBorder;
-import org.iremake.common.model.TileTransition;
+import org.iremake.common.model.TilesBorder;
+import org.iremake.common.model.TilesTransition;
 
 /**
  * The Main map display, currently used in the editor.
@@ -39,22 +39,27 @@ import org.iremake.common.model.TileTransition;
 public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener {
 
     private static final long serialVersionUID = 1L;
+    /* we ask for the size quite often, so we store it */
     private Dimension size = new Dimension();
+    /* all listeners */
     private List<MapTileListener> tileListeners = new LinkedList<>();
+    /* client scenario */
     private UIScenario scenario;
+    /* defines the part of the map that is displayed by defining the left, upper corner of the viewable part */
     private MapPosition offset = new MapPosition();
+    /* the tile the mouse pointer is currently over */
     private MapPosition hoover = new MapPosition();
 
     /**
+     * We feed the main map a scenario.
      *
-     * @param scenario
+     * @param scenario the scenario
      */
     public MainMapPanel(final UIScenario scenario) {
 
         this.scenario = scenario;
 
         setOpaque(true);
-
         hoover.setOff();
 
         setBackground(Color.white);
@@ -107,9 +112,9 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     /**
      * From mouse to tile.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x mouse x position
+     * @param y mouse y position
+     * @return map tile position
      */
     private MapPosition getPositionFromXY(int x, int y) {
         MapPosition p = new MapPosition();
@@ -122,9 +127,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     }
 
     /**
-     * Paints tiles and focus rectangle.
+     * Paints the whole main map. Tile terrain, resources, cities, units, ...
+     * ..., borders (provincial, national), selection rectangles.
      *
-     * @param g
+     * @param g graphics context
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -163,18 +169,18 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
                     // draw tile border
                     g2d.setColor(Color.white);
-                    TileBorder border = scenario.getBorder(p, TileTransition.East);
-                    if (border == TileBorder.Province) {
+                    TilesBorder border = scenario.getBorder(p, TilesTransition.East);
+                    if (border == TilesBorder.Province) {
                         // white stripe at the right side
                         g2d.drawLine(x + tileSize.width - 1, y, x + tileSize.width - 1, y + tileSize.height);
                     }
-                    border = scenario.getBorder(p, TileTransition.SouthEast);
-                    if (border == TileBorder.Province) {
+                    border = scenario.getBorder(p, TilesTransition.SouthEast);
+                    if (border == TilesBorder.Province) {
                         // white half strip on the lower, right side
                         g2d.drawLine(x + tileSize.width / 2, y + tileSize.height - 1, x + tileSize.width - 1, y + tileSize.height - 1);
                     }
-                    border = scenario.getBorder(p, TileTransition.SouthWest);
-                    if (border == TileBorder.Province) {
+                    border = scenario.getBorder(p, TilesTransition.SouthWest);
+                    if (border == TilesBorder.Province) {
                         // white half stripe on the lower, left side
                         g2d.drawLine(x, y + tileSize.height - 1, x + tileSize.width / 2, y + tileSize.height - 1);
                     }
@@ -217,7 +223,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     }
 
     /**
-     *
+     * the focus of the tile has changed
      */
     private void notifyTileFocusChangedListeners() {
         for (MapTileListener l : tileListeners) {
@@ -226,8 +232,9 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     }
 
     /**
+     * a tile has been clicked
      *
-     * @param p
+     * @param p the position of the tile
      */
     private void notifyTileClickedListeners(MapPosition p) {
         for (MapTileListener l : tileListeners) {
@@ -236,20 +243,22 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     }
 
     /**
+     * add another listener
      *
-     * @param l
+     * @param l the listener
      */
     public void addTileListener(MapTileListener l) {
         tileListeners.add(l);
     }
 
     /**
+     * the mini map changed its focus (given in normalized coordinates)
      *
-     * @param x
-     * @param y
+     * @param x normalized [0,1] x coordinates of the new focus of the mini map
+     * @param y normalized [0,1] y coordinates of the new focus of the mini map
      */
     @Override
-    public void newMiniMapFocus(float x, float y) {
+    public void miniMapFocusChanged(float x, float y) {
         // update offset row/column accordingly
         Dimension tileSize = scenario.getTileSize();
         int row = (int) (y * scenario.getNumberRows() - size.height / 2 / tileSize.height);
@@ -264,15 +273,18 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     }
 
     /**
+     * somebody tells us that a specific tile has been changed
      *
-     * @param p
+     * @param p position of the tile
      */
     public void tileChanged(MapPosition p) {
+        // TODO for now we just repaint the whole map, this could be improved
         repaint();
     }
 
     /**
-     *
+     * somebody tells us that the whole map has changed. typically this is the
+     * case, when a new scenario is loaded. we repaint everything.
      */
     public void mapChanged() {
         repaint();

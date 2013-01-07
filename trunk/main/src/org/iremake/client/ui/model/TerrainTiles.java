@@ -19,6 +19,7 @@ package org.iremake.client.ui.model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -30,13 +31,23 @@ import org.iremake.client.resources.Places;
 import org.tools.xml.XMLable;
 
 /**
+ * UI part of the terrain tiles, holding the image and a color (for usage in the
+ * mini map).
  *
+ * More specific a map: id -> Tile is stored that allows to retrieve terrain
+ * images for each terrain id.
  */
 public class TerrainTiles implements XMLable {
 
+    /* the map storing the ui tile information for each terrain id */
     private Map<Integer, Tile> map = new HashMap<>();
+    /* the size of the tiles, i.e. every stored image must have that size */
     private Dimension tileSize;
 
+    /**
+     * internal class bundling an image and a color and defining a reasonable
+     * hash code and equals method
+     */
     private class Tile {
 
         public Image image;
@@ -67,45 +78,49 @@ public class TerrainTiles implements XMLable {
     }
 
     /**
+     * Returns the image for a given terrain id.
      *
-     * @param id
-     * @return
+     * @param id terrain id
+     * @return an image
      */
     public Image getImage(Integer id) {
-        // TODO id not contained
+        // TODO id not contained?
         return map.get(id).image;
     }
 
     /**
+     * Returns the color for a given terrain id.
      *
-     * @param id
-     * @return
+     * @param id terrain id
+     * @return a color
      */
     public Color getColor(Integer id) {
         return map.get(id).color;
     }
 
     /**
+     * Returns an unmodifiable set of all terrain ids in the map.
      *
-     * @return
+     * @return set of terrain ids.
      */
     public Set<Integer> getIDs() {
-        return map.keySet();
+        return Collections.unmodifiableSet(map.keySet());
     }
 
     /**
+     * Returns the tile size.
      *
-     * @return
+     * @return the size
      */
     public Dimension getTileSize() {
-        return tileSize;
+        return new Dimension(tileSize);
     }
 
     /**
      * Parses a six character string (hex presentation) into a Color object.
      *
-     * @param hex
-     * @return
+     * @param hex a 6 character string as "ffffff" for white
+     * @return the corresponding color
      */
     private static Color ColorFromHex(String hex) {
         int r = Integer.parseInt(hex.substring(0, 2), 16);
@@ -114,18 +129,23 @@ public class TerrainTiles implements XMLable {
         return new Color(r, g, b);
     }
 
+    /**
+     * We never write new terrain tiles, only read.
+     */
     @Override
     public Element toXML() {
         throw new UnsupportedOperationException("This XMLable is read-only.");
     }
 
     /**
+     * Reading the content from an terrains.xml
      *
-     * @param parent
+     * @param parent the xml object to read from
      */
     @Override
     public void fromXML(Element parent) {
 
+        // clear the map
         map.clear();
 
         if (parent == null || parent.getLocalName().equals("TerrainTiles"));

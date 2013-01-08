@@ -19,6 +19,7 @@ package org.iremake.client.ui;
 import javax.swing.JButton;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
+import org.tools.ui.ButtonFactory;
 
 /**
  * Factory for buttons. Loads the icon from the location specified by the
@@ -85,16 +86,7 @@ public enum Button {
      * @return
      */
     public static JButton create(String location) {
-        JButton button = new JButton();
-
-        // load and set icon
-        button.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, location));
-
-        // standard properties
-        button.setFocusable(false);
-        button.setBorder(null);
-        button.setMargin(null);
-
-        return button;
+        // TODO set tooltip automatically
+        return ButtonFactory.create(IOManager.getAsIcon(Places.GraphicsIcons, location), "");
     }
 }

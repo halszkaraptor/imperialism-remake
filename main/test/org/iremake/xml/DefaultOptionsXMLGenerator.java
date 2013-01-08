@@ -35,7 +35,7 @@ public class DefaultOptionsXMLGenerator {
         XProperty options = new XProperty(20);
         options.put("graphics.mode.fullscreen", "true");
         options.put("graphics.mainscreen.controlsright", "true");
-        options.put("version", "0.1.1");
+        options.put("version", "0.1.2");
 
         Resource resource = ResourceUtils.asResource("options.default.xml");
         XMLHelper.write(resource, options);

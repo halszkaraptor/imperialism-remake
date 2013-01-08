@@ -16,7 +16,7 @@
  */
 package org.tools.ui;
 
-import java.awt.Insets;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -39,49 +39,64 @@ import org.tools.ui.utils.IconLoader;
  * A panel consisting of a few buttons and a JEditorPane to display
  * (non-editable) text/html content.
  */
-// TODO use composition instead
 public class BrowserPanel extends JPanel {
 
     private static final Logger LOG = Logger.getLogger(BrowserPanel.class.getName());
     private static final long serialVersionUID = 1L;
-    private JButton previousButton;
-    private JButton nextButton;
-    private JButton indexButton;
-    private JScrollPane scrollPane;
+    /* size of the buttons including margin, border and everything */
+    private static final Dimension PREF_BUTTON_SIZE = new Dimension(23, 23);
+    /* "previous in the list" button */
+    private JButton pButton;
+    /* "next in the list" button */
+    private JButton nButton;
+    /* ui element where the html is displayed */
     private JEditorPane contentPane;
+    /* index url where we go back */
     private URL indexURL;
-    private Deque<URL> historyList = new LinkedList<>();
-    private Deque<URL> forwardList = new LinkedList<>();
+    /* provider of button icon images */
     private IconLoader loader;
+    /* holds the visited URLs */
+    private Deque<URL> historyList = new LinkedList<>();
+    /* holds the visited and gone back URLs */
+    private Deque<URL> forwardList = new LinkedList<>();
 
+    /**
+     * Constructs a new browser panel and sets index and start page.
+     *
+     * @param index index URL
+     * @param start start URL
+     * @param loader loader of icon resources
+     */
     public BrowserPanel(URL index, URL start, IconLoader loader) {
+        // check, should not give null
         if (index == null || start == null) {
             LOG.log(Level.SEVERE, "BrowserDialog init failed");
             throw new IllegalArgumentException("index or start URL are null");
         }
+
+        // store variables
         indexURL = index;
         this.loader = loader;
+
+        // setup of the panel
         initComponents();
+
+        // initially set start page
         setPage(start);
     }
 
     /**
-     * Internal initialization.
+     * Setup of the components of the panel.
      */
     private void initComponents() {
 
-        // TODO generic button maker
-
-        // previous in the list button
-        previousButton = new JButton();
-        previousButton.setToolTipText("Previous page");
-        previousButton.setIcon(loader.getAsIcon("browser.button.previous.png"));
-        previousButton.setMargin(new Insets(1, 1, 1, 1));
-        previousButton.setFocusable(false);
-        previousButton.addActionListener(new ActionListener() {
-
-            /*
-             * previous action
+        // "previous in the list" - button
+        pButton = ButtonFactory.create(loader.getAsIcon("browser.button.previous.png"), "Previous page");
+        pButton.setPreferredSize(PREF_BUTTON_SIZE);
+        pButton.setEnabled(false);
+        pButton.addActionListener(new ActionListener() {
+            /**
+             * Previous action.
              */
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -93,19 +108,17 @@ public class BrowserPanel extends JPanel {
                 forwardList.add(contentPane.getPage());
                 // take one out and set
                 setPage(historyList.removeLast());
+
+                updateButtonStatus();
             }
         });
 
-        // next in the list button
-        nextButton = new JButton();
-        nextButton.setToolTipText("Next page");
-        nextButton.setIcon(loader.getAsIcon("browser.button.next.png"));
-        nextButton.setMargin(new Insets(1, 1, 1, 1));
-        nextButton.setFocusable(false);
-        nextButton.addActionListener(new ActionListener() {
-
-            /*
-             * forward action
+        // "next in the list" - button
+        nButton = ButtonFactory.create(loader.getAsIcon("browser.button.next.png"), "Next page");
+        nButton.setPreferredSize(PREF_BUTTON_SIZE);
+        nButton.addActionListener(new ActionListener() {
+            /**
+             * Forward action.
              */
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -117,23 +130,30 @@ public class BrowserPanel extends JPanel {
                 historyList.addLast(contentPane.getPage());
                 // take one out and set
                 setPage(forwardList.removeLast());
+
+                updateButtonStatus();
             }
         });
 
-        // index button
-        indexButton = new JButton();
-        indexButton.setIcon(loader.getAsIcon("browser.button.home.png"));
-        indexButton.setMargin(new Insets(1, 1, 1, 1));
-        indexButton.setFocusable(false);
-        indexButton.addActionListener(new ActionListener() {
-            // content button clicked
+        updateButtonStatus();
+
+        // "back to index" - button
+        JButton iButton = ButtonFactory.create(loader.getAsIcon("browser.button.home.png"), "Back to index");
+        iButton.setPreferredSize(PREF_BUTTON_SIZE);
+        iButton.addActionListener(new ActionListener() {
+            /**
+             * Index button action.
+             */
             @Override
             public void actionPerformed(ActionEvent evt) {
                 // clear forward and backward lists
                 forwardList.clear();
                 historyList.clear();
+
                 // set to index page
                 setPage(indexURL);
+
+                updateButtonStatus();
             }
         });
 
@@ -142,6 +162,9 @@ public class BrowserPanel extends JPanel {
         contentPane.setContentType("text/html");
         contentPane.setEditable(false);
         contentPane.addHyperlinkListener(new HyperlinkListener() {
+            /**
+             * Hyperlink clicked action.
+             */
             @Override
             public void hyperlinkUpdate(HyperlinkEvent e) {
                 if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
@@ -152,18 +175,20 @@ public class BrowserPanel extends JPanel {
                     historyList.addLast(contentPane.getPage());
                     // set new one
                     setPage(url);
+
+                    updateButtonStatus();
                 }
             }
         });
 
         // scroll pane (never scrolls horizontally)
-        scrollPane = new JScrollPane();
+        JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(contentPane);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         // menubar
         ButtonBar bar = new ButtonBar();
-        bar.add(previousButton, nextButton, indexButton);
+        bar.add(pButton, nButton, iButton);
 
         // layout
         setLayout(new MigLayout("wrap 1, fill", "", "[][grow]"));
@@ -182,5 +207,14 @@ public class BrowserPanel extends JPanel {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Enables or disables the previous/next buttons according to the emptiness
+     * of the queues.
+     */
+    private void updateButtonStatus() {
+        pButton.setEnabled(!historyList.isEmpty());
+        nButton.setEnabled(!forwardList.isEmpty());
     }
 }

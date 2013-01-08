@@ -538,14 +538,17 @@ public class Scenario implements XMLable {
         resbuffer.trimTo(6 * size);
 
         // reading of provinces map
+        // TODO if no such element returns null and getValue will throw exception
         content = child.getFirstChildElement("Provinces").getValue();
         BitBuffer probuffer = BitBuffer.fromXMLString(content);
         probuffer.trimTo(10 * size);
 
         // reading of railroads map
+        /*
         content = child.getFirstChildElement("Railroads").getValue();
         BitBuffer railbuffer = BitBuffer.fromXMLString(content);
         railbuffer.trimTo(3 * size);
+        * */
 
         // TODO test size of string with size
         // TODO more checks (positivity)
@@ -557,7 +560,7 @@ public class Scenario implements XMLable {
                 tile.resourceID = resbuffer.get(5);
                 tile.resourceVisible = resbuffer.get();
                 tile.provinceID = probuffer.get(10);
-                tile.railroadConfig = railbuffer.get(3);
+                // tile.railroadConfig = railbuffer.get(3);
                 map[row][column] = tile;
             }
         }

@@ -22,8 +22,11 @@
             </reference>
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>borderless</word>
             <word>enum</word>
             <word>generics</word>
+            <word>html</word>
+            <word>Hyperlink</word>
             <word>ids</word>
             <word>iterable</word>
             <word>Kryo</word>
@@ -31,6 +34,9 @@
             <word>Linux</word>
             <word>resizable</word>
             <word>serializer</word>
+            <word>textless</word>
+            <word>tooltip</word>
+            <word>url</word>
             <word>varargs</word>
             <word>xml</word>
         </spellchecker-wordlist>

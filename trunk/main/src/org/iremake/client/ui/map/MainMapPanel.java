@@ -186,6 +186,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                     }
 
                     // draw railroad
+                    // TODO really have to draw after all other tiles are drawn, otherwise parts get overdrawn again
                     g2d.setColor(Color.black);
                     int xc = x + tileSize.width / 2;
                     int yc = y + tileSize.height / 2;

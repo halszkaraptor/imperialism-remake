@@ -4,10 +4,12 @@ Imperialism remake
 
 - Website: http://remake.twelvepm.de/
 
-- Main Project: in the main subfolder (Netbeans project)
+- Main Project: "main" subfolder (Netbeans project)
 
-- Design Specifications: n the design subfolder
+- Instructions on setup of main project: http://remake.twelvepm.de/forum/viewtopic.php?f=10&t=1029#p1075
 
-- Manual: in the help subfolder, uses markdown text 
+- Design Specifications: "design" subfolder
 
-- Python tools: in the tools subfolder
+- Manual: "help" subfolder, uses markdown text 
+
+- Python tools: "tools" subfolder

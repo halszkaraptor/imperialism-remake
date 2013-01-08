@@ -37,10 +37,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import org.tools.io.TestIOManager;
 import org.tools.ui.layout.RelativeLayoutConstraint;
-import org.tools.ui.notification.NotificatDialog;
-import org.tools.ui.notification.NotificatFactory;
-import org.tools.ui.notification.NotificatPane;
 import org.tools.ui.notification.NotificationDialog;
+import org.tools.ui.notification.NotificationFactory;
 import org.tools.ui.notification.NotificationListener;
 import org.tools.ui.utils.IconLoader;
 import org.tools.ui.utils.LookAndFeel;
@@ -52,7 +50,7 @@ import org.tools.ui.utils.WindowCorner;
 public class NotificationExample extends JFrame implements NotificationListener {
 
     private static final long serialVersionUID = 1L;
-    private IconLoader loader = TestIOManager.getAsLoader();
+    private static IconLoader loader = TestIOManager.getAsLoader();
 
     /**
      * Creates new form NotificationExampl
@@ -84,18 +82,10 @@ public class NotificationExample extends JFrame implements NotificationListener 
         fadeOutToggleButton = new JToggleButton();
         fadeInTextField = new JTextField();
         fadeOutTextField = new JTextField();
-        moveInToggleButton = new JToggleButton();
-        moveOutToggleButton = new JToggleButton();
-        moveInTimeTextField = new JTextField();
-        moveOutTimeTextField = new JTextField();
-        moveInDistTextField = new JTextField();
-        moveOutTextField = new JTextField();
         onTimeLabel = new JLabel();
         onTimeTextField = new JTextField();
         statusLabel = new JLabel();
-        showPaneButton = new JButton();
         effectsComboBox = new JComboBox();
-        jButton1 = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Notification Example");
@@ -140,7 +130,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 .addGroup(positionPanelLayout.createParallelGroup(Alignment.LEADING)
                     .addComponent(frameOrientationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addComponent(desktopOrientationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         positionPanelLayout.setVerticalGroup(
             positionPanelLayout.createParallelGroup(Alignment.LEADING)
@@ -166,18 +156,6 @@ public class NotificationExample extends JFrame implements NotificationListener 
         fadeOutTextField.setText("2");
         fadeOutTextField.setToolTipText("Fade out time / seconds");
 
-        moveInToggleButton.setText("Move in");
-
-        moveOutToggleButton.setText("Move out");
-
-        moveInTimeTextField.setText("2");
-
-        moveOutTimeTextField.setText("2");
-
-        moveInDistTextField.setText("50");
-
-        moveOutTextField.setText("50");
-
         GroupLayout fadePanelLayout = new GroupLayout(fadePanel);
         fadePanel.setLayout(fadePanelLayout);
         fadePanelLayout.setHorizontalGroup(
@@ -194,21 +172,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
                     .addGroup(fadePanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(fadeInTextField)))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(fadePanelLayout.createParallelGroup(Alignment.LEADING)
-                    .addGroup(fadePanelLayout.createSequentialGroup()
-                        .addComponent(moveInToggleButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(moveInTimeTextField, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(fadePanelLayout.createSequentialGroup()
-                        .addComponent(moveOutToggleButton)
-                        .addPreferredGap(ComponentPlacement.UNRELATED)
-                        .addComponent(moveOutTimeTextField)))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(fadePanelLayout.createParallelGroup(Alignment.LEADING, false)
-                    .addComponent(moveInDistTextField)
-                    .addComponent(moveOutTextField, GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
-                .addGap(127, 127, 127))
+                .addGap(271, 271, 271))
         );
         fadePanelLayout.setVerticalGroup(
             fadePanelLayout.createParallelGroup(Alignment.LEADING)
@@ -216,17 +180,11 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 .addContainerGap()
                 .addGroup(fadePanelLayout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(fadeInToggleButton)
-                    .addComponent(fadeInTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moveInToggleButton)
-                    .addComponent(moveInTimeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moveInDistTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fadeInTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(fadePanelLayout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(fadeOutToggleButton)
-                    .addComponent(fadeOutTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moveOutToggleButton)
-                    .addComponent(moveOutTimeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moveOutTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fadeOutTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -239,21 +197,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
         statusLabel.setText("Status");
         statusLabel.setOpaque(true);
 
-        showPaneButton.setText("Show Inframe notification");
-        showPaneButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                showPaneButtonActionPerformed(evt);
-            }
-        });
-
         effectsComboBox.setModel(new DefaultComboBoxModel(new String[] { "None", "Shadow", "Mouse over" }));
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -262,25 +206,26 @@ public class NotificationExample extends JFrame implements NotificationListener 
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(positionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(messageTextField, GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(decorationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addComponent(effectsComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                    .addComponent(fadePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(onTimeLabel)
-                        .addPreferredGap(ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(showDialogButton)
+                                .addComponent(decorationComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(showPaneButton))
-                            .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))))
-                .addContainerGap())
-            .addComponent(statusLabel, GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                                .addComponent(effectsComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(onTimeLabel)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                    .addComponent(showDialogButton)
+                                    .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))))
+                        .addGap(221, 221, 221))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                            .addComponent(positionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(messageTextField, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(fadePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
+            .addComponent(statusLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
@@ -299,12 +244,8 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(onTimeLabel)
                     .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(showDialogButton)
-                    .addComponent(showPaneButton))
+                .addPreferredGap(ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(showDialogButton)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(statusLabel))
         );
@@ -315,19 +256,18 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private void showDialogButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showDialogButtonActionPerformed
         // get the message
         String message = messageTextField.getText();
-        NotificatDialog dlg = NotificatFactory.createDlg(this, message, this, loader);
+        NotificationDialog dlg = NotificationFactory.createDlg(message, loader, this, this);
 
         // get the decoration
         int decorationIndex = decorationComboBox.getSelectedIndex();
 
-        int fadeInTime = 0;
         if (fadeInToggleButton.isSelected()) {
-            fadeInTime = Integer.parseInt(fadeInTextField.getText()) * 1000; // conversion seconds to ms
+            int fadeInTime = Integer.parseInt(fadeInTextField.getText()) * 1000; // conversion seconds to ms
             dlg.setFadeInTime(fadeInTime);
         }
-        int fadeOutTime = 0;
+
         if (fadeOutToggleButton.isSelected()) {
-            fadeOutTime = Integer.parseInt(fadeOutTextField.getText()) * 1000;
+            int fadeOutTime = Integer.parseInt(fadeOutTextField.getText()) * 1000;
             dlg.setFadeOutTime(fadeOutTime);
         }
 
@@ -350,7 +290,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 corner = WindowCorner.SouthEast;
                 break;
             }
-            dlg.setLocationRelativeTo(this, corner);
+            dlg.setLocationRelativeTo(this, RelativeLayoutConstraint.corner(corner, 5, 5));
 
 
         } else if (desktopPositionRadioButton.isSelected()) {
@@ -366,62 +306,11 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 corner = WindowCorner.SouthEast;
                 break;
             }
-            dlg.setLocationRelativeToDesktop(corner);
+            dlg.setLocationRelativeToDesktop(corner, 5, 5);
         }
 
-        dlg.activate();
-    }//GEN-LAST:event_showDialogButtonActionPerformed
-
-    private void showPaneButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showPaneButtonActionPerformed
-        // get the message
-        String message = messageTextField.getText();
-        NotificatPane pane = NotificatFactory.createPane(this, message, this, loader);
-
-        // get the decoration
-        int decorationIndex = decorationComboBox.getSelectedIndex();
-
-        int fadeInTime = 0;
-        if (fadeInToggleButton.isSelected()) {
-            fadeInTime = Integer.parseInt(fadeInTextField.getText()) * 1000; // conversion seconds to ms
-            pane.setFadeInTime(fadeInTime);
-        }
-        int fadeOutTime = 0;
-        if (fadeOutToggleButton.isSelected()) {
-            fadeOutTime = Integer.parseInt(fadeOutTextField.getText()) * 1000;
-            pane.setFadeOutTime(fadeOutTime);
-        }
-
-        int onTime = Integer.parseInt(onTimeTextField.getText().toString()) * 1000;
-        if (onTime > 0) {
-            pane.setOnTime(onTime);
-        }
-
-        // get the position handling
-        if (framePositionRadioButton.isSelected()) {
-            WindowCorner corner = WindowCorner.NorthWest;
-            switch (frameOrientationComboBox.getSelectedIndex()) {
-            case 1:
-                corner = WindowCorner.NorthEast;
-                break;
-            case 2:
-                corner = WindowCorner.SouthWest;
-                break;
-            case 3:
-                corner = WindowCorner.SouthEast;
-                break;
-            }
-            pane.setLocation(corner);
-        }
-
-        pane.activate();
-    }//GEN-LAST:event_showPaneButtonActionPerformed
-
-    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        NotificationDialog dlg = new NotificationDialog("Test message", TestIOManager.getAsLoader(), this);
-        dlg.addNotificationListener(this);
-        dlg.setLocationRelativeTo(this, RelativeLayoutConstraint.corner(WindowCorner.SouthEast, 5, 5));
         dlg.setVisible();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_showDialogButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -448,20 +337,12 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private JPanel fadePanel;
     private JComboBox frameOrientationComboBox;
     private JRadioButton framePositionRadioButton;
-    private JButton jButton1;
     private JTextField messageTextField;
-    private JTextField moveInDistTextField;
-    private JTextField moveInTimeTextField;
-    private JToggleButton moveInToggleButton;
-    private JTextField moveOutTextField;
-    private JTextField moveOutTimeTextField;
-    private JToggleButton moveOutToggleButton;
     private JLabel onTimeLabel;
     private JTextField onTimeTextField;
     private ButtonGroup positionGroup;
     private JPanel positionPanel;
     private JButton showDialogButton;
-    private JButton showPaneButton;
     private JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 

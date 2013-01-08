@@ -32,31 +32,35 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="positionPanel" alignment="0" max="32767" attributes="0"/>
-                  <Component id="messageTextField" alignment="0" pref="399" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="decorationComboBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="effectsComboBox" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="fadePanel" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="onTimeLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="showDialogButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="decorationComboBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="showPaneButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="effectsComboBox" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="onTimeTextField" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="onTimeLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="showDialogButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="onTimeTextField" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="221" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="positionPanel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="messageTextField" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="fadePanel" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Component id="statusLabel" alignment="0" pref="419" max="32767" attributes="0"/>
+          <Component id="statusLabel" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -78,13 +82,8 @@
                   <Component id="onTimeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="onTimeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="showDialogButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="showPaneButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
+              <Component id="showDialogButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="statusLabel" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -139,7 +138,7 @@
                       <Component id="frameOrientationComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="desktopOrientationComboBox" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="111" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -231,25 +230,7 @@
                           <Component id="fadeInTextField" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="moveInToggleButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="moveInTimeTextField" min="-2" pref="23" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="moveOutToggleButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="moveOutTimeTextField" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="moveInDistTextField" max="32767" attributes="1"/>
-                      <Component id="moveOutTextField" alignment="0" pref="27" max="32767" attributes="1"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="271" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -260,17 +241,11 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="fadeInToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="fadeInTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveInToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveInTimeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveInDistTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="fadeOutToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="fadeOutTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveOutToggleButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveOutTimeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="moveOutTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -300,36 +275,6 @@
             <Property name="toolTipText" type="java.lang.String" value="Fade out time / seconds"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="moveInToggleButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Move in"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JToggleButton" name="moveOutToggleButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Move out"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="moveInTimeTextField">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="2"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="moveOutTimeTextField">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="2"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="moveInDistTextField">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="50"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="moveOutTextField">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="50"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="onTimeLabel">
@@ -352,14 +297,6 @@
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="showPaneButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Show Inframe notification"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showPaneButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JComboBox" name="effectsComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -370,14 +307,6 @@
           </StringArray>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

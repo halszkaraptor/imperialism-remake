@@ -22,8 +22,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -33,16 +36,47 @@ import org.tools.ui.utils.IconLoader;
 /**
  *
  */
-// TODO maybe make static method of Notificiaton
-public abstract class NotificationPanel extends Notification {
+public abstract class Notification {
 
-    private JPanel panel;
+    private String message;
+    private List<NotificationListener> listeners = new ArrayList<>(3);
 
-    public NotificationPanel(String message, IconLoader loader) {
-        super(message);
+    public Notification(String message) {
+        this.message = message;
+    }
+
+    public final String getMessage() {
+        return message;
+    }
+
+    public final void addNotificationListener(NotificationListener l) {
+        listeners.add(l);
+    }
+
+    public final void removeNotificationListener(NotificationListener l) {
+        listeners.remove(l);
+    }
+
+    protected final void notifyListeners(boolean value) {
+        for (NotificationListener l : listeners) {
+            l.notificationResult(value);
+        }
+    }
+
+    public abstract void setVisible();
+
+    public abstract void dispose();
+
+    /**
+     *
+     * @param notification
+     * @param loader
+     * @return
+     */
+    public static JComponent createUIContent(final Notification notification, IconLoader loader) {
 
         // panel holding the notification
-        panel = new JPanel();
+        JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
         panel.setOpaque(false);
 
@@ -52,36 +86,35 @@ public abstract class NotificationPanel extends Notification {
 
         // message label in the center
         JLabel msgLabel = new JLabel();
-        msgLabel.setText(getMessage());
+        msgLabel.setText(notification.getMessage());
         msgLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // if clicked will dismiss the notification and notify listeners accepted
         msgLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                dispose();
-                notifyListeners(true);
+                notification.dispose();
+                notification.notifyListeners(true);
             }
         });
 
         // close button to the right
-        JButton closeButton =  ButtonFactory.create(loader.getAsIcon("notification.cross.png"), "Dismiss");
+        JButton closeButton = ButtonFactory.create(loader.getAsIcon("notification.cross.png"), "Dismiss");
         closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // if clicked will dismiss the notification and notify listeners dismissed
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                notifyListeners(false);
+                notification.dispose();
+                notification.notifyListeners(false);
             }
         });
 
-        // layout
+        // layout (related gaps everywhere except for close button which is on the right, upper corner)
         panel.setLayout(new MigLayout("fill, ins 0", "[][grow][]"));
         panel.add(infoIcon, "gap r r r r");
         panel.add(msgLabel, "grow, gap 0 0 r r");
         panel.add(closeButton, "gap r 0 0 r, aligny top");
-    }
 
-    protected final JPanel getPanel() {
         return panel;
     }
-
 }

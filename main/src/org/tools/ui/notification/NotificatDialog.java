@@ -39,7 +39,7 @@ import org.tools.ui.utils.WindowCorner;
  * Java Libraries and then we will support it:
  * http://java.sun.com/developer/technicalArticles/GUI/translucent_shaped_windows/
  */
-public class NotificationDialog extends Notification {
+public class NotificatDialog extends Notificat {
 
     private static final long serialVersionUID = 1L;
     private JDialog dialog;
@@ -49,7 +49,7 @@ public class NotificationDialog extends Notification {
      * @param parent
      * @param message
      */
-    public NotificationDialog(JFrame parent, String message, IconLoader loader) {
+    public NotificatDialog(JFrame parent, String message, IconLoader loader) {
         super(message, loader);
         dialog = new JDialog(parent);
 

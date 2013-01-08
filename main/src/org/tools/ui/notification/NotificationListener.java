@@ -17,15 +17,19 @@
 package org.tools.ui.notification;
 
 /**
- * Interface for a NotificationListener
+ * Interface for listening to a notification and finding out if the cancel
+ * button has been clicked (not accepted) or if the label has been clicked
+ * (accepted).
+ *
+ * If the notification is fading or moving out, it also invokes this method with
+ * argument: false.
  */
 public interface NotificationListener {
 
     /**
-     * Invoked when Notification is clicked. Need some sort of origin/source
-     * info.
+     * Invoked when Notification is clicked.
      *
-     * @param accepted
+     * @param value true is the used clicked on the label.
      */
-    void notificationClicked(boolean accepted);
+    void notificationResult(boolean value);
 }

@@ -29,7 +29,7 @@ import org.tools.ui.utils.WindowCorner;
  * method) but since they have no common ... Do we need to validate() after
  * adding and removal?
  */
-public class NotificationPane extends Notification {
+public class NotificatPane extends Notificat {
 
     private JLayeredPane pane;
 
@@ -38,7 +38,7 @@ public class NotificationPane extends Notification {
      * @param parent
      * @param message
      */
-    public NotificationPane(RootPaneContainer parent, String message, IconLoader loader) {
+    public NotificatPane(RootPaneContainer parent, String message, IconLoader loader) {
         super(message, loader);
 
         pane = parent.getLayeredPane();

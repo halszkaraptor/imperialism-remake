@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package icons;
+package org.tools.io;
 
 import java.awt.Image;
 import java.net.URL;
@@ -23,11 +23,13 @@ import javax.swing.ImageIcon;
 import org.tools.ui.utils.IconLoader;
 
 /**
- * Loads from the classpath directly. Optimal for all the test suites.
+ * Loads from the class path directly. Optimal for all the test suites.
  *
  * Could also be used to load from inside a jar archive.
  */
 public class TestIOManager {
+
+    private static final String base = "/icons/";
 
     private TestIOManager() {
     }
@@ -75,9 +77,15 @@ public class TestIOManager {
      * @return
      */
     public static URL getAsURL(String location) {
-        return TestIOManager.class.getResource(location);
+        return TestIOManager.class.getResource(base + location);
     }
 
+    /**
+     * Returns an instance of IconLoader that is specifically designed to get
+     * them from the test/icons directory.
+     *
+     * @return
+     */
     public static IconLoader getAsLoader() {
         IconLoader loader = new IconLoader() {
             @Override

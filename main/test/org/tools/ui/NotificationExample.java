@@ -16,7 +16,6 @@
  */
 package org.tools.ui;
 
-import icons.TestIOManager;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,10 +35,13 @@ import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import org.tools.io.TestIOManager;
+import org.tools.ui.layout.RelativeLayoutConstraint;
+import org.tools.ui.notification.NotificatDialog;
+import org.tools.ui.notification.NotificatFactory;
+import org.tools.ui.notification.NotificatPane;
 import org.tools.ui.notification.NotificationDialog;
-import org.tools.ui.notification.NotificationFactory;
 import org.tools.ui.notification.NotificationListener;
-import org.tools.ui.notification.NotificationPane;
 import org.tools.ui.utils.IconLoader;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.ui.utils.WindowCorner;
@@ -93,6 +95,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
         statusLabel = new JLabel();
         showPaneButton = new JButton();
         effectsComboBox = new JComboBox();
+        jButton1 = new JButton();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Notification Example");
@@ -245,6 +248,13 @@ public class NotificationExample extends JFrame implements NotificationListener 
 
         effectsComboBox.setModel(new DefaultComboBoxModel(new String[] { "None", "Shadow", "Mouse over" }));
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -267,7 +277,8 @@ public class NotificationExample extends JFrame implements NotificationListener 
                                 .addComponent(showDialogButton)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(showPaneButton))
-                            .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))))
                 .addContainerGap())
             .addComponent(statusLabel, GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
         );
@@ -288,7 +299,9 @@ public class NotificationExample extends JFrame implements NotificationListener 
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(onTimeLabel)
                     .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(showDialogButton)
                     .addComponent(showPaneButton))
@@ -302,7 +315,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private void showDialogButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showDialogButtonActionPerformed
         // get the message
         String message = messageTextField.getText();
-        NotificationDialog dlg = NotificationFactory.createDlg(this, message, this, loader);
+        NotificatDialog dlg = NotificatFactory.createDlg(this, message, this, loader);
 
         // get the decoration
         int decorationIndex = decorationComboBox.getSelectedIndex();
@@ -362,7 +375,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private void showPaneButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showPaneButtonActionPerformed
         // get the message
         String message = messageTextField.getText();
-        NotificationPane pane = NotificationFactory.createPane(this, message, this, loader);
+        NotificatPane pane = NotificatFactory.createPane(this, message, this, loader);
 
         // get the decoration
         int decorationIndex = decorationComboBox.getSelectedIndex();
@@ -403,6 +416,13 @@ public class NotificationExample extends JFrame implements NotificationListener 
         pane.activate();
     }//GEN-LAST:event_showPaneButtonActionPerformed
 
+    private void jButton1ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        NotificationDialog dlg = new NotificationDialog("Test message", TestIOManager.getAsLoader(), this);
+        dlg.addNotificationListener(this);
+        dlg.setLocationRelativeTo(this, RelativeLayoutConstraint.corner(WindowCorner.SouthEast, 5, 5));
+        dlg.setVisible();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -428,6 +448,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private JPanel fadePanel;
     private JComboBox frameOrientationComboBox;
     private JRadioButton framePositionRadioButton;
+    private JButton jButton1;
     private JTextField messageTextField;
     private JTextField moveInDistTextField;
     private JTextField moveInTimeTextField;
@@ -445,7 +466,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void notificationClicked(boolean accepted) {
+    public void notificationResult(boolean accepted) {
         if (accepted == true) {
             statusLabel.setText("Status: Notification clicked - accepted");
         } else {

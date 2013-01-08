@@ -23,12 +23,12 @@ import org.tools.ui.utils.WindowCorner;
 /**
  *
  */
-public class NotificationFactory {
+public class NotificatFactory {
 
     /**
      * To avoid instantiation because this is an utility class.
      */
-    private NotificationFactory() {
+    private NotificatFactory() {
     }
 
     /**
@@ -40,9 +40,9 @@ public class NotificationFactory {
      * @param listener
      * @return
      */
-    public static NotificationDialog createDlg(JFrame parent, String message, NotificationListener listener, IconLoader loader) {
+    public static NotificatDialog createDlg(JFrame parent, String message, NotificationListener listener, IconLoader loader) {
 
-        NotificationDialog dlg = new NotificationDialog(parent, message, loader);
+        NotificatDialog dlg = new NotificatDialog(parent, message, loader);
         dlg.addNotificationListener(listener);
 
         return dlg;
@@ -57,9 +57,9 @@ public class NotificationFactory {
      * @param listener
      * @return
      */
-    public static NotificationPane createPane(JFrame parent, String message, NotificationListener listener, IconLoader loader) {
+    public static NotificatPane createPane(JFrame parent, String message, NotificationListener listener, IconLoader loader) {
 
-        NotificationPane pane = new NotificationPane(parent, message, loader);
+        NotificatPane pane = new NotificatPane(parent, message, loader);
         pane.addNotificationListener(listener);
 
         return pane;
@@ -76,7 +76,7 @@ public class NotificationFactory {
      * @param message
      */
     public static void createInfoPane(JFrame parent, String message, IconLoader loader) {
-        NotificationPane pane = new NotificationPane(parent, message, loader);
+        NotificatPane pane = new NotificatPane(parent, message, loader);
 
         pane.setFadeInTime(1500);
         pane.setOnTime(3000);

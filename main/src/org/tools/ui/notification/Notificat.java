@@ -29,8 +29,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,9 +40,10 @@ import org.tools.ui.utils.IconLoader;
  * Small notification at some position within some window.
  */
 // TODO revisit and improve design, maybe unify both variants with the onset of jdk 7
-public abstract class Notification {
+public abstract class Notificat {
 
-    private static final int TIMER_DELAY = 100;
+    /* timer events delay in ms */
+    private static final int TIMER_DELAY = 80;
     protected JPanel panel;
     private ArrayList<NotificationListener> notificationListeners = new ArrayList<>(3);
     private float alpha = 1f;
@@ -56,48 +55,29 @@ public abstract class Notification {
      *
      * @param message
      */
-    public Notification(String message, IconLoader loader) {
+    public Notificat(String message, IconLoader loader) {
+
         this.loader = loader;
+
         ActionListener cancelAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetTimer();
                 fastDismiss();
-                for (NotificationListener l : notificationListeners) {
-                    l.notificationClicked(false);
-                }
+                notifyListeners(false);
             }
         };
-        MouseListener defaultAction = new MouseAdapter() {
+
+        MouseListener acceptAction = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 resetTimer();
                 fastDismiss();
-                for (NotificationListener l : notificationListeners) {
-                    l.notificationClicked(true);
-                }
+                notifyListeners(true);
             }
         };
 
-        panel = new JPanel() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void paint(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                Composite oldComposite = g2d.getComposite();
-                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-                super.paint(g);
-                g2d.setComposite(oldComposite);
-            }
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setColor(this.getBackground());
-                g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-            }
-        };
+        panel = new JPanel();
 
         // special icon to the left
         JLabel infoIcon = new JLabel();
@@ -107,7 +87,7 @@ public abstract class Notification {
         JLabel msgLabel = new JLabel();
         msgLabel.setText(message);
         msgLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        msgLabel.addMouseListener(defaultAction);
+        msgLabel.addMouseListener(acceptAction);
 
         // close button to the right
         JButton closeButton = new JButton();
@@ -148,6 +128,16 @@ public abstract class Notification {
      */
     public void removeNotificationListener(NotificationListener l) {
         notificationListeners.remove(l);
+    }
+
+    /**
+     *
+     * @param value
+     */
+    private void notifyListeners(boolean value) {
+        for (NotificationListener l : notificationListeners) {
+            l.notificationResult(value);
+        }
     }
 
     /**
@@ -243,7 +233,7 @@ public abstract class Notification {
 
     private void cancelAndDispose() {
         for (NotificationListener l : notificationListeners) {
-            l.notificationClicked(false);
+            l.notificationResult(false);
         }
         dispose();
     }

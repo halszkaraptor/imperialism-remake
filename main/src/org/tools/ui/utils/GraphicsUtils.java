@@ -57,7 +57,7 @@ public class GraphicsUtils {
      */
     private static final String KEYID = "scrambledEggs";
     private final static Rectangle ScreenBounds;
-    private final static Rectangle MaximumBounds;
+    public final static Rectangle MaximumBounds;
 
     /* We determine the screen bounds once at the start of the programm in this static initialization section */
     static {
@@ -329,7 +329,7 @@ public class GraphicsUtils {
      *
      * @param frame
      */
-    public static void setMaximumBounds(Frame frame) {
+    public static void setToMaximumBounds(Frame frame) {
         frame.setBounds(MaximumBounds);
     }
 

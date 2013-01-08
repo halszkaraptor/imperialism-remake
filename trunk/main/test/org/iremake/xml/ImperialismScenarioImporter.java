@@ -16,7 +16,7 @@
  */
 package org.iremake.xml;
 
-import icons.TestIOManager;
+import org.tools.io.TestIOManager;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -72,7 +72,7 @@ public class ImperialismScenarioImporter extends JFrame {
         initComponents();
 
         // icon
-        setIconImage(TestIOManager.getAsImage("/icons/app.icon.png"));
+        setIconImage(TestIOManager.getAsImage("app.icon.png"));
 
         // init file chooser
         fileChooser = new JFileChooser();

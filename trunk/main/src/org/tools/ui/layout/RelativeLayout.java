@@ -102,14 +102,11 @@ public class RelativeLayout implements LayoutManager {
      */
     @Override
     public void layoutContainer(Container parent) {
-        Dimension size = parent.getSize();
-        if (size.width == 0 || size.height == 0) {
-            return;
-        }
+        Rectangle parentBounds = parent.getBounds();
         for (Pair<Component, RelativeLayoutConstraint> entry : list) {
             Component c = entry.getA();
             if (parent.equals(c.getParent())) {
-                Rectangle bounds = entry.getB().calculateBounds(size, c.getPreferredSize());
+                Rectangle bounds = entry.getB().calculateBounds(parentBounds, c.getPreferredSize());
                 c.setBounds(bounds);
             } else {
                 // list.remove(entry); TODO -> leads to java.util.ConcurrentModificationException

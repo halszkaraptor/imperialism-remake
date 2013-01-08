@@ -19,6 +19,7 @@ package org.tools.ui.layout;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import org.tools.ui.utils.WindowCorner;
+import org.tools.ui.utils.WindowSide;
 
 /**
  * Constraint for relative layout. Defined by four floating point values ax, ay,
@@ -71,16 +72,16 @@ public class RelativeLayoutConstraint {
      * Calculate the bounds of the component given its preferred size and the
      * parent's size.
      *
-     * @param parentSize
-     * @param componentPreferredSize
+     * @param parentBounds
+     * @param componentSize
      * @return
      */
-    public Rectangle calculateBounds(Dimension parentSize, Dimension componentPreferredSize) {
+    public Rectangle calculateBounds(Rectangle parentBounds, Dimension componentSize) {
         Rectangle r = new Rectangle();
-        r.x = (int) (ax * parentSize.width + bx * componentPreferredSize.width + cx + 0.5); // + 0.5 for rounding
-        r.y = (int) (ay * parentSize.height + by * componentPreferredSize.height + cy + 0.5);
-        r.width = componentPreferredSize.width;
-        r.height = componentPreferredSize.height;
+        r.x = (int) (parentBounds.x + ax * parentBounds.width + bx * componentSize.width + cx + 0.5); // + 0.5 for rounding
+        r.y = (int) (parentBounds.y + ay * parentBounds.height + by * componentSize.height + cy + 0.5);
+        r.width = componentSize.width;
+        r.height = componentSize.height;
         return r;
     }
 
@@ -105,25 +106,47 @@ public class RelativeLayoutConstraint {
     }
 
     /**
-     * Special case for all corners. gx, gy are the gap distances to the nearest
-     * borders.
+     * Special case for all sides (centered along the side). gap is the gap
+     * distance to the side.
      *
-     * @param corner
-     * @param gx
-     * @param gy
+     * @param side
+     * @param gap
      * @return
      */
-    public static RelativeLayoutConstraint corner(WindowCorner corner, int gx, int gy) {
-        switch (corner) {
-        case NorthWest:
-            return new RelativeLayoutConstraint(1f, -1f, -gx, 0f, 0f, gy);
-        case NorthEast:
-            return new RelativeLayoutConstraint(0f, 0f, gx, 0f, 0f, gy);
-        case SouthWest:
-            return new RelativeLayoutConstraint(1f, -1f, -gx, 1f, -1f, -gy);
-        case SouthEast:
-            return new RelativeLayoutConstraint(0f, 0f, gx, 1f, -1f, -gy);
+    public static RelativeLayoutConstraint side(WindowSide side, int gap) {
+        switch (side) {
+            case North:
+                return new RelativeLayoutConstraint(0.5f, -0.5f, 0, 0, 0, gap);
+            case East:
+                return new RelativeLayoutConstraint(1, -1, -gap, 0.5f, -0.5f, 0);
+            case South:
+                return new RelativeLayoutConstraint(0.5f, -0.5f, 0, 1, -1, -gap);
+            case West:
+                return new RelativeLayoutConstraint(0, 0, gap, 0.5f, -0.5f, 0);
         }
-        return null;
+        return centered();
+    }
+
+    /**
+     * Special case for all corners. gapx, gapy are the gap distances to the
+     * nearest borders.
+     *
+     * @param corner
+     * @param gapx
+     * @param gapy
+     * @return
+     */
+    public static RelativeLayoutConstraint corner(WindowCorner corner, int gapx, int gapy) {
+        switch (corner) {
+            case NorthEast:
+                return new RelativeLayoutConstraint(1, -1, -gapx, 0f, 0f, gapy);
+            case NorthWest:
+                return new RelativeLayoutConstraint(0f, 0f, gapx, 0f, 0f, gapy);
+            case SouthEast:
+                return new RelativeLayoutConstraint(1, -1, -gapx, 1, -1, -gapy);
+            case SouthWest:
+                return new RelativeLayoutConstraint(0f, 0f, gapx, 1, -1, -gapy);
+        }
+        return centered();
     }
 }

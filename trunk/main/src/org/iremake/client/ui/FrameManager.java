@@ -81,7 +81,7 @@ public class FrameManager {
 
         // set to bounds of the screen
         // GraphicsUtils.setFullScreen(frame);
-        GraphicsUtils.setMaximumBounds(frame);
+        GraphicsUtils.setToMaximumBounds(frame);
 
         // create panel with border
         panel = new JPanel();

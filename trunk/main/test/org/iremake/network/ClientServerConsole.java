@@ -16,7 +16,7 @@
  */
 package org.iremake.network;
 
-import icons.TestIOManager;
+import org.tools.io.TestIOManager;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -57,7 +57,7 @@ public class ClientServerConsole extends JFrame {
         initComponents();
 
         // icon
-        setIconImage(TestIOManager.getAsImage("/icons/app.icon.png"));
+        setIconImage(TestIOManager.getAsImage("app.icon.png"));
 
         // client and server manager
         NetworkLogger serverLogger = new NetworkLogger() {

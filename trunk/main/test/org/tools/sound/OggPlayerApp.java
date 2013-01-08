@@ -16,7 +16,7 @@
  */
 package org.tools.sound;
 
-import icons.TestIOManager;
+import org.tools.io.TestIOManager;
 import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;

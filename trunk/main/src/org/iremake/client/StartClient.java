@@ -97,6 +97,7 @@ public class StartClient {
                 public void run() {
                     UIFrame screen = new StartScreen();
                     screen.switchTo();
+                    FrameManager.getInstance().showInfo("This is a Test.");
                 }
             });
         } catch (Exception ex) {

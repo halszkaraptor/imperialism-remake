@@ -40,23 +40,23 @@ import org.tools.ui.layout.RelativeLayoutConstraint;
 import org.tools.ui.notification.NotificationDialog;
 import org.tools.ui.notification.NotificationFactory;
 import org.tools.ui.notification.NotificationListener;
-import org.tools.ui.utils.IconLoader;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.ui.utils.WindowCorner;
 
 /**
- * Notification dialogs/panes example.
+ * Demonstrates the capabilities of the notifications in package
+ * org.tools.ui.notification.
  */
 public class NotificationExample extends JFrame implements NotificationListener {
 
     private static final long serialVersionUID = 1L;
-    private static IconLoader loader = TestIOManager.getAsLoader();
 
     /**
      * Creates new form NotificationExampl
      */
     public NotificationExample() {
         initComponents();
+        NotificationFactory.setIconLoader(TestIOManager.getAsLoader());
     }
 
     /**
@@ -216,8 +216,8 @@ public class NotificationExample extends JFrame implements NotificationListener 
                                 .addComponent(onTimeLabel)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(showDialogButton)
-                                    .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(onTimeTextField, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(showDialogButton))))
                         .addGap(221, 221, 221))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(Alignment.LEADING)
@@ -253,10 +253,20 @@ public class NotificationExample extends JFrame implements NotificationListener 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Show button pressed. Create a custom notification and display.
+     *
+     * @param evt parameter
+     */
     private void showDialogButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_showDialogButtonActionPerformed
         // get the message
         String message = messageTextField.getText();
-        NotificationDialog dlg = NotificationFactory.createDlg(message, loader, this, this);
+        NotificationDialog dlg = NotificationFactory.createStandardNotification(message, this);
+        dlg.addNotificationListener(this);
+
+        dlg.setFadeInTime(0);
+        dlg.setFadeOutTime(0);
+        dlg.setOnTime(0);
 
         // get the decoration
         int decorationIndex = decorationComboBox.getSelectedIndex();
@@ -280,15 +290,15 @@ public class NotificationExample extends JFrame implements NotificationListener 
         if (framePositionRadioButton.isSelected()) {
             WindowCorner corner = WindowCorner.NorthWest;
             switch (frameOrientationComboBox.getSelectedIndex()) {
-            case 1:
-                corner = WindowCorner.NorthEast;
-                break;
-            case 2:
-                corner = WindowCorner.SouthWest;
-                break;
-            case 3:
-                corner = WindowCorner.SouthEast;
-                break;
+                case 1:
+                    corner = WindowCorner.NorthEast;
+                    break;
+                case 2:
+                    corner = WindowCorner.SouthWest;
+                    break;
+                case 3:
+                    corner = WindowCorner.SouthEast;
+                    break;
             }
             dlg.setLocationRelativeTo(this, RelativeLayoutConstraint.corner(corner, 5, 5));
 
@@ -296,15 +306,15 @@ public class NotificationExample extends JFrame implements NotificationListener 
         } else if (desktopPositionRadioButton.isSelected()) {
             WindowCorner corner = WindowCorner.NorthWest;
             switch (desktopOrientationComboBox.getSelectedIndex()) {
-            case 1:
-                corner = WindowCorner.NorthEast;
-                break;
-            case 2:
-                corner = WindowCorner.SouthWest;
-                break;
-            case 3:
-                corner = WindowCorner.SouthEast;
-                break;
+                case 1:
+                    corner = WindowCorner.NorthEast;
+                    break;
+                case 2:
+                    corner = WindowCorner.SouthWest;
+                    break;
+                case 3:
+                    corner = WindowCorner.SouthEast;
+                    break;
             }
             dlg.setLocationRelativeToDesktop(corner, 5, 5);
         }
@@ -313,6 +323,8 @@ public class NotificationExample extends JFrame implements NotificationListener 
     }//GEN-LAST:event_showDialogButtonActionPerformed
 
     /**
+     * Creates and instance of this class and starts it.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -346,9 +358,14 @@ public class NotificationExample extends JFrame implements NotificationListener 
     private JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Updates the status text according to the result of the notification.
+     *
+     * @param value result of notification
+     */
     @Override
-    public void notificationResult(boolean accepted) {
-        if (accepted == true) {
+    public void notificationResult(boolean value) {
+        if (value == true) {
             statusLabel.setText("Status: Notification clicked - accepted");
         } else {
             statusLabel.setText("Status: Notification clicked - cancelled");

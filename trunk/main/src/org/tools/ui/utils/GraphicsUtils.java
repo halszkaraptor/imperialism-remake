@@ -52,6 +52,8 @@ import javax.swing.border.Border;
  */
 public class GraphicsUtils {
 
+    public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
     /**
      *
      */

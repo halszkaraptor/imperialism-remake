@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -31,6 +32,7 @@ import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.resources.IOManager;
 import org.iremake.client.resources.Places;
+import org.tools.ui.notification.NotificationFactory;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
@@ -188,5 +190,13 @@ public class FrameManager {
         Rectangle bounds = frame.getBounds();
         Dimension size = window.getSize();
         window.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
+    }
+
+    public void showNotification(String message) {
+        NotificationFactory.createStandardNotification(message, frame).setVisible();
+    }
+
+    public void showInfo(String message) {
+        NotificationFactory.createInfoNotification(message, frame, Color.white).setVisible();
     }
 }

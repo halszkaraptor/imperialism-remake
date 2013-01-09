@@ -86,7 +86,7 @@ public class StartScreen extends UIFrame {
 
         // add Version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));
-        layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthWest, 20, 20));
+        layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthEast, 20, 20));
 
         // add menubar on top and position
         pane.add(menuBar, new Integer(3));

@@ -16,105 +16,80 @@
  */
 package org.tools.ui.notification;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
-import org.tools.ui.ButtonFactory;
-import org.tools.ui.utils.IconLoader;
 
 /**
+ * Base class for a notification. Just the message and notifying framework
+ * without any UI stuff.
  *
+ * You can add listeners to listen if the user takes knowledges about the
+ * notification and you can store the notification message. Also you should be
+ * able to set the notification visible or dispose of it, but this is
+ * implementation dependent.
  */
 public abstract class Notification {
 
+    /* message of the notification */
     private String message;
+    /* list of listeners to this notification */
     private List<NotificationListener> listeners = new ArrayList<>(3);
 
+    /**
+     * Sets the message text.
+     *
+     * @param message message text
+     */
     public Notification(String message) {
         this.message = message;
     }
 
+    /**
+     * @return the message text
+     */
     public final String getMessage() {
         return message;
     }
 
+    /**
+     * Adds another listener.
+     *
+     * @param l a listener
+     */
     public final void addNotificationListener(NotificationListener l) {
         listeners.add(l);
     }
 
+    /**
+     * Removes a listener.
+     *
+     * @param l a listener
+     */
     public final void removeNotificationListener(NotificationListener l) {
         listeners.remove(l);
     }
 
+    /**
+     * Notifies all listeners by a boolean value if the user
+     * accepts/acknowledges the notification or not. Not can also be invoked by
+     * a time out of showing the notification, that means then the user did not
+     * accept the notification within a certain time period.
+     *
+     * @param value user reaction
+     */
     protected final void notifyListeners(boolean value) {
         for (NotificationListener l : listeners) {
             l.notificationResult(value);
         }
     }
 
+    /**
+     * Shows the notification to the user for the first time.
+     */
     public abstract void setVisible();
 
-    public abstract void dispose();
-
     /**
-     *
-     * @param notification
-     * @param loader
-     * @return
+     * Stop showing the notification to the user.
      */
-    public static JComponent createUIContent(final Notification notification, IconLoader loader) {
-
-        // panel holding the notification
-        JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
-        panel.setOpaque(false);
-
-        // info icon on the left size
-        JLabel infoIcon = new JLabel();
-        infoIcon.setIcon(loader.getAsIcon("notification.information.png")); // NOI18N
-
-        // message label in the center
-        JLabel msgLabel = new JLabel();
-        msgLabel.setText(notification.getMessage());
-        msgLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        // if clicked will dismiss the notification and notify listeners accepted
-        msgLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                notification.dispose();
-                notification.notifyListeners(true);
-            }
-        });
-
-        // close button to the right
-        JButton closeButton = ButtonFactory.create(loader.getAsIcon("notification.cross.png"), "Dismiss");
-        closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        // if clicked will dismiss the notification and notify listeners dismissed
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                notification.dispose();
-                notification.notifyListeners(false);
-            }
-        });
-
-        // layout (related gaps everywhere except for close button which is on the right, upper corner)
-        panel.setLayout(new MigLayout("fill, ins 0", "[][grow][]"));
-        panel.add(infoIcon, "gap r r r r");
-        panel.add(msgLabel, "grow, gap 0 0 r r");
-        panel.add(closeButton, "gap r 0 0 r, aligny top");
-
-        return panel;
-    }
+    public abstract void dispose();
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2010 Trilarion
+ * Copyright (C) 2000 ymnk, JCraft,Inc.
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.sound;
+package org.jcraft.jogg;
 
-/**
- * Basic properties of a music player device.
- */
-public enum PlayStatus {
+public class Packet {
 
-    Stopped, Paused, Playing;
+    public byte[] packet_base;
+    public int packet;
+    public int bytes;
+    public int b_o_s;
+    public int e_o_s;
+    public long granulepos;
+    /**
+     * sequence number for decode; the framing knows where there's a hole in the
+     * data, but we need coupling so that the codec (which is in a seperate
+     * abstraction layer) also knows about the gap
+     */
+    public long packetno;
 }

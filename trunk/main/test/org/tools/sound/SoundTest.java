@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2011 Trilarion
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -34,53 +34,53 @@ public class SoundTest {
     @Test
     public void ChannelsTest() throws InterruptedException {
         SoundController.initSoundSystem();
-        Resource soundRes = null;
+        Resource resource = null;
         try {
-            soundRes = ResourceUtils.asResource("data/sound/ambient/01 - godzilla.light.ogg");
+            resource = ResourceUtils.asResource("data/game/artwork/music/Awakening.ogg");
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
 
         int t = 4000;
-        Sound.BACKGROUND.getPlayer().play(soundRes);
+        SoundChannel.BACKGROUND.getPlayer().play(resource);
         System.out.println("Playing for 4sec");
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().play(soundRes);
+        SoundChannel.AUX.getPlayer().play(resource);
         System.out.println("Playing for 4sec more together");
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().stop();
+        SoundChannel.AUX.getPlayer().stop();
         System.out.println("Playing for 4sec more alone again");
         Thread.sleep(t);
 
-        Sound.BACKGROUND.getPlayer().pause(true);
+        SoundChannel.BACKGROUND.getPlayer().pause();
         System.out.println("Not playing for 4sec more");
         Thread.sleep(t);
 
-        Sound.BACKGROUND.getPlayer().pause(false);
+        SoundChannel.BACKGROUND.getPlayer().play();
         System.out.println("Playing for 4sec more end then stopping");
         Thread.sleep(t);
 
-        Sound.BACKGROUND.getPlayer().stop();
-        Sound.AUX.getPlayer().play(soundRes);
+        SoundChannel.BACKGROUND.getPlayer().stop();
+        SoundChannel.AUX.getPlayer().play(resource);
         System.out.println("Starting again and setting mute after 4sec");
-        System.out.println("Initial volume is: " + Sound.AUX.getPlayer().getVolume());
+        System.out.println("Initial volume is: " + SoundChannel.AUX.getPlayer().getVolume());
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().mute(true);
+        SoundChannel.AUX.getPlayer().mute(true);
         System.out.println("Setting to 50% volume after 4sec");
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().setVolume(-1);
+        SoundChannel.AUX.getPlayer().setVolume(-1);
         System.out.println("Setting to 100% volume after 4sec");
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().setVolume(0);
+        SoundChannel.AUX.getPlayer().setVolume(0);
         System.out.println("Fade out after 4sec and stop");
         Thread.sleep(t);
 
-        Sound.AUX.getPlayer().fade(-6, t);
+        SoundChannel.AUX.getPlayer().fade(-6, t);
         Thread.sleep(t);
     }
 }

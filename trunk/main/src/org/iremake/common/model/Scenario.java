@@ -16,10 +16,6 @@
  */
 package org.iremake.common.model;
 
-import org.iremake.common.model.map.Tile;
-import org.iremake.common.model.map.TilesBorder;
-import org.iremake.common.model.map.TilesTransition;
-import org.iremake.common.model.map.MapPosition;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +23,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
+import org.iremake.common.model.map.MapPosition;
+import org.iremake.common.model.map.Tile;
+import org.iremake.common.model.map.TilesBorder;
+import org.iremake.common.model.map.TilesTransition;
 import org.tools.utils.BitBuffer;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHandler;

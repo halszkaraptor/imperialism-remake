@@ -26,16 +26,19 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 
 /**
- * Controling the Sound players.
+ * Controlling the sound players.
  */
 public class SoundController {
 
     private static final Logger LOG = Logger.getLogger(SoundController.class.getName());
+
+    /* for playbeck we use two channels (stereo) */
     public static final int channels = 2;
+    /* and 44 kHz */
     public static final int rate = 44100;
 
     /**
-     * Private Constructor avoids instantiation.
+     * No instantiation.
      */
     private SoundController() {
     }
@@ -43,55 +46,41 @@ public class SoundController {
     /**
      *
      */
-    public static void initSoundSystem() {
+    public static boolean initSoundSystem() {
 
         // the audio format we would like to have
-        AudioFormat requestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, (float) rate, 16, channels, 4, 44100, false);
-        // AudioFormat audioFormat = new AudioFormat((float) rate, 16, channels, true, // PCM_Signed false // littleEndian );
+        AudioFormat requestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, rate, 16, channels, 4, rate, false);
+        // little endian byte order
 
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, requestedFormat);
-        // DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
+        DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, requestedFormat);
 
-        // is this kind of line supported?
-        if (!AudioSystem.isLineSupported(info)) {
-            LOG.log(Level.INFO, "Line {0} not supported.", info);
-            return;
-        }
-
-        // Open the first mixer that is presented in the audio list.
+        // get infos about mixers
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
-        for (Mixer.Info mixinfo : mixers) {
-            Mixer mix = AudioSystem.getMixer(mixinfo);
-            LOG.info(mixinfo.getDescription());
-            LOG.log(Level.INFO, "\tMixer has approx. {0} lines available.", mix.getMaxLines(info));
-        }
-        if (mixers.length == 0) {
-            LOG.info("No audio system available; disabling audio.");
-            return;
-        }
-
-        // finally choose the
-        Mixer mix = AudioSystem.getMixer(mixers[0]);
-        try {
-            // Now try to obtain exactly four data lines. If not possible, reduce functionality.
-            mix.open();
-        } catch (LineUnavailableException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-
-        for (Sound sound : Sound.values()) {
-            try {
-                SourceDataLine line = (SourceDataLine) mix.getLine(info);
-                sound.createPlayer(line);
-            } catch (LineUnavailableException ex) {
-                LOG.log(Level.SEVERE, null, ex);
+        // ask how many lines there are
+        for (Mixer.Info mixerInfo: mixers) {
+            Mixer mixer = AudioSystem.getMixer(mixerInfo);
+            int maxLines = mixer.getMaxLines(lineInfo);
+            if (maxLines == AudioSystem.NOT_SPECIFIED || maxLines >= 4) {
+                try {
+                    mixer.open();
+                    for (SoundChannel channel: SoundChannel.values()) {
+                        SourceDataLine line = (SourceDataLine) mixer.getLine(lineInfo);
+                        channel.createPlayer(line);
+                    }
+                    break;
+                } catch (LineUnavailableException ex) {
+                    LOG.log(Level.SEVERE, null, ex);
+                }
             }
         }
+
 
         // set standard values for the volume; it should be the same for all lines.
         //if (backgroundPlayer != null) {
         //FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
         //Float volume = new Float( 100 * (volumeControl.getValue() - volumeControl.getMinimum()) / (volumeControl.getMaximum() - volumeControl.getMinimum()) );
         //volume.intValue();
+
+        return true;
     }
 }

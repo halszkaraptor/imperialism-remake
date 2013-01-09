@@ -48,7 +48,7 @@ public class SoundPlayer implements Runnable {
     private volatile List<Resource> playlist = new LinkedList<>();
     private volatile boolean autoRepeat;
     private volatile int playingNext = -1;
-    private PlayStatus status = new PlayStatus();
+    private PlayStatus status = PlayStatus.Stopped;
     private FloatControl volumeControl;
     private BooleanControl muteControl;
 
@@ -95,7 +95,7 @@ public class SoundPlayer implements Runnable {
     @Override
     public synchronized void run() {
         while (true) {
-            if (status.isStop()) {
+            if (PlayStatus.Stopped.equals(status)) {
                 try {
                     wait();
                 } catch (InterruptedException ex) {
@@ -122,8 +122,7 @@ public class SoundPlayer implements Runnable {
      *
      */
     public void play() {
-        status.setStop(false);
-        status.setPause(false);
+        status = PlayStatus.Playing;
         me.interrupt();
     }
 
@@ -144,18 +143,15 @@ public class SoundPlayer implements Runnable {
      */
     public void stop() {
         playingNext = -1;
-        status.setStop(true);
+        status = PlayStatus.Stopped;
     }
 
     /**
      *
      * @param wantPause
      */
-    public void pause(boolean wantPause) {
-        status.setPause(wantPause);
-        if (wantPause == false) {
-            me.interrupt();
-        }
+    public void pause() {
+        status = PlayStatus.Paused;
     }
 
     /**

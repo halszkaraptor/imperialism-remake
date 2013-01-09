@@ -23,6 +23,7 @@
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>borderless</word>
+            <word>codec</word>
             <word>enum</word>
             <word>generics</word>
             <word>html</word>
@@ -34,6 +35,7 @@
             <word>Kryonet</word>
             <word>Linux</word>
             <word>ms</word>
+            <word>playlist</word>
             <word>resizability</word>
             <word>resizable</word>
             <word>serializer</word>

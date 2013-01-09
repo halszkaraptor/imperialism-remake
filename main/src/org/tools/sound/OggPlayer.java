@@ -16,14 +16,14 @@
  */
 package org.tools.sound;
 
-import com.jcraft.jogg.Packet;
-import com.jcraft.jogg.Page;
-import com.jcraft.jogg.StreamState;
-import com.jcraft.jogg.SyncState;
-import com.jcraft.jorbis.Block;
-import com.jcraft.jorbis.Comment;
-import com.jcraft.jorbis.DspState;
-import com.jcraft.jorbis.Info;
+import org.jcraft.jogg.Packet;
+import org.jcraft.jogg.Page;
+import org.jcraft.jogg.StreamState;
+import org.jcraft.jogg.SyncState;
+import org.jcraft.jorbis.Block;
+import org.jcraft.jorbis.Comment;
+import org.jcraft.jorbis.DspState;
+import org.jcraft.jorbis.Info;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -218,7 +218,7 @@ loop:   while (true) {
                 while (eos == 0) {
 
                     // user want abort
-                    if (status.isStop()) {
+                    if (PlayStatus.Stopped.equals(status)) {
                         try {
                             is.close();
                         } catch (IOException ex) {
@@ -232,7 +232,7 @@ loop:   while (true) {
                     }
 
                     // user wants pause -> wait
-                    while (status.isPause()) {
+                    while (PlayStatus.Paused.equals(status)) {
                         try {
                             Thread.sleep(10000);
                         } catch (InterruptedException ex) {

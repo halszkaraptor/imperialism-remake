@@ -21,12 +21,13 @@ import javax.sound.sampled.SourceDataLine;
 /**
  * The typical 4 channels we have in an application, each with a SoundPlayer.
  */
-public enum Sound {
+public enum SoundChannel {
 
-    BACKGROUND("Background sound"),
-    EVENTS("Event sound"),
-    EFFECTS("Effect sound"),
-    AUX("Auxilliary background sound");
+    BACKGROUND("Background"),
+    EVENTS("Events"),
+    EFFECTS("Effects"),
+    AUX("Auxilliary background");
+
     private String title;
     private SoundPlayer player;
 
@@ -34,7 +35,7 @@ public enum Sound {
      *
      * @param title
      */
-    private Sound(String title) {
+    private SoundChannel(String title) {
         this.title = title;
     }
 

@@ -17,8 +17,8 @@
 package org.iremake.client.ui;
 
 import javax.swing.JButton;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.tools.ui.ButtonFactory;
 
 /**

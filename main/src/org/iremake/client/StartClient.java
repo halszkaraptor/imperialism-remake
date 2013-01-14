@@ -28,10 +28,10 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
@@ -41,6 +41,7 @@ import org.iremake.common.network.NetworkLogger;
 import org.iremake.server.network.ServerLogger;
 import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
+import org.tools.sound.SoundSystem;
 import org.tools.ui.utils.LookAndFeel;
 
 /**
@@ -78,6 +79,9 @@ public class StartClient {
 
             // load options
             Option.load();
+
+            // sound system
+            SoundSystem.initialize();
 
             // set some variables in the BigBag
             NetworkLogger nLog = new NetworkLogger() {

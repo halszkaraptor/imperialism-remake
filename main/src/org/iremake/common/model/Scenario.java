@@ -51,7 +51,7 @@ public class Scenario implements XMLable {
     private int columns = 0;
     private Tile[][] map;
     private XProperty properties = new XProperty(10);
-    private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
+    private XList<Nation> nations = new XList<>(Nation.class);
     private Map<Integer, Province> provinces = new HashMap<>(1000);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
@@ -59,6 +59,7 @@ public class Scenario implements XMLable {
      * The list of nations shall be kept sorted internally.
      */
     public Scenario() {
+        nations.setXMLName(XMLNAME_NATIONS);
         nations.setKeepSorted(true);
     }
 

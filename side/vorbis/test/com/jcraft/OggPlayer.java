@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.tools.sound;
+package com.jcraft;
 
 import com.jcraft.jogg.Packet;
 import com.jcraft.jogg.Page;
@@ -24,20 +24,30 @@ import com.jcraft.jorbis.Block;
 import com.jcraft.jorbis.Comment;
 import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
- * Based on ...
+ * Based on JOrbisPlayer, but reduced to pure ogg file playback.
  */
 // TODO is multithreading incorporated correctly?
 public class OggPlayer {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = Logger.getLogger(OggPlayer.class.getName());
+
+
+    private static final int Channels = 2;
+    private static final int Rate = 44100;
+
     private final int BUFSIZE = 4096 * 2;
     private int convsize = BUFSIZE * 2; // 2 channels at most
     private byte[] convbuffer = new byte[convsize];
@@ -52,16 +62,40 @@ public class OggPlayer {
     private byte[] buffer = null;
     private int bytes = 0;
     private SourceDataLine outputLine = null;
-    private PlayStatus status;
 
     /**
      *
      * @param line
-     * @param status
      */
-    public OggPlayer(SourceDataLine line, PlayStatus status) {
+    public OggPlayer(SourceDataLine line) {
         outputLine = line;
-        this.status = status;
+    }
+
+    public static void main(String[] arg) {
+        // get a line and construct a new player
+        AudioFormat requestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, Rate, 16, Channels, 4, Rate, false);
+        SourceDataLine line;
+        try {
+            line = AudioSystem.getSourceDataLine(requestedFormat);
+            line.open();
+        } catch (LineUnavailableException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return;
+        }
+        line.start();
+        OggPlayer player = new OggPlayer(line);
+
+        InputStream in;
+        try {
+            in = new FileInputStream("Agogo.ogg");
+        } catch (FileNotFoundException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return;
+        }
+        player.play(in);
+
+        line.stop();
+        line.close();
     }
 
     /**
@@ -209,36 +243,13 @@ loop:   while (true) {
             int[] _index = new int[vi.channels];
 
             // test for rate, channels not 44100, 2
-            if (vi.channels != SoundController.channels || vi.rate != SoundController.rate) {
+            if (vi.channels != Channels || vi.rate != Rate) {
                 LOG.log(Level.SEVERE, "Encountered sound file with unusual channels and rates, should get new line!");
                 return;
             }
 
             while (eos == 0) {
                 while (eos == 0) {
-
-                    // user want abort
-                    if (PlayStatus.Stopped.equals(status)) {
-                        try {
-                            is.close();
-                        } catch (IOException ex) {
-                            LOG.log(Level.SEVERE, null, ex);
-                        }
-                        outputLine.drain();
-                        outputLine.stop();
-                        outputLine.close();
-
-                        return;
-                    }
-
-                    // user wants pause -> wait
-                    while (PlayStatus.Paused.equals(status)) {
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException ex) {
-                        }
-                    }
-
                     int result = oy.pageout(og);
                     if (result == 0) {
                         break; // need more data

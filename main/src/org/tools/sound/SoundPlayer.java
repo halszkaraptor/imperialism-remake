@@ -43,7 +43,7 @@ import org.tools.io.Resource;
 public class SoundPlayer implements Runnable {
 
     private static final Logger LOG = Logger.getLogger(SoundPlayer.class.getName());
-    private OggPlayer oggPlayer;
+    // private OggPlayer oggPlayer;
     private Thread me;
     private volatile List<Resource> playlist = new LinkedList<>();
     private volatile boolean autoRepeat;
@@ -59,7 +59,7 @@ public class SoundPlayer implements Runnable {
      * @throws RuntimeException if the data input line cannot be opened.
      */
     SoundPlayer(SourceDataLine line, String threadName) {
-        oggPlayer = new OggPlayer(line, status);
+        // oggPlayer = new OggPlayer(line, status);
         try {
             line.open();
             line.start();
@@ -82,11 +82,12 @@ public class SoundPlayer implements Runnable {
      * @param is
      */
     private void action(Resource r) {
+        /*
         try {
-            oggPlayer.play(r.getInputStream());
+            //oggPlayer.play(r.getInputStream());
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
 
     /**

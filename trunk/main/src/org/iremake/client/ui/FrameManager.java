@@ -105,7 +105,7 @@ public class FrameManager {
      *
      * @return The singleton instance.
      */
-    public static FrameManager getInstance() {
+    public static synchronized FrameManager getInstance() {
         if (singleton == null) {
             singleton = new FrameManager();
         }

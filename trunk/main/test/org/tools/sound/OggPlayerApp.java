@@ -16,7 +16,6 @@
  */
 package org.tools.sound;
 
-import org.tools.io.TestIOManager;
 import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
+import org.tools.io.TestIOManager;
 import org.tools.ui.utils.BasicFrame;
 import org.tools.ui.utils.LookAndFeel;
 

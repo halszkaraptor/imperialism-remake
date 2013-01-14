@@ -16,6 +16,11 @@
  */
 package org.tools.sound;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.SourceDataLine;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
@@ -24,11 +29,6 @@ import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
 import org.vorbis.jcraft.jorbis.Info;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.SourceDataLine;
 
 /**
  * Based on ...

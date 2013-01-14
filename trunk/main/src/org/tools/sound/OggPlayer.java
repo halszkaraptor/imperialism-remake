@@ -16,19 +16,19 @@
  */
 package org.tools.sound;
 
+import com.jcraft.jogg.Packet;
+import com.jcraft.jogg.Page;
+import com.jcraft.jogg.StreamState;
+import com.jcraft.jogg.SyncState;
+import com.jcraft.jorbis.Block;
+import com.jcraft.jorbis.Comment;
+import com.jcraft.jorbis.DspState;
+import com.jcraft.jorbis.Info;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.SourceDataLine;
-import org.vorbis.jcraft.jogg.Packet;
-import org.vorbis.jcraft.jogg.Page;
-import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
-import org.vorbis.jcraft.jorbis.Block;
-import org.vorbis.jcraft.jorbis.Comment;
-import org.vorbis.jcraft.jorbis.DspState;
-import org.vorbis.jcraft.jorbis.Info;
 
 /**
  * Based on ...

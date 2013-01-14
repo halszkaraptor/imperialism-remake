@@ -1,5 +1,41 @@
 package com.jcraft;
 
+import com.jcraft.jogg.Packet;
+import com.jcraft.jogg.Page;
+import com.jcraft.jogg.StreamState;
+import com.jcraft.jogg.SyncState;
+import com.jcraft.jorbis.Block;
+import com.jcraft.jorbis.Comment;
+import com.jcraft.jorbis.DspState;
+import com.jcraft.jorbis.Info;
+import java.applet.AppletContext;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Vector;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /* JOrbisPlayer -- pure Java Ogg Vorbis player
  *
@@ -27,18 +63,7 @@ package com.jcraft;
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.applet.*;
-import javax.swing.*;
 
-import com.jcraft.jorbis.*;
-import com.jcraft.jogg.*;
-
-import javax.sound.sampled.*;
 
 /**
  * JOrbisComment is a simple comment editor for Ogg Vorbis. This program is just
@@ -89,6 +114,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     int bufferLengthInBytes;
     boolean playonstartup = false;
 
+    @Override
     public void init() {
         running_as_applet = true;
 
@@ -118,6 +144,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         getContentPane().add(panel);
     }
 
+    @Override
     public void start() {
         super.start();
         if (playonstartup) {
@@ -614,6 +641,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         play_stream(me);
     }
 
+    @Override
     public void stop() {
         if (player == null) {
             try {
@@ -746,8 +774,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
 
         if (is == null && !running_as_applet) {
             try {
-                is = new FileInputStream(System.getProperty("user.dir")
-                        + System.getProperty("file.separator") + item);
+                is = new FileInputStream(System.getProperty("user.dir") + System.getProperty("file.separator") + item);
                 current_source = null;
             } catch (Exception ee) {
                 System.err.println(ee);
@@ -1118,14 +1145,17 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
             }
         }
 
+        @Override
         public void close() throws java.io.IOException {
             socket.close();
         }
 
+        @Override
         public int read() throws java.io.IOException {
             return 0;
         }
 
+        @Override
         public int read(byte[] array, int begin, int length)
                 throws java.io.IOException {
             return getByte(array, begin, length);

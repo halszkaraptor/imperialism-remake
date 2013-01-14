@@ -1,9 +1,9 @@
 /*
  * PropertiesContainer.
- * 
+ *
  * JavaZOOM : vorbisspi@javazoom.net
  * 			  http://www.javazoom.net
- * 
+ *
  *-----------------------------------------------------------------------
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Library General Public License as published
@@ -20,12 +20,11 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-
 package javazoom.spi;
 
 import java.util.Map;
 
-public interface PropertiesContainer
-{
-	public Map properties();
+public interface PropertiesContainer {
+
+    public Map properties();
 }

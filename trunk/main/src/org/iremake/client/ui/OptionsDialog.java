@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,17 +28,21 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
+import org.tools.sound.SoundSystem;
+import org.tools.ui.SimpleComboBoxModel;
 
 /**
  * Dialog for displaying and modifying options in a tabbed pane style. The
  * update and check for modified values is done by iterating over a list of
  * OptionsDIalogItems. Therefore we avoid abundant use of listeners. Anyway we
- * only want to check the options upon exit of the dialogt.
+ * only want to check the options upon exit of the dialog.
  */
 public class OptionsDialog extends UIDialog {
 
     /* list holding all items */
     private List<OptionsDialogItem> items = new LinkedList<>();
+    /* additional item */
+    private SimpleComboBoxModel<String> mixerModel;
 
     /**
      * Setup of the dialog, add the tabs to the tabbed pane.
@@ -51,6 +56,7 @@ public class OptionsDialog extends UIDialog {
         // add tabs
         tabs.add(createGeneralPanel(), "General");
         tabs.add(createServerPanel(), "Server");
+        tabs.add(createMusicPanel(), "Music");
 
         setContent(tabs);
 
@@ -60,6 +66,7 @@ public class OptionsDialog extends UIDialog {
                 if (isAnyModified()) {
                     if (JOptionPane.showConfirmDialog(null, "Save modified options?", "Modified options", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         updateOptions();
+
                         // TODO show notification
                     }
                 }
@@ -121,6 +128,30 @@ public class OptionsDialog extends UIDialog {
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
         panel.add(new JLabel("Default network alias"));
         panel.add(networkAlias, "wmin 200");
+
+        return panel;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private JPanel createMusicPanel() {
+        JPanel panel = new JPanel();
+
+        // TODO use OptionsDialogComboBoxItem
+        // TODO only if there are some, other disable
+        JComboBox mixerBox = new JComboBox();
+        mixerModel = new SimpleComboBoxModel<>(SoundSystem.getAvailableMixerNames());
+        mixerBox.setModel(mixerModel);
+        mixerBox.setSelectedIndex(0);
+        // change from option
+        mixerBox.setToolTipText("Change will be ");
+
+        // layout
+        panel.setLayout(new MigLayout("wrap 2"));
+        panel.add(new JLabel("Available devices"));
+        panel.add(mixerBox);
 
         return panel;
     }

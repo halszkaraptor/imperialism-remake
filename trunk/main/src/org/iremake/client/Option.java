@@ -16,8 +16,8 @@
  */
 package org.iremake.client;
 
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.tools.xml.XProperty;
 
 /**

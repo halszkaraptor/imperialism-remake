@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.resources;
+package org.iremake.client.io;
 
 /**
  * Logical structure of the data folders, used for input/output.
@@ -37,7 +37,7 @@ public enum Places {
 
     /**
      * Store the location.
-     * 
+     *
      * @param location
      */
     Places(String location) {

@@ -49,7 +49,7 @@ import nu.xom.Elements;
  */
 public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLable {
 
-    private final String XMLNAME;
+    private String XMLName;
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
     /**
      * Standard comparator, compares on the toString methods.
@@ -71,11 +71,8 @@ public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLa
      * @param clazz
      */
     public XList(Class<E> clazz) {
-        this(new ArrayList<E>(4), clazz, "ListOf-" + clazz.getSimpleName());
-    }
-
-    public XList(Class<E> clazz, String XMLName) {
-        this(new ArrayList<E>(4), clazz, XMLName);
+        this(new ArrayList<E>(4), clazz);
+        XMLName = "ListOf-" + clazz.getSimpleName();
     }
 
     /**
@@ -85,10 +82,17 @@ public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLa
      * @param clazz
      * @param XMLName
      */
-    public XList(List<E> list, Class<E> clazz, String XMLName) {
+    public XList(List<E> list, Class<E> clazz) {
         this.list = list;
         this.clazz = clazz;
-        XMLNAME = XMLName;
+    }
+
+    /**
+     *
+     * @param XMLName
+     */
+    public void setXMLName(String name) {
+        XMLName = name;
     }
 
     /**
@@ -268,7 +272,7 @@ public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLa
      */
     @Override
     public Element toXML() {
-        Element parent = new Element(XMLNAME);
+        Element parent = new Element(XMLName);
 
         // store each element as child
         for (E element : list) {
@@ -290,7 +294,7 @@ public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLa
         // first clear
         clear();
 
-        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
+        if (parent == null || !XMLName.equals(parent.getLocalName())) {
             LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
             return;
         }

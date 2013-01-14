@@ -21,8 +21,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.Scenario;
 

@@ -30,8 +30,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.tools.ui.notification.NotificationFactory;
 import org.tools.ui.utils.GraphicsUtils;
 

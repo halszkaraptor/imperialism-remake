@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Set;
 import nu.xom.Element;
 import nu.xom.Elements;
-import org.iremake.client.resources.IOManager;
-import org.iremake.client.resources.Places;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 
 /**
  * Holds the settings, which only (in opposition to options) effect the game

@@ -20,10 +20,19 @@
                 <clean-target>clean</clean-target>
                 <id>jar</id>
             </reference>
+            <reference>
+                <foreign-project>Vorbis_Support</foreign-project>
+                <artifact-type>jar</artifact-type>
+                <script>build.xml</script>
+                <target>jar</target>
+                <clean-target>clean</clean-target>
+                <id>jar</id>
+            </reference>
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>borderless</word>
             <word>codec</word>
+            <word>endian</word>
             <word>enum</word>
             <word>generics</word>
             <word>html</word>

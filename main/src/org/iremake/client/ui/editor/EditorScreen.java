@@ -43,7 +43,6 @@ import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
-import org.iremake.client.StartClient;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.ui.Button;
@@ -173,6 +172,7 @@ public class EditorScreen extends UIFrame {
                         return;
                     }
                     scenario.fromXML(xml);
+                    FrameManager.getInstance().showInfo("Scenario " + scenario.getTitle() + " loaded.", true);
                 }
             }
         });

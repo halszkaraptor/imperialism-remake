@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
@@ -98,11 +99,9 @@ public class SoundSystem {
                 LOG.log(Level.SEVERE, null, ex);
             }
         }
-        // set standard values for the volume; it should be the same for all lines.
-        //if (backgroundPlayer != null) {
-        //FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-        //Float volume = new Float( 100 * (volumeControl.getValue() - volumeControl.getMinimum()) / (volumeControl.getMaximum() - volumeControl.getMinimum()) );
-        //volume.intValue();
 
+        /**
+         * FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
+         */
     }
 }

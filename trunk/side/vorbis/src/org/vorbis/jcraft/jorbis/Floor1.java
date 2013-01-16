@@ -1,30 +1,23 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/* JOrbis
+/*
  * Copyright (C) 2000 ymnk, JCraft,Inc.
+ *               2013 Trilarion
  *
- * Written by: 2000 ymnk<ymnk@jcraft.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Many thanks to
- *   Monty <monty@xiph.org> and
- *   The XIPHOPHORUS Company http://www.xiph.org/ .
- * JOrbis has been based on their awesome works, Vorbis codec.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public License
- * as published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
-
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft.jorbis;
 
+import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
 class Floor1 extends FuncFloor {
@@ -63,8 +56,8 @@ class Floor1 extends FuncFloor {
 
         /* save out the post list */
         opb.write(info.mult - 1, 2); /* only 1,2,3,4 legal now */
-        opb.write(Util.ilog2(maxposit), 4);
-        rangebits = Util.ilog2(maxposit);
+        opb.write(Utils.ilog2(maxposit), 4);
+        rangebits = Utils.ilog2(maxposit);
 
         for (int j = 0, k = 0; j < info.partitions; j++) {
             count += info.class_dim[info.partitionclass[j]];
@@ -262,8 +255,8 @@ class Floor1 extends FuncFloor {
                 }
             }
 
-            fit_value[0] = vb.opb.read(Util.ilog(look.quant_q - 1));
-            fit_value[1] = vb.opb.read(Util.ilog(look.quant_q - 1));
+            fit_value[0] = vb.opb.read(Utils.ilog(look.quant_q - 1));
+            fit_value[1] = vb.opb.read(Utils.ilog(look.quant_q - 1));
 
             /* partition by partition */
             for (int i = 0, j = 2; i < info.partitions; i++) {

@@ -28,7 +28,7 @@ package org.vorbis.jcraft.jorbis;
 import org.vorbis.jcraft.jorbis.VorbisFile;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.Info;
-import org.vorbis.jcraft.jorbis.JOrbisException;
+import org.sound.SoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +43,7 @@ class ChainingExample {
         VorbisFile ov;
         try {
             ov = new VorbisFile("Agogo.ogg");
-        } catch (JOrbisException ex) {
+        } catch (SoundException ex) {
             LOG.log(Level.SEVERE, null, ex);
             return;
         }

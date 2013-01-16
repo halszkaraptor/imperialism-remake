@@ -1,38 +1,29 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/* JOrbis
+/*
  * Copyright (C) 2000 ymnk, JCraft,Inc.
+ *               2013 Trilarion
  *
- * Written by: 2000 ymnk<ymnk@jcraft.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Many thanks to
- *   Monty <monty@xiph.org> and
- *   The XIPHOPHORUS Company http://www.xiph.org/ .
- * JOrbis has been based on their awesome works, Vorbis codec.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public License
- * as published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
-
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.io.IOException;
+import java.io.InputStream;
+import org.sound.SoundException;
 import org.vorbis.jcraft.jogg.Packet;
-import org.vorbis.jcraft.jogg.SyncState;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-
-import java.io.InputStream;
-import java.io.IOException;
+import org.vorbis.jcraft.jogg.SyncState;
 
 public class VorbisFile {
 
@@ -80,17 +71,17 @@ public class VorbisFile {
     Block vb = new Block(vd); // local working space for packet->PCM decode
 
     //ov_callbacks callbacks;
-    public VorbisFile(String file) throws JOrbisException {
+    public VorbisFile(String file) throws SoundException {
         super();
         InputStream is = null;
         try {
             is = new SeekableInputStream(file);
             int ret = open(is, null, 0);
             if (ret == -1) {
-                throw new JOrbisException("VorbisFile: open return -1");
+                throw new SoundException("VorbisFile: open return -1");
             }
         } catch (Exception e) {
-            throw new JOrbisException("VorbisFile: " + e.toString());
+            throw new SoundException("VorbisFile: " + e.toString());
         } finally {
             if (is != null) {
                 try {
@@ -103,7 +94,7 @@ public class VorbisFile {
     }
 
     public VorbisFile(InputStream is, byte[] initial, int ibytes)
-            throws JOrbisException {
+            throws SoundException {
         super();
         int ret = open(is, initial, ibytes);
         if (ret == -1) {
@@ -165,7 +156,7 @@ public class VorbisFile {
         }
     }
 
-    private int get_prev_page(Page page) throws JOrbisException {
+    private int get_prev_page(Page page) throws SoundException {
         long begin = offset; //!!!
         int ret;
         int offst = -1;
@@ -182,7 +173,7 @@ public class VorbisFile {
                 }
                 if (ret < 0) {
                     if (offst == -1) {
-                        throw new JOrbisException();
+                        throw new SoundException();
                     }
                     break;
                 } else {
@@ -316,7 +307,7 @@ public class VorbisFile {
     // initialization (local stream storage is hacked slightly; pay
     // attention to how that's done)
     void prefetch_all_headers(Info first_i, Comment first_c, int dataoffset)
-            throws JOrbisException {
+            throws SoundException {
         Page og = new Page();
         int ret;
 
@@ -380,7 +371,7 @@ public class VorbisFile {
         return (0);
     }
 
-    int open_seekable() throws JOrbisException {
+    int open_seekable() throws SoundException {
         Info initial_i = new Info();
         Comment initial_c = new Comment();
         int serialno;
@@ -666,12 +657,12 @@ public class VorbisFile {
     //
     // return: -1) error
     //          0) OK
-    int open(InputStream is, byte[] initial, int ibytes) throws JOrbisException {
+    int open(InputStream is, byte[] initial, int ibytes) throws SoundException {
         return open_callbacks(is, initial, ibytes);
     }
 
     int open_callbacks(InputStream is, byte[] initial, int ibytes//, callbacks callbacks
-            ) throws JOrbisException {
+            ) throws SoundException {
         int ret;
         datasource = is;
 

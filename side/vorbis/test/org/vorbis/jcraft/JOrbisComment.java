@@ -1,11 +1,5 @@
 package org.vorbis.jcraft;
 
-import org.vorbis.jcraft.jogg.Packet;
-import org.vorbis.jcraft.jogg.Page;
-import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
-import org.vorbis.jcraft.jorbis.Comment;
-import org.vorbis.jcraft.jorbis.Info;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,6 +8,12 @@ import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.vorbis.jcraft.jogg.Packet;
+import org.vorbis.jcraft.jogg.Page;
+import org.vorbis.jcraft.jogg.StreamState;
+import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jorbis.Comment;
+import org.vorbis.jcraft.jorbis.Info;
 
 /* JOrbisComment -- pure Java Ogg Vorbis Comment Editor
  *
@@ -69,7 +69,7 @@ class JOrbisComment {
 
         Properties props = System.getProperties();
         int i = 0;
-        String comment = null;
+        String comment;
         while (true) {
             try {
                 comment = (String) props.get("JOrbis.comment." + new Integer(i));
@@ -89,12 +89,10 @@ class JOrbisComment {
         //System.out.println(foo.vc.query("TITLE"));
         //System.out.println(foo.vc.query("ARTIST"));
 
-        try {
-            OutputStream out = new FileOutputStream(output);
+        try (OutputStream out = new FileOutputStream(output)) {
             jorbiscomment.write(out);
-            out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            // TODO do something more useful e.printStackTrace();
             System.out.println(e);
         }
     }
@@ -112,7 +110,7 @@ class JOrbisComment {
 
         int index;
         byte[] buffer;
-        int bytes = 0;
+        int bytes;
 
         state.oy = new SyncState();
         state.oy.init();
@@ -244,7 +242,7 @@ class JOrbisComment {
         int index;
         byte[] buffer;
 
-        int bytes, eosin = 0;
+        int bytes, eosin;
         int needflush = 0, needout = 0;
 
         header_main.bytes = state.mainlen;

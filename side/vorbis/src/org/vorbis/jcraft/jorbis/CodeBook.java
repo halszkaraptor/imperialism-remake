@@ -319,9 +319,9 @@ class CodeBook {
         decode_tree = make_decode_tree();
         if (decode_tree == null) {
             clear();
-            return (-1);
+            return -1;
         }
-        return (0);
+        return 0;
     }
 
     // given a list of word lengths, generate a list of codewords.  Works
@@ -345,7 +345,7 @@ class CodeBook {
                 if (length < 32 && (entry >>> length) != 0) {
                     // error condition; the lengths must specify an overpopulated tree
                     //free(r);
-                    return (null);
+                    return null;
                 }
                 r[i] = entry;
 

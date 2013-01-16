@@ -17,16 +17,18 @@
  */
 package org.sound;
 
-import java.io.PrintStream;
 import java.security.AccessControlException;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TDebug {
 
-    public static boolean SHOW_ACCESS_CONTROL_EXCEPTIONS = false;
+    private static final Logger LOG = Logger.getLogger(TDebug.class.getName());
+
+    public static final boolean SHOW_ACCESS_CONTROL_EXCEPTIONS = false;
+
     private static final String PROPERTY_PREFIX = "tritonus.";
-    // The stream we output to
-    public static PrintStream m_printStream = System.out;
     private static String indent = "";
     // meta-general
     public static boolean TraceAllExceptions = getBooleanProperty("TraceAllExceptions");
@@ -101,14 +103,14 @@ public class TDebug {
         } else {
             newMsg = indent + strMessage;
         }
-        m_printStream.println(newMsg);
+        LOG.log(Level.FINE, newMsg);
         if (strMessage.length() > 0 && strMessage.charAt(0) == '>') {
             indent += "  ";
         }
     }
 
     public static void out(Throwable throwable) {
-        throwable.printStackTrace(m_printStream);
+        LOG.log(Level.FINE, null, throwable);
     }
 
     public static void assertion(boolean bAssertion) {

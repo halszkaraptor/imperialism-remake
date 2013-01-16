@@ -314,7 +314,7 @@ class Drft {
         int t0, t1, t2 = 0, t3, t4, t5, t6, t7, t8, t9, t10;
         float dc2, ai1, ai2, ar1, ar2, ds2;
         int nbd;
-        float dcp = 0, arg, dsp = 0, ar1h, ar2h;
+        float dcp, arg, dsp, ar1h, ar2h;
         int idp2, ipp2;
 
         arg = tpi / (float) ip;

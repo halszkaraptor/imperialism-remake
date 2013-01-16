@@ -33,8 +33,6 @@ public class TCircularBuffer {
         m_bBlockingWrite = bBlockingWrite;
         m_nSize = nSize;
         m_abData = new byte[m_nSize];
-        m_lReadPos = 0;
-        m_lWritePos = 0;
         m_trigger = trigger;
         m_bOpen = true;
     }

@@ -1,13 +1,5 @@
 package org.vorbis.jcraft;
 
-import org.vorbis.jcraft.jogg.Packet;
-import org.vorbis.jcraft.jogg.Page;
-import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
-import org.vorbis.jcraft.jorbis.Block;
-import org.vorbis.jcraft.jorbis.Comment;
-import org.vorbis.jcraft.jorbis.DspState;
-import org.vorbis.jcraft.jorbis.Info;
 import java.applet.AppletContext;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,6 +27,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.vorbis.jcraft.jogg.Packet;
+import org.vorbis.jcraft.jogg.Page;
+import org.vorbis.jcraft.jogg.StreamState;
+import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jorbis.Block;
+import org.vorbis.jcraft.jorbis.Comment;
+import org.vorbis.jcraft.jorbis.DspState;
+import org.vorbis.jcraft.jorbis.Info;
 
 /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /* JOrbisPlayer -- pure Java Ogg Vorbis player
@@ -237,6 +237,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         return cb.getItemCount() - 1;
     }
 
+    @Override
     public void run() {
         Thread me = Thread.currentThread();
         String item = (String) (cb.getSelectedItem());
@@ -389,7 +390,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
                     System.err
                             .println("Comment: " + new String(ptr[j], 0, ptr[j].length - 1));
                     if (sb != null) {
-                        sb.append(" " + new String(ptr[j], 0, ptr[j].length - 1));
+                        sb.append(" ").append(new String(ptr[j], 0, ptr[j].length - 1));
                     }
                 }
                 System.err.println("Bitstream is " + vi.channels + " channel, " + vi.rate
@@ -657,6 +658,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     }
     Vector playlist = new Vector();
 
+    @Override
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == stats_button) {
@@ -977,7 +979,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     }
 
     private String readline(InputStream is) {
-        StringBuffer rtn = new StringBuffer();
+        StringBuilder rtn = new StringBuilder();
         int temp;
         do {
             try {
@@ -1168,6 +1170,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         frame.getContentPane().setLayout(new BorderLayout());
 
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }

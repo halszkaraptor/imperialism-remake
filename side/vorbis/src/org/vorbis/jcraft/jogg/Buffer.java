@@ -55,12 +55,6 @@ public class Buffer {
         }
     }
 
-    void reset() {
-        ptr = 0;
-        buffer[0] = (byte) '\0';
-        endbit = endbyte = 0;
-    }
-
     public void writeclear() {
         buffer = null;
     }
@@ -118,7 +112,7 @@ public class Buffer {
 
         if (endbyte + 4 >= storage) {
             if (endbyte + (bits - 1) / 8 >= storage) {
-                return (-1);
+                return -1;
             }
         }
 
@@ -135,14 +129,14 @@ public class Buffer {
                 }
             }
         }
-        return (m & ret);
+        return m & ret;
     }
 
     public int look1() {
         if (endbyte >= storage) {
-            return (-1);
+            return -1;
         }
-        return ((buffer[ptr] >> endbit) & 1);
+        return (buffer[ptr] >> endbit) & 1;
     }
 
     public void adv(int bits) {
@@ -173,7 +167,7 @@ public class Buffer {
                 ptr += bits / 8;
                 endbyte += bits / 8;
                 endbit = bits & 7;
-                return (ret);
+                return ret;
             }
         }
 
@@ -196,7 +190,7 @@ public class Buffer {
         ptr += bits / 8;
         endbyte += bits / 8;
         endbit = bits & 7;
-        return (ret);
+        return ret;
     }
 
     public int readB(int bits) {
@@ -212,7 +206,7 @@ public class Buffer {
                 ptr += bits / 8;
                 endbyte += bits / 8;
                 endbit = bits & 7;
-                return (ret);
+                return ret;
             }
         }
 
@@ -234,7 +228,7 @@ public class Buffer {
         ptr += bits / 8;
         endbyte += bits / 8;
         endbit = bits & 7;
-        return (ret);
+        return ret;
     }
 
     public int read1() {
@@ -247,7 +241,7 @@ public class Buffer {
                 ptr++;
                 endbyte++;
             }
-            return (ret);
+            return ret;
         }
 
         ret = (buffer[ptr] >> endbit) & 1;
@@ -258,27 +252,18 @@ public class Buffer {
             ptr++;
             endbyte++;
         }
-        return (ret);
+        return ret;
     }
 
     public int bytes() {
-        return (endbyte + (endbit + 7) / 8);
+        return endbyte + (endbit + 7) / 8;
     }
 
     public int bits() {
-        return (endbyte * 8 + endbit);
+        return endbyte * 8 + endbit;
     }
 
     public byte[] buffer() {
-        return (buffer);
-    }
-
-    public static int ilog(int v) {
-        int ret = 0;
-        while (v > 0) {
-            ret++;
-            v >>>= 1;
-        }
-        return (ret);
+        return buffer;
     }
 }

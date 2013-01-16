@@ -82,8 +82,7 @@ class Lsp {
                 q = Float.intBitsToFloat(hx);
             }
 
-            q = Lookup.fromdBlook(amp * Lookup.invsqlook(q) * Lookup.invsq2explook(qexp + m)
-                    - ampoffset);
+            q = Lookup.fromdBlook(amp * Lookup.invsqlook(q) * Lookup.invsq2explook(qexp + m) - ampoffset);
 
             do {
                 curve[i++] *= q;

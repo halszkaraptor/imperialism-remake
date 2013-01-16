@@ -1,2 +1,2 @@
-# Provider of ogg-vorbis-reading services
-javazoom.spi.
+# provider of ogg-vorbis decoding services
+javazoom.spi.vorbis.sampled.file.VorbisAudioFileReader

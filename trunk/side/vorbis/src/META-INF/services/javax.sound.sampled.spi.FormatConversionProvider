@@ -1,2 +1,2 @@
 # provider of ogg-vorbis decoding services
-vorbis.spi.sampled.convert.VorbisFormatConversionProvider
+org.vorbis.spi.sampled.convert.VorbisFormatConversionProvider

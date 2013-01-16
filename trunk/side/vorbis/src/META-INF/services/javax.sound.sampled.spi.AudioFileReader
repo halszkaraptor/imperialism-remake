@@ -1,2 +1,2 @@
 # provider of ogg-vorbis decoding services
-vorbis.spi.sampled.file.VorbisAudioFileReader
+org.vorbis.spi.sampled.file.VorbisAudioFileReader

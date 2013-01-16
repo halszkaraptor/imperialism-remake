@@ -19,8 +19,6 @@
 package org.sound.sampled.file;
 
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,11 +38,8 @@ import org.sound.TDebug;
  * header. Classes should be derived from this class or one of its subclasses
  * rather than from javax.sound.sampled.spi.AudioFileReader.
  *
- * @author Matthias Pfisterer
- * @author Florian Bomers
  */
-public abstract class TAudioFileReader
-        extends AudioFileReader {
+public abstract class TAudioFileReader extends AudioFileReader {
 
     private int m_nMarkLimit = -1;
     private boolean m_bRereading;
@@ -350,91 +345,5 @@ public abstract class TAudioFileReader
             lFileLengthInBytes = nLength;
         }
         return lFileLengthInBytes;
-    }
-
-    public static int readLittleEndianInt(InputStream is)
-            throws IOException {
-        int b0 = is.read();
-        int b1 = is.read();
-        int b2 = is.read();
-        int b3 = is.read();
-        if ((b0 | b1 | b2 | b3) < 0) {
-            throw new EOFException();
-        }
-        return (b3 << 24) + (b2 << 16) + (b1 << 8) + (b0 << 0);
-    }
-
-    public static short readLittleEndianShort(InputStream is)
-            throws IOException {
-        int b0 = is.read();
-        int b1 = is.read();
-        if ((b0 | b1) < 0) {
-            throw new EOFException();
-        }
-        return (short) ((b1 << 8) + (b0 << 0));
-    }
-
-    /*
-     * C O N V E R T   F R O M   I E E E   E X T E N D E D
-     */
-
-    /*
-     * Copyright (C) 1988-1991 Apple Computer, Inc.
-     * All rights reserved.
-     *
-     * Machine-independent I/O routines for IEEE floating-point numbers.
-     *
-     * NaN's and infinities are converted to HUGE_VAL or HUGE, which
-     * happens to be infinity on IEEE machines.  Unfortunately, it is
-     * impossible to preserve NaN's in a machine-independent way.
-     * Infinities are, however, preserved on IEEE machines.
-     *
-     * These routines have been tested on the following machines:
-     *    Apple Macintosh, MPW 3.1 C compiler
-     *    Apple Macintosh, THINK C compiler
-     *    Silicon Graphics IRIS, MIPS compiler
-     *    Cray X/MP and Y/MP
-     *    Digital Equipment VAX
-     *
-     *
-     * Implemented by Malcolm Slaney and Ken Turkowski.
-     *
-     * Malcolm Slaney contributions during 1988-1990 include big- and little-
-     * endian file I/O, conversion to and from Motorola's extended 80-bit
-     * floating-point format, and conversions to and from IEEE single-
-     * precision floating-point format.
-     *
-     * In 1991, Ken Turkowski implemented the conversions to and from
-     * IEEE double-precision format, added more precision to the extended
-     * conversions, and accommodated conversions involving +/- infinity,
-     * NaN's, and denormalized numbers.
-     */
-    public static double readIeeeExtended(DataInputStream dis) throws IOException {
-        double f;
-        int expon;
-        long hiMant;
-        long loMant;
-        double HUGE = 3.4028234663852886E+038D;
-        expon = dis.readUnsignedShort();
-        long t1 = dis.readUnsignedShort();
-        long t2 = dis.readUnsignedShort();
-        hiMant = t1 << 16 | t2;
-        t1 = dis.readUnsignedShort();
-        t2 = dis.readUnsignedShort();
-        loMant = t1 << 16 | t2;
-        if (expon == 0 && hiMant == 0L && loMant == 0L) {
-            f = 0.0D;
-        } else {
-            if (expon == 32767) {
-                f = HUGE;
-            } else {
-                expon -= 16383;
-                expon -= 31;
-                f = hiMant * Math.pow(2D, expon);
-                expon -= 32;
-                f += loMant * Math.pow(2D, expon);
-            }
-        }
-        return f;
     }
 }

@@ -31,6 +31,6 @@ class Residue2 extends Residue0 {
             return 0; /* no nonzero vectors */
         }
 
-        return (_2inverse(vb, vl, in, ch));
+        return _2inverse(vb, vl, in, ch);
     }
 }

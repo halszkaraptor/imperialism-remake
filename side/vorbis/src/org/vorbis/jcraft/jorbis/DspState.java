@@ -120,7 +120,7 @@ public class DspState {
             }
             break;
             default:
-                //free(ret);
+                //freeret;
                 return null;
         }
         return ret;
@@ -202,7 +202,7 @@ public class DspState {
             mode[i] = FuncMapping.mapping_P[maptype].look(this, vi.mode_param[i],
                     vi.map_param[mapnum]);
         }
-        return (0);
+        return 0;
     }
 
     public int synthesis_init(Info vi) {
@@ -212,7 +212,7 @@ public class DspState {
         centerW -= vi.blocksizes[W] / 4 + vi.blocksizes[lW] / 4;
         granulepos = -1;
         sequence = -1;
-        return (0);
+        return 0;
     }
 
     // Unike in analysis, the window is only partially applied for each
@@ -329,7 +329,7 @@ public class DspState {
                 eofflag = 1;
             }
         }
-        return (0);
+        return 0;
     }
 
     // pcm==NULL indicates we just want the pending samples, no more
@@ -341,17 +341,17 @@ public class DspState {
                 }
                 _pcm[0] = pcm;
             }
-            return (centerW - pcm_returned);
+            return centerW - pcm_returned;
         }
-        return (0);
+        return 0;
     }
 
     public int synthesis_read(int bytes) {
         if (bytes != 0 && pcm_returned + bytes > centerW) {
-            return (-1);
+            return -1;
         }
         pcm_returned += bytes;
-        return (0);
+        return 0;
     }
 
     public void clear() {

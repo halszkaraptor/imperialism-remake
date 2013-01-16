@@ -32,7 +32,7 @@ class CodeBook {
     // returns the number of bits
     int encode(int a, Buffer b) {
         b.write(codelist[a], c.lengthlist[a]);
-        return (c.lengthlist[a]);
+        return c.lengthlist[a];
     }
 
     // One the encode side, our vector writers are each designed for a
@@ -54,7 +54,7 @@ class CodeBook {
         for (int k = 0; k < dim; k++) {
             a[k] = valuelist[best * dim + k];
         }
-        return (best);
+        return best;
     }
 
     // returns the number of bits and *modifies a* to the quantization value
@@ -85,7 +85,7 @@ class CodeBook {
         for (i = 0; i < step; i++) {
             entry = decode(b);
             if (entry == -1) {
-                return (-1);
+                return -1;
             }
             t[i] = entry * dim;
         }
@@ -95,7 +95,7 @@ class CodeBook {
             }
         }
 
-        return (0);
+        return 0;
     }
 
     int decodev_add(float[] a, int offset, Buffer b, int n) {
@@ -106,7 +106,7 @@ class CodeBook {
             for (i = 0; i < n;) {
                 entry = decode(b);
                 if (entry == -1) {
-                    return (-1);
+                    return -1;
                 }
                 t = entry * dim;
                 for (j = 0; j < dim;) {
@@ -117,7 +117,7 @@ class CodeBook {
             for (i = 0; i < n;) {
                 entry = decode(b);
                 if (entry == -1) {
-                    return (-1);
+                    return -1;
                 }
                 t = entry * dim;
                 j = 0;
@@ -143,7 +143,7 @@ class CodeBook {
                 }
             }
         }
-        return (0);
+        return 0;
     }
 
     int decodev_set(float[] a, int offset, Buffer b, int n) {
@@ -153,14 +153,14 @@ class CodeBook {
         for (i = 0; i < n;) {
             entry = decode(b);
             if (entry == -1) {
-                return (-1);
+                return -1;
             }
             t = entry * dim;
             for (j = 0; j < dim;) {
                 a[offset + i++] = valuelist[t + (j++)];
             }
         }
-        return (0);
+        return 0;
     }
 
     int decodevv_add(float[][] a, int offset, int ch, Buffer b, int n) {
@@ -170,7 +170,7 @@ class CodeBook {
         for (i = offset / ch; i < (offset + n) / ch;) {
             entry = decode(b);
             if (entry == -1) {
-                return (-1);
+                return -1;
             }
 
             int t = entry * dim;
@@ -182,7 +182,7 @@ class CodeBook {
                 }
             }
         }
-        return (0);
+        return 0;
     }
 
     // Decode side is specced and easier, because we don't need to find
@@ -221,7 +221,7 @@ class CodeBook {
                     break;
                 case -1:
                 default:
-                    return (-1);
+                    return -1;
             }
         } while (ptr > 0);
         return (-ptr);
@@ -231,7 +231,7 @@ class CodeBook {
     int decodevs(float[] a, int index, Buffer b, int step, int addmul) {
         int entry = decode(b);
         if (entry == -1) {
-            return (-1);
+            return -1;
         }
         switch (addmul) {
             case -1:
@@ -252,7 +252,7 @@ class CodeBook {
             default:
             //System.err.println("CodeBook.decodeves: addmul="+addmul);
         }
-        return (entry);
+        return entry;
     }
 
     int best(float[] a, int step) {
@@ -295,7 +295,7 @@ class CodeBook {
                 }
                 break;
         }
-        return (best);
+        return best;
     }
 
     void clear() {
@@ -307,7 +307,7 @@ class CodeBook {
             float val = (ref[index + i] - b[i * step]);
             acc += val * val;
         }
-        return (acc);
+        return acc;
     }
 
     int init_decode(StaticCodeBook s) {
@@ -392,7 +392,7 @@ class CodeBook {
             r[i] = temp;
         }
 
-        return (r);
+        return r;
     }
 
     // build the decode helper tree from the codewords
@@ -404,7 +404,7 @@ class CodeBook {
         int[] codelist = make_words(c.lengthlist, c.entries);
 
         if (codelist == null) {
-            return (null);
+            return null;
         }
         t.aux = entries * 2;
 
@@ -458,7 +458,7 @@ class CodeBook {
             t.tabl[i] = j; // length
         }
 
-        return (t);
+        return t;
     }
 
     class DecodeAux {

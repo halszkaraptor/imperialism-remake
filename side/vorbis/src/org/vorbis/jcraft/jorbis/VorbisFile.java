@@ -369,7 +369,7 @@ public class VorbisFile {
         vd.synthesis_init(vi[0]);
         vb.init(vd);
         decode_ready = true;
-        return (0);
+        return 0;
     }
 
     int open_seekable() throws SoundException {
@@ -387,10 +387,10 @@ public class VorbisFile {
         dataoffset = (int) offset; //!!
         os.clear();
         if (ret == -1) {
-            return (-1);
+            return -1;
         }
         if (ret < 0) {
-            return (ret);
+            return ret;
         }
         // we can seek, so set out learning all about this file
         seekable = true;
@@ -430,7 +430,7 @@ public class VorbisFile {
         // Try to fetch the headers, maintaining all the storage
         int[] foo = new int[1];
         if (fetch_headers(vi[0], vc[0], foo, null) == -1) {
-            return (-1);
+            return -1;
         }
         current_serialno = foo[0];
         make_decode_ready();
@@ -512,16 +512,16 @@ public class VorbisFile {
                             }
                             pcm_offset = granulepos;
                         }
-                        return (1);
+                        return 1;
                     }
                 }
             }
 
             if (readp == 0) {
-                return (0);
+                return 0;
             }
             if (get_next_page(og, -1) < 0) {
-                return (0); // eof. leave unitialized
+                return 0; // eof. leave unitialized
             }
             // bitrate tracking; add the header's bytes here, the body bytes
             // are done by packet above
@@ -559,7 +559,7 @@ public class VorbisFile {
                         }
                     }
                     if (i == links) {
-                        return (-1); // sign of a bogus stream.  error out,
+                        return -1; // sign of a bogus stream.  error out,
                     }          // leave machine uninitialized
                     current_link = i;
 
@@ -612,7 +612,7 @@ public class VorbisFile {
         }
         oy.clear();
 
-        return (0);
+        return 0;
     }
 
     static int fseek(InputStream fis, long off, int whence) {
@@ -645,7 +645,7 @@ public class VorbisFile {
         try {
             if (fis instanceof SeekableInputStream) {
                 SeekableInputStream sis = (SeekableInputStream) fis;
-                return (sis.tell());
+                return sis.tell();
             }
         } catch (IOException e) {
             // TODO ???
@@ -712,21 +712,21 @@ public class VorbisFile {
     // vorbis_info structs
     public int bitrate(int i) {
         if (i >= links) {
-            return (-1);
+            return -1;
         }
         if (!seekable && i != 0) {
-            return (bitrate(0));
+            return bitrate(0);
         }
         if (i < 0) {
             long bits = 0;
             for (int j = 0; j < links; j++) {
                 bits += (offsets[j + 1] - dataoffsets[j]) * 8;
             }
-            return ((int) Math.rint(bits / time_total(-1)));
+            return (int) Math.rint(bits / time_total(-1));
         } else {
             if (seekable) {
                 // return the actual bitrate
-                return ((int) Math.rint((offsets[i + 1] - dataoffsets[i]) * 8 / time_total(i)));
+                return (int) Math.rint((offsets[i + 1] - dataoffsets[i]) * 8 / time_total(i));
             } else {
                 // return nominal if set
                 if (vi[i].bitrate_nominal > 0) {
@@ -739,7 +739,7 @@ public class VorbisFile {
                             return vi[i].bitrate_upper;
                         }
                     }
-                    return (-1);
+                    return -1;
                 }
             }
         }
@@ -750,25 +750,25 @@ public class VorbisFile {
     public int bitrate_instant() {
         int _link = (seekable ? current_link : 0);
         if (samptrack == 0) {
-            return (-1);
+            return -1;
         }
         int ret = (int) (bittrack / samptrack * vi[_link].rate + .5);
         bittrack = 0.f;
         samptrack = 0.f;
-        return (ret);
+        return ret;
     }
 
     public int serialnumber(int i) {
         if (i >= links) {
-            return (-1);
+            return -1;
         }
         if (!seekable && i >= 0) {
-            return (serialnumber(-1));
+            return serialnumber(-1);
         }
         if (i < 0) {
-            return (current_serialno);
+            return current_serialno;
         } else {
-            return (serialnos[i]);
+            return serialnos[i];
         }
     }
 
@@ -777,16 +777,16 @@ public class VorbisFile {
     //          -1 if the stream is not seekable (we can't know the length)
     public long raw_total(int i) {
         if (!seekable || i >= links) {
-            return (-1);
+            return -1;
         }
         if (i < 0) {
             long acc = 0; // bug?
             for (int j = 0; j < links; j++) {
                 acc += raw_total(j);
             }
-            return (acc);
+            return acc;
         } else {
-            return (offsets[i + 1] - offsets[i]);
+            return offsets[i + 1] - offsets[i];
         }
     }
 
@@ -795,16 +795,16 @@ public class VorbisFile {
     //          -1 if the stream is not seekable (we can't know the length)
     public long pcm_total(int i) {
         if (!seekable || i >= links) {
-            return (-1);
+            return -1;
         }
         if (i < 0) {
             long acc = 0;
             for (int j = 0; j < links; j++) {
                 acc += pcm_total(j);
             }
-            return (acc);
+            return acc;
         } else {
-            return (pcmlengths[i]);
+            return pcmlengths[i];
         }
     }
 
@@ -813,16 +813,16 @@ public class VorbisFile {
     //          -1 if the stream is not seekable (we can't know the length)
     public float time_total(int i) {
         if (!seekable || i >= links) {
-            return (-1);
+            return -1;
         }
         if (i < 0) {
             float acc = 0;
             for (int j = 0; j < links; j++) {
                 acc += time_total(j);
             }
-            return (acc);
+            return acc;
         } else {
-            return ((float) (pcmlengths[i]) / vi[i].rate);
+            return (float) (pcmlengths[i]) / vi[i].rate;
         }
     }
 
@@ -835,7 +835,7 @@ public class VorbisFile {
     // returns zero on success, nonzero on failure
     public int raw_seek(int pos) {
         if (!seekable) {
-            return (-1); // don't dump machine if we can't seek
+            return -1; // don't dump machine if we can't seek
         }
         if (pos < 0 || pos > offsets[links]) {
             //goto seek_error;
@@ -862,7 +862,7 @@ public class VorbisFile {
                 // oh, eof. There are no packets remaining.  Set the pcm offset to
                 // the end of file
                 pcm_offset = pcm_total(-1);
-                return (0);
+                return 0;
             case -1:
                 // error! missing data or invalid bitstream structure
                 //goto seek_error;
@@ -879,7 +879,7 @@ public class VorbisFile {
                     // the offset is set.  If it's a bogus bitstream with no offset
                     // information, it's not but that's not our fault.  We still run
                     // gracefully, we're just missing the offset
-                    return (0);
+                    return 0;
                 case -1:
                     // error! missing data or invalid bitstream structure
                     //goto seek_error;
@@ -905,7 +905,7 @@ public class VorbisFile {
         long total = pcm_total(-1);
 
         if (!seekable) {
-            return (-1); // don't dump machine if we can't seek
+            return -1; // don't dump machine if we can't seek
         }
         if (pos < 0 || pos > total) {
             //goto seek_error;
@@ -1021,7 +1021,7 @@ public class VorbisFile {
         float time_total = time_total(-1);
 
         if (!seekable) {
-            return (-1); // don't dump machine if we can't seek
+            return -1; // don't dump machine if we can't seek
         }
         if (seconds < 0 || seconds > time_total) {
             //goto seek_error;
@@ -1043,7 +1043,7 @@ public class VorbisFile {
         // enough information to convert time offset to pcm offset
         {
             long target = (long) (pcm_total + (seconds - time_total) * vi[link].rate);
-            return (pcm_seek(target));
+            return pcm_seek(target);
         }
 
         //seek_error:
@@ -1056,12 +1056,12 @@ public class VorbisFile {
     // tell the current stream offset cursor.  Note that seek followed by
     // tell will likely not give the set offset due to caching
     public long raw_tell() {
-        return (offset);
+        return offset;
     }
 
     // return PCM offset (sample) of next PCM sample to be read
     public long pcm_tell() {
-        return (pcm_offset);
+        return pcm_offset;
     }
 
     // return time offset (seconds) of next PCM sample to be read
@@ -1294,14 +1294,14 @@ public class VorbisFile {
                     if (bitstream != null) {
                         bitstream[0] = current_link;
                     }
-                    return (samples * bytespersample);
+                    return samples * bytespersample;
                 }
             }
 
             // suck in another packet
             switch (process_packet(1)) {
                 case 0:
-                    return (0);
+                    return 0;
                 case -1:
                     return -1;
                 default:

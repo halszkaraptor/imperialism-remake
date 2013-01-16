@@ -47,16 +47,16 @@ class Floor0 extends FuncFloor {
         info.numbooks = opb.read(4) + 1;
 
         if ((info.order < 1) || (info.rate < 1) || (info.barkmap < 1) || (info.numbooks < 1)) {
-            return (null);
+            return null;
         }
 
         for (int j = 0; j < info.numbooks; j++) {
             info.books[j] = opb.read(8);
             if (info.books[j] < 0 || info.books[j] >= vi.books) {
-                return (null);
+                return null;
             }
         }
-        return (info);
+        return info;
     }
 
     @Override
@@ -103,7 +103,7 @@ class Floor0 extends FuncFloor {
         state.codewords = new int[info.order];
         state.curve = new float[info.barkmap];
         state.frameno = -1;
-        return (state);
+        return state;
     }
 
     @Override
@@ -157,7 +157,7 @@ class Floor0 extends FuncFloor {
                             for (int k = 0; k < look.n; k++) {
                                 out[k] = 0.0f;
                             }
-                            return (0);
+                            return 0;
                         }
                     }
                     for (int j = 0; j < look.m;) {
@@ -170,11 +170,11 @@ class Floor0 extends FuncFloor {
                     Lsp.lsp_to_curve(out, look.linearmap, look.n, look.ln, lsp, look.m,
                             amp, info.ampdB);
 
-                    return (1);
+                    return 1;
                 }
             }
         }
-        return (0);
+        return 0;
     }
 
     @Override
@@ -206,7 +206,7 @@ class Floor0 extends FuncFloor {
 
                 for (int j = 0; j < look.m; j += b.dim) {
                     if (b.decodev_set(lsp, j, vb.opb, b.dim) == -1) {
-                        return (null);
+                        return null;
                     }
                 }
 
@@ -217,10 +217,10 @@ class Floor0 extends FuncFloor {
                     last = lsp[j - 1];
                 }
                 lsp[look.m] = amp;
-                return (lsp);
+                return lsp;
             }
         }
-        return (null);
+        return null;
     }
 
     @Override
@@ -234,12 +234,12 @@ class Floor0 extends FuncFloor {
 
             Lsp.lsp_to_curve(out, look.linearmap, look.n, look.ln, lsp, look.m, amp,
                     info.ampdB);
-            return (1);
+            return 1;
         }
         for (int j = 0; j < look.n; j++) {
             out[j] = 0.f;
         }
-        return (0);
+        return 0;
     }
 
     static float fromdB(float x) {

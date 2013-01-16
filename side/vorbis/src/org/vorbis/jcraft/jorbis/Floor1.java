@@ -88,20 +88,20 @@ class Floor1 extends FuncFloor {
             info.class_subs[j] = opb.read(2); /* 0,1,2,3 bits */
             if (info.class_subs[j] < 0) {
                 info.free();
-                return (null);
+                return null;
             }
             if (info.class_subs[j] != 0) {
                 info.class_book[j] = opb.read(8);
             }
             if (info.class_book[j] < 0 || info.class_book[j] >= vi.books) {
                 info.free();
-                return (null);
+                return null;
             }
             for (int k = 0; k < (1 << info.class_subs[j]); k++) {
                 info.class_subbook[j][k] = opb.read(8) - 1;
                 if (info.class_subbook[j][k] < -1 || info.class_subbook[j][k] >= vi.books) {
                     info.free();
-                    return (null);
+                    return null;
                 }
             }
         }
@@ -116,14 +116,14 @@ class Floor1 extends FuncFloor {
                 int t = info.postlist[k + 2] = opb.read(rangebits);
                 if (t < 0 || t >= (1 << rangebits)) {
                     info.free();
-                    return (null);
+                    return null;
                 }
             }
         }
         info.postlist[0] = 0;
         info.postlist[1] = 1 << rangebits;
 
-        return (info);
+        return info;
     }
 
     @Override
@@ -278,7 +278,7 @@ class Floor1 extends FuncFloor {
                     cval = books[info.class_book[clss]].decode(vb.opb);
 
                     if (cval == -1) {
-                        return (null);
+                        return null;
                     }
                 }
 
@@ -287,7 +287,7 @@ class Floor1 extends FuncFloor {
                     cval >>>= csubbits;
                     if (book >= 0) {
                         if ((fit_value[j + k] = books[book].decode(vb.opb)) == -1) {
-                            return (null);
+                            return null;
                         }
                     } else {
                         fit_value[j + k] = 0;
@@ -329,10 +329,10 @@ class Floor1 extends FuncFloor {
                     fit_value[i] = predicted | 0x8000;
                 }
             }
-            return (fit_value);
+            return fit_value;
         }
 
-        return (null);
+        return null;
     }
 
     private static int render_point(int x0, int x1, int y0, int y1, int x) {
@@ -347,9 +347,9 @@ class Floor1 extends FuncFloor {
 
             int off = (int) (err / adx);
             if (dy < 0) {
-                return (y0 - off);
+                return y0 - off;
             }
-            return (y0 + off);
+            return y0 + off;
         }
     }
 
@@ -381,12 +381,12 @@ class Floor1 extends FuncFloor {
             for (int j = hx; j < n; j++) {
                 out[j] *= out[j - 1]; /* be certain */
             }
-            return (1);
+            return 1;
         }
         for (int j = 0; j < n; j++) {
             out[j] = 0.f;
         }
-        return (0);
+        return 0;
     }
     private static float[] FLOOR_fromdB_LOOKUP = {1.0649863e-07F, 1.1341951e-07F,
         1.2079015e-07F, 1.2863978e-07F, 1.3699951e-07F, 1.4590251e-07F,
@@ -554,7 +554,7 @@ class Floor1 extends FuncFloor {
 
             ret.n = info.n;
 
-            return (ret);
+            return ret;
         }
     }
 

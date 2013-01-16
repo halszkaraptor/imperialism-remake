@@ -235,6 +235,6 @@ class Mdct {
                 x[x2--] = (wC - wACO - wBCE) * .5f;
             }
         }
-        return (x);
+        return x;
     }
 }

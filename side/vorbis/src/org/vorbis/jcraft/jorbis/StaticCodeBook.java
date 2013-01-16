@@ -131,7 +131,7 @@ class StaticCodeBook {
                 // explicitly populated value mapping
                 if (quantlist == null) {
                     // no quantlist?  error
-                    return (-1);
+                    return -1;
                 }
 
                 // values that define the dequantization
@@ -160,9 +160,9 @@ class StaticCodeBook {
             break;
             default:
                 // error case; we don't have any other map types now
-                return (-1);
+                return -1;
         }
-        return (0);
+        return 0;
     }
 
     // unpacks a codebook from the packet buffer into the codebook struct,
@@ -175,7 +175,7 @@ class StaticCodeBook {
         if (opb.read(24) != 0x564342) {
             //    goto _eofout;
             clear();
-            return (-1);
+            return -1;
         }
 
         // first the basic parameters
@@ -184,7 +184,7 @@ class StaticCodeBook {
         if (entries == -1) {
             //    goto _eofout;
             clear();
-            return (-1);
+            return -1;
         }
 
         // codeword ordering.... length ordered or unordered?
@@ -203,7 +203,7 @@ class StaticCodeBook {
                             if (num == -1) {
                                 //            goto _eofout;
                                 clear();
-                                return (-1);
+                                return -1;
                             }
                             lengthlist[i] = num + 1;
                         } else {
@@ -217,7 +217,7 @@ class StaticCodeBook {
                         if (num == -1) {
                             //          goto _eofout;
                             clear();
-                            return (-1);
+                            return -1;
                         }
                         lengthlist[i] = num + 1;
                     }
@@ -233,7 +233,7 @@ class StaticCodeBook {
                     if (num == -1) {
                         //          goto _eofout;
                         clear();
-                        return (-1);
+                        return -1;
                     }
                     for (int j = 0; j < num; j++, i++) {
                         lengthlist[i] = length;
@@ -244,7 +244,7 @@ class StaticCodeBook {
             break;
             default:
                 // EOF
-                return (-1);
+                return -1;
         }
 
         // Do we have a mapping to unpack?
@@ -278,17 +278,17 @@ class StaticCodeBook {
                 if (quantlist[quantvals - 1] == -1) {
                     //        goto _eofout;
                     clear();
-                    return (-1);
+                    return -1;
                 }
             }
             break;
             default:
                 //    goto _eofout;
                 clear();
-                return (-1);
+                return -1;
         }
         // all set
-        return (0);
+        return 0;
         //    _errout:
         //    _eofout:
         //    vorbis_staticbook_clear(s);
@@ -314,7 +314,7 @@ class StaticCodeBook {
                 acc1 *= vals + 1;
             }
             if (acc <= entries && acc1 > entries) {
-                return (vals);
+                return vals;
             } else {
                 if (acc > entries) {
                     vals--;
@@ -383,9 +383,9 @@ class StaticCodeBook {
                     }
                 //System.err.println("\nr[0]="+r[0]);
             }
-            return (r);
+            return r;
         }
-        return (null);
+        return null;
     }
     // 32 bit float (not IEEE; nonnormalized mantissa +
     // biased exponent) : neeeeeee eeemmmmm mmmmmmmm mmmmmmmm
@@ -406,7 +406,7 @@ class StaticCodeBook {
         exp = (int) Math.floor(Math.log(val) / Math.log(2));
         mant = (int) Math.rint(Math.pow(val, (VQ_FMAN - 1) - exp));
         exp = (exp + VQ_FEXP_BIAS) << VQ_FMAN;
-        return (sign | exp | mant);
+        return sign | exp | mant;
     }
 
     static float float32_unpack(int val) {
@@ -415,7 +415,7 @@ class StaticCodeBook {
         if ((val & 0x80000000) != 0) {
             mant = -mant;
         }
-        return (ldexp(mant, ((int) exp) - (VQ_FMAN - 1) - VQ_FEXP_BIAS));
+        return ldexp(mant, ((int) exp) - (VQ_FMAN - 1) - VQ_FEXP_BIAS);
     }
 
     static float ldexp(float foo, int e) {

@@ -35,8 +35,8 @@ import java.util.Iterator;
 
 import javax.sound.sampled.AudioFormat;
 
-import org.tritonus.share.ArraySet;
-import org.tritonus.share.sampled.AudioFormats;
+import share.ArraySet;
+import share.sampled.AudioFormats;
 
 
 /**
@@ -64,7 +64,7 @@ import org.tritonus.share.sampled.AudioFormats;
 public class AudioFormatSet extends ArraySet<AudioFormat>
 {
 	private static final long serialVersionUID = 1;
-	
+
 	protected static final AudioFormat[]		EMPTY_FORMAT_ARRAY = new AudioFormat[0];
 
 	public AudioFormatSet() {

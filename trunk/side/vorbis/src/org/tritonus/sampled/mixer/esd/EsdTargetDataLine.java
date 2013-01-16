@@ -36,7 +36,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.lowlevel.esd.Esd;
 import org.tritonus.lowlevel.esd.EsdRecordingStream;
 import org.tritonus.share.sampled.TConversionTool;

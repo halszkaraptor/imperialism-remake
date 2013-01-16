@@ -23,23 +23,23 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
 import vorbis.jcraft.jogg.Buffer;
 
-abstract class FuncMapping{
-  public static FuncMapping[] mapping_P= {new Mapping0()};
+abstract class FuncMapping {
 
-  abstract void pack(Info info, Object imap, Buffer buffer);
+    public static FuncMapping[] mapping_P = {new Mapping0()};
 
-  abstract Object unpack(Info info, Buffer buffer);
+    abstract void pack(Info info, Object imap, Buffer buffer);
 
-  abstract Object look(DspState vd, InfoMode vm, Object m);
+    abstract Object unpack(Info info, Buffer buffer);
 
-  abstract void free_info(Object imap);
+    abstract Object look(DspState vd, InfoMode vm, Object m);
 
-  abstract void free_look(Object imap);
+    abstract void free_info(Object imap);
 
-  abstract int inverse(Block vd, Object lm);
+    abstract void free_look(Object imap);
+
+    abstract int inverse(Block vd, Object lm);
 }

@@ -33,7 +33,7 @@ package org.tritonus.share.sampled.mixer;
 import javax.sound.sampled.CompoundControl;
 import javax.sound.sampled.Control;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

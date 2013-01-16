@@ -23,23 +23,23 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
 import vorbis.jcraft.jogg.Buffer;
 
-abstract class FuncTime{
-  public static FuncTime[] time_P= {new Time0()};
+abstract class FuncTime {
 
-  abstract void pack(Object i, Buffer opb);
+    public static FuncTime[] time_P = {new Time0()};
 
-  abstract Object unpack(Info vi, Buffer opb);
+    abstract void pack(Object i, Buffer opb);
 
-  abstract Object look(DspState vd, InfoMode vm, Object i);
+    abstract Object unpack(Info vi, Buffer opb);
 
-  abstract void free_info(Object i);
+    abstract Object look(DspState vd, InfoMode vm, Object i);
 
-  abstract void free_look(Object i);
+    abstract void free_info(Object i);
 
-  abstract int inverse(Block vb, Object i, float[] in, float[] out);
+    abstract void free_look(Object i);
+
+    abstract int inverse(Block vb, Object i, float[] in, float[] out);
 }

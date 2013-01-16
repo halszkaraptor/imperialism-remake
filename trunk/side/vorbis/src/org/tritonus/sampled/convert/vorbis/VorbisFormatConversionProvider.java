@@ -46,9 +46,9 @@ import org.tritonus.lowlevel.vorbis.Comment;
 import org.tritonus.lowlevel.vorbis.DspState;
 import org.tritonus.lowlevel.vorbis.Info;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
-import org.tritonus.share.sampled.convert.TAsynchronousFilteredAudioInputStream;
+import share.TDebug;
+import share.sampled.AudioFormats;
+import share.sampled.convert.TAsynchronousFilteredAudioInputStream;
 import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
 
 

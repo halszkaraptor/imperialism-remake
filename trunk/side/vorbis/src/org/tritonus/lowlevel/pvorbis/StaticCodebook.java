@@ -29,7 +29,7 @@
 package org.tritonus.lowlevel.pvorbis;
 
 import org.tritonus.lowlevel.pogg.Buffer;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Holds the static part of a codebook.
@@ -75,7 +75,7 @@ implements VorbisConstants
 
 
 	/** Initializes the comment object.
-		Sets the vendor string to null and 
+		Sets the vendor string to null and
 		removes all comments.
 	 */
 	public void init()
@@ -93,13 +93,13 @@ implements VorbisConstants
 // 		String strVendor = "tritonus.org pvorbis library";
 // 		//String strVendor = "Xiph.Org libVorbis I 20030909";
 
-// 		/* preamble */  
+// 		/* preamble */
 // 		buffer.write(0x03, 8);
 // 		buffer.write("vorbis");
 
 // 		/* vendor */
 // 		buffer.writeWithLength(strVendor);
-  
+
 // 		/* comments */
 // 		buffer.write(m_comments.size(), 32);
 // 		if(m_comments.size() > 0)

@@ -30,7 +30,7 @@
 
 package org.tritonus.lowlevel.esd;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 public class EsdStream
@@ -64,7 +64,7 @@ extends	Esd
 
 	/**	Opens the connection to esd and initiates a stream.
 	 *
-	 */	
+	 */
 	public native void open(int nFormat, int nSampleRate);
 
 

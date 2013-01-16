@@ -33,7 +33,7 @@ import java.util.Collection;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiDevice;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

@@ -23,18 +23,17 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
-public class JOrbisException extends Exception{
+public class JOrbisException extends Exception {
 
-  private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
-  public JOrbisException(){
-    super();
-  }
+    public JOrbisException() {
+        super();
+    }
 
-  public JOrbisException(String s){
-    super("JOrbis: "+s);
-  }
+    public JOrbisException(String s) {
+        super("JOrbis: " + s);
+    }
 }

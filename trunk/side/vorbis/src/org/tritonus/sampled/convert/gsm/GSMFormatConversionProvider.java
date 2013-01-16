@@ -47,15 +47,15 @@ import org.tritonus.lowlevel.gsm.GSMDecoder;
 import org.tritonus.lowlevel.gsm.GsmConstants;
 import org.tritonus.lowlevel.gsm.GsmFrameFormat;
 import org.tritonus.lowlevel.gsm.InvalidGSMFrameException;
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
+import share.TDebug;
+import share.sampled.AudioFormats;
 import org.tritonus.share.sampled.TConversionTool;
-import org.tritonus.share.sampled.convert.TAsynchronousFilteredAudioInputStream;
-import org.tritonus.share.sampled.convert.TSimpleFormatConversionProvider;
+import share.sampled.convert.TAsynchronousFilteredAudioInputStream;
+import share.sampled.convert.TSimpleFormatConversionProvider;
 
 /**
  * FormatConversionProvider for GSM 06.10.
- * 
+ *
  * @author Matthias Pfisterer
  */
 public class GSMFormatConversionProvider extends

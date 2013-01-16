@@ -37,7 +37,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.lowlevel.alsa.Alsa;
 import org.tritonus.lowlevel.alsa.AlsaPcm;
 import org.tritonus.lowlevel.alsa.AlsaPcmHWParams;

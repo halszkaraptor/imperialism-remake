@@ -28,7 +28,7 @@
 
 package org.tritonus.lowlevel.pogg;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Wrapper for ogg_stream_state.
@@ -292,7 +292,7 @@ public class StreamState
 
    since ogg_stream_flush will flush the last page in a stream even if
    it's undersized, you almost certainly want to use ogg_stream_pageout
-   (and *not* ogg_stream_flush) unless you specifically need to flush 
+   (and *not* ogg_stream_flush) unless you specifically need to flush
    an page regardless of size in the middle of a stream.
 */
 	public int flush(Page page)
@@ -336,16 +336,16 @@ public class StreamState
 				granule_pos = m_alGranuleValues[vals];
 			}
 		}
-  
+
 		/* construct the header in temp storage */
 		m_abHeader[0] = (byte) 'O';
 		m_abHeader[1] = (byte) 'g';
 		m_abHeader[2] = (byte) 'g';
 		m_abHeader[3] = (byte) 'S';
-  
+
 		/* stream structure version */
 		m_abHeader[4] = 0;
-  
+
 		m_abHeader[5] = 0x00;
 		/* continued packet flag? */
 		if ((m_anLacingValues[0] & 0x100) == 0)
@@ -395,7 +395,7 @@ public class StreamState
 		m_abHeader[23] = 0;
 		m_abHeader[24] = 0;
 		m_abHeader[25] = 0;
-  
+
 		/* segment table */
 		m_abHeader[26] = (byte) (vals & 0xFF);
 		for (i = 0; i < vals; i++)
@@ -417,9 +417,9 @@ public class StreamState
 		System.arraycopy(m_alGranuleValues, vals, m_alGranuleValues, 0,
 						 m_nLacingFill);
 		m_nBodyReturned += bytes;
-  
+
 		/* calculate the checksum */
-  
+
 		page.setChecksum();
 
 		/* done */
@@ -527,7 +527,7 @@ public class StreamState
 				}
 			}
 		}
-  
+
 		if (bodysize > 0)
 		{
 			assureBodyDataCapacity(bodysize);
@@ -558,7 +558,7 @@ public class StreamState
 			if (val < 255)
 				m_nLacingPacket = m_nLacingFill;
 		}
-  
+
 		/* set the granulepos on the last granuleval of the last full packet */
 		if (saved != -1)
 		{

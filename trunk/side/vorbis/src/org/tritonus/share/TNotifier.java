@@ -30,6 +30,7 @@
 
 package org.tritonus.share;
 
+import share.TDebug;
 import java.util.EventObject;
 import java.util.Collection;
 import java.util.ArrayList;

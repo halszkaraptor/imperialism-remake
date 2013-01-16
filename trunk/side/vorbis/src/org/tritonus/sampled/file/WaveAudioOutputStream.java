@@ -35,7 +35,7 @@ import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.file.TAudioOutputStream;
 import org.tritonus.share.sampled.file.TDataOutputStream;
 
@@ -53,7 +53,7 @@ public class WaveAudioOutputStream extends TAudioOutputStream {
 	public WaveAudioOutputStream(AudioFormat audioFormat,
 	                             long lLength,
 	                             TDataOutputStream dataOutputStream) {
-		// always do backpatching if the stream supports seeking, in case the 
+		// always do backpatching if the stream supports seeking, in case the
 		// reported stream length is longer than the actual data
 		super(audioFormat,
 		      lLength,
@@ -115,12 +115,12 @@ public class WaveAudioOutputStream extends TAudioOutputStream {
 		if (lLength == AudioSystem.NOT_SPECIFIED || lDataChunkSize > 0xFFFFFFFFL) {
 			lDataChunkSize = 0xFFFFFFFFL;
 		}
-		
-		long RIFF_Size = lDataChunkSize+dataOffset-WaveTool.CHUNK_HEADER_SIZE; 
+
+		long RIFF_Size = lDataChunkSize+dataOffset-WaveTool.CHUNK_HEADER_SIZE;
 		if (lLength == AudioSystem.NOT_SPECIFIED || RIFF_Size > 0xFFFFFFFFL) {
 			RIFF_Size = 0xFFFFFFFFL;
 		}
-		
+
 		TDataOutputStream	dos = getDataOutputStream();
 
 		// write RIFF container chunk

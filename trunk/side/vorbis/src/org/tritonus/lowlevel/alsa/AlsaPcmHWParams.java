@@ -28,7 +28,7 @@
 
 package org.tritonus.lowlevel.alsa;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** TODO:

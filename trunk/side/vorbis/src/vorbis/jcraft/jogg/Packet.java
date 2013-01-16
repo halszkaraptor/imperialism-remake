@@ -23,25 +23,20 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jogg;
 
-public class Packet{
-  public byte[] packet_base;
-  public int packet;
-  public int bytes;
-  public int b_o_s;
-  public int e_o_s;
+public class Packet {
 
-  public long granulepos;
-
-  /**
-   * sequence number for decode; the framing
-   * knows where there's a hole in the data,
-   * but we need coupling so that the codec
-   * (which is in a seperate abstraction
-   * layer) also knows about the gap
-   */
-  public long packetno;
-
+    public byte[] packet_base;
+    public int packet;
+    public int bytes;
+    public int b_o_s;
+    public int e_o_s;
+    public long granulepos;
+    /**
+     * sequence number for decode; the framing knows where there's a hole in the
+     * data, but we need coupling so that the codec (which is in a seperate
+     * abstraction layer) also knows about the gap
+     */
+    public long packetno;
 }

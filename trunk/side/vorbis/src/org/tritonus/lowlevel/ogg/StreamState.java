@@ -28,7 +28,7 @@
 
 package org.tritonus.lowlevel.ogg;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Wrapper for ogg_stream_state.

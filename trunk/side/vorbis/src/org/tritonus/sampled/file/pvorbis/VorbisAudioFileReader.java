@@ -36,9 +36,9 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.file.TAudioFileFormat;
-import org.tritonus.share.sampled.file.TAudioFileReader;
+import share.TDebug;
+import share.sampled.file.TAudioFileFormat;
+import share.sampled.file.TAudioFileReader;
 
 import org.tritonus.lowlevel.pogg.Page;
 import org.tritonus.lowlevel.pogg.Packet;
@@ -74,7 +74,7 @@ extends TAudioFileReader
 		StreamState	oggStreamState = new StreamState();
 		Page		oggPage;
 		Packet		oggPacket;
-		
+
 		//$fb catch unsatisfied link error if native lib is not available
 		try {
 			oggPage = new Page();
@@ -100,7 +100,7 @@ extends TAudioFileReader
 		if (TDebug.TraceAudioFileReader) { TDebug.out("read bytes from input stream: " + bytes); }
 		int nResult = oggSyncState.write(abBuffer, bytes);
 		if (TDebug.TraceAudioFileReader) { TDebug.out("SyncState.write() returned " + nResult); }
-    
+
 		// Get the first page.
 		if (oggSyncState.pageOut(oggPage) != 1)
 		{
@@ -147,7 +147,7 @@ extends TAudioFileReader
 			oggPacket.free();
 			throw new UnsupportedAudioFileException("not a Vorbis stream: can't read first page of Ogg bitstream data");
 		}
-    
+
 		if (oggStreamState.packetOut(oggPacket) != 1)
 		{
 			if (TDebug.TraceAudioFileReader) { TDebug.out("can't read initial header packet"); }

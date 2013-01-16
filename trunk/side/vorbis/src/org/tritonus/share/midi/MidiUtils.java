@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

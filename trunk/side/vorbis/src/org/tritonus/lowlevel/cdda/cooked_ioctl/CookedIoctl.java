@@ -30,7 +30,7 @@
 
 package org.tritonus.lowlevel.cdda.cooked_ioctl;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

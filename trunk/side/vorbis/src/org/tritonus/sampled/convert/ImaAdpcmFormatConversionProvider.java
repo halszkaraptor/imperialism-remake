@@ -30,10 +30,10 @@ Netherlands.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the names of Stichting Mathematisch
 Centrum or CWI not be used in advertising or publicity pertaining to
 distribution of the software without specific, written prior permission.
@@ -60,8 +60,8 @@ import java.util.Iterator;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
+import share.TDebug;
+import share.sampled.AudioFormats;
 import org.tritonus.share.sampled.convert.TSynchronousFilteredAudioInputStream;
 import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
 
@@ -115,7 +115,7 @@ extends TEncodingFormatConversionProvider
 		5894, 6484, 7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
 		15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
 	};
-    
+
 
 
 
@@ -212,7 +212,7 @@ extends TEncodingFormatConversionProvider
 		if (TDebug.TraceAudioConverter) { TDebug.out("ImaAdpcmFormatConversionProvider.getDefaultTargetFormat(): really new target format: " + newTargetFormat); }
 		return newTargetFormat;
 	}
-		
+
 
 
 	/**	AudioInputStream returned on decoding of IMA ADPCM.
@@ -264,7 +264,7 @@ extends TEncodingFormatConversionProvider
 			step = stepsizeTable[index];
 
 			bufferstep = false;
-    
+
 			for ( ; len > 0 ; len-- )
 			{
 				/* Step 1 - get the delta value */
@@ -414,7 +414,7 @@ extends TEncodingFormatConversionProvider
 			valpred = m_state.valprev;
 			index = m_state.index;
 			step = stepsizeTable[index];
-    
+
 			bufferstep = true;
 
 			for ( ; len > 0 ; len-- )
@@ -442,7 +442,7 @@ extends TEncodingFormatConversionProvider
 				*/
 				delta = 0;
 				vpdiff = (step >> 3);
-	
+
 				if ( diff >= step )
 				{
 					delta = 4;
@@ -476,7 +476,7 @@ extends TEncodingFormatConversionProvider
 
 				/* Step 5 - Assemble value, update index and step values */
 				delta |= sign;
-	
+
 				index += indexTable[delta];
 				if ( index < 0 )
 					index = 0;
@@ -499,7 +499,7 @@ extends TEncodingFormatConversionProvider
 			/* Output last step, if needed */
 			if ( ! bufferstep )
 				outBuffer[outp++] = (byte) outputbuffer;
-    
+
 			m_state.valprev = valpred;
 			m_state.index = index;
 			if (TDebug.TraceAudioConverter) { TDebug.out("EncodedImaAdpcmAudioInputStream.convert(): end"); }

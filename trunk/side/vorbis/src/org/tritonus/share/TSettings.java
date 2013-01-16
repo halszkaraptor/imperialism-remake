@@ -32,7 +32,7 @@ package org.tritonus.share;
 
 import  java.security.AccessControlException;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 public class TSettings

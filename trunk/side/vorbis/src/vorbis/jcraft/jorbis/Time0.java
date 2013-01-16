@@ -23,30 +23,30 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
 import vorbis.jcraft.jogg.Buffer;
 
-class Time0 extends FuncTime{
-  void pack(Object i, Buffer opb){
-  }
+class Time0 extends FuncTime {
 
-  Object unpack(Info vi, Buffer opb){
-    return "";
-  }
+    void pack(Object i, Buffer opb) {
+    }
 
-  Object look(DspState vd, InfoMode mi, Object i){
-    return "";
-  }
+    Object unpack(Info vi, Buffer opb) {
+        return "";
+    }
 
-  void free_info(Object i){
-  }
+    Object look(DspState vd, InfoMode mi, Object i) {
+        return "";
+    }
 
-  void free_look(Object i){
-  }
+    void free_info(Object i) {
+    }
 
-  int inverse(Block vb, Object i, float[] in, float[] out){
-    return 0;
-  }
+    void free_look(Object i) {
+    }
+
+    int inverse(Block vb, Object i, float[] in, float[] out) {
+        return 0;
+    }
 }

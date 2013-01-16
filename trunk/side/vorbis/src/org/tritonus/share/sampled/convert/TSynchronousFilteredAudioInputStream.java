@@ -30,12 +30,13 @@
 
 package org.tritonus.share.sampled.convert;
 
+import share.sampled.convert.TAudioInputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.AudioUtils;
 import org.tritonus.share.sampled.FloatSampleBuffer;
 import org.tritonus.share.sampled.FloatSampleInput;
@@ -53,16 +54,16 @@ public abstract class TSynchronousFilteredAudioInputStream
 extends TAudioInputStream implements FloatSampleInput {
 
 	private AudioInputStream originalStream;
-	
+
 	/** the same originalStream cast to FloatSampleInput, if it is one */
 	private FloatSampleInput originalStreamFloat;
-	
+
 	private AudioFormat originalFormat;
 	/** 1 if original format's frame size is NOT_SPECIFIED */
 	private int originalFrameSize;
 	/** 1 if original format's frame size is NOT_SPECIFIED */
 	private int newFrameSize;
-	
+
 	private boolean EOF = false;
 
 	/**
@@ -79,7 +80,7 @@ extends TAudioInputStream implements FloatSampleInput {
 	 * it will be set to true when (frameSizeFactor==1)
 	 */
 	private boolean	m_bConvertInPlace = false;
-	
+
 	/** if this flag is set, convert(FloatSampleBuffer) is implemented by overriding classes */
 	private boolean m_enableFloatConversion = false;
 
@@ -116,16 +117,16 @@ extends TAudioInputStream implements FloatSampleInput {
 		}
 		return m_bConvertInPlace;
 	}
-	
+
 	/**
 	 * Descendant classes should call this method if they have implemented
-	 * convert(FloatSampleBuffer). That convert method will only be called 
+	 * convert(FloatSampleBuffer). That convert method will only be called
 	 * if this class' FloatSampleInput.read() is used.
 	 */
 	protected void enableFloatConversion() {
 		m_enableFloatConversion = true;
 	}
-	
+
 
 
 	/**
@@ -156,7 +157,7 @@ extends TAudioInputStream implements FloatSampleInput {
 	 * FloatSampleBuffer. Use buffer's methods to shrink the number of samples,
 	 * if necessary. This method will only be called if this stream is accessed
 	 * by way of FloatSampleInput methods.
-	 * 
+	 *
 	 * @param buffer the buffer to convert
 	 * @param offset the offset in buffer in samples
 	 * @param count the number of samples in buffer to convert
@@ -310,7 +311,7 @@ extends TAudioInputStream implements FloatSampleInput {
 	}
 
 	// interface FloatSampleInput
-	
+
 	public int getChannels() {
 		return format.getChannels();
 	}
@@ -330,7 +331,7 @@ extends TAudioInputStream implements FloatSampleInput {
 
 	/** temporary byte buffer for conversion from/to byte/float arrays */
 	private byte[] m_floatByteBuffer = null;
-	
+
 	/**
 	 * read sampleCount converted samples at the specified offset. The current
 	 * implementation requires that offset is 0 and sampleCount ==

@@ -19,7 +19,6 @@
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  */
-
 package vorbis.spi.sampled.file;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -27,15 +26,15 @@ import javax.sound.sampled.AudioFileFormat;
 /**
  * FileFormatTypes used by the VORBIS audio decoder.
  */
-public class VorbisFileFormatType extends AudioFileFormat.Type
-{
-  public static final AudioFileFormat.Type VORBIS = new VorbisFileFormatType("VORBIS", "ogg");
-  public static final AudioFileFormat.Type OGG = new VorbisFileFormatType("OGG", "ogg");
-  /**
-   * Constructor.
-   */
-  public VorbisFileFormatType(String name, String extension)
-  {
-    super(name, extension);
-  }
+public class VorbisFileFormatType extends AudioFileFormat.Type {
+
+    public static final AudioFileFormat.Type VORBIS = new VorbisFileFormatType("VORBIS", "ogg");
+    public static final AudioFileFormat.Type OGG = new VorbisFileFormatType("OGG", "ogg");
+
+    /**
+     * Constructor.
+     */
+    public VorbisFileFormatType(String name, String extension) {
+        super(name, extension);
+    }
 }

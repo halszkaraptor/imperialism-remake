@@ -30,7 +30,7 @@ package org.tritonus.lowlevel.pogg;
 
 import java.io.UnsupportedEncodingException;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Wrapper for oggpack_buffer.

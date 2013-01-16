@@ -23,12 +23,12 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
-class InfoMode{
-  int blockflag;
-  int windowtype;
-  int transformtype;
-  int mapping;
+class InfoMode {
+
+    int blockflag;
+    int windowtype;
+    int transformtype;
+    int mapping;
 }

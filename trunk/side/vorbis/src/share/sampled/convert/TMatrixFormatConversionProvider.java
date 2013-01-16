@@ -1,16 +1,13 @@
-package org.tritonus.share.sampled.convert;
+package share.sampled.convert;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioFormat.Encoding;
-import org.tritonus.share.ArraySet;
-import org.tritonus.share.sampled.AudioFormats;
+import share.ArraySet;
+import share.sampled.AudioFormats;
 
 public abstract class TMatrixFormatConversionProvider extends TSimpleFormatConversionProvider {
 

@@ -30,7 +30,7 @@
 
 package org.tritonus.lowlevel.ogg;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /**	libogg loading.

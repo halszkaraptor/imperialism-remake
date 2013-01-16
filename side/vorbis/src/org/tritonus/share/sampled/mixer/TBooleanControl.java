@@ -32,7 +32,7 @@ package org.tritonus.share.sampled.mixer;
 
 import javax.sound.sampled.BooleanControl;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

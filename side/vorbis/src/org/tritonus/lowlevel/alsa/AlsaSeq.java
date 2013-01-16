@@ -32,7 +32,7 @@ package org.tritonus.lowlevel.alsa;
 import java.lang.UnsupportedOperationException;
 import java.util.Iterator;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 
@@ -81,13 +81,13 @@ public class AlsaSeq
 	public static final int	SND_SEQ_EVENT_TIMESIGN =	23;	/* SMF Time Signature event */
 	public static final int	SND_SEQ_EVENT_KEYSIGN =		24;	/* SMF Key Signature event */
 /* 25-29: reserved */
-	        
+
 /* 30-39: timer messages
  * event data type = snd_seq_ev_queue_control_t
  */
 	public static final int	SND_SEQ_EVENT_START =		30;	/* midi Real Time Start message */
 	public static final int	SND_SEQ_EVENT_CONTINUE =	31;	/* midi Real Time Continue message */
-	public static final int	SND_SEQ_EVENT_STOP =		32;	/* midi Real Time Stop message */	
+	public static final int	SND_SEQ_EVENT_STOP =		32;	/* midi Real Time Stop message */
 	public static final int	SND_SEQ_EVENT_SETPOS_TICK =	33;	/* set tick queue position */
 	public static final int	SND_SEQ_EVENT_SETPOS_TIME =	34;	/* set realtime queue position */
 	public static final int	SND_SEQ_EVENT_TEMPO =		35;	/* (SMF) Tempo event */
@@ -425,9 +425,9 @@ public class AlsaSeq
 	public native String getName();
 
 	public native int getType();
-	
+
 	public native int setNonblock(boolean bNonblock);
-	
+
 	public native int getClientId();
 
 	public native int getOutputBufferSize();

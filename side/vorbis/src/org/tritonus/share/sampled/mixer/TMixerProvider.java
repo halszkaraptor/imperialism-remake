@@ -39,7 +39,7 @@ import java.util.Set;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.spi.MixerProvider;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

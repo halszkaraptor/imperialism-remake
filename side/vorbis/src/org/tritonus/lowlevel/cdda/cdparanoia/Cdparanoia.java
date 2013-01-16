@@ -30,7 +30,7 @@
 
 package org.tritonus.lowlevel.cdda.cdparanoia;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

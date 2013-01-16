@@ -41,7 +41,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

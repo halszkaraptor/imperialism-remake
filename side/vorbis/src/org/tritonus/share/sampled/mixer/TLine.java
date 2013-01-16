@@ -44,7 +44,7 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.TNotifier;
 
 

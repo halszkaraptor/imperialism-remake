@@ -30,13 +30,14 @@
 
 package org.tritonus.share.sampled.convert;
 
+import share.sampled.convert.TSimpleFormatConversionProvider;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.sound.sampled.AudioFormat;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.ArraySet;
+import share.TDebug;
+import share.ArraySet;
 
 
 // this class depends on handling of AudioSystem.NOT_SPECIFIED in AudioFormat.matches()
@@ -66,7 +67,7 @@ import org.tritonus.share.ArraySet;
 public abstract class TEncodingFormatConversionProvider
 extends TSimpleFormatConversionProvider
 {
-	
+
 	/** create an instance. The given formats can be set to null. */
 	protected TEncodingFormatConversionProvider(
 	    Collection<AudioFormat> sourceFormats,

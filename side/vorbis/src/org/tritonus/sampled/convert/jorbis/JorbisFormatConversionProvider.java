@@ -41,9 +41,9 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
-import org.tritonus.share.sampled.convert.TAsynchronousFilteredAudioInputStream;
+import share.TDebug;
+import share.sampled.AudioFormats;
+import share.sampled.convert.TAsynchronousFilteredAudioInputStream;
 import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
 
 import vorbis.jcraft.jogg.SyncState;

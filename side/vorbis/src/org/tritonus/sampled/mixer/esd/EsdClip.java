@@ -40,7 +40,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.lowlevel.esd.EsdSample;
 import org.tritonus.lowlevel.esd.Esd;
 import org.tritonus.share.sampled.mixer.TDataLine;

@@ -47,8 +47,8 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.ControllerEventListener;
 import javax.sound.midi.MidiDevice;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.ArraySet;
+import share.TDebug;
+import share.ArraySet;
 
 
 

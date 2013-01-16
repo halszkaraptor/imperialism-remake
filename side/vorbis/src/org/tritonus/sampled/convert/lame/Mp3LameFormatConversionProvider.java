@@ -38,10 +38,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.AudioFormatSet;
-import org.tritonus.share.sampled.convert.TSimpleFormatConversionProvider;
-import org.tritonus.share.sampled.convert.TAsynchronousFilteredAudioInputStream;
+import share.sampled.convert.TSimpleFormatConversionProvider;
+import share.sampled.convert.TAsynchronousFilteredAudioInputStream;
 
 import org.tritonus.lowlevel.lame.Lame;
 
@@ -51,7 +51,7 @@ import org.tritonus.lowlevel.lame.Lame;
  * It uses a sloppy implementation of the MPEG1L3 encoding: It is used as a
  * common denominator. So users can always ask for MPEG1L3 encoding but may get
  * in fact an MPEG2L3 or MPEG2.5L3 encoded stream.
- * 
+ *
  * @author Florian Bomers
  */
 // TODO: add decoding ? more work on LAME itself...

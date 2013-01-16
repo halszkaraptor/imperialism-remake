@@ -39,13 +39,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
+import share.TDebug;
+import share.sampled.AudioFormats;
 import org.tritonus.share.sampled.FloatSampleBuffer;
 import org.tritonus.share.sampled.FloatSampleInput;
 import org.tritonus.share.sampled.AudioUtils;
-import org.tritonus.share.sampled.convert.TSimpleFormatConversionProvider;
-import org.tritonus.share.ArraySet;
+import share.sampled.convert.TSimpleFormatConversionProvider;
+import share.ArraySet;
 
 /**
  * This provider converts sample rate of 2 PCM streams. <br>
@@ -62,7 +62,7 @@ import org.tritonus.share.ArraySet;
  * <li>accept a stream where the sample rates are equal. This case should be
  * handled by the PCM2PCM converter
  * </ul>
- * 
+ *
  * @author Florian Bomers
  */
 
@@ -583,7 +583,7 @@ public class SampleRateConversionProvider extends
 
 		/**
 		 * optimized version
-		 * 
+		 *
 		 * @param inSamples
 		 * @param inSampleOffset
 		 * @param inSampleCount
@@ -700,7 +700,7 @@ public class SampleRateConversionProvider extends
 
 		/**
 		 * optimized version of the linear interpolator
-		 * 
+		 *
 		 * @param inSamples
 		 * @param inSampleOffset
 		 * @param inSampleCount
@@ -803,7 +803,7 @@ public class SampleRateConversionProvider extends
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.tritonus.share.sampled.FloatSampleInput#getChannels()
 		 */
 		public int getChannels() {
@@ -812,7 +812,7 @@ public class SampleRateConversionProvider extends
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.tritonus.share.sampled.FloatSampleInput#getSampleRate()
 		 */
 		public float getSampleRate() {
@@ -821,7 +821,7 @@ public class SampleRateConversionProvider extends
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.tritonus.share.sampled.FloatSampleInput#isDone()
 		 */
 		public boolean isDone() {
@@ -840,7 +840,7 @@ public class SampleRateConversionProvider extends
 		 * outBuffer.getSampleCount() are converted. In general, if
 		 * outBuffer.getSampleCount()) is less after processing this function,
 		 * then it is an indicator that it was the last block to be processed.
-		 * 
+		 *
 		 * @see #setConversionAlgorithm(int)
 		 * @param outBuffer the buffer that the converted samples will be
 		 *            written to.

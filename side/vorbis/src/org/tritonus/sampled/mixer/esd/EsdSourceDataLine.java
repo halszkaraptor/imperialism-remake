@@ -37,7 +37,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.lowlevel.esd.Esd;
 import org.tritonus.lowlevel.esd.EsdStream;
 import org.tritonus.share.sampled.TConversionTool;
@@ -222,7 +222,7 @@ implements SourceDataLine
 				{
 					return nLength - nRemaining;
 				}
-				// TODO: check return 
+				// TODO: check return
 				int nWritten = m_esdStream.write(abData, nOffset, nRemaining);
 				nOffset += nWritten;
 				nRemaining -= nWritten;

@@ -31,7 +31,7 @@
 package org.tritonus.sampled.mixer.esd;
 
 import org.tritonus.lowlevel.esd.Esd;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.mixer.TMixerProvider;
 
 

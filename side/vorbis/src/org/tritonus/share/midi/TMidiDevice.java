@@ -42,7 +42,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /**	Base class for MidiDevice implementations.
@@ -418,7 +418,7 @@ implements MidiDevice
 
 	/**	Receiver proxy class.
 	 *	This class' objects are handed out on calls to
-	 *	TMidiDevice.getReceiver(). 
+	 *	TMidiDevice.getReceiver().
 	 */
 	public class TReceiver
 	implements Receiver

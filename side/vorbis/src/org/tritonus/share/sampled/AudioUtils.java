@@ -29,6 +29,7 @@
 
 package org.tritonus.share.sampled;
 
+import share.sampled.AudioFormats;
 import java.util.Iterator;
 
 import javax.sound.sampled.AudioSystem;
@@ -98,7 +99,7 @@ public class AudioUtils
 		}
 		return false;
 	}
-	
+
 	/** @return the frame size, given the sample size in bits and number of channels */
 	public static int getFrameSize(int channels, int sampleSizeInBits) {
 		if (channels < 0 || sampleSizeInBits < 0) {
@@ -222,9 +223,9 @@ public class AudioUtils
 	public static double frames2MillisD(long frames, double frameRate) {
 		return frames/frameRate*1000.0;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param sr1 the first sample rate to compare
 	 * @param sr2 the second sample rate to compare
 	 * @return true if the sample rates are (almost) identical
@@ -232,7 +233,7 @@ public class AudioUtils
 	public static boolean sampleRateEquals(float sr1, float sr2) {
 		return Math.abs(sr1-sr2)<0.0000001;
 	}
-	
+
 	/**
 	 * @param format the audio format to test
 	 * @return true if the format is either PCM_SIGNED or PCM_UNSIGNED
@@ -241,10 +242,10 @@ public class AudioUtils
 		return format.getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)
 			|| format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED);
 	}
-	
+
 	/**
 	 * Return if the passed mixer info is the Java Sound Audio Engine.
-	 * 
+	 *
 	 * @param mixerInfo the mixer info to query
 	 * @return true if the mixer info describes the Java Sound Audio Engine
 	 */
@@ -252,16 +253,16 @@ public class AudioUtils
 		return (mixerInfo != null) && (mixerInfo.getName() != null)
 				&& mixerInfo.getName().equals("Java Sound Audio Engine");
 	}
-	
+
 	/**
 	 * Return if the passed line is writing to or reading from the Java Sound Audio Engine.
-	 * 
+	 *
 	 * @param line the data line to query
 	 * @return true if the line is using the Java Sound Audio Engine
 	 */
 	public static boolean isJavaSoundAudioEngine(DataLine line) {
 		if (line != null) {
-			String clazz = line.getClass().toString(); 
+			String clazz = line.getClass().toString();
 			return clazz.indexOf("MixerSourceLine") >= 0
 			|| clazz.indexOf("MixerClip") >= 0
 			|| clazz.indexOf("SimpleInputDevice") >= 0;
@@ -286,7 +287,7 @@ public class AudioUtils
 		return (number==AudioSystem.NOT_SPECIFIED)?"NOT_SPECIFIED":String.valueOf(number);
     }
 
-    /** 
+    /**
      * For debugging purposes.
      */
     public static String format2ShortStr(AudioFormat format) {
@@ -296,7 +297,7 @@ public class AudioUtils
 	    	NS_or_number(((int)format.getSampleRate())) + "Hz-"+
 	    	(format.isBigEndian() ? "be" : "le");
     }
-    
+
 	/**
 	 * The value used for negative infinity in decibels. The default value is
 	 * -100.0, which is approximately the s/n ratio achieved with 16-bit samples.
@@ -306,7 +307,7 @@ public class AudioUtils
 
 	/**
 	 * Get decibel from a linear factor.
-	 * 
+	 *
 	 * @param linearFactor 0..1..inf
 	 * @return the converted decibel (SILENCE_DECIBEL...0...inf)
 	 */
@@ -323,7 +324,7 @@ public class AudioUtils
 
 	/**
 	 * Calculate the linear factor corresponding to the specified decibel level.
-	 * 
+	 *
 	 * @param decibels [SILENCE_DECIBEL...0...inf]
 	 * @return linear factor [0...1...inf]
 	 */
@@ -334,7 +335,7 @@ public class AudioUtils
 		return Math.pow(10.0, decibels * 0.05);
 	}
 
-    
+
 
 }
 

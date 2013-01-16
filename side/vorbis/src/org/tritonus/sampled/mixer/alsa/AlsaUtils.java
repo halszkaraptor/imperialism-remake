@@ -33,7 +33,7 @@ package org.tritonus.sampled.mixer.alsa;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 
-import org.tritonus.share.sampled.AudioFormats;
+import share.sampled.AudioFormats;
 import org.tritonus.lowlevel.alsa.AlsaPcm;
 
 

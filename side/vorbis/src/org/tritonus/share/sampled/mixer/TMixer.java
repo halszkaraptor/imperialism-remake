@@ -45,9 +45,9 @@ import javax.sound.sampled.Port;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
-import org.tritonus.share.ArraySet;
+import share.TDebug;
+import share.sampled.AudioFormats;
+import share.ArraySet;
 
 
 
@@ -499,7 +499,7 @@ implements Mixer
 		}
 	}
 }
- 
+
 
 
 /*** TMixer.java ***/

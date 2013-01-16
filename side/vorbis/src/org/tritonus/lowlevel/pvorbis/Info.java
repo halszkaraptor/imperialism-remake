@@ -31,7 +31,7 @@ package org.tritonus.lowlevel.pvorbis;
 import org.tritonus.lowlevel.pogg.Ogg;
 import org.tritonus.lowlevel.pogg.Packet;
 import org.tritonus.lowlevel.pogg.Buffer;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Wrapper for vorbis_info.
@@ -397,7 +397,7 @@ implements VorbisConstants
 
 	public int pack(Buffer buffer)
 	{
-		/* preamble */  
+		/* preamble */
 		buffer.write(0x01, 8);
 		buffer.write("vorbis");
 

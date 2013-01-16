@@ -42,7 +42,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.mixer.TMixer;
 import org.tritonus.share.sampled.mixer.TMixerInfo;
 import org.tritonus.share.sampled.mixer.TSoftClip;

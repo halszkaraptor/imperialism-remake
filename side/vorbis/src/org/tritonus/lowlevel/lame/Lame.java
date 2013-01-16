@@ -33,14 +33,14 @@ package org.tritonus.lowlevel.lame;
 import java.io.UnsupportedEncodingException;
 import javax.sound.sampled.AudioFormat;
 import static javax.sound.sampled.AudioSystem.NOT_SPECIFIED;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import java.util.*;
 
 // TODO: fill frame rate, frame size
 
 /**
  * Low level wrapper for the LAME native encoder.
- * 
+ *
  * @author Florian Bomers
  */
 public class Lame {
@@ -187,7 +187,7 @@ public class Lame {
 	 * Initializes the encoder with the given source/PCM format. The default mp3
 	 * encoding parameters are used, see DEFAULT_BITRATE, DEFAULT_CHANNEL_MODE,
 	 * DEFAULT_QUALITY, and DEFAULT_VBR.
-	 * 
+	 *
 	 * @throws IllegalArgumentException when parameters are not supported by
 	 *             LAME.
 	 */
@@ -202,7 +202,7 @@ public class Lame {
 	 * that is not set, global system properties are queried for backwards
 	 * tritonus compatibility. Last, parameters will use the default values
 	 * DEFAULT_BITRATE, DEFAULT_CHANNEL_MODE, DEFAULT_QUALITY, and DEFAULT_VBR.
-	 * 
+	 *
 	 * @throws IllegalArgumentException when parameters are not supported by
 	 *             LAME.
 	 */
@@ -214,7 +214,7 @@ public class Lame {
 	/**
 	 * Initializes the encoder, overriding any parameters set in the audio
 	 * format's properties or in the system properties.
-	 * 
+	 *
 	 * @throws IllegalArgumentException when parameters are not supported by
 	 *             LAME.
 	 */
@@ -344,7 +344,7 @@ public class Lame {
 	 * are wrong. When the <code>encoded</code> array is too small, an
 	 * ArrayIndexOutOfBoundsException is thrown. <code>length</code> should be
 	 * the value returned by getPCMBufferSize.
-	 * 
+	 *
 	 * @return the number of bytes written to <code>encoded</code>. May be 0.
 	 */
 	public int encodeBuffer(byte[] pcm, int offset, int length, byte[] encoded)
@@ -366,7 +366,7 @@ public class Lame {
 
 	/**
 	 * Has to be called to finish encoding. <code>encoded</code> may be null.
-	 * 
+	 *
 	 * @return the number of bytes written to <code>encoded</code>
 	 */
 	private native int nEncodeFinish(byte[] encoded);

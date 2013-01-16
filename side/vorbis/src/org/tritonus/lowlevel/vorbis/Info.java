@@ -30,7 +30,7 @@ package org.tritonus.lowlevel.vorbis;
 
 import org.tritonus.lowlevel.ogg.Ogg;
 import org.tritonus.lowlevel.ogg.Packet;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** Wrapper for vorbis_info.

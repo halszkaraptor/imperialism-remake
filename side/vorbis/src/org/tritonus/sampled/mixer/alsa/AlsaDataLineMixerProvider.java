@@ -31,7 +31,7 @@ package org.tritonus.sampled.mixer.alsa;
 import org.tritonus.lowlevel.alsa.Alsa;
 import org.tritonus.lowlevel.alsa.AlsaCtl;
 import org.tritonus.lowlevel.alsa.AlsaCtlCardInfo;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.mixer.TMixerProvider;
 
 

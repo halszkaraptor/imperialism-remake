@@ -28,7 +28,7 @@
 
 package org.tritonus.lowlevel.alsa;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 /** TODO:
@@ -136,7 +136,7 @@ public class AlsaPcm
 	/** PCM state (snd_pcm_state_t) */
 	/** Open */
 	public static final int	SND_PCM_STATE_OPEN = 0;
-	/** Setup installed */ 
+	/** Setup installed */
 	public static final int	SND_PCM_STATE_SETUP = 1;
 	/** Ready to start */
 	public static final int	SND_PCM_STATE_PREPARED = 2;

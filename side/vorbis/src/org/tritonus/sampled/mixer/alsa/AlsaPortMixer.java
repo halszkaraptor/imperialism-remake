@@ -44,7 +44,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Port;
 
 import org.tritonus.share.GlobalInfo;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.mixer.TMixer;
 import org.tritonus.share.sampled.mixer.TMixerInfo;
 import org.tritonus.share.sampled.mixer.TPort;

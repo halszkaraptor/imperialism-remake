@@ -37,14 +37,14 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-import org.tritonus.share.TDebug;
-import org.tritonus.share.sampled.AudioFormats;
+import share.TDebug;
+import share.sampled.AudioFormats;
 import org.tritonus.share.sampled.AudioUtils;
 import org.tritonus.share.sampled.TConversionTool;
 import org.tritonus.share.sampled.FloatSampleBuffer;
-import org.tritonus.share.sampled.convert.TSimpleFormatConversionProvider;
+import share.sampled.convert.TSimpleFormatConversionProvider;
 import org.tritonus.share.sampled.convert.TSynchronousFilteredAudioInputStream;
-import org.tritonus.share.ArraySet;
+import share.ArraySet;
 
 /**
  * This provider supports these PCM conversions (<--> meaning both directions):
@@ -84,7 +84,7 @@ import org.tritonus.share.ArraySet;
  * </ol>
  * <p>
  * SampleRate CANNOT be converted.
- * 
+ *
  * @author Florian Bomers
  * @see org.tritonus.share.sampled.FloatSampleBuffer
  * @see org.tritonus.share.sampled.TConversionTool

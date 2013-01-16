@@ -33,7 +33,7 @@ package org.tritonus.share;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.tritonus.share.ArraySet;
+import share.ArraySet;
 
 
 /**

@@ -35,7 +35,7 @@ import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

@@ -28,7 +28,7 @@
 
 package org.tritonus.lowlevel.dsp;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 
@@ -90,7 +90,7 @@ public class FilterDesign
 
 
 	/**
-	   nOrder should be odd.	   
+	   nOrder should be odd.
 	 */
 	public static double[] designRectangularLowPass(int nOrder,
 							double dCornerOmega)
@@ -108,7 +108,7 @@ public class FilterDesign
 
 	/**
 	   nOrder should be odd.
-	   
+
 	 */
 	public static double[] designRectangularHighPass(int nOrder,
 							 double dCornerOmega)
@@ -128,7 +128,7 @@ public class FilterDesign
 	/**
 	   nOrder should be odd.
 	   o1 < o2 required
-	   
+
 	 */
 	public static double[] designRectangularBandPass(int nOrder,
 							 double dCornerOmega1,
@@ -148,7 +148,7 @@ public class FilterDesign
 
 	/**
 	   nOrder should be odd.
-	   
+
 	 */
 	public static double[] designRectangularBandStop(int nOrder,
 							 double dCornerOmega1,
@@ -270,7 +270,7 @@ public class FilterDesign
 		double[]	adH = Util.multiply(adRectangular, adWindow);
 		return adH;
 	}
-} 
+}
 
 
 

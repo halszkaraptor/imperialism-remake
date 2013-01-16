@@ -34,7 +34,7 @@ package org.tritonus.sampled.file;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 import org.tritonus.share.sampled.file.TAudioOutputStream;
 import org.tritonus.share.sampled.file.TDataOutputStream;
 
@@ -81,7 +81,7 @@ public class AuAudioOutputStream extends TAudioOutputStream {
 	public AuAudioOutputStream(AudioFormat audioFormat,
 	                           long lLength,
 	                           TDataOutputStream dataOutputStream) {
-		// always do backpatching if the stream supports seeking, in case the 
+		// always do backpatching if the stream supports seeking, in case the
 		// reported stream length is longer than the actual data
 		// if length exceeds 2GB, set the length field to NOT_SPECIFIED
 		super(audioFormat,

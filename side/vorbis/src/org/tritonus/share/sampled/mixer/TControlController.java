@@ -30,7 +30,7 @@
 
 package org.tritonus.share.sampled.mixer;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

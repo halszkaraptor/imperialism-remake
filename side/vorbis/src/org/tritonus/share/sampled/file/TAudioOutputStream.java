@@ -40,15 +40,15 @@ import static org.tritonus.share.sampled.TConversionTool.convertSign8;
 import static org.tritonus.share.sampled.TConversionTool.swapOrder16;
 import static org.tritonus.share.sampled.TConversionTool.swapOrder24;
 import static org.tritonus.share.sampled.TConversionTool.swapOrder32;
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
-/**	
+/**
  * Base class for classes implementing AudioOutputStream.
  *
  * @author Matthias Pfisterer
  */
- 
+
 public abstract class TAudioOutputStream
 implements AudioOutputStream
 {
@@ -130,7 +130,7 @@ implements AudioOutputStream
 	{
 		return m_dataOutputStream;
 	}
-	
+
 	/** do sign or endianness conversion */
 	private void handleImplicitConversions(byte[] abData, int nOffset, int nLength) {
 		if (m_doSignConversion) {

@@ -36,7 +36,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import org.tritonus.share.sampled.convert.TFormatConversionProvider;
+import share.sampled.convert.TFormatConversionProvider;
 
 
 // Name suggested by Florian: MetaFormatConversionProvider

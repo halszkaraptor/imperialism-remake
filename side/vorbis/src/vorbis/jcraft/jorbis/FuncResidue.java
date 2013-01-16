@@ -23,24 +23,24 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
 import vorbis.jcraft.jogg.Buffer;
 
-abstract class FuncResidue{
-  public static FuncResidue[] residue_P= {new Residue0(), new Residue1(),
-      new Residue2()};
+abstract class FuncResidue {
 
-  abstract void pack(Object vr, Buffer opb);
+    public static FuncResidue[] residue_P = {new Residue0(), new Residue1(),
+        new Residue2()};
 
-  abstract Object unpack(Info vi, Buffer opb);
+    abstract void pack(Object vr, Buffer opb);
 
-  abstract Object look(DspState vd, InfoMode vm, Object vr);
+    abstract Object unpack(Info vi, Buffer opb);
 
-  abstract void free_info(Object i);
+    abstract Object look(DspState vd, InfoMode vm, Object vr);
 
-  abstract void free_look(Object i);
+    abstract void free_info(Object i);
 
-  abstract int inverse(Block vb, Object vl, float[][] in, int[] nonzero, int ch);
+    abstract void free_look(Object i);
+
+    abstract int inverse(Block vb, Object vl, float[][] in, int[] nonzero, int ch);
 }

@@ -37,7 +37,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import static javax.sound.sampled.AudioFormat.Encoding.*;
 
-import org.tritonus.share.sampled.AudioFormats;
+import share.sampled.AudioFormats;
 import org.tritonus.share.sampled.TConversionTool;
 import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
 import org.tritonus.share.sampled.convert.TSynchronousFilteredAudioInputStream;
@@ -55,7 +55,7 @@ import org.tritonus.share.sampled.convert.TSynchronousFilteredAudioInputStream;
  * <p>
  * FrameRate, SampleRate, Channels CANNOT be converted.
  * <p>
- * This new provider replaces UlawFormatConversionProvider and AlawFormatConversionProvider. 
+ * This new provider replaces UlawFormatConversionProvider and AlawFormatConversionProvider.
  *
  * @author Florian Bomers
  */

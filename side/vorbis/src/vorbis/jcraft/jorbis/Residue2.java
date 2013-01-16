@@ -23,19 +23,21 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 package vorbis.jcraft.jorbis;
 
-class Residue2 extends Residue0{
+class Residue2 extends Residue0 {
 
-  int inverse(Block vb, Object vl, float[][] in, int[] nonzero, int ch){
-    int i=0;
-    for(i=0; i<ch; i++)
-      if(nonzero[i]!=0)
-        break;
-    if(i==ch)
-      return (0); /* no nonzero vectors */
+    int inverse(Block vb, Object vl, float[][] in, int[] nonzero, int ch) {
+        int i = 0;
+        for (i = 0; i < ch; i++) {
+            if (nonzero[i] != 0) {
+                break;
+            }
+        }
+        if (i == ch) {
+            return (0); /* no nonzero vectors */
+        }
 
-    return (_2inverse(vb, vl, in, ch));
-  }
+        return (_2inverse(vb, vl, in, ch));
+    }
 }

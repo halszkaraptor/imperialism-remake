@@ -12,8 +12,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import junit.framework.TestCase;
-import org.tritonus.share.sampled.TAudioFormat;
-import org.tritonus.share.sampled.file.TAudioFileFormat;
+import share.sampled.TAudioFormat;
+import share.sampled.file.TAudioFileFormat;
 
 /**
  * PropertiesContainer unit test. It matches test.ogg properties to

@@ -35,7 +35,7 @@ import java.util.Collection;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 
-import org.tritonus.share.TDebug;
+import share.TDebug;
 
 
 

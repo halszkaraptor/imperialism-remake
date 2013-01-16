@@ -25,10 +25,14 @@
  */
 package com.jcraft.jorbis;
 
-import com.jcraft.jogg.Packet;
-import com.jcraft.jogg.Page;
-import com.jcraft.jogg.StreamState;
-import com.jcraft.jogg.SyncState;
+import vorbis.jcraft.jorbis.Comment;
+import vorbis.jcraft.jorbis.Block;
+import vorbis.jcraft.jorbis.Info;
+import vorbis.jcraft.jorbis.DspState;
+import vorbis.jcraft.jogg.Packet;
+import vorbis.jcraft.jogg.Page;
+import vorbis.jcraft.jogg.StreamState;
+import vorbis.jcraft.jogg.SyncState;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

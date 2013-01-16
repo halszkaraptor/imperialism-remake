@@ -21,6 +21,7 @@ package javazoom.spi;
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  */
+import vorbis.spi.PropertiesContainer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

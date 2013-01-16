@@ -40,11 +40,11 @@ import org.tritonus.share.TDebug;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 import org.tritonus.share.sampled.file.TAudioFileReader;
 
-import com.jcraft.jogg.Buffer;
-import com.jcraft.jogg.SyncState;
-import com.jcraft.jogg.StreamState;
-import com.jcraft.jogg.Page;
-import com.jcraft.jogg.Packet;
+import vorbis.jcraft.jogg.Buffer;
+import vorbis.jcraft.jogg.SyncState;
+import vorbis.jcraft.jogg.StreamState;
+import vorbis.jcraft.jogg.Page;
+import vorbis.jcraft.jogg.Packet;
 
 
 
@@ -96,7 +96,7 @@ extends TAudioFileReader
 		int	index = oggSyncState.buffer(INITAL_READ_LENGTH);
 		bytes = inputStream.read(oggSyncState.data, index, INITAL_READ_LENGTH);
 		oggSyncState.wrote(bytes);
-    
+
 		// Get the first page.
 		if (oggSyncState.pageout(oggPage) != 1)
 		{
@@ -126,7 +126,7 @@ extends TAudioFileReader
 			// error; stream version mismatch perhaps
 			throw new UnsupportedAudioFileException("not a Vorbis stream: can't read first page of Ogg bitstream data");
 		}
-    
+
 		if (oggStreamState.packetout(oggPacket) != 1)
 		{
 			// no page? must not be vorbis

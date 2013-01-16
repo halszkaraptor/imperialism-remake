@@ -25,6 +25,10 @@
  */
 package com.jcraft.jorbis;
 
+import vorbis.jcraft.jorbis.VorbisFile;
+import vorbis.jcraft.jorbis.Comment;
+import vorbis.jcraft.jorbis.Info;
+import vorbis.jcraft.jorbis.JOrbisException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

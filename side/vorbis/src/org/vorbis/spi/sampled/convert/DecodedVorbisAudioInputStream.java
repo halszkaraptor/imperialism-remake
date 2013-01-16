@@ -1,24 +1,19 @@
 /*
- *   DecodedVorbisAudioInputStream
+ * Copyright (C) 2008 JavaZOOM
+ *               2013 Trilarion
  *
- *    JavaZOOM : vorbisspi@javazoom.net
- *               http://www.javazoom.net
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * ----------------------------------------------------------------------------
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- * ----------------------------------------------------------------------------
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.spi.sampled.convert;
 
@@ -112,6 +107,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
      * <ul> <li><b>ogg.position.byte</b> [Long], current position in bytes in
      * the stream. </ul>
      */
+    @Override
     public Map properties() {
         properties.put("ogg.position.byte", new Long(currentBytes));
         return properties;
@@ -120,6 +116,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
     /**
      * Main loop.
      */
+    @Override
     public void execute() {
         if (TDebug.TraceAudioConverter) {
             switch (playState) {
@@ -304,7 +301,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
         while ((samples = vorbisDspState.synthesis_pcmout(_pcmf, _index)) > 0) {
             float[][] pcmf = _pcmf[0];
             bout = (samples < convsize ? samples : convsize);
-            double fVal = 0.0;
+            double fVal;
             // convert doubles to 16 bit signed ints (host order) and
             // interleave
             for (i = 0; i < vorbisInfo.channels; i++) {
@@ -458,7 +455,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
         }
 
         byte[][] ptr = vorbisComment.user_comments;
-        String currComment = "";
+        String currComment;
 
         for (int j = 0; j < ptr.length; j++) {
             if (ptr[j] == null) {
@@ -486,7 +483,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
      * @return the number of bytes read or -1 if error.
      */
     private int readFromStream(byte[] buffer, int index, int bufferSize_) {
-        int bytes = 0;
+        int bytes;
         try {
             bytes = oggBitStream_.read(buffer, index, bufferSize_);
         } catch (Exception e) {
@@ -502,6 +499,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
     /**
      * Close the stream.
      */
+    @Override
     public void close() throws IOException {
         super.close();
         oggBitStream_.close();

@@ -1,30 +1,19 @@
 /*
- *	TSimpleFormatConversionProvider.java
+ * Copyright (C) 1999-2004 Matthias Pfisterer
+ *               2013 Trilarion
  *
- *	This file is part of Tritonus: http://www.tritonus.org/
- */
-
-/*
- *  Copyright (c) 1999 - 2004 by Matthias Pfisterer
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
- */
-
-/*
- |<---            this code is formatted to fit into 80 columns             --->|
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.sound.sampled.convert;
 
@@ -32,9 +21,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import org.sound.ArraySet;
 import org.sound.TDebug;
 import org.sound.sampled.AudioFormats;
+import org.util.ArraySet;
 
 /**
  * This is a base class for FormatConversionProviders that can convert from each
@@ -304,13 +293,8 @@ public abstract class TSimpleFormatConversionProvider
      * not used elsewhere in this class.
      */
     //$$fb 2000-08-16: added
-    protected int getFrameSize(
-            AudioFormat.Encoding encoding,
-            float sampleRate,
-            int sampleSize,
-            int channels,
-            float frameRate,
-            boolean bigEndian,
+    protected int getFrameSize(AudioFormat.Encoding encoding, float sampleRate,
+            int sampleSize, int channels, float frameRate, boolean bigEndian,
             int oldFrameSize) {
         if (sampleSize == AudioSystem.NOT_SPECIFIED || channels == AudioSystem.NOT_SPECIFIED) {
             return AudioSystem.NOT_SPECIFIED;
@@ -318,6 +302,3 @@ public abstract class TSimpleFormatConversionProvider
         return ((sampleSize + 7) / 8) * channels;
     }
 }
-/**
- * * TSimpleFormatConversionProvider.java **
- */

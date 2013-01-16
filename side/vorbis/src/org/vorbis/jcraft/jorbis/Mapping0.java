@@ -1,30 +1,23 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/* JOrbis
+/*
  * Copyright (C) 2000 ymnk, JCraft,Inc.
+ *               2013 Trilarion
  *
- * Written by: 2000 ymnk<ymnk@jcraft.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Many thanks to
- *   Monty <monty@xiph.org> and
- *   The XIPHOPHORUS Company http://www.xiph.org/ .
- * JOrbis has been based on their awesome works, Vorbis codec.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public License
- * as published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
-
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft.jorbis;
 
+import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
 class Mapping0 extends FuncMapping {
@@ -100,8 +93,8 @@ class Mapping0 extends FuncMapping {
             opb.write(1, 1);
             opb.write(info.coupling_steps - 1, 8);
             for (int i = 0; i < info.coupling_steps; i++) {
-                opb.write(info.coupling_mag[i], Util.ilog2(vi.channels));
-                opb.write(info.coupling_ang[i], Util.ilog2(vi.channels));
+                opb.write(info.coupling_mag[i], Utils.ilog2(vi.channels));
+                opb.write(info.coupling_ang[i], Utils.ilog2(vi.channels));
             }
         } else {
             opb.write(0, 1);
@@ -136,8 +129,8 @@ class Mapping0 extends FuncMapping {
             info.coupling_steps = opb.read(8) + 1;
 
             for (int i = 0; i < info.coupling_steps; i++) {
-                int testM = info.coupling_mag[i] = opb.read(Util.ilog2(vi.channels));
-                int testA = info.coupling_ang[i] = opb.read(Util.ilog2(vi.channels));
+                int testM = info.coupling_mag[i] = opb.read(Utils.ilog2(vi.channels));
+                int testA = info.coupling_ang[i] = opb.read(Utils.ilog2(vi.channels));
 
                 if (testM < 0 || testA < 0 || testM == testA || testM >= vi.channels
                         || testA >= vi.channels) {

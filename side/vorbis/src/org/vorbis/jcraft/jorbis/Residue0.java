@@ -1,30 +1,23 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/* JOrbis
+/*
  * Copyright (C) 2000 ymnk, JCraft,Inc.
+ *               2013 Trilarion
  *
- * Written by: 2000 ymnk<ymnk@jcraft.com>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * Many thanks to
- *   Monty <monty@xiph.org> and
- *   The XIPHOPHORUS Company http://www.xiph.org/ .
- * JOrbis has been based on their awesome works, Vorbis codec.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public License
- * as published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
-
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
- * License along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft.jorbis;
 
+import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
 class Residue0 extends FuncResidue {
@@ -45,7 +38,7 @@ class Residue0 extends FuncResidue {
          this pass */
         for (int j = 0; j < info.partitions; j++) {
             int i = info.secondstages[j];
-            if (Util.ilog(i) > 3) {
+            if (Utils.ilog(i) > 3) {
                 /* yes, this is a minor hack due to not thinking ahead */
                 opb.write(i, 3);
                 opb.write(1, 1);
@@ -53,7 +46,7 @@ class Residue0 extends FuncResidue {
             } else {
                 opb.write(i, 4); /* trailing zero */
             }
-            acc += Util.icount(i);
+            acc += Utils.icount(i);
         }
         for (int j = 0; j < acc; j++) {
             opb.write(info.booklist[j], 8);
@@ -75,7 +68,7 @@ class Residue0 extends FuncResidue {
                 cascade |= (opb.read(5) << 3);
             }
             info.secondstages[j] = cascade;
-            acc += Util.icount(cascade);
+            acc += Utils.icount(cascade);
         }
 
         for (int j = 0; j < acc; j++) {
@@ -115,7 +108,7 @@ class Residue0 extends FuncResidue {
 
         for (int j = 0; j < look.parts; j++) {
             int i = info.secondstages[j];
-            int stages = Util.ilog(i);
+            int stages = Utils.ilog(i);
             if (stages != 0) {
                 if (stages > maxstage) {
                     maxstage = stages;

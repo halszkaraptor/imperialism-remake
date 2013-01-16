@@ -1,23 +1,19 @@
 /*
- *   VorbisAudioFileReader.
+ * Copyright (C) 2008 JavaZOOM
+ *               2013 Trilarion
  *
- *   JavaZOOM : vorbisspi@javazoom.net
- *              http://www.javazoom.net
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.spi.sampled.file;
 
@@ -34,6 +30,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import org.sound.SoundException;
 import org.sound.TDebug;
 import org.sound.sampled.file.TAudioFileReader;
 import org.vorbis.jcraft.jogg.Packet;
@@ -44,7 +41,6 @@ import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
 import org.vorbis.jcraft.jorbis.Info;
-import org.vorbis.jcraft.jorbis.JOrbisException;
 import org.vorbis.jcraft.jorbis.VorbisFile;
 
 /**
@@ -90,7 +86,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
             // Get Vorbis file info such as length in seconds.
             VorbisFile vf = new VorbisFile(file.getAbsolutePath());
             return getAudioFileFormat(inputStream, (int) file.length(), (int) Math.round((vf.time_total(-1)) * 1000));
-        } catch (JOrbisException e) {
+        } catch (SoundException e) {
             throw new IOException(e.getMessage());
         } finally {
             if (inputStream != null) {

@@ -46,14 +46,14 @@ import org.tritonus.share.sampled.AudioFormats;
 import org.tritonus.share.sampled.convert.TAsynchronousFilteredAudioInputStream;
 import org.tritonus.share.sampled.convert.TEncodingFormatConversionProvider;
 
-import com.jcraft.jogg.SyncState;
-import com.jcraft.jogg.StreamState;
-import com.jcraft.jogg.Page;
-import com.jcraft.jogg.Packet;
-import com.jcraft.jorbis.Info;
-import com.jcraft.jorbis.Comment;
-import com.jcraft.jorbis.DspState;
-import com.jcraft.jorbis.Block;
+import vorbis.jcraft.jogg.SyncState;
+import vorbis.jcraft.jogg.StreamState;
+import vorbis.jcraft.jogg.Page;
+import vorbis.jcraft.jogg.Packet;
+import vorbis.jcraft.jorbis.Info;
+import vorbis.jcraft.jorbis.Comment;
+import vorbis.jcraft.jorbis.DspState;
+import vorbis.jcraft.jorbis.Block;
 
 
 

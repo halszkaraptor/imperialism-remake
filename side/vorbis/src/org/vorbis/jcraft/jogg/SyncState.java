@@ -88,7 +88,7 @@ public class SyncState {
     //  0) page not ready; more data (no bytes skipped)
     //  n) page synced at current location; page length n bytes
     private Page pageseek = new Page();
-    private byte[] chksum = new byte[4];
+    private final byte[] chksum = new byte[4];
 
     public int pageseek(Page og) {
         int page = returned;

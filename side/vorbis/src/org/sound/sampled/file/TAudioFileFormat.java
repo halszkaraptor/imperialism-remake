@@ -27,39 +27,25 @@ import javax.sound.sampled.AudioFormat;
  * This class is just to have a public constructor taking the number of bytes of
  * the whole file. The public constructor of AudioFileFormat doesn't take this
  * parameter, the one who takes it is protected.
- *
- * @author Matthias Pfisterer
  */
-public class TAudioFileFormat
-        extends AudioFileFormat {
+public class TAudioFileFormat extends AudioFileFormat {
 
     private Map<String, Object> m_properties;
     private Map<String, Object> m_unmodifiableProperties;
 
 
-    /*
+    /**
      *	Note that the order of the arguments is different from
      *	the one in AudioFileFormat.
      */
-    public TAudioFileFormat(Type type,
-            AudioFormat audioFormat,
-            int nLengthInFrames,
+    public TAudioFileFormat(Type type, AudioFormat audioFormat, int nLengthInFrames,
             int nLengthInBytes) {
-        super(type,
-                nLengthInBytes,
-                audioFormat,
-                nLengthInFrames);
+        super(type, nLengthInBytes, audioFormat, nLengthInFrames);
     }
 
-    public TAudioFileFormat(Type type,
-            AudioFormat audioFormat,
-            int nLengthInFrames,
-            int nLengthInBytes,
-            Map<String, Object> properties) {
-        super(type,
-                nLengthInBytes,
-                audioFormat,
-                nLengthInFrames);
+    public TAudioFileFormat(Type type, AudioFormat audioFormat, int nLengthInFrames,
+            int nLengthInBytes, Map<String, Object> properties) {
+        super(type, nLengthInBytes, audioFormat, nLengthInFrames);
         initMaps(properties);
     }
 
@@ -67,7 +53,7 @@ public class TAudioFileFormat
         /* Here, we make a shallow copy of the map. It's unclear if this
          is sufficient (of if a deep copy should be made).
          */
-        m_properties = new HashMap<String, Object>();
+        m_properties = new HashMap<>();
         m_properties.putAll(properties);
         m_unmodifiableProperties = Collections.unmodifiableMap(m_properties);
     }

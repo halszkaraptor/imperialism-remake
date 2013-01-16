@@ -50,6 +50,7 @@ public class VorbisAudioFormat extends TAudioFormat {
      * bits per seconds, average bitrate for VBR enabled stream. <li><b>vbr</b>
      * [Boolean], VBR flag. </ul>
      */
+    @Override
     public Map properties() {
         return super.properties();
     }

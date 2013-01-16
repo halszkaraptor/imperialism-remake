@@ -73,6 +73,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioFileFormat from the given file.
      */
+    @Override
     public AudioFileFormat getAudioFileFormat(File file) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioFileFormat(File file)");
@@ -98,6 +99,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioFileFormat from the given URL.
      */
+    @Override
     public AudioFileFormat getAudioFileFormat(URL url) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioFileFormat(URL url)");
@@ -115,6 +117,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioFileFormat from the given InputStream.
      */
+    @Override
     public AudioFileFormat getAudioFileFormat(InputStream inputStream) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioFileFormat(InputStream inputStream)");
@@ -134,6 +137,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
      * Return the AudioFileFormat from the given InputStream and length in
      * bytes.
      */
+    @Override
     public AudioFileFormat getAudioFileFormat(InputStream inputStream, long medialength) throws UnsupportedAudioFileException, IOException {
         return getAudioFileFormat(inputStream, (int) medialength, AudioSystem.NOT_SPECIFIED);
     }
@@ -189,7 +193,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         if (nominalbitrate > 0) {
             af_properties.put("bitrate", new Integer(nominalbitrate));
         }
-        af_properties.put("vbr", new Boolean(true));
+        af_properties.put("vbr", true);
 
         if (minbitrate > 0) {
             aff_properties.put("ogg.bitrate.min.bps", new Integer(minbitrate));
@@ -233,6 +237,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioInputStream from the given InputStream.
      */
+    @Override
     public AudioInputStream getAudioInputStream(InputStream inputStream) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioInputStream(InputStream inputStream)");
@@ -255,10 +260,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
             AudioFileFormat audioFileFormat = getAudioFileFormat(inputStream, medialength, totalms);
             inputStream.reset();
             return new AudioInputStream(inputStream, audioFileFormat.getFormat(), audioFileFormat.getFrameLength());
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.reset();
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.reset();
             throw e;
         }
@@ -267,6 +269,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioInputStream from the given File.
      */
+    @Override
     public AudioInputStream getAudioInputStream(File file) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioInputStream(File file)");
@@ -274,12 +277,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         InputStream inputStream = new FileInputStream(file);
         try {
             return getAudioInputStream(inputStream);
-        } catch (UnsupportedAudioFileException e) {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             if (inputStream != null) {
                 inputStream.close();
             }
@@ -290,6 +288,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     /**
      * Return the AudioInputStream from the given URL.
      */
+    @Override
     public AudioInputStream getAudioInputStream(URL url) throws UnsupportedAudioFileException, IOException {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioInputStream(URL url)");
@@ -297,12 +296,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         InputStream inputStream = url.openStream();
         try {
             return getAudioInputStream(inputStream);
-        } catch (UnsupportedAudioFileException e) {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             if (inputStream != null) {
                 inputStream.close();
             }
@@ -402,7 +396,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         }
         // Read Ogg Vorbis comments.
         byte[][] ptr = vorbisComment.user_comments;
-        String currComment = "";
+        String currComment;
         int c = 0;
         for (int j = 0; j < ptr.length; j++) {
             if (ptr[j] == null) {
@@ -443,7 +437,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
      * @return the number of bytes read or -1 if error.
      */
     private int readFromStream(byte[] buffer, int index, int bufferSize_) {
-        int bytes = 0;
+        int bytes;
         try {
             bytes = oggBitStream_.read(buffer, index, bufferSize_);
         } catch (Exception e) {

@@ -27,7 +27,7 @@ import org.sound.sampled.file.TAudioFileFormat;
 public class VorbisAudioFileFormat extends TAudioFileFormat {
 
     /**
-     * Contructor.
+     * Constructor.
      *
      * @param type
      * @param audioFormat
@@ -64,6 +64,7 @@ public class VorbisAudioFileFormat extends TAudioFileFormat {
      * instance : <br>ogg.comment.ext.1=Something <br>ogg.comment.ext.2=Another
      * comment </ul>
      */
+    @Override
     public Map properties() {
         return super.properties();
     }

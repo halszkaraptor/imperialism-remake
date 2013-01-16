@@ -91,8 +91,8 @@ public class TDebug {
                 indent = "";
             }
         }
-        String newMsg = null;
-        if (indent != "" && strMessage.indexOf("\n") >= 0) {
+        String newMsg;
+        if (indent.length() > 0 && strMessage.indexOf("\n") >= 0) {
             newMsg = "";
             StringTokenizer tokenizer = new StringTokenizer(strMessage, "\n");
             while (tokenizer.hasMoreTokens()) {

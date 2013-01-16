@@ -16,6 +16,7 @@
  */
 package org.sound.sampled.convert;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,37 +24,37 @@ import java.util.List;
 import java.util.Map;
 import javax.sound.sampled.AudioFormat;
 import org.sound.sampled.AudioFormats;
-import org.util.ArraySet;
 
 public abstract class TMatrixFormatConversionProvider extends TSimpleFormatConversionProvider {
 
-    private Map m_targetEncodingsFromSourceFormat;
-    private Map m_targetFormatsFromSourceFormat;
+    private Map<AudioFormat, List<AudioFormat.Encoding>> targetEncodingsFromSourceFormat;
+    private Map targetFormatsFromSourceFormat;
 
-    protected TMatrixFormatConversionProvider(List sourceFormats, List targetFormats, boolean[][] abConversionPossible) {
+    protected TMatrixFormatConversionProvider(List<AudioFormat> sourceFormats, List<AudioFormat> targetFormats, boolean[][] abConversionPossible) {
         super(sourceFormats, targetFormats);
 
-        m_targetEncodingsFromSourceFormat = new HashMap();
-        m_targetFormatsFromSourceFormat = new HashMap();
+        targetEncodingsFromSourceFormat = new HashMap<>();
+        targetFormatsFromSourceFormat = new HashMap();
 
-        for (int nSourceFormat = 0;
-                nSourceFormat < sourceFormats.size();
-                nSourceFormat++) {
-            AudioFormat sourceFormat = (AudioFormat) sourceFormats.get(nSourceFormat);
-            List supportedTargetEncodings = new ArraySet();
-            m_targetEncodingsFromSourceFormat.put(sourceFormat, supportedTargetEncodings);
-            Map targetFormatsFromTargetEncodings = new HashMap();
-            m_targetFormatsFromSourceFormat.put(sourceFormat, targetFormatsFromTargetEncodings);
-            for (int nTargetFormat = 0;
-                    nTargetFormat < targetFormats.size();
-                    nTargetFormat++) {
+        for (int nSourceFormat = 0; nSourceFormat < sourceFormats.size(); nSourceFormat++) {
+            AudioFormat sourceFormat = sourceFormats.get(nSourceFormat);
+
+            List<AudioFormat.Encoding> supportedTargetEncodings = new ArrayList<>();
+
+            targetEncodingsFromSourceFormat.put(sourceFormat, supportedTargetEncodings);
+
+            Map<AudioFormat.Encoding, Collection<AudioFormat>>  targetFormatsFromTargetEncodings = new HashMap<>();
+
+            targetFormatsFromSourceFormat.put(sourceFormat, targetFormatsFromTargetEncodings);
+
+            for (int nTargetFormat = 0; nTargetFormat < targetFormats.size(); nTargetFormat++) {
                 AudioFormat targetFormat = (AudioFormat) targetFormats.get(nTargetFormat);
                 if (abConversionPossible[nSourceFormat][nTargetFormat] == true) {
                     AudioFormat.Encoding targetEncoding = targetFormat.getEncoding();
                     supportedTargetEncodings.add(targetEncoding);
-                    Collection supportedTargetFormats = (Collection) targetFormatsFromTargetEncodings.get(targetEncoding);
+                    Collection<AudioFormat> supportedTargetFormats = (Collection<AudioFormat>) targetFormatsFromTargetEncodings.get(targetEncoding);
                     if (supportedTargetFormats == null) {
-                        supportedTargetFormats = new ArraySet();
+                        supportedTargetFormats = new ArrayList<>();
                         targetFormatsFromTargetEncodings.put(targetEncoding, supportedTargetFormats);
                     }
                     supportedTargetFormats.add(targetFormat);
@@ -64,7 +65,7 @@ public abstract class TMatrixFormatConversionProvider extends TSimpleFormatConve
 
     @Override
     public AudioFormat.Encoding[] getTargetEncodings(AudioFormat sourceFormat) {
-        Iterator iterator = m_targetEncodingsFromSourceFormat.entrySet().iterator();
+        Iterator iterator = targetEncodingsFromSourceFormat.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             AudioFormat format = (AudioFormat) entry.getKey();
@@ -79,7 +80,7 @@ public abstract class TMatrixFormatConversionProvider extends TSimpleFormatConve
 
     @Override
     public AudioFormat[] getTargetFormats(AudioFormat.Encoding targetEncoding, AudioFormat sourceFormat) {
-        Iterator iterator = m_targetFormatsFromSourceFormat.entrySet().iterator();
+        Iterator iterator = targetFormatsFromSourceFormat.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
             AudioFormat format = (AudioFormat) entry.getKey();

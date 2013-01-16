@@ -65,7 +65,7 @@ public class StreamState {
         init(serialno);
     }
 
-    void init() {
+    private void init() {
         body_storage = 16 * 1024;
         body_data = new byte[body_storage];
         lacing_storage = 1024;
@@ -231,7 +231,7 @@ public class StreamState {
     // into packet segments here as well.
     public int pagein(Page og) {
         byte[] header_base = og.header_base;
-        int header = og.header;
+        int header_here = og.header;
         byte[] body_base = og.body_base;
         int body = og.body;
         int bodysize = og.body_len;
@@ -241,10 +241,10 @@ public class StreamState {
         int continued = og.continued();
         int bos = og.bos();
         int eos = og.eos();
-        long granulepos = og.granulepos();
+        long granulepos_here = og.granulepos();
         int _serialno = og.serialno();
         int _pageno = og.pageno();
-        int segments = header_base[header + 26] & 0xff;
+        int segments = header_base[header_here + 26] & 0xff;
 
         // clean up 'returned data'
         {
@@ -304,7 +304,7 @@ public class StreamState {
             if (continued != 0) {
                 bos = 0;
                 for (; segptr < segments; segptr++) {
-                    int val = (header_base[header + 27 + segptr] & 0xff);
+                    int val = (header_base[header_here + 27 + segptr] & 0xff);
                     body += val;
                     bodysize -= val;
                     if (val < 255) {
@@ -324,7 +324,7 @@ public class StreamState {
         {
             int saved = -1;
             while (segptr < segments) {
-                int val = (header_base[header + 27 + segptr] & 0xff);
+                int val = (header_base[header_here + 27 + segptr] & 0xff);
                 lacing_vals[lacing_fill] = val;
                 granule_vals[lacing_fill] = -1;
 
@@ -347,7 +347,7 @@ public class StreamState {
 
             /* set the granulepos on the last pcmval of the last full packet */
             if (saved != -1) {
-                granule_vals[saved] = granulepos;
+                granule_vals[saved] = granulepos_here;
             }
         }
 
@@ -378,7 +378,7 @@ public class StreamState {
     public int flush(Page og) {
 
         int i;
-        int vals = 0;
+        int vals;
         int maxvals = (lacing_fill > 255 ? 255 : lacing_fill);
         int bytes = 0;
         int acc = 0;

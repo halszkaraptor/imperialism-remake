@@ -27,21 +27,11 @@ public class TAudioFormat extends AudioFormat {
     private Map<String, Object> m_properties;
     private Map<String, Object> m_unmodifiableProperties;
 
-    public TAudioFormat(AudioFormat.Encoding encoding,
-            float sampleRate,
-            int sampleSizeInBits,
-            int channels,
-            int frameSize,
-            float frameRate,
-            boolean bigEndian,
-            Map<String, Object> properties) {
-        super(encoding,
-                sampleRate,
-                sampleSizeInBits,
-                channels,
-                frameSize,
-                frameRate,
-                bigEndian);
+    public TAudioFormat(AudioFormat.Encoding encoding, float sampleRate,
+            int sampleSizeInBits, int channels, int frameSize, float frameRate,
+            boolean bigEndian, Map<String, Object> properties) {
+        super(encoding, sampleRate, sampleSizeInBits, channels, frameSize,
+                frameRate, bigEndian);
         initMaps(properties);
     }
 
@@ -52,14 +42,9 @@ public class TAudioFormat extends AudioFormat {
      * @param format the instance to copy
      */
     public TAudioFormat(AudioFormat format) {
-        this(format.getEncoding(),
-                format.getSampleRate(),
-                format.getSampleSizeInBits(),
-                format.getChannels(),
-                format.getFrameSize(),
-                format.getFrameRate(),
-                format.isBigEndian(),
-                format.properties());
+        this(format.getEncoding(), format.getSampleRate(), format.getSampleSizeInBits(),
+                format.getChannels(), format.getFrameSize(), format.getFrameRate(),
+                format.isBigEndian(), format.properties());
     }
 
     /**
@@ -72,23 +57,14 @@ public class TAudioFormat extends AudioFormat {
      * @param format the instance to copy
      * @param properties properties to be added to this TAudioFormat
      */
-    public TAudioFormat(AudioFormat format,
-            Map<String, Object> properties) {
+    public TAudioFormat(AudioFormat format, Map<String, Object> properties) {
         this(format);
         m_properties.putAll(properties);
     }
 
-    public TAudioFormat(float sampleRate,
-            int sampleSizeInBits,
-            int channels,
-            boolean signed,
-            boolean bigEndian,
-            Map<String, Object> properties) {
-        super(sampleRate,
-                sampleSizeInBits,
-                channels,
-                signed,
-                bigEndian);
+    public TAudioFormat(float sampleRate, int sampleSizeInBits, int channels,
+            boolean signed, boolean bigEndian, Map<String, Object> properties) {
+        super(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
         initMaps(properties);
     }
 
@@ -96,7 +72,7 @@ public class TAudioFormat extends AudioFormat {
         /* Here, we make a shallow copy of the map. It's unclear if this
          is sufficient (or if a deep copy should be made).
          */
-        m_properties = new HashMap<String, Object>();
+        m_properties = new HashMap<>();
         if (properties != null) {
             m_properties.putAll(properties);
         }
@@ -126,6 +102,3 @@ public class TAudioFormat extends AudioFormat {
         m_properties.put(key, value);
     }
 }
-/**
- * * TAudioFormat.java **
- */

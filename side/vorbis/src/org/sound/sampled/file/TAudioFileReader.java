@@ -176,7 +176,7 @@ public abstract class TAudioFileReader
      * @param lFileLengthInBytes The size of the originating file, if known. If
      * it isn't known, AudioSystem.NOT_SPECIFIED should be passed. This value
      * may be used for byteLength in AudioFileFormat, if this value can't be
-     * derived from the informmation in the file header.
+     * derived from the information in the file header.
      * @return an AudioFileFormat instance containing information from the
      * header of the stream passed in as inputStream.
      */
@@ -206,10 +206,7 @@ public abstract class TAudioFileReader
         AudioInputStream audioInputStream = null;
         try {
             audioInputStream = getAudioInputStream(inputStream, lFileLengthInBytes);
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }
@@ -241,10 +238,7 @@ public abstract class TAudioFileReader
         AudioInputStream audioInputStream = null;
         try {
             audioInputStream = getAudioInputStream(inputStream, lFileLengthInBytes);
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }
@@ -417,12 +411,11 @@ public abstract class TAudioFileReader
      * conversions, and accommodated conversions involving +/- infinity,
      * NaN's, and denormalized numbers.
      */
-    public static double readIeeeExtended(DataInputStream dis)
-            throws IOException {
-        double f = 0.0D;
-        int expon = 0;
-        long hiMant = 0L;
-        long loMant = 0L;
+    public static double readIeeeExtended(DataInputStream dis) throws IOException {
+        double f;
+        int expon;
+        long hiMant;
+        long loMant;
         double HUGE = 3.4028234663852886E+038D;
         expon = dis.readUnsignedShort();
         long t1 = dis.readUnsignedShort();

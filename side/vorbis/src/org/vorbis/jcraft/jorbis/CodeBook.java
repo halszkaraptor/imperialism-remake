@@ -446,7 +446,7 @@ class CodeBook {
         t.tabl = new int[n];
         for (int i = 0; i < n; i++) {
             int p = 0;
-            int j = 0;
+            int j;
             for (j = 0; j < t.tabn && (p > 0 || j == 0); j++) {
                 if ((i & (1 << j)) != 0) {
                     p = ptr1[p];

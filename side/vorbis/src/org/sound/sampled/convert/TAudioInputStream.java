@@ -33,8 +33,7 @@ import javax.sound.sampled.AudioInputStream;
  * considered "static", as they aren't allowed to change after creating of the
  * object, thereby maintaining the immutable character of these classes.
  */
-public class TAudioInputStream
-        extends AudioInputStream {
+public class TAudioInputStream extends AudioInputStream {
 
     private Map<String, Object> m_properties;
     private Map<String, Object> m_unmodifiableProperties;
@@ -42,8 +41,7 @@ public class TAudioInputStream
     /**
      * Constructor without properties. Creates an empty properties map.
      */
-    public TAudioInputStream(InputStream inputStream,
-            AudioFormat audioFormat,
+    public TAudioInputStream(InputStream inputStream, AudioFormat audioFormat,
             long lLengthInFrames) {
         super(inputStream, audioFormat, lLengthInFrames);
         initMaps(new HashMap<String, Object>());
@@ -54,10 +52,8 @@ public class TAudioInputStream
      * This allows subclasses to change values in the map after creation, and
      * the changes are reflected in the map the application program can obtain.
      */
-    public TAudioInputStream(InputStream inputStream,
-            AudioFormat audioFormat,
-            long lLengthInFrames,
-            Map<String, Object> properties) {
+    public TAudioInputStream(InputStream inputStream, AudioFormat audioFormat,
+            long lLengthInFrames, Map<String, Object> properties) {
         super(inputStream, audioFormat, lLengthInFrames);
         initMaps(properties);
     }

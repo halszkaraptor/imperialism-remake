@@ -119,7 +119,7 @@ public class DspState {
     // Analysis side code, but directly related to blocking.  Thus it's
     // here and not in analysis.c (which is for analysis transforms only).
     // The init is here because some of it is shared
-    int init(Info vi, boolean encp) {
+    private int init(Info vi, boolean encp) {
         this.vi = vi;
         modebits = Utils.ilog2(vi.modes);
 
@@ -286,7 +286,7 @@ public class DspState {
             for (int j = 0; j < vi.channels; j++) {
                 int _pcm = beginW;
                 // the overlap/add section
-                int i = 0;
+                int i;
                 for (i = beginSl; i < endSl; i++) {
                     pcm[j][_pcm + i] += vb.pcm[j][i];
                 }

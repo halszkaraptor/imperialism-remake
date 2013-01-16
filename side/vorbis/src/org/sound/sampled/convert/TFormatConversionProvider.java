@@ -26,8 +26,6 @@ import org.sound.sampled.AudioFormats;
 
 /**
  * Base class for all conversion providers of Tritonus.
- *
- * @author Matthias Pfisterer
  */
 public abstract class TFormatConversionProvider
         extends FormatConversionProvider {
@@ -67,9 +65,7 @@ public abstract class TFormatConversionProvider
      result against null.
      */
     @Override
-    public boolean isConversionSupported(
-            AudioFormat targetFormat,
-            AudioFormat sourceFormat) {
+    public boolean isConversionSupported(AudioFormat targetFormat, AudioFormat sourceFormat) {
         if (TDebug.TraceAudioConverter) {
             TDebug.out(">TFormatConversionProvider.isConversionSupported(AudioFormat, AudioFormat):");
             TDebug.out("class: " + getClass().getName());
@@ -104,9 +100,7 @@ public abstract class TFormatConversionProvider
      * org.tritonus.share.sampled.AudioFormats.matches and is considered
      * temporary until AudioFormat.matches is corrected in the JavaSound API.
      */
-    public AudioFormat getMatchingFormat(
-            AudioFormat targetFormat,
-            AudioFormat sourceFormat) {
+    public AudioFormat getMatchingFormat( AudioFormat targetFormat, AudioFormat sourceFormat) {
         if (TDebug.TraceAudioConverter) {
             TDebug.out(">TFormatConversionProvider.isConversionSupported(AudioFormat, AudioFormat):");
             TDebug.out("class: " + getClass().getName());

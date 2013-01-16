@@ -30,8 +30,7 @@ import org.sound.TDebug;
  * therefore need an internal buffer, which is realized in this class.
  */
 public abstract class TAsynchronousFilteredAudioInputStream
-        extends TAudioInputStream
-        implements TCircularBuffer.Trigger {
+        extends TAudioInputStream implements TCircularBuffer.Trigger {
 
     private static final int DEFAULT_BUFFER_SIZE = 327670;
     private static final int DEFAULT_MIN_AVAILABLE = 4096;
@@ -49,9 +48,7 @@ public abstract class TAsynchronousFilteredAudioInputStream
      * AudioSystem.NOT_SPECIFIED.
      */
     public TAsynchronousFilteredAudioInputStream(AudioFormat outputFormat, long lLength) {
-        this(outputFormat, lLength,
-                DEFAULT_BUFFER_SIZE,
-                DEFAULT_MIN_AVAILABLE);
+        this(outputFormat, lLength, DEFAULT_BUFFER_SIZE, DEFAULT_MIN_AVAILABLE);
     }
 
     /**
@@ -63,10 +60,8 @@ public abstract class TAsynchronousFilteredAudioInputStream
      *
      * @param nBufferSize size of the circular buffer in bytes.
      */
-    public TAsynchronousFilteredAudioInputStream(
-            AudioFormat outputFormat, long lLength,
-            int nBufferSize,
-            int nMinAvailable) {
+    public TAsynchronousFilteredAudioInputStream(AudioFormat outputFormat, long lLength,
+            int nBufferSize, int nMinAvailable) {
         /*	The usage of a ByteArrayInputStream is a hack.
          *	(the infamous "JavaOne hack", because I did it on June
          *	6th 2000 in San Francisco, only hours before a
@@ -77,17 +72,12 @@ public abstract class TAsynchronousFilteredAudioInputStream
          *	argument is null. So we have to pass a dummy non-null
          *	value.
          */
-        super(new ByteArrayInputStream(EMPTY_BYTE_ARRAY),
-                outputFormat,
-                lLength);
+        super(new ByteArrayInputStream(EMPTY_BYTE_ARRAY), outputFormat, lLength);
         if (TDebug.TraceAudioConverter) {
             TDebug.out("TAsynchronousFilteredAudioInputStream.<init>(): begin");
         }
-        m_circularBuffer = new TCircularBuffer(
-                nBufferSize,
-                false, // blocking read
-                true, // blocking write
-                this);	// trigger
+        // blocking read, write and this as trigger
+        m_circularBuffer = new TCircularBuffer(nBufferSize, false, true, this);
         m_nMinAvailable = nMinAvailable;
         if (TDebug.TraceAudioConverter) {
             TDebug.out("TAsynchronousFilteredAudioInputStream.<init>(): end");
@@ -102,14 +92,14 @@ public abstract class TAsynchronousFilteredAudioInputStream
     }
 
     /**
-     * Check if writing more data to the circular buffer is recommanded. This
+     * Check if writing more data to the circular buffer is recommended. This
      * checks the available write space in the circular buffer against the
      * minimum available property. If the available write space is greater than
      * th minimum available property, more writing is encouraged, so this method
      * returns true. Note that this is only a hint to subclasses. However, it is
      * an important hint.
      *
-     * @return true if more writing to the circular buffer is recommanden.
+     * @return true if more writing to the circular buffer is recommended.
      * Otherwise, false is returned.
      */
     protected boolean writeMore() {
@@ -120,7 +110,7 @@ public abstract class TAsynchronousFilteredAudioInputStream
     public int read()
             throws IOException {
         // if (TDebug.TraceAudioConverter) { TDebug.out("TAsynchronousFilteredAudioInputStream.read(): begin"); }
-        int nByte = -1;
+        int nByte;
         if (m_abSingleByte == null) {
             m_abSingleByte = new byte[1];
         }

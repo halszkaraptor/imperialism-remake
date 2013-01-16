@@ -17,13 +17,13 @@
  */
 package org.sound.sampled.convert;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import org.sound.TDebug;
 import org.sound.sampled.AudioFormats;
-import org.util.ArraySet;
 
 /**
  * This is a base class for FormatConversionProviders that can convert from each
@@ -41,24 +41,22 @@ import org.util.ArraySet;
 // todo:
 // - declare a constant ALL_BUT_SAME_VALUE (==-2) or so that can be used in format lists
 // - consistent implementation of replacing NOT_SPECIFIED when not given in conversion
-public abstract class TSimpleFormatConversionProvider
-        extends TFormatConversionProvider {
+public abstract class TSimpleFormatConversionProvider extends TFormatConversionProvider {
 
     private Collection<AudioFormat.Encoding> m_sourceEncodings;
     private Collection<AudioFormat.Encoding> m_targetEncodings;
     private Collection<AudioFormat> m_sourceFormats;
     private Collection<AudioFormat> m_targetFormats;
 
-    protected TSimpleFormatConversionProvider(
-            Collection<AudioFormat> sourceFormats,
+    protected TSimpleFormatConversionProvider(Collection<AudioFormat> sourceFormats,
             Collection<AudioFormat> targetFormats) {
-        m_sourceEncodings = new ArraySet<AudioFormat.Encoding>();
-        m_targetEncodings = new ArraySet<AudioFormat.Encoding>();
+        m_sourceEncodings = new ArrayList<>();
+        m_targetEncodings = new ArrayList<>();
         if (sourceFormats == null) {
-            sourceFormats = new ArraySet<AudioFormat>();
+            sourceFormats = new ArrayList<>();
         }
         if (targetFormats == null) {
-            targetFormats = new ArraySet<AudioFormat>();
+            targetFormats = new ArrayList<>();
         }
         m_sourceFormats = sourceFormats;
         m_targetFormats = targetFormats;
@@ -75,10 +73,10 @@ public abstract class TSimpleFormatConversionProvider
         if (TDebug.TraceAudioConverter) {
             TDebug.out("TSimpleFormatConversionProvider.disable(): disabling " + getClass().getName());
         }
-        m_sourceEncodings = new ArraySet<AudioFormat.Encoding>();
-        m_targetEncodings = new ArraySet<AudioFormat.Encoding>();
-        m_sourceFormats = new ArraySet<AudioFormat>();
-        m_targetFormats = new ArraySet<AudioFormat>();
+        m_sourceEncodings = new ArrayList<>();
+        m_targetEncodings = new ArrayList<>();
+        m_sourceFormats = new ArrayList<>();
+        m_targetFormats = new ArrayList<>();
     }
 
     private static void collectEncodings(Collection<AudioFormat> formats,

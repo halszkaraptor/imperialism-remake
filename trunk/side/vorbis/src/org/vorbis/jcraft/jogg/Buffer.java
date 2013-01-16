@@ -281,9 +281,4 @@ public class Buffer {
         }
         return (ret);
     }
-
-    public static void report(String in) {
-        System.err.println(in);
-        System.exit(1);
-    }
 }

@@ -21,9 +21,7 @@ class Lpc {
     // en/decode lookups
 
     Drft fft = new Drft();
-    ;
-
-  int ln;
+    int ln;
     int m;
 
     // Autocorrelation LPC coeff generation algorithm invented by

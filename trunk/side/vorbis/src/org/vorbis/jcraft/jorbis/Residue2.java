@@ -19,15 +19,16 @@ package org.vorbis.jcraft.jorbis;
 
 class Residue2 extends Residue0 {
 
+    @Override
     int inverse(Block vb, Object vl, float[][] in, int[] nonzero, int ch) {
-        int i = 0;
+        int i;
         for (i = 0; i < ch; i++) {
             if (nonzero[i] != 0) {
                 break;
             }
         }
         if (i == ch) {
-            return (0); /* no nonzero vectors */
+            return 0; /* no nonzero vectors */
         }
 
         return (_2inverse(vb, vl, in, ch));

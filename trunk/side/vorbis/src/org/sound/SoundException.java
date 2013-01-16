@@ -18,10 +18,7 @@ package org.sound;
 
 public class SoundException extends Exception {
 
-    private static final long serialVersionUID = 1L;
-
     public SoundException() {
-        super();
     }
 
     public SoundException(String s) {

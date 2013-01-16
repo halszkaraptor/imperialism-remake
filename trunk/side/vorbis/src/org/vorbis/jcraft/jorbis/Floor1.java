@@ -25,6 +25,7 @@ class Floor1 extends FuncFloor {
     static final int floor1_rangedb = 140;
     static final int VIF_POSIT = 63;
 
+    @Override
     void pack(Object i, Buffer opb) {
         InfoFloor1 info = (InfoFloor1) i;
 
@@ -67,6 +68,7 @@ class Floor1 extends FuncFloor {
         }
     }
 
+    @Override
     Object unpack(Info vi, Buffer opb) {
         int count = 0, maxclass = -1, rangebits;
         InfoFloor1 info = new InfoFloor1();
@@ -124,6 +126,7 @@ class Floor1 extends FuncFloor {
         return (info);
     }
 
+    @Override
     Object look(DspState vd, InfoMode mi, Object i) {
         int _n = 0;
 
@@ -167,9 +170,8 @@ class Floor1 extends FuncFloor {
         }
 
         /* points from sort order back to range number */
-        for (int j = 0; j < _n; j++) {
-            look.forward_index[j] = sortpointer[j];
-        }
+        System.arraycopy(sortpointer, 0, look.forward_index, 0, _n);
+
         /* points from range order to sorted position */
         for (int j = 0; j < _n; j++) {
             look.reverse_index[look.forward_index[j]] = j;
@@ -223,19 +225,24 @@ class Floor1 extends FuncFloor {
         return look;
     }
 
+    @Override
     void free_info(Object i) {
     }
 
+    @Override
     void free_look(Object i) {
     }
 
+    @Override
     void free_state(Object vs) {
     }
 
+    @Override
     int forward(Block vb, Object i, float[] in, float[] out, Object vs) {
         return 0;
     }
 
+    @Override
     Object inverse1(Block vb, Object ii, Object memo) {
         LookFloor1 look = (LookFloor1) ii;
         InfoFloor1 info = look.vi;
@@ -346,6 +353,7 @@ class Floor1 extends FuncFloor {
         }
     }
 
+    @Override
     int inverse2(Block vb, Object i, Object memo, float[] out) {
         LookFloor1 look = (LookFloor1) i;
         InfoFloor1 info = look.vi;

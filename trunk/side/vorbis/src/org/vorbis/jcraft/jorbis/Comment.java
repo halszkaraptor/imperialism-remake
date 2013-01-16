@@ -110,7 +110,7 @@ public class Comment {
     }
 
     private int query(byte[] tag, int count) {
-        int i = 0;
+        int i;
         int found = 0;
         int fulltaglen = tag.length + 1;
         byte[] fulltag = new byte[fulltaglen];

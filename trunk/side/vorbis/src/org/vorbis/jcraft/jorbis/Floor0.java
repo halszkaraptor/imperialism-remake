@@ -36,6 +36,7 @@ class Floor0 extends FuncFloor {
         }
     }
 
+    @Override
     Object unpack(Info vi, Buffer opb) {
         InfoFloor0 info = new InfoFloor0();
         info.order = opb.read(8);
@@ -58,6 +59,7 @@ class Floor0 extends FuncFloor {
         return (info);
     }
 
+    @Override
     Object look(DspState vd, InfoMode mi, Object i) {
         float scale;
         Info vi = vd.vi;
@@ -104,15 +106,19 @@ class Floor0 extends FuncFloor {
         return (state);
     }
 
+    @Override
     void free_info(Object i) {
     }
 
+    @Override
     void free_look(Object i) {
     }
 
+    @Override
     void free_state(Object vs) {
     }
 
+    @Override
     int forward(Block vb, Object i, float[] in, float[] out, Object vs) {
         return 0;
     }
@@ -171,6 +177,7 @@ class Floor0 extends FuncFloor {
         return (0);
     }
 
+    @Override
     Object inverse1(Block vb, Object i, Object memo) {
         LookFloor0 look = (LookFloor0) i;
         InfoFloor0 info = look.vi;
@@ -216,6 +223,7 @@ class Floor0 extends FuncFloor {
         return (null);
     }
 
+    @Override
     int inverse2(Block vb, Object i, Object memo, float[] out) {
         LookFloor0 look = (LookFloor0) i;
         InfoFloor0 info = look.vi;

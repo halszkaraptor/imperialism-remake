@@ -80,7 +80,7 @@ public class VorbisFile {
             if (ret == -1) {
                 throw new SoundException("VorbisFile: open return -1");
             }
-        } catch (Exception e) {
+        } catch (IOException | SoundException e) {
             throw new SoundException("VorbisFile: " + e.toString());
         } finally {
             if (is != null) {
@@ -104,7 +104,7 @@ public class VorbisFile {
     private int get_data() {
         int index = oy.buffer(CHUNKSIZE);
         byte[] buffer = oy.data;
-        int bytes = 0;
+        int bytes;
         try {
             bytes = datasource.read(buffer, index, CHUNKSIZE);
         } catch (Exception e) {
@@ -900,7 +900,6 @@ public class VorbisFile {
     // seek to a sample offset relative to the decompressed pcm stream
     // returns zero on success, nonzero on failure
     public int pcm_seek(long pos) {
-        int link = -1;
         long total = pcm_total(-1);
 
         if (!seekable) {
@@ -913,6 +912,7 @@ public class VorbisFile {
             return -1;
         }
 
+        int link;
         // which bitstream section does this pcm offset occur in?
         for (link = links - 1; link >= 0; link--) {
             total -= pcmlengths[link];
@@ -1015,7 +1015,6 @@ public class VorbisFile {
     int time_seek(float seconds) {
         // translate time to PCM position and call pcm_seek
 
-        int link = -1;
         long pcm_total = pcm_total(-1);
         float time_total = time_total(-1);
 
@@ -1029,6 +1028,7 @@ public class VorbisFile {
             return -1;
         }
 
+        int link;
         // which bitstream section does this time offset occur in?
         for (link = links - 1; link >= 0; link--) {
             pcm_total -= pcmlengths[link];
@@ -1329,18 +1329,22 @@ public class VorbisFile {
             raf = new java.io.RandomAccessFile(file, mode);
         }
 
+        @Override
         public int read() throws java.io.IOException {
             return raf.read();
         }
 
+        @Override
         public int read(byte[] buf) throws java.io.IOException {
             return raf.read(buf);
         }
 
+        @Override
         public int read(byte[] buf, int s, int len) throws java.io.IOException {
             return raf.read(buf, s, len);
         }
 
+        @Override
         public long skip(long n) throws java.io.IOException {
             return (long) (raf.skipBytes((int) n));
         }
@@ -1353,20 +1357,25 @@ public class VorbisFile {
             return raf.getFilePointer();
         }
 
+        @Override
         public int available() throws java.io.IOException {
             return (raf.length() == raf.getFilePointer()) ? 0 : 1;
         }
 
+        @Override
         public void close() throws java.io.IOException {
             raf.close();
         }
 
+        @Override
         public synchronized void mark(int m) {
         }
 
+        @Override
         public synchronized void reset() throws java.io.IOException {
         }
 
+        @Override
         public boolean markSupported() {
             return false;
         }

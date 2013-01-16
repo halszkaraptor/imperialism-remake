@@ -227,6 +227,7 @@ public class Comment {
         return new String(user_comments[i], 0, user_comments[i].length - 1);
     }
 
+    @Override
     public String toString() {
         String foo = "Vendor: " + new String(vendor, 0, vendor.length - 1);
         for (int i = 0; i < comments; i++) {

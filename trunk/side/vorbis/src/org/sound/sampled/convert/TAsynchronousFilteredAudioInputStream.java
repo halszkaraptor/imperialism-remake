@@ -29,8 +29,7 @@ import org.sound.TDebug;
  * input data and the size of a block of output data. These types of converters
  * therefore need an internal buffer, which is realized in this class.
  */
-public abstract class TAsynchronousFilteredAudioInputStream
-        extends TAudioInputStream implements TCircularBuffer.Trigger {
+public abstract class TAsynchronousFilteredAudioInputStream extends TAudioInputStream implements TCircularBuffer.Trigger {
 
     private static final int DEFAULT_BUFFER_SIZE = 327670;
     private static final int DEFAULT_MIN_AVAILABLE = 4096;

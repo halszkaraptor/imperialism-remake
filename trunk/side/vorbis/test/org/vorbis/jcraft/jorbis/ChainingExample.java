@@ -25,12 +25,9 @@
  */
 package org.vorbis.jcraft.jorbis;
 
-import org.vorbis.jcraft.jorbis.VorbisFile;
-import org.vorbis.jcraft.jorbis.Comment;
-import org.vorbis.jcraft.jorbis.Info;
-import org.sound.SoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.sound.SoundException;
 
 /**
  *

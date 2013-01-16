@@ -12,6 +12,7 @@
             </test-roots>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>bitstream</word>
             <word>codec</word>
             <word>endianness</word>
             <word>Vorbis</word>

@@ -202,12 +202,10 @@ public abstract class TAudioFileReader
             TDebug.out("TAudioFileReader.getAudioInputStream(File): begin (class: " + getClass().getSimpleName() + ")");
         }
         long lFileLengthInBytes = file.length();
-        InputStream inputStream = new FileInputStream(file);
         AudioInputStream audioInputStream = null;
-        try {
+        try (InputStream inputStream = new FileInputStream(file)) {
             audioInputStream = getAudioInputStream(inputStream, lFileLengthInBytes);
         } catch (UnsupportedAudioFileException | IOException e) {
-            inputStream.close();
             throw e;
         }
         if (TDebug.TraceAudioFileReader) {

@@ -138,7 +138,7 @@ public class SyncState {
             return (0);
         }
 
-        // The whole test page is buffered.  Verify the checksum
+        // The whole test page is buffered. Verify the checksum.
         synchronized (chksum) {
             // Grab the checksum bytes, set the header field to zero
 

@@ -41,11 +41,11 @@ import junit.framework.TestCase;
  */
 public class VorbisAudioFileReaderTest extends TestCase {
 
-    private String basefile = "g:\\data\\";
-    private String baseurl = "file:///g:/data/";
+    private String basefile = "";
+    private String baseurl = "file:///";
     private String filename = null;
     private String fileurl = null;
-    private String[] names = {"hangbug.ogg", "test.ogg", "test.au", "test.wav"};
+    private String[] names = {"Agogo.ogg"};
     private PrintStream out = null;
 
     /**
@@ -136,12 +136,9 @@ public class VorbisAudioFileReaderTest extends TestCase {
         if (out != null) {
             out.println("*** testGetAudioFileFormatInputStream ***");
         }
-        try {
-            InputStream in = new BufferedInputStream(new FileInputStream(filename));
-            AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(in);
-            dumpAudioFileFormat(baseFileFormat, out, in.toString());
-            in.close();
-            // TODO : Add assert();
+            try (InputStream in = new BufferedInputStream(new FileInputStream(filename))) {
+                AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(in);
+                dumpAudioFileFormat(baseFileFormat, out, in.toString());
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -155,10 +152,11 @@ public class VorbisAudioFileReaderTest extends TestCase {
             out.println("*** testGetAudioInputStreamInputStream ***");
         }
         try {
-            InputStream fin = new BufferedInputStream(new FileInputStream(filename));
-            AudioInputStream in = AudioSystem.getAudioInputStream(fin);
-            dumpAudioInputStream(in, out, fin.toString());
-            fin.close();
+            AudioInputStream in;
+            try (InputStream fin = new BufferedInputStream(new FileInputStream(filename))) {
+                in = AudioSystem.getAudioInputStream(fin);
+                dumpAudioInputStream(in, out, fin.toString());
+            }
             in.close();
             // TODO : Add assert();
         } catch (UnsupportedAudioFileException | IOException e) {
@@ -175,10 +173,9 @@ public class VorbisAudioFileReaderTest extends TestCase {
         }
         try {
             File file = new File(filename);
-            AudioInputStream in = AudioSystem.getAudioInputStream(file);
-            dumpAudioInputStream(in, out, file.toString());
-            in.close();
-            // TODO : Add assert();
+            try (AudioInputStream in = AudioSystem.getAudioInputStream(file)) {
+                dumpAudioInputStream(in, out, file.toString());
+            }
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -193,10 +190,9 @@ public class VorbisAudioFileReaderTest extends TestCase {
         }
         try {
             URL url = new URL(fileurl);
-            AudioInputStream in = AudioSystem.getAudioInputStream(url);
-            dumpAudioInputStream(in, out, url.toString());
-            in.close();
-            // TODO : Add assert();
+            try (AudioInputStream in = AudioSystem.getAudioInputStream(url)) {
+                dumpAudioInputStream(in, out, url.toString());
+            }
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
@@ -215,8 +211,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
     }
 
     private static byte[] getByteArrayFromFile(final File file) throws FileNotFoundException, IOException {
-        final FileInputStream fis = new FileInputStream(file);
-        try {
+        try (FileInputStream fis = new FileInputStream(file)) {
             final ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length());
             final byte[] buffer = new byte[1024];
             int cnt;
@@ -224,8 +219,6 @@ public class VorbisAudioFileReaderTest extends TestCase {
                 bos.write(buffer, 0, cnt);
             }
             return bos.toByteArray();
-        } finally {
-            fis.close();
         }
     }
 

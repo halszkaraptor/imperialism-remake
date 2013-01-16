@@ -25,19 +25,15 @@
  */
 package org.vorbis.jcraft.jorbis;
 
-import org.vorbis.jcraft.jorbis.Comment;
-import org.vorbis.jcraft.jorbis.Block;
-import org.vorbis.jcraft.jorbis.Info;
-import org.vorbis.jcraft.jorbis.DspState;
-import org.vorbis.jcraft.jogg.Packet;
-import org.vorbis.jcraft.jogg.Page;
-import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.vorbis.jcraft.jogg.Packet;
+import org.vorbis.jcraft.jogg.Page;
+import org.vorbis.jcraft.jogg.StreamState;
+import org.vorbis.jcraft.jogg.SyncState;
 
 /**
  * Takes a vorbis bitstream from stdin and writes raw stereo PCM to stdout.
@@ -70,7 +66,7 @@ class DecodeExample {
         Block vb = new Block(vd); // local working space for packet->PCM decode
 
         byte[] buffer;
-        int bytes = 0;
+        int bytes;
 
         // Decode setup
 

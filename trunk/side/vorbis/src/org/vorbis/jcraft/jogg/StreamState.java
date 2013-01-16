@@ -73,7 +73,7 @@ public class StreamState {
         granule_vals = new long[lacing_storage];
     }
 
-    public void init(int serialno) {
+    public final void init(int serialno) {
         if (body_data == null) {
             init();
         } else {
@@ -94,10 +94,6 @@ public class StreamState {
         body_data = null;
         lacing_vals = null;
         granule_vals = null;
-    }
-
-    void destroy() {
-        clear();
     }
 
     void body_expand(int needed) {
@@ -182,7 +178,7 @@ public class StreamState {
         int ptr = lacing_returned;
 
         if (lacing_packet <= ptr) {
-            return (0);
+            return 0;
         }
 
         if ((lacing_vals[ptr] & 0x400) != 0) {
@@ -192,7 +188,7 @@ public class StreamState {
             /* we need to tell the codec there's a gap; it might need to
              handle previous packet dependencies. */
             packetno++;
-            return (-1);
+            return -1;
         }
 
         /* Gather the whole packet. We'll have no holes or a partial packet */

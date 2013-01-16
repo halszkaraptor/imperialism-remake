@@ -19,6 +19,7 @@ package org.vorbis.jcraft.jorbis;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import org.sound.SoundException;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
@@ -87,7 +88,7 @@ public class VorbisFile {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // TODO do something more useful: e.printStackTrace();
                 }
             }
         }
@@ -107,7 +108,7 @@ public class VorbisFile {
         int bytes;
         try {
             bytes = datasource.read(buffer, index, CHUNKSIZE);
-        } catch (Exception e) {
+        } catch (IOException e) {
             return OV_EREAD;
         }
         oy.wrote(bytes);
@@ -395,7 +396,7 @@ public class VorbisFile {
         seekable = true;
         fseek(datasource, 0, SEEK_END);
         offset = ftell(datasource);
-        end = offset;
+        // end = offset;
         // We get the offset for the last page of the physical bitstream.
         // Most OggVorbis files will contain a single logical bitstream
         end = get_prev_page(og);
@@ -575,7 +576,6 @@ public class VorbisFile {
                         return ret;
                     }
                     current_link++;
-                    i = 0;
                 }
                 make_decode_ready();
             }
@@ -625,7 +625,8 @@ public class VorbisFile {
                     sis.seek(sis.getLength() - off);
                 } else {
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
+                // TODO ???
             }
             return 0;
         }
@@ -646,7 +647,8 @@ public class VorbisFile {
                 SeekableInputStream sis = (SeekableInputStream) fis;
                 return (sis.tell());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // TODO ???
         }
         return 0;
     }
@@ -657,7 +659,7 @@ public class VorbisFile {
     //
     // return: -1) error
     //          0) OK
-    int open(InputStream is, byte[] initial, int ibytes) throws SoundException {
+    private int open(InputStream is, byte[] initial, int ibytes) throws SoundException {
         return open_callbacks(is, initial, ibytes);
     }
 
@@ -1316,54 +1318,54 @@ public class VorbisFile {
         return vc;
     }
 
-    public void close() throws java.io.IOException {
+    public void close() throws IOException {
         datasource.close();
     }
 
     class SeekableInputStream extends InputStream {
 
-        java.io.RandomAccessFile raf = null;
-        final String mode = "r";
+        RandomAccessFile raf = null;
+        private static final String mode = "r";
 
-        SeekableInputStream(String file) throws java.io.IOException {
-            raf = new java.io.RandomAccessFile(file, mode);
+        SeekableInputStream(String file) throws IOException {
+            raf = new RandomAccessFile(file, mode);
         }
 
         @Override
-        public int read() throws java.io.IOException {
+        public int read() throws IOException {
             return raf.read();
         }
 
         @Override
-        public int read(byte[] buf) throws java.io.IOException {
+        public int read(byte[] buf) throws IOException {
             return raf.read(buf);
         }
 
         @Override
-        public int read(byte[] buf, int s, int len) throws java.io.IOException {
+        public int read(byte[] buf, int s, int len) throws IOException {
             return raf.read(buf, s, len);
         }
 
         @Override
-        public long skip(long n) throws java.io.IOException {
+        public long skip(long n) throws IOException {
             return (long) (raf.skipBytes((int) n));
         }
 
-        public long getLength() throws java.io.IOException {
+        public long getLength() throws IOException {
             return raf.length();
         }
 
-        public long tell() throws java.io.IOException {
+        public long tell() throws IOException {
             return raf.getFilePointer();
         }
 
         @Override
-        public int available() throws java.io.IOException {
+        public int available() throws IOException {
             return (raf.length() == raf.getFilePointer()) ? 0 : 1;
         }
 
         @Override
-        public void close() throws java.io.IOException {
+        public void close() throws IOException {
             raf.close();
         }
 
@@ -1372,7 +1374,7 @@ public class VorbisFile {
         }
 
         @Override
-        public synchronized void reset() throws java.io.IOException {
+        public synchronized void reset() throws IOException {
         }
 
         @Override
@@ -1380,7 +1382,7 @@ public class VorbisFile {
             return false;
         }
 
-        public void seek(long pos) throws java.io.IOException {
+        public void seek(long pos) throws IOException {
             raf.seek(pos);
         }
     }

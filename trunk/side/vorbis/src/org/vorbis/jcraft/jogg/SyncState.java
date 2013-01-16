@@ -44,7 +44,7 @@ public class SyncState {
 
     public int clear() {
         data = null;
-        return (0);
+        return 0;
     }
 
     public int buffer(int size) {
@@ -70,15 +70,15 @@ public class SyncState {
             storage = newsize;
         }
 
-        return (fill);
+        return fill;
     }
 
     public int wrote(int bytes) {
         if (fill + bytes > storage) {
-            return (-1);
+            return -1;
         }
         fill += bytes;
-        return (0);
+        return 0;
     }
     // sync the stream.  This is meant to be useful for finding page
     // boundaries.
@@ -98,7 +98,7 @@ public class SyncState {
         if (headerbytes == 0) {
             int _headerbytes, i;
             if (bytes < 27) {
-                return (0); // not enough for a header
+                return 0; // not enough for a header
             }
             /* verify capture pattern */
             if (data[page] != 'O' || data[page + 1] != 'g' || data[page + 2] != 'g'
@@ -120,11 +120,11 @@ public class SyncState {
                 }
 
                 returned = next;
-                return (-(next - page));
+                return -(next - page);
             }
             _headerbytes = (data[page + 26] & 0xff) + 27;
             if (bytes < _headerbytes) {
-                return (0); // not enough for header + seg table
+                return 0; // not enough for header + seg table
             }
             // count up body length in the segment table
 
@@ -135,7 +135,7 @@ public class SyncState {
         }
 
         if (bodybytes + headerbytes > bytes) {
-            return (0);
+            return 0;
         }
 
         // The whole test page is buffered. Verify the checksum.
@@ -182,7 +182,7 @@ public class SyncState {
                     next = fill;
                 }
                 returned = next;
-                return (-(next - page));
+                return -(next - page);
             }
         }
 
@@ -203,7 +203,7 @@ public class SyncState {
             returned += (bytes = headerbytes + bodybytes);
             headerbytes = 0;
             bodybytes = 0;
-            return (bytes);
+            return bytes;
         }
     }
 
@@ -226,17 +226,17 @@ public class SyncState {
             int ret = pageseek(og);
             if (ret > 0) {
                 // have a page
-                return (1);
+                return 1;
             }
             if (ret == 0) {
                 // need more data
-                return (0);
+                return 0;
             }
 
             // head did not start a synced page... skipped some bytes
             if (unsynced == 0) {
                 unsynced = 1;
-                return (-1);
+                return -1;
             }
             // loop. keep looking
         }
@@ -249,7 +249,7 @@ public class SyncState {
         unsynced = 0;
         headerbytes = 0;
         bodybytes = 0;
-        return (0);
+        return 0;
     }
 
     public void init() {

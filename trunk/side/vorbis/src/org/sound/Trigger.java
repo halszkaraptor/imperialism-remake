@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000 ymnk, JCraft,Inc.
+ * Copyright (C) 1999 Matthias Pfisterer
  *               2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,40 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.util;
+package org.sound;
 
-public class Utils {
+/**
+ *
+ */
+public interface Trigger {
 
-    /**
-     * No instantiation.
-     */
-    private Utils() {
-    }
-
-    public static int ilog(int v) {
-        int ret = 0;
-        while (v != 0) {
-            ret++;
-            v >>>= 1;
-        }
-        return ret;
-    }
-
-    public static int ilog2(int v) {
-        int ret = 0;
-        while (v > 1) {
-            ret++;
-            v >>>= 1;
-        }
-        return ret;
-    }
-
-    public static int icount(int v) {
-        int ret = 0;
-        while (v != 0) {
-            ret += (v & 1);
-            v >>>= 1;
-        }
-        return ret;
-    }
+    public void execute();
 }

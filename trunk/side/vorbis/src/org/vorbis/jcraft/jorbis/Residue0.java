@@ -79,16 +79,16 @@ class Residue0 extends FuncResidue {
 
         if (info.groupbook >= vi.books) {
             free_info(info);
-            return (null);
+            return null;
         }
 
         for (int j = 0; j < acc; j++) {
             if (info.booklist[j] >= vi.books) {
                 free_info(info);
-                return (null);
+                return null;
             }
         }
-        return (info);
+        return info;
     }
 
     @Override
@@ -140,7 +140,7 @@ class Residue0 extends FuncResidue {
                 look.decodemap[j][k] = deco;
             }
         }
-        return (look);
+        return look;
     }
 
     @Override
@@ -186,11 +186,11 @@ class Residue0 extends FuncResidue {
                     for (j = 0; j < ch; j++) {
                         int temp = look.phrasebook.decode(vb.opb);
                         if (temp == -1) {
-                            return (0);
+                            return 0;
                         }
                         _01inverse_partword[j][l] = look.decodemap[temp];
                         if (_01inverse_partword[j][l] == null) {
-                            return (0);
+                            return 0;
                         }
                     }
                 }
@@ -206,12 +206,12 @@ class Residue0 extends FuncResidue {
                                 if (decodepart == 0) {
                                     if (stagebook.decodevs_add(in[j], offset, vb.opb,
                                             samples_per_partition) == -1) {
-                                        return (0);
+                                        return 0;
                                     }
                                 } else if (decodepart == 1) {
                                     if (stagebook.decodev_add(in[j], offset, vb.opb,
                                             samples_per_partition) == -1) {
-                                        return (0);
+                                        return 0;
                                     }
                                 }
                             }
@@ -220,7 +220,7 @@ class Residue0 extends FuncResidue {
                 }
             }
         }
-        return (0);
+        return 0;
     }
     static int[][] _2inverse_partword = null;
 
@@ -246,11 +246,11 @@ class Residue0 extends FuncResidue {
                     // fetch the partition word for each channel
                     int temp = look.phrasebook.decode(vb.opb);
                     if (temp == -1) {
-                        return (0);
+                        return 0;
                     }
                     _2inverse_partword[l] = look.decodemap[temp];
                     if (_2inverse_partword[l] == null) {
-                        return (0);
+                        return 0;
                     }
                 }
 
@@ -263,14 +263,14 @@ class Residue0 extends FuncResidue {
                         if (stagebook != null) {
                             if (stagebook.decodevv_add(in, offset, ch, vb.opb,
                                     samples_per_partition) == -1) {
-                                return (0);
+                                return 0;
                             }
                         }
                     }
                 }
             }
         }
-        return (0);
+        return 0;
     }
 
     @Override
@@ -282,9 +282,9 @@ class Residue0 extends FuncResidue {
             }
         }
         if (used != 0) {
-            return (_01inverse(vb, vl, in, used, 0));
+            return _01inverse(vb, vl, in, used, 0);
         } else {
-            return (0);
+            return 0;
         }
     }
 

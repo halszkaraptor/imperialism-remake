@@ -166,7 +166,7 @@ public class StreamState {
         if (op.e_o_s != 0) {
             e_o_s = 1;
         }
-        return (0);
+        return 0;
     }
 
     public int packetout(Packet op) {
@@ -220,7 +220,7 @@ public class StreamState {
             lacing_returned = ptr + 1;
         }
         packetno++;
-        return (1);
+        return 1;
     }
 
     // add the incoming page to the stream state; we decompose the page
@@ -270,10 +270,10 @@ public class StreamState {
 
         // check the serial number
         if (_serialno != serialno) {
-            return (-1);
+            return -1;
         }
         if (version > 0) {
-            return (-1);
+            return -1;
         }
 
         lacing_expand(segments + 1);
@@ -355,7 +355,7 @@ public class StreamState {
         }
 
         pageno = _pageno + 1;
-        return (0);
+        return 0;
     }
 
     /* This will flush remaining packets into a page (returning nonzero),
@@ -381,7 +381,7 @@ public class StreamState {
         long granule_pos = granule_vals[0];
 
         if (maxvals == 0) {
-            return (0);
+            return 0;
         }
 
         /* construct a page */
@@ -493,7 +493,7 @@ public class StreamState {
         og.checksum();
 
         /* done */
-        return (1);
+        return 1;
     }
 
     /* This constructs pages from buffered packet segments.  The pointers
@@ -528,6 +528,6 @@ public class StreamState {
         pageno = -1;
         packetno = 0;
         granulepos = 0;
-        return (0);
+        return 0;
     }
 }

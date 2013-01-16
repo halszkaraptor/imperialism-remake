@@ -135,14 +135,14 @@ public class Comment {
         int vendorlen = opb.read(32);
         if (vendorlen < 0) {
             clear();
-            return (-1);
+            return -1;
         }
         vendor = new byte[vendorlen + 1];
         opb.read(vendor, vendorlen);
         comments = opb.read(32);
         if (comments < 0) {
             clear();
-            return (-1);
+            return -1;
         }
         user_comments = new byte[comments + 1][];
         comment_lengths = new int[comments + 1];
@@ -151,7 +151,7 @@ public class Comment {
             int len = opb.read(32);
             if (len < 0) {
                 clear();
-                return (-1);
+                return -1;
             }
             comment_lengths[i] = len;
             user_comments[i] = new byte[len + 1];
@@ -159,10 +159,10 @@ public class Comment {
         }
         if (opb.read(1) != 1) {
             clear();
-            return (-1);
+            return -1;
 
         }
-        return (0);
+        return 0;
     }
 
     int pack(Buffer opb) {
@@ -187,7 +187,7 @@ public class Comment {
             }
         }
         opb.write(1, 1);
-        return (0);
+        return 0;
     }
 
     public int header_out(Packet op) {

@@ -985,12 +985,12 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
             try {
                 temp = is.read();
             } catch (Exception e) {
-                return (null);
+                return null;
             }
             if (temp == -1) {
                 String str = rtn.toString();
                 if (str.length() == 0) {
-                    return (null);
+                    return null;
                 }
                 return str;
             }
@@ -998,7 +998,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
                 rtn.append((char) temp);
             }
         } while (temp != '\n' && temp != '\r');
-        return (rtn.toString());
+        return rtn.toString();
     }
 
     public JOrbisPlayer() {

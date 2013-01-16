@@ -28,7 +28,7 @@ class Residue1 extends Residue0 {
             }
         }
         if (used != 0) {
-            return (_01inverse(vb, vl, in, used, 1));
+            return _01inverse(vb, vl, in, used, 1);
         } else {
             return 0;
         }

@@ -72,7 +72,7 @@ class Mapping0 extends FuncMapping {
 
         look.ch = vi.channels;
 
-        return (look);
+        return look;
     }
 
     @Override
@@ -141,14 +141,14 @@ class Mapping0 extends FuncMapping {
                         || testA >= vi.channels) {
                     //goto err_out;
                     info.free();
-                    return (null);
+                    return null;
                 }
             }
         }
 
         if (opb.read(2) > 0) { /* 2,3:reserved */
             info.free();
-            return (null);
+            return null;
         }
 
         if (info.submaps > 1) {
@@ -156,7 +156,7 @@ class Mapping0 extends FuncMapping {
                 info.chmuxlist[i] = opb.read(4);
                 if (info.chmuxlist[i] >= info.submaps) {
                     info.free();
-                    return (null);
+                    return null;
                 }
             }
         }
@@ -165,17 +165,17 @@ class Mapping0 extends FuncMapping {
             info.timesubmap[i] = opb.read(8);
             if (info.timesubmap[i] >= vi.times) {
                 info.free();
-                return (null);
+                return null;
             }
             info.floorsubmap[i] = opb.read(8);
             if (info.floorsubmap[i] >= vi.floors) {
                 info.free();
-                return (null);
+                return null;
             }
             info.residuesubmap[i] = opb.read(8);
             if (info.residuesubmap[i] >= vi.residues) {
                 info.free();
-                return (null);
+                return null;
             }
         }
         return info;
@@ -317,7 +317,7 @@ class Mapping0 extends FuncMapping {
         // now apply the decoded post-window time information
         // NOT IMPLEMENTED
         // all done!
-        return (0);
+        return 0;
     }
 
     class InfoMapping0 {

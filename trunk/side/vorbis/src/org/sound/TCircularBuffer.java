@@ -19,63 +19,108 @@ package org.sound;
 
 public class TCircularBuffer {
 
-    private boolean m_bBlockingRead;
-    private boolean m_bBlockingWrite;
-    private byte[] m_abData;
-    private int m_nSize;
-    private long m_lReadPos;
-    private long m_lWritePos;
-    private Trigger m_trigger;
-    private boolean m_bOpen;
+    private boolean blockingRead;
+    private boolean blockingWrite;
+    private byte[] buffer;
+    private int size;
+    private int readPosition;
+    private int writePosition;
+    private Trigger trigger;
+    private boolean isOpen;
 
-    public TCircularBuffer(int nSize, boolean bBlockingRead, boolean bBlockingWrite, Trigger trigger) {
-        m_bBlockingRead = bBlockingRead;
-        m_bBlockingWrite = bBlockingWrite;
-        m_nSize = nSize;
-        m_abData = new byte[m_nSize];
-        m_trigger = trigger;
-        m_bOpen = true;
+    /**
+     *
+     * @param size
+     * @param blockingRead
+     * @param blockingWrite
+     * @param trigger
+     */
+    public TCircularBuffer(int size, boolean blockingRead, boolean blockingWrite, Trigger trigger) {
+
+        this.blockingRead = blockingRead;
+        this.blockingWrite = blockingWrite;
+
+        this.size = size;
+        buffer = new byte[size];
+
+        this.trigger = trigger;
+        isOpen = true;
     }
 
+    /**
+     *
+     */
     public void close() {
-        m_bOpen = false;
+        isOpen = false;
         // TODO: call notify() ?
     }
 
+    /**
+     *
+     * @return
+     */
     private boolean isOpen() {
-        return m_bOpen;
+        return isOpen;
     }
 
+    /**
+     *
+     * @return
+     */
     public int availableRead() {
-        return (int) (m_lWritePos - m_lReadPos);
+        return writePosition - readPosition;
     }
 
+    /**
+     *
+     * @return
+     */
     public int availableWrite() {
-        return m_nSize - availableRead();
+        return size - availableRead();
     }
 
+    /**
+     *
+     * @return
+     */
     private int getReadPos() {
-        return (int) (m_lReadPos % m_nSize);
+        return readPosition % size;
     }
 
+    /**
+     *
+     * @return
+     */
     private int getWritePos() {
-        return (int) (m_lWritePos % m_nSize);
+        return writePosition % size;
     }
 
-    public int read(byte[] abData) {
-        return read(abData, 0, abData.length);
+    /**
+     *
+     * @param data
+     * @return
+     */
+    public int read(byte[] data) {
+        return read(data, 0, data.length);
     }
 
-    public int read(byte[] abData, int nOffset, int nLength) {
+    /**
+     *
+     * @param data
+     * @param offset
+     * @param length
+     * @return
+     */
+    public int read(byte[] data, int offset, int length) {
         if (TDebug.TraceCircularBuffer) {
             TDebug.out(">TCircularBuffer.read(): called.");
             dumpInternalState();
         }
         if (!isOpen()) {
             if (availableRead() > 0) {
-                nLength = Math.min(nLength, availableRead());
+                length = Math.min(length, availableRead());
                 if (TDebug.TraceCircularBuffer) {
-                    TDebug.out("reading rest in closed buffer, length: " + nLength);
+                    TDebug.out("reading rest in closed buffer, length: " + length);
                 }
             } else {
                 if (TDebug.TraceCircularBuffer) {
@@ -85,16 +130,16 @@ public class TCircularBuffer {
             }
         }
         synchronized (this) {
-            if (m_trigger != null && availableRead() < nLength) {
+            if (trigger != null && availableRead() < length) {
                 if (TDebug.TraceCircularBuffer) {
                     TDebug.out("executing trigger.");
                 }
-                m_trigger.execute();
+                trigger.execute();
             }
-            if (!m_bBlockingRead) {
-                nLength = Math.min(availableRead(), nLength);
+            if (!blockingRead) {
+                length = Math.min(availableRead(), length);
             }
-            int nRemainingBytes = nLength;
+            int nRemainingBytes = length;
             while (nRemainingBytes > 0) {
                 while (availableRead() == 0) {
                     try {
@@ -107,10 +152,10 @@ public class TCircularBuffer {
                 }
                 int nAvailable = Math.min(availableRead(), nRemainingBytes);
                 while (nAvailable > 0) {
-                    int nToRead = Math.min(nAvailable, m_nSize - getReadPos());
-                    System.arraycopy(m_abData, getReadPos(), abData, nOffset, nToRead);
-                    m_lReadPos += nToRead;
-                    nOffset += nToRead;
+                    int nToRead = Math.min(nAvailable, size - getReadPos());
+                    System.arraycopy(buffer, getReadPos(), data, offset, nToRead);
+                    readPosition += nToRead;
+                    offset += nToRead;
                     nAvailable -= nToRead;
                     nRemainingBytes -= nToRead;
                 }
@@ -119,29 +164,41 @@ public class TCircularBuffer {
             if (TDebug.TraceCircularBuffer) {
                 TDebug.out("After read:");
                 dumpInternalState();
-                TDebug.out("< completed. Read " + nLength + " bytes");
+                TDebug.out("< completed. Read " + length + " bytes");
             }
-            return nLength;
+            return length;
         }
     }
 
-    public int write(byte[] abData) {
-        return write(abData, 0, abData.length);
+    /**
+     *
+     * @param data
+     * @return
+     */
+    public int write(byte[] data) {
+        return write(data, 0, data.length);
     }
 
-    public int write(byte[] abData, int nOffset, int nLength) {
+    /**
+     *
+     * @param data
+     * @param offset
+     * @param length
+     * @return
+     */
+    public int write(byte[] data, int offset, int length) {
         if (TDebug.TraceCircularBuffer) {
-            TDebug.out(">TCircularBuffer.write(): called; nLength: " + nLength);
+            TDebug.out(">TCircularBuffer.write(): called; nLength: " + length);
             dumpInternalState();
         }
         synchronized (this) {
             if (TDebug.TraceCircularBuffer) {
                 TDebug.out("entered synchronized block.");
             }
-            if (!m_bBlockingWrite) {
-                nLength = Math.min(availableWrite(), nLength);
+            if (!blockingWrite) {
+                length = Math.min(availableWrite(), length);
             }
-            int nRemainingBytes = nLength;
+            int nRemainingBytes = length;
             while (nRemainingBytes > 0) {
                 while (availableWrite() == 0) {
                     try {
@@ -154,11 +211,11 @@ public class TCircularBuffer {
                 }
                 int nAvailable = Math.min(availableWrite(), nRemainingBytes);
                 while (nAvailable > 0) {
-                    int nToWrite = Math.min(nAvailable, m_nSize - getWritePos());
+                    int nToWrite = Math.min(nAvailable, size - getWritePos());
                     //TDebug.out("src buf size= " + abData.length + ", offset = " + nOffset + ", dst buf size=" + m_abData.length + " write pos=" + getWritePos() + " len=" + nToWrite);
-                    System.arraycopy(abData, nOffset, m_abData, getWritePos(), nToWrite);
-                    m_lWritePos += nToWrite;
-                    nOffset += nToWrite;
+                    System.arraycopy(data, offset, buffer, getWritePos(), nToWrite);
+                    writePosition += nToWrite;
+                    offset += nToWrite;
                     nAvailable -= nToWrite;
                     nRemainingBytes -= nToWrite;
                 }
@@ -167,21 +224,19 @@ public class TCircularBuffer {
             if (TDebug.TraceCircularBuffer) {
                 TDebug.out("After write:");
                 dumpInternalState();
-                TDebug.out("< completed. Wrote " + nLength + " bytes");
+                TDebug.out("< completed. Wrote " + length + " bytes");
             }
-            return nLength;
+            return length;
         }
     }
 
+    /**
+     *
+     */
     private void dumpInternalState() {
-        TDebug.out("m_lReadPos  = " + m_lReadPos + " ^= " + getReadPos());
-        TDebug.out("m_lWritePos = " + m_lWritePos + " ^= " + getWritePos());
+        TDebug.out("m_lReadPos  = " + readPosition + " ^= " + getReadPos());
+        TDebug.out("m_lWritePos = " + writePosition + " ^= " + getWritePos());
         TDebug.out("availableRead()  = " + availableRead());
         TDebug.out("availableWrite() = " + availableWrite());
-    }
-
-    public static interface Trigger {
-
-        public void execute();
     }
 }

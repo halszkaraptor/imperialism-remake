@@ -123,7 +123,7 @@ class Lpc {
             work[j++] = temp;
         }
 
-        return (lpc_from_data(work, lpc, n, m));
+        return lpc_from_data(work, lpc, n, m);
     }
 
     void init(int mapped, int m) {
@@ -138,8 +138,9 @@ class Lpc {
         fft.clear();
     }
 
+    // TODO consider replacing by Math.hypot
     static float FAST_HYPOT(float a, float b) {
-        return (float) Math.sqrt((a) * (a) + (b) * (b));
+        return (float) Math.sqrt(a * a + b * b);
     }
 
     // One can do this the long way by generating the transfer function in
@@ -174,7 +175,7 @@ class Lpc {
                 float imag = (curve[i] - curve[l2 - i]);
 
                 float a = real + unit;
-                curve[i] = (float) (1.0 / FAST_HYPOT(a, imag));
+                curve[i] = 1.0f / FAST_HYPOT(a, imag);
             }
         }
     }

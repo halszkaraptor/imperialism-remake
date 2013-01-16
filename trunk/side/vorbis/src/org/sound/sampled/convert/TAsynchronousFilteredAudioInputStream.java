@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
 import org.sound.TCircularBuffer;
 import org.sound.TDebug;
+import org.sound.Trigger;
 
 /**
  * Base class for asynchronous converters. This class serves as base class for
@@ -29,7 +30,7 @@ import org.sound.TDebug;
  * input data and the size of a block of output data. These types of converters
  * therefore need an internal buffer, which is realized in this class.
  */
-public abstract class TAsynchronousFilteredAudioInputStream extends TAudioInputStream implements TCircularBuffer.Trigger {
+public abstract class TAsynchronousFilteredAudioInputStream extends TAudioInputStream implements Trigger {
 
     private static final int DEFAULT_BUFFER_SIZE = 327670;
     private static final int DEFAULT_MIN_AVAILABLE = 4096;

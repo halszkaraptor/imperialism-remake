@@ -1,0 +1,2 @@
+# provider of ogg-vorbis decoding services
+javazoom.spi.vorbis.sampled.convert.VorbisFormatConversionProvider

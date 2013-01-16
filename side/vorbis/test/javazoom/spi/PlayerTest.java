@@ -22,6 +22,7 @@ package javazoom.spi;
  *
  */
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -67,7 +68,7 @@ public class PlayerTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         props = new Properties();
-        InputStream pin = getClass().getClassLoader().getResourceAsStream("test.ogg.properties");
+        InputStream pin = new FileInputStream("javazoom.spi.test.ogg.properties");
         props.load(pin);
         basefile = (String) props.getProperty("basefile");
         baseurl = (String) props.getProperty("baseurl");

@@ -16,11 +16,8 @@
  */
 package org.tools.ui;
 
-import java.awt.Insets;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.border.Border;
 
 /**
  * A shortcut for the most typical configurations we are using buttons in.

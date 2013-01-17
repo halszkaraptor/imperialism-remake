@@ -82,4 +82,29 @@ public class MapPosition {
     public boolean equals(MapPosition p) {
         return row == p.row && column == p.column;
     }
+
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        return equals((MapPosition) obj);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return row + 13 * column;
+    }
 }

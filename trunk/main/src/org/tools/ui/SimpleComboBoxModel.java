@@ -21,22 +21,35 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 
 /**
- *
+ * A simple, generic, read-only implementation of the ComboBoxModel suitable for
+ * JComboBox elements based on a List and a selection index. Since the list is not changed inside
  */
 public class SimpleComboBoxModel<E> implements ComboBoxModel<E> {
 
     private final List<E> content;
     private int selectedIndex = -1;
 
-    public SimpleComboBoxModel(List<E> content) {
-        this.content = content;
+    /**
+     *
+     * @param content
+     */
+    public SimpleComboBoxModel(List<E> list) {
+        content = list; // TODO make copy?
     }
 
+    /**
+     *
+     * @param item
+     */
     @Override
     public void setSelectedItem(Object item) {
         selectedIndex = content.indexOf(item);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Object getSelectedItem() {
         if (selectedIndex != -1) {
@@ -46,15 +59,28 @@ public class SimpleComboBoxModel<E> implements ComboBoxModel<E> {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSelectedIndex() {
         return selectedIndex;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int getSize() {
         return content.size();
     }
 
+    /**
+     *
+     * @param index
+     * @return
+     */
     @Override
     public E getElementAt(int index) {
         if (index >= 0 && index < content.size()) {
@@ -64,10 +90,18 @@ public class SimpleComboBoxModel<E> implements ComboBoxModel<E> {
         }
     }
 
+    /**
+     *
+     * @param l
+     */
     @Override
     public void addListDataListener(ListDataListener l) {
     }
 
+    /**
+     *
+     * @param l
+     */
     @Override
     public void removeListDataListener(ListDataListener l) {
     }

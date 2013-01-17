@@ -64,10 +64,9 @@ public class FileResource implements Resource {
         if (!exists()) {
             // first try to create the parent directory if not already
             File parent = file.getParentFile();
-            if (parent != null && !parent.exists()) {
-                parent.mkdir();
+            if (parent != null && !parent.exists() && parent.mkdir()) {
+                file.createNewFile();
             }
-            file.createNewFile();
         }
     }
 

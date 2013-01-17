@@ -49,7 +49,7 @@ public class Settings {
     /* mapping: id -> description of resource types */
     private static Map<Integer, String> resourceNames;
     /* the default (none) resource id */
-    public static int RESOURCE_NONE = 0;
+    public static final int RESOURCE_NONE = 0;
 
     /**
      * No instantiation.

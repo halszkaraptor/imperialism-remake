@@ -143,59 +143,6 @@ public class GraphicsUtils {
 
     /**
      *
-     * @param top
-     * @param left
-     * @param bottom
-     * @param right
-     * @param arc
-     * @param color
-     * @return
-     */
-    public static Border createRoundedEmptyBorder(final int top, final int left, final int bottom, final int right, final int arc, final Color color) {
-        if (top < 0 | left < 0 | bottom < 0 | right < 0 | arc < 0) {
-            throw new IllegalArgumentException();
-        }
-        final int dr = (int) Math.ceil((1 - 1 / Math.sqrt(2)) * arc);
-        return new Border() {
-            @Override
-            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-                if (c.isOpaque()) {
-                    Graphics2D g2d = (Graphics2D) g;
-
-                    Color oldColor = g2d.getColor();
-
-                    g2d.setColor(color);
-
-                    Shape outer, inner;
-
-                    outer = new RoundRectangle2D.Float(left, top, width - left - right, height - top - bottom, arc, arc);
-                    inner = new Rectangle2D.Float(left + dr, top + dr, width - left - right - 2 * dr, height - top - bottom - 2 * dr);
-
-                    Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
-
-                    path.append(outer, false);
-                    path.append(inner, false);
-
-                    g2d.fill(path);
-
-                    g2d.setColor(oldColor);
-                }
-            }
-
-            @Override
-            public Insets getBorderInsets(Component c) {
-                return new Insets(top + dr, left + dr, right + dr, bottom + dr);
-            }
-
-            @Override
-            public boolean isBorderOpaque() {
-                return true;
-            }
-        };
-    }
-
-    /**
-     *
      * @param icon
      * @param width
      * @param height

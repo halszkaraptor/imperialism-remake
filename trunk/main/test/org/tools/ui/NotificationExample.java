@@ -281,7 +281,7 @@ public class NotificationExample extends JFrame implements NotificationListener 
             dlg.setFadeOutTime(fadeOutTime);
         }
 
-        int onTime = Integer.parseInt(onTimeTextField.getText().toString()) * 1000;
+        int onTime = Integer.parseInt(onTimeTextField.getText()) * 1000;
         if (onTime > 0) {
             dlg.setOnTime(onTime);
         }

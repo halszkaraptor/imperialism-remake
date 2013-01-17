@@ -138,7 +138,7 @@ public class UIDialog {
      * Do not forget to dispose the dialog!
      */
     protected void close() {
-        if (closingListener == null || closingListener.closing() == true) {
+        if (dialog != null && (closingListener == null || closingListener.closing() == true)) {
             dialog.dispose();
         }
     }

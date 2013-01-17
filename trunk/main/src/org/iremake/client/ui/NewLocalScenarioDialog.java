@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -34,6 +35,7 @@ import org.iremake.client.ui.main.MainScreen;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
+import org.tools.ui.SimpleListModel;
 
 /**
  * Selecting and starting a local scenario (all players are AI and the server runs locally).
@@ -59,19 +61,8 @@ public class NewLocalScenarioDialog extends UIDialog {
         selectList.setBorder(BorderFactory.createTitledBorder("Scenarios"));
         selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // setting up a JList model
-        selectList.setModel(new AbstractListModel<String>() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public int getSize() {
-                return titles.size();
-            }
-
-            @Override
-            public String getElementAt(int index) {
-                return titles.get(index);
-            }
-        });
+        ListModel<String> model = new SimpleListModel<>(titles);
+        selectList.setModel(model);
         // listen to the list and update the selected scenario upon selection
         selectList.addListSelectionListener(new ListSelectionListener() {
             @Override

@@ -390,8 +390,7 @@ public class XTable implements TableModel, XMLable {
      *
      * @return
      */
-    @Override
-    public XTable clone() {
+    public XTable copy() {
         int rows = getRowCount();
         int columns = getColumnCount();
         List<String> heads = new ArrayList<>(columns);

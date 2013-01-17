@@ -140,7 +140,7 @@ public class OptionsDialog extends UIDialog {
 
         // TODO use OptionsDialogComboBoxItem
         // TODO only if there are some, other disable
-        JComboBox mixerBox = new JComboBox();
+        JComboBox<String> mixerBox = new JComboBox<>();
         mixerModel = new SimpleComboBoxModel<>(SoundSystem.getAvailableMixerNames());
         mixerBox.setModel(mixerModel);
         mixerBox.setSelectedIndex(0);

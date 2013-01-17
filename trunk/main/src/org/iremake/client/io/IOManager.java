@@ -17,6 +17,8 @@
 package org.iremake.client.io;
 
 import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -93,7 +96,7 @@ public class IOManager {
 
                 @Override
                 public String getDescription() {
-                    return "Map files (*.xml)";
+                    return "Scenario files (*.xml)";
                 }
             });
         }
@@ -108,14 +111,8 @@ public class IOManager {
      * @return
      */
     public static Icon getAsIcon(Places place, String location) {
-        String path = IOManager.getPath(place, location);
-        statistics.add(path);
-        ImageIcon icon = new ImageIcon(path);
-        // ImageIcon waits automatically, no ImageObserver needed
-        if (icon == null) {
-            LOG.log(Level.INFO, "Image {0} not readable.", path);
-        }
-        return icon;
+        Image image = getAsImage(place, location);
+        return new ImageIcon(image);
     }
 
     /**
@@ -126,14 +123,15 @@ public class IOManager {
      * @return
      */
     public static Image getAsImage(Places place, String location) {
-        String path = IOManager.getPath(place, location);
-        statistics.add(path);
-        ImageIcon icon = new ImageIcon(path);
-        if (icon == null) {
-            LOG.log(Level.INFO, "Image {0} not readable.", path);
-            return null;
+        Resource resource = getAsResource(place, location);
+        statistics.add(resource.getPath());
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(resource.getInputStream());
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
         }
-        return icon.getImage();
+        return image;
     }
 
     /**
@@ -197,10 +195,16 @@ public class IOManager {
      * @return
      * @throws FileNotFoundException
      */
-    public static InputStream getAsInputStream(Places place, String location) throws FileNotFoundException {
-        String path = IOManager.getPath(place, location);
-        statistics.add(path);
-        return new FileInputStream(path);
+    public static InputStream getAsInputStream(Places place, String location) {
+        try {
+            Resource resource = getAsResource(place, location);
+            if (resource != null) {
+                return resource.getInputStream();
+            }
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**

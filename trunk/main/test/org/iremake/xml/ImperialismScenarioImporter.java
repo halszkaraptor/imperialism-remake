@@ -16,7 +16,6 @@
  */
 package org.iremake.xml;
 
-import org.tools.io.TestIOManager;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -44,13 +43,14 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
-import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 import org.tools.io.FileResource;
 import org.tools.io.Resource;
+import org.tools.io.TestIOManager;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
@@ -61,6 +61,17 @@ import org.tools.xml.XMLHelper;
  */
 public class ImperialismScenarioImporter extends JFrame {
 
+    private static final FileFilter ImportFileFilter = new FileFilter() {
+        @Override
+        public boolean accept(File f) {
+            return f.isDirectory() || (f.getName().endsWith(".map") || f.getName().endsWith(".xml"));
+        }
+
+        @Override
+        public String getDescription() {
+            return "Map or Scenario Files";
+        }
+    };
     private static final long serialVersionUID = 1L;
     private JFileChooser fileChooser;
 
@@ -77,17 +88,7 @@ public class ImperialismScenarioImporter extends JFrame {
         // init file chooser
         fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                return f.isDirectory() || (f.getName().endsWith(".map") || f.getName().endsWith(".xml"));
-            }
-
-            @Override
-            public String getDescription() {
-                return "Map or Scenario Files";
-            }
-        });
+        fileChooser.setFileFilter(ImportFileFilter);
     }
 
     /**

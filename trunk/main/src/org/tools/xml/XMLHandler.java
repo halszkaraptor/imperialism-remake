@@ -161,7 +161,7 @@ public class XMLHandler {
         int size = Integer.parseInt(element.getAttributeValue("size"));
         List<Integer> list = new ArrayList<>(size);
 
-        if (size == 0 & element.getValue().length() == 0) {
+        if (size == 0 && element.getValue().length() == 0) {
             return list;
         }
 

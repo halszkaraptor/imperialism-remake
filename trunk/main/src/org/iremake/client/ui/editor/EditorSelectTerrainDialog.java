@@ -60,21 +60,13 @@ public class EditorSelectTerrainDialog extends UIDialog {
         // get all available tiles and find out which rectangular form is closest to a square
         Set<Integer> IDs = Settings.getTerrainIDs();
         int n = IDs.size();
-        int l = (int) Math.sqrt(n);
-        int r, c;
-        if (l * l >= n) {
-            r = l;
-            c = l;
-        } else if ((l + 1) * l >= n) {
-            r = l;
-            c = l + 1;
-        } else {
-            r = l + 1;
-            c = l + 1;
+        int c = (int) Math.sqrt(n);
+        if (c * c >= n) {
+            c++;
         }
 
-        // here actually GridLayout does exactly the job and we not need Miglayout
-        // but for consistens borders everywhere we also use MigLayout
+        // here GridLayout would also exactly do the job but we use Miglayout
+        // for consistent borders everywhere in the application
         panel.setLayout(new MigLayout("wrap " + c));
 
         // add a button for each terrain tile and set tooltip text and name accordingly

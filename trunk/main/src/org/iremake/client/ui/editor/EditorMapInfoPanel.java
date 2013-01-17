@@ -21,8 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.common.Settings;
-import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 
 /**

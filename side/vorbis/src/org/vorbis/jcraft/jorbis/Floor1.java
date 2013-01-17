@@ -22,6 +22,31 @@ import org.vorbis.jcraft.jogg.Buffer;
 
 class Floor1 extends FuncFloor {
 
+    private static class LookFloor1 {
+
+        static final int VIF_POSIT = 63;
+        int[] sorted_index = new int[VIF_POSIT + 2];
+        int[] forward_index = new int[VIF_POSIT + 2];
+        int[] reverse_index = new int[VIF_POSIT + 2];
+        int[] hineighbor = new int[VIF_POSIT];
+        int[] loneighbor = new int[VIF_POSIT];
+        int posts;
+        int n;
+        int quant_q;
+        InfoFloor1 vi;
+        int phrasebits;
+        int postbits;
+        int frames;
+
+        void free() {
+            sorted_index = null;
+            forward_index = null;
+            reverse_index = null;
+            hineighbor = null;
+            loneighbor = null;
+        }
+    }
+
     static final int floor1_rangedb = 140;
     static final int VIF_POSIT = 63;
 
@@ -558,31 +583,7 @@ class Floor1 extends FuncFloor {
         }
     }
 
-    class LookFloor1 {
-
-        static final int VIF_POSIT = 63;
-        int[] sorted_index = new int[VIF_POSIT + 2];
-        int[] forward_index = new int[VIF_POSIT + 2];
-        int[] reverse_index = new int[VIF_POSIT + 2];
-        int[] hineighbor = new int[VIF_POSIT];
-        int[] loneighbor = new int[VIF_POSIT];
-        int posts;
-        int n;
-        int quant_q;
-        InfoFloor1 vi;
-        int phrasebits;
-        int postbits;
-        int frames;
-
-        void free() {
-            sorted_index = null;
-            forward_index = null;
-            reverse_index = null;
-            hineighbor = null;
-            loneighbor = null;
-        }
-    }
-
+    /*
     class Lsfit_acc {
 
         long x0;
@@ -597,13 +598,14 @@ class Floor1 extends FuncFloor {
         long un;
         long edgey0;
         long edgey1;
-    }
+    }*/ // unused
 
+    /*
     class EchstateFloor1 {
 
         int[] codewords;
         float[] curve;
         long frameno;
         long codes;
-    }
+    }*/ // unused
 }

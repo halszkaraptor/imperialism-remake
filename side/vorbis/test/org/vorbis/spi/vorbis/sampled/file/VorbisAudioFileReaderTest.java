@@ -108,7 +108,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
             dumpAudioFileFormat(baseFileFormat, out, file.toString());
             // TODO : Add assert();
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -125,7 +125,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
             dumpAudioFileFormat(baseFileFormat, out, url.toString());
             // TODO : Add assert();
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -140,7 +140,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
                 AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(in);
                 dumpAudioFileFormat(baseFileFormat, out, in.toString());
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -160,7 +160,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
             in.close();
             // TODO : Add assert();
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -177,7 +177,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
                 dumpAudioInputStream(in, out, file.toString());
             }
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -194,7 +194,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
                 dumpAudioInputStream(in, out, url.toString());
             }
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 
@@ -206,7 +206,7 @@ public class VorbisAudioFileReaderTest extends TestCase {
             byte[] audioData = getByteArrayFromFile(new File(filename));
             AudioInputStream ais = AudioSystem.getAudioInputStream(new ByteArrayInputStream(audioData));
         } catch (IOException | UnsupportedAudioFileException e) {
-            e.printStackTrace();
+            // TODO e.printStackTrace();
         }
     }
 

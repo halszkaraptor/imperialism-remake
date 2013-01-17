@@ -476,7 +476,7 @@ public class StreamState {
         /* set pointers in the ogg_page struct */
         og.header_base = header;
         og.header = 0;
-        og.header_len = header_fill = vals + 27;
+        // og.header_len = header_fill = vals + 27; // unread
         og.body_base = body_data;
         og.body = body_returned;
         og.body_len = bytes;

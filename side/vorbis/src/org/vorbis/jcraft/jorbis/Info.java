@@ -452,8 +452,6 @@ public class Info {
 
     @Override
     public String toString() {
-        return "version:" + new Integer(version) + ", channels:" + new Integer(channels)
-                + ", rate:" + new Integer(rate) + ", bitrate:" + new Integer(bitrate_upper)
-                + "," + new Integer(bitrate_nominal) + "," + new Integer(bitrate_lower);
+        return String.format("version: %d, channels: %d, rate %d, bitrate %d, %d, %d", version, channels, rate, bitrate_upper, bitrate_nominal, bitrate_lower);
     }
 }

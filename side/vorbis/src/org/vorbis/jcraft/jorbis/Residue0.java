@@ -22,6 +22,40 @@ import org.vorbis.jcraft.jogg.Buffer;
 
 class Residue0 extends FuncResidue {
 
+    private static class LookResidue0 {
+
+        InfoResidue0 info;
+        int map;
+        int parts;
+        int stages;
+        CodeBook[] fullbooks;
+        CodeBook phrasebook;
+        int[][] partbooks;
+        int partvals;
+        int[][] decodemap;
+        int postbits;
+        int phrasebits;
+        int frames;
+    }
+
+    private static class InfoResidue0 {
+        // block-partitioned VQ coded straight residue
+
+        int begin;
+        int end;
+        // first stage (lossless partitioning)
+        int grouping; // group n vectors per partition
+        int partitions; // possible codebooks for a partition
+        int groupbook; // huffbook for partitioning
+        int[] secondstages = new int[64]; // expanded out to pointers in lookup
+        int[] booklist = new int[256]; // list of second stage books
+        // encode-only heuristic settings
+        float[] entmax = new float[64]; // book entropy threshholds
+        float[] ampmax = new float[64]; // book amp threshholds
+        int[] subgrp = new int[64]; // book heuristic subgroup size
+        int[] blimit = new int[64]; // subgroup position limits
+    }
+
     @Override
     void pack(Object vr, Buffer opb) {
         InfoResidue0 info = (InfoResidue0) vr;
@@ -286,39 +320,5 @@ class Residue0 extends FuncResidue {
         } else {
             return 0;
         }
-    }
-
-    class LookResidue0 {
-
-        InfoResidue0 info;
-        int map;
-        int parts;
-        int stages;
-        CodeBook[] fullbooks;
-        CodeBook phrasebook;
-        int[][] partbooks;
-        int partvals;
-        int[][] decodemap;
-        int postbits;
-        int phrasebits;
-        int frames;
-    }
-
-    class InfoResidue0 {
-        // block-partitioned VQ coded straight residue
-
-        int begin;
-        int end;
-        // first stage (lossless partitioning)
-        int grouping; // group n vectors per partition
-        int partitions; // possible codebooks for a partition
-        int groupbook; // huffbook for partitioning
-        int[] secondstages = new int[64]; // expanded out to pointers in lookup
-        int[] booklist = new int[256]; // list of second stage books
-        // encode-only heuristic settings
-        float[] entmax = new float[64]; // book entropy threshholds
-        float[] ampmax = new float[64]; // book amp threshholds
-        int[] subgrp = new int[64]; // book heuristic subgroup size
-        int[] blimit = new int[64]; // subgroup position limits
     }
 }

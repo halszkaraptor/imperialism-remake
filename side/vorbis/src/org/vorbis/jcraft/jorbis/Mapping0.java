@@ -22,13 +22,53 @@ import org.vorbis.jcraft.jogg.Buffer;
 
 class Mapping0 extends FuncMapping {
 
+    private static class InfoMapping0 {
+
+        int submaps; // <= 16
+        int[] chmuxlist = new int[256]; // up to 256 channels in a Vorbis stream
+        int[] timesubmap = new int[16]; // [mux]
+        int[] floorsubmap = new int[16]; // [mux] submap to floors
+        int[] residuesubmap = new int[16];// [mux] submap to residue
+        int[] psysubmap = new int[16]; // [mux]; encode only
+        int coupling_steps;
+        int[] coupling_mag = new int[256];
+        int[] coupling_ang = new int[256];
+
+        void free() {
+            chmuxlist = null;
+            timesubmap = null;
+            floorsubmap = null;
+            residuesubmap = null;
+            psysubmap = null;
+
+            coupling_mag = null;
+            coupling_ang = null;
+        }
+    }
+
+    private static class LookMapping0 {
+
+        InfoMode mode;
+        InfoMapping0 map;
+        Object[] time_look;
+        Object[] floor_look;
+        Object[] floor_state;
+        Object[] residue_look;
+        PsyLook[] psy_look;
+        FuncTime[] time_func;
+        FuncFloor[] floor_func;
+        FuncResidue[] residue_func;
+        int ch;
+        float[][] decay;
+        int lastframe; // if a different mode is called, we need to
+        // invalidate decay and floor state
+    }
+
     static int seq = 0;
 
     @Override
     void free_info(Object imap) {
     }
-
-    ;
 
     @Override
   void free_look(Object imap) {
@@ -83,7 +123,7 @@ class Mapping0 extends FuncMapping {
          packed 4 binary zeros here to signify one submapping in use.  We
          now redefine that to mean four bitflags that indicate use of
          deeper features; bit0:submappings, bit1:coupling,
-         bit2,3:reserved. This is backward compatable with all actual uses
+         bit2,3:reserved. This is backward compatible with all actual uses
          of the beta code. */
 
         if (info.submaps > 1) {
@@ -318,47 +358,5 @@ class Mapping0 extends FuncMapping {
         // NOT IMPLEMENTED
         // all done!
         return 0;
-    }
-
-    class InfoMapping0 {
-
-        int submaps; // <= 16
-        int[] chmuxlist = new int[256]; // up to 256 channels in a Vorbis stream
-        int[] timesubmap = new int[16]; // [mux]
-        int[] floorsubmap = new int[16]; // [mux] submap to floors
-        int[] residuesubmap = new int[16];// [mux] submap to residue
-        int[] psysubmap = new int[16]; // [mux]; encode only
-        int coupling_steps;
-        int[] coupling_mag = new int[256];
-        int[] coupling_ang = new int[256];
-
-        void free() {
-            chmuxlist = null;
-            timesubmap = null;
-            floorsubmap = null;
-            residuesubmap = null;
-            psysubmap = null;
-
-            coupling_mag = null;
-            coupling_ang = null;
-        }
-    }
-
-    class LookMapping0 {
-
-        InfoMode mode;
-        InfoMapping0 map;
-        Object[] time_look;
-        Object[] floor_look;
-        Object[] floor_state;
-        Object[] residue_look;
-        PsyLook[] psy_look;
-        FuncTime[] time_func;
-        FuncFloor[] floor_func;
-        FuncResidue[] residue_func;
-        int ch;
-        float[][] decay;
-        int lastframe; // if a different mode is called, we need to
-        // invalidate decay and floor state
     }
 }

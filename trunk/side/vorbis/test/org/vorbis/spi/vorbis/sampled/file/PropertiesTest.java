@@ -77,11 +77,9 @@ public class PropertiesTest extends TestCase {
         String[] testPropsAF = {"vbr", "bitrate"};
 
         File file = new File(filename);
-        AudioFileFormat baseFileFormat = null;
-        AudioFormat baseFormat = null;
         try {
-            baseFileFormat = AudioSystem.getAudioFileFormat(file);
-            baseFormat = baseFileFormat.getFormat();
+            AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(file);
+            AudioFormat baseFormat = baseFileFormat.getFormat();
             if (out != null) {
                 out.println("-> Filename : " + filename + " <-");
             }
@@ -131,12 +129,10 @@ public class PropertiesTest extends TestCase {
         String[] testPropsAFF = {"duration", "title", "author", "album", "date", "comment",
             "copyright", "ogg.bitrate.min", "ogg.bitrate.nominal", "ogg.bitrate.max"};
         String[] testPropsAF = {"vbr", "bitrate"};
-        AudioFileFormat baseFileFormat = null;
-        AudioFormat baseFormat = null;
         try {
             URL url = new URL(fileurl);
-            baseFileFormat = AudioSystem.getAudioFileFormat(url);
-            baseFormat = baseFileFormat.getFormat();
+            AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(url);
+            AudioFormat baseFormat = baseFileFormat.getFormat();
             if (out != null) {
                 out.println("-> URL : " + fileurl + " <-");
             }

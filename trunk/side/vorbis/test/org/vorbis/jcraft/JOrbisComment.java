@@ -72,7 +72,7 @@ class JOrbisComment {
         String comment;
         while (true) {
             try {
-                comment = (String) props.get("JOrbis.comment." + new Integer(i));
+                comment = (String) props.get("JOrbis.comment." + i);
                 foo.vc.add(comment);
                 i++;
             } catch (Exception e) {
@@ -300,7 +300,7 @@ class JOrbisComment {
                         out.write(ogout.header_base, ogout.header, ogout.header_len);
                         out.flush();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // TODO e.printStackTrace();
                         //goto cleanup;
                         return -1;
                     }
@@ -308,7 +308,7 @@ class JOrbisComment {
                         out.write(ogout.body_base, ogout.body, ogout.body_len);
                         out.flush();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // TODO e.printStackTrace();
 //System.out.println("ogout.body_base.length="+ogout.body_base.length+
 //                   ", ogout.body="+ogout.body+
 //                   ", ogout.body_len="+ogout.body_len);
@@ -324,7 +324,7 @@ class JOrbisComment {
                         out.write(ogout.header_base, ogout.header, ogout.header_len);
                         out.flush();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // TODO e.printStackTrace();
                         //goto cleanup;
                         return -1;
                     }
@@ -332,7 +332,7 @@ class JOrbisComment {
                         out.write(ogout.body_base, ogout.body, ogout.body_len);
                         out.flush();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // TODO e.printStackTrace();
 //System.out.println("ogout.body_base.length="+ogout.body_base.length+
 //                   ", ogout.body="+ogout.body+
 //                   ", ogout.body_len="+ogout.body_len);
@@ -370,7 +370,7 @@ class JOrbisComment {
                 out.write(ogout.header_base, ogout.header, ogout.header_len);
                 out.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                // TODO e.printStackTrace();
                 //goto cleanup;
                 return -1;
             }
@@ -378,7 +378,7 @@ class JOrbisComment {
                 out.write(ogout.body_base, ogout.body, ogout.body_len);
                 out.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                // TODO e.printStackTrace();
 //System.out.println("ogout.body_base.length="+ogout.body_base.length+
 //                   ", ogout.body="+ogout.body+
 //                   ", ogout.body_len="+ogout.body_len);

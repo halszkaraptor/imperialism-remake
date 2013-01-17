@@ -229,12 +229,14 @@ public class Comment {
 
     @Override
     public String toString() {
-        String foo = "Vendor: " + new String(vendor, 0, vendor.length - 1);
+        StringBuilder builder = new StringBuilder();
+        builder.append("Vendor: ");
+        builder.append(new String(vendor, 0, vendor.length - 1));
         for (int i = 0; i < comments; i++) {
-            foo = foo + "\nComment: "
-                    + new String(user_comments[i], 0, user_comments[i].length - 1);
+            builder.append("\nComment: ");
+            builder.append(new String(user_comments[i], 0, user_comments[i].length - 1));
         }
-        foo = foo + "\n";
-        return foo;
+        builder.append("\n");
+        return builder.toString();
     }
 }

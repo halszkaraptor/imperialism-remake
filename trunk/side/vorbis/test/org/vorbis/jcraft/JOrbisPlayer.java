@@ -16,7 +16,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -629,7 +630,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         } catch (Exception e) {
         }
 
-        UDPIO io = null;
+        UDPIO io;
         try {
             io = new UDPIO(udp_port);
         } catch (Exception e) {
@@ -656,7 +657,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
         player = null;
     }
-    Vector playlist = new Vector();
+    List<String> playlist = new ArrayList<>();
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -686,14 +687,14 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
             }
             System.out.println(item);
             try {
-                URL url = null;
+                URL url;
                 if (running_as_applet) {
                     url = new URL(getCodeBase(), item);
                 } else {
                     url = new URL(item);
                 }
-                BufferedReader stats = new BufferedReader(new InputStreamReader(url
-                        .openConnection().getInputStream()));
+                BufferedReader stats = new BufferedReader(
+                        new InputStreamReader(url.openConnection().getInputStream()));
                 while (true) {
                     String bar = stats.readLine();
                     if (bar == null) {
@@ -758,7 +759,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         InputStream is = null;
         URLConnection urlc = null;
         try {
-            URL url = null;
+            URL url;
             if (running_as_applet) {
                 url = new URL(getCodeBase(), item);
             } else {
@@ -802,13 +803,11 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
 
         int i = 0;
-        String s = null;
-        String t = null;
         udp_port = -1;
         udp_baddress = null;
         while (urlc != null && true) {
-            s = urlc.getHeaderField(i);
-            t = urlc.getHeaderFieldKey(i);
+            String s = urlc.getHeaderField(i);
+            String t = urlc.getHeaderFieldKey(i);
             if (s == null) {
                 break;
             }
@@ -830,7 +829,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         InputStream pstream = null;
         if (pls.startsWith("http://")) {
             try {
-                URL url = null;
+                URL url;
                 if (running_as_applet) {
                     url = new URL(getCodeBase(), pls);
                 } else {
@@ -880,7 +879,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         InputStream pstream = null;
         if (m3u.startsWith("http://")) {
             try {
-                URL url = null;
+                URL url;
                 if (running_as_applet) {
                     url = new URL(getCodeBase(), m3u);
                 } else {
@@ -920,13 +919,12 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     void loadPlaylist() {
 
         if (running_as_applet) {
-            String s = null;
             for (int i = 0; i < 10; i++) {
-                s = getParameter("jorbis.player.play." + i);
+                String s = getParameter("jorbis.player.play." + i);
                 if (s == null) {
                     break;
                 }
-                playlist.addElement(s);
+                playlist.add(s);
             }
         }
 
@@ -937,7 +935,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         try {
             InputStream is = null;
             try {
-                URL url = null;
+                URL url;
                 if (running_as_applet) {
                     url = new URL(getCodeBase(), playlistfile);
                 } else {
@@ -971,7 +969,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
                         break;
                     }
                 }
-                playlist.addElement(line);
+                playlist.add(line);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -1004,14 +1002,14 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     public JOrbisPlayer() {
     }
     JPanel panel;
-    JComboBox cb;
+    JComboBox<String> cb;
     JButton start_button;
     JButton stats_button;
 
     void initUI() {
         panel = new JPanel();
 
-        cb = new JComboBox(playlist);
+        cb = new JComboBox(playlist.toArray());
         cb.setEditable(true);
         panel.add(cb);
 
@@ -1026,7 +1024,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
     }
 
-    class UDPIO extends InputStream {
+    private static class UDPIO extends InputStream {
 
         InetAddress address;
         DatagramSocket socket = null;
@@ -1069,10 +1067,10 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
 
         int getByte(byte[] array, int begin, int length) throws java.io.IOException {
-            int i = 0;
             int foo = begin;
             while (true) {
-                if ((i = (inend - instart)) < length) {
+                int i = inend - instart;
+                if (i < length) {
                     if (i != 0) {
                         System.arraycopy(inbuffer, instart, array, begin, i);
                         begin += i;
@@ -1093,8 +1091,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
             if ((inend - instart) < 2) {
                 read(2);
             }
-            int s = 0;
-            s = inbuffer[instart++] & 0xff;
+            int s = inbuffer[instart++] & 0xff;
             s = ((s << 8) & 0xffff) | (inbuffer[instart++] & 0xff);
             return s;
         }
@@ -1103,8 +1100,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
             if ((inend - instart) < 4) {
                 read(4);
             }
-            int i = 0;
-            i = inbuffer[instart++] & 0xff;
+            int i = inbuffer[instart++] & 0xff;
             i = ((i << 8) & 0xffff) | (inbuffer[instart++] & 0xff);
             i = ((i << 8) & 0xffffff) | (inbuffer[instart++] & 0xff);
             i = (i << 8) | (inbuffer[instart++] & 0xff);
@@ -1164,6 +1160,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
 
     public static void main(String[] arg) {
 
+        // execute in event thread
         JFrame frame = new JFrame("JOrbisPlayer");
         frame.setBackground(Color.lightGray);
         frame.setBackground(Color.white);
@@ -1181,7 +1178,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
 
         if (arg.length > 0) {
             for (int i = 0; i < arg.length; i++) {
-                player.playlist.addElement(arg[i]);
+                player.playlist.add(arg[i]);
             }
         }
 

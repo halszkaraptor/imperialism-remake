@@ -78,9 +78,8 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         if (TDebug.TraceAudioFileReader) {
             TDebug.out("getAudioFileFormat(File file)");
         }
-        InputStream inputStream = null;
-        try {
-            inputStream = new BufferedInputStream(new FileInputStream(file));
+
+        try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
             inputStream.mark(MARK_LIMIT);
             AudioFileFormat aff = getAudioFileFormat(inputStream);
             inputStream.reset();
@@ -89,10 +88,6 @@ public class VorbisAudioFileReader extends TAudioFileReader {
             return getAudioFileFormat(inputStream, (int) file.length(), (int) Math.round((vf.time_total(-1)) * 1000));
         } catch (SoundException e) {
             throw new IOException(e.getMessage());
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
         }
     }
 
@@ -155,7 +150,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         if (totalms <= 0) {
             totalms = 0;
         } else {
-            aff_properties.put("duration", new Long(totalms * 1000));
+            aff_properties.put("duration", totalms * 1000);
         }
         oggBitStream_ = bitStream;
         init_jorbis();
@@ -191,29 +186,29 @@ public class VorbisAudioFileReader extends TAudioFileReader {
             }
         }
         if (nominalbitrate > 0) {
-            af_properties.put("bitrate", new Integer(nominalbitrate));
+            af_properties.put("bitrate", nominalbitrate);
         }
         af_properties.put("vbr", true);
 
         if (minbitrate > 0) {
-            aff_properties.put("ogg.bitrate.min.bps", new Integer(minbitrate));
+            aff_properties.put("ogg.bitrate.min.bps", minbitrate);
         }
         if (maxbitrate > 0) {
-            aff_properties.put("ogg.bitrate.max.bps", new Integer(maxbitrate));
+            aff_properties.put("ogg.bitrate.max.bps", maxbitrate);
         }
         if (nominalbitrate > 0) {
-            aff_properties.put("ogg.bitrate.nominal.bps", new Integer(nominalbitrate));
+            aff_properties.put("ogg.bitrate.nominal.bps", nominalbitrate);
         }
         if (vorbisInfo.channels > 0) {
-            aff_properties.put("ogg.channels", new Integer(vorbisInfo.channels));
+            aff_properties.put("ogg.channels", vorbisInfo.channels);
         }
         if (vorbisInfo.rate > 0) {
-            aff_properties.put("ogg.frequency.hz", new Integer(vorbisInfo.rate));
+            aff_properties.put("ogg.frequency.hz", vorbisInfo.rate);
         }
         if (mediaLength > 0) {
-            aff_properties.put("ogg.length.bytes", new Integer(mediaLength));
+            aff_properties.put("ogg.length.bytes", mediaLength);
         }
-        aff_properties.put("ogg.version", new Integer(vorbisInfo.version));
+        aff_properties.put("ogg.version", vorbisInfo.version);
 
         //AudioFormat.Encoding encoding = VorbisEncoding.VORBISENC;
         //AudioFormat format = new VorbisAudioFormat(encoding, vorbisInfo.rate, AudioSystem.NOT_SPECIFIED, vorbisInfo.channels, AudioSystem.NOT_SPECIFIED, AudioSystem.NOT_SPECIFIED, true,af_properties);
@@ -333,7 +328,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         oggStreamState_.init(oggPage_.serialno());
         vorbisInfo.init();
         vorbisComment.init();
-        aff_properties.put("ogg.serial", new Integer(oggPage_.serialno()));
+        aff_properties.put("ogg.serial", oggPage_.serialno());
         if (oggStreamState_.pagein(oggPage_) < 0) {
             // error; stream version mismatch perhaps
             if (TDebug.TraceAudioConverter) {

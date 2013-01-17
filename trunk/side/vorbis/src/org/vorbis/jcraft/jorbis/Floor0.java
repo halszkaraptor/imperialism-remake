@@ -22,6 +22,35 @@ import org.vorbis.jcraft.jogg.Buffer;
 
 class Floor0 extends FuncFloor {
 
+    private static class InfoFloor0 {
+
+        int order;
+        int rate;
+        int barkmap;
+        int ampbits;
+        int ampdB;
+        int numbooks; // <= 16
+        int[] books = new int[16];
+    }
+
+    private static class LookFloor0 {
+
+        int n;
+        int ln;
+        int m;
+        int[] linearmap;
+        InfoFloor0 vi;
+        Lpc lpclook = new Lpc();
+    }
+
+    private static class EchstateFloor0 {
+
+        int[] codewords;
+        float[] curve;
+        long frameno;
+        long codes;
+    }
+
     @Override
     void pack(Object i, Buffer opb) {
         InfoFloor0 info = (InfoFloor0) i;
@@ -310,34 +339,5 @@ class Floor0 extends FuncFloor {
         for (int i = 0; i < l.n; i++) {
             curve[i] = lcurve[l.linearmap[i]];
         }
-    }
-
-    class InfoFloor0 {
-
-        int order;
-        int rate;
-        int barkmap;
-        int ampbits;
-        int ampdB;
-        int numbooks; // <= 16
-        int[] books = new int[16];
-    }
-
-    class LookFloor0 {
-
-        int n;
-        int ln;
-        int m;
-        int[] linearmap;
-        InfoFloor0 vi;
-        Lpc lpclook = new Lpc();
-    }
-
-    class EchstateFloor0 {
-
-        int[] codewords;
-        float[] curve;
-        long frameno;
-        long codes;
     }
 }

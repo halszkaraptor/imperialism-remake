@@ -22,6 +22,15 @@ import org.vorbis.jcraft.jogg.Buffer;
 
 class CodeBook {
 
+    private static class DecodeAux {
+        int[] tab;
+        int[] tabl;
+        int tabn;
+        int[] ptr0;
+        int[] ptr1;
+        int aux; // number of tree entries
+    }
+
     int dim; // codebook dimensions (elements per vector)
     int entries; // codebook entries
     StaticCodeBook c = new StaticCodeBook();
@@ -406,7 +415,7 @@ class CodeBook {
         if (codelist == null) {
             return null;
         }
-        t.aux = entries * 2;
+        // t.aux = entries * 2; // unread
 
         for (int i = 0; i < entries; i++) {
             if (c.lengthlist[i] > 0) {
@@ -459,15 +468,5 @@ class CodeBook {
         }
 
         return t;
-    }
-
-    class DecodeAux {
-
-        int[] tab;
-        int[] tabl;
-        int tabn;
-        int[] ptr0;
-        int[] ptr1;
-        int aux; // number of tree entries
     }
 }

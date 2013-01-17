@@ -28,6 +28,71 @@ import org.vorbis.jcraft.jogg.SyncState;
 
 public class VorbisFile {
 
+    private static class SeekableInputStream extends InputStream {
+
+        RandomAccessFile raf = null;
+        private static final String mode = "r";
+
+        SeekableInputStream(String file) throws IOException {
+            raf = new RandomAccessFile(file, mode);
+        }
+
+        @Override
+        public int read() throws IOException {
+            return raf.read();
+        }
+
+        @Override
+        public int read(byte[] buf) throws IOException {
+            return raf.read(buf);
+        }
+
+        @Override
+        public int read(byte[] buf, int s, int len) throws IOException {
+            return raf.read(buf, s, len);
+        }
+
+        @Override
+        public long skip(long n) throws IOException {
+            return (long) (raf.skipBytes((int) n));
+        }
+
+        public long getLength() throws IOException {
+            return raf.length();
+        }
+
+        public long tell() throws IOException {
+            return raf.getFilePointer();
+        }
+
+        @Override
+        public int available() throws IOException {
+            return (raf.length() == raf.getFilePointer()) ? 0 : 1;
+        }
+
+        @Override
+        public void close() throws IOException {
+            raf.close();
+        }
+
+        @Override
+        public synchronized void mark(int m) {
+        }
+
+        @Override
+        public synchronized void reset() throws IOException {
+        }
+
+        @Override
+        public boolean markSupported() {
+            return false;
+        }
+
+        public void seek(long pos) throws IOException {
+            raf.seek(pos);
+        }
+    }
+
     static final int CHUNKSIZE = 8500;
     static final int SEEK_SET = 0;
     static final int SEEK_CUR = 1;
@@ -364,7 +429,7 @@ public class VorbisFile {
 
     private int make_decode_ready() {
         if (decode_ready) {
-            System.exit(1);
+            // TODO System.exit(1); do something meaningful
         }
         vd.synthesis_init(vi[0]);
         vb.init(vd);
@@ -1320,70 +1385,5 @@ public class VorbisFile {
 
     public void close() throws IOException {
         datasource.close();
-    }
-
-    class SeekableInputStream extends InputStream {
-
-        RandomAccessFile raf = null;
-        private static final String mode = "r";
-
-        SeekableInputStream(String file) throws IOException {
-            raf = new RandomAccessFile(file, mode);
-        }
-
-        @Override
-        public int read() throws IOException {
-            return raf.read();
-        }
-
-        @Override
-        public int read(byte[] buf) throws IOException {
-            return raf.read(buf);
-        }
-
-        @Override
-        public int read(byte[] buf, int s, int len) throws IOException {
-            return raf.read(buf, s, len);
-        }
-
-        @Override
-        public long skip(long n) throws IOException {
-            return (long) (raf.skipBytes((int) n));
-        }
-
-        public long getLength() throws IOException {
-            return raf.length();
-        }
-
-        public long tell() throws IOException {
-            return raf.getFilePointer();
-        }
-
-        @Override
-        public int available() throws IOException {
-            return (raf.length() == raf.getFilePointer()) ? 0 : 1;
-        }
-
-        @Override
-        public void close() throws IOException {
-            raf.close();
-        }
-
-        @Override
-        public synchronized void mark(int m) {
-        }
-
-        @Override
-        public synchronized void reset() throws IOException {
-        }
-
-        @Override
-        public boolean markSupported() {
-            return false;
-        }
-
-        public void seek(long pos) throws IOException {
-            raf.seek(pos);
-        }
     }
 }

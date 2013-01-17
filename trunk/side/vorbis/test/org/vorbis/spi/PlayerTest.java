@@ -21,7 +21,6 @@ package org.vorbis.spi;
  *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *
  */
-import org.vorbis.spi.PropertiesContainer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +35,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import junit.framework.TestCase;
 
 /**
@@ -95,7 +95,6 @@ public class PlayerTest extends TestCase {
                 out.println("Audio Type : " + aff.getType());
             }
             AudioInputStream in = AudioSystem.getAudioInputStream(file);
-            AudioInputStream din = null;
             if (in != null) {
                 AudioFormat baseFormat = in.getFormat();
                 if (out != null) {
@@ -112,7 +111,7 @@ public class PlayerTest extends TestCase {
                 if (out != null) {
                     out.println("Target Format : " + decodedFormat.toString());
                 }
-                din = AudioSystem.getAudioInputStream(decodedFormat, in);
+                AudioInputStream din = AudioSystem.getAudioInputStream(decodedFormat, in);
                 if (din instanceof PropertiesContainer) {
                     assertTrue("PropertiesContainer : OK", true);
                 } else {
@@ -125,7 +124,7 @@ public class PlayerTest extends TestCase {
                 }
                 assertTrue("testPlay : OK", true);
             }
-        } catch (Exception e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             assertTrue("testPlay : " + e.getMessage(), false);
         }
     }
@@ -141,7 +140,6 @@ public class PlayerTest extends TestCase {
                 out.println("Audio Type : " + aff.getType());
             }
             AudioInputStream in = AudioSystem.getAudioInputStream(url);
-            AudioInputStream din = null;
             if (in != null) {
                 AudioFormat baseFormat = in.getFormat();
                 if (out != null) {
@@ -158,7 +156,7 @@ public class PlayerTest extends TestCase {
                 if (out != null) {
                     out.println("Target Format : " + decodedFormat.toString());
                 }
-                din = AudioSystem.getAudioInputStream(decodedFormat, in);
+                AudioInputStream din = AudioSystem.getAudioInputStream(decodedFormat, in);
                 if (din instanceof PropertiesContainer) {
                     assertTrue("PropertiesContainer : OK", true);
                 } else {
@@ -171,15 +169,14 @@ public class PlayerTest extends TestCase {
                 }
                 assertTrue("testPlay : OK", true);
             }
-        } catch (Exception e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             assertTrue("testPlay : " + e.getMessage(), false);
         }
     }
 
     private SourceDataLine getLine(AudioFormat audioFormat) throws LineUnavailableException {
-        SourceDataLine res = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-        res = (SourceDataLine) AudioSystem.getLine(info);
+        SourceDataLine res = (SourceDataLine) AudioSystem.getLine(info);
         res.open(audioFormat);
         return res;
     }

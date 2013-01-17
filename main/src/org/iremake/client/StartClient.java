@@ -103,7 +103,7 @@ public class StartClient {
                     screen.switchTo();
                 }
             });
-        } catch (Exception ex) {
+        } catch (RuntimeException | IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
 

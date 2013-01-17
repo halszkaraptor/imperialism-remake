@@ -35,7 +35,7 @@ public enum Option {
     NetworkAlias("client.network.alias"); // this option does not need to be existing in the default options xml file, it will be added automatically
 
     /* OS name */
-    public static boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");
+    public static final boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");
     /* Holds the options */
     private static XProperty options = new XProperty(20);
     /* Option name */

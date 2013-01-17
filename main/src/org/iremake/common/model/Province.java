@@ -16,7 +16,6 @@
  */
 package org.iremake.common.model;
 
-import org.iremake.common.model.map.MapPosition;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.iremake.common.model.map.MapPosition;

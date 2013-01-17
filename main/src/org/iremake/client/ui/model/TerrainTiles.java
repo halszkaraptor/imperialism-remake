@@ -48,7 +48,7 @@ public class TerrainTiles implements XMLable {
      * internal class bundling an image and a color and defining a reasonable
      * hash code and equals method
      */
-    private class Tile {
+    private static class Tile {
 
         public Image image;
         public Color color;

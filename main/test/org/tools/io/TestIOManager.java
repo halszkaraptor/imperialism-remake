@@ -45,11 +45,7 @@ public class TestIOManager {
         if (url == null) {
             return null;
         }
-        ImageIcon icon = new ImageIcon(url);
-        if (icon == null) {
-            return null;
-        }
-        return icon;
+        return new ImageIcon(url);
     }
 
     /**

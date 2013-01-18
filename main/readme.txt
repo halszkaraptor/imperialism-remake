@@ -1,40 +1,43 @@
 Imperialism Remake
 
 
- Version 0.1.2 (2013-??)
- ChangeLog: http://remake.twelvepm.de/forum/viewtopic.php?f=2&t=1045
+  Version 0.1.2 (2013-??)
+  ChangeLog: http://remake.twelvepm.de/forum/viewtopic.php?f=2&t=1045
 
 
-1. Links
+* 1. Links
 
 
- Homepage:  http://remake.twelvepm.de/
- Download:  http://remake.twelvepm.de/?page=downloads
- Community: http://remake.twelvepm.de/forum/
- Credits:   See in-game help browser
+  Homepage:  http://remake.twelvepm.de/
+  Download:  http://remake.twelvepm.de/?page=downloads
+  Community: http://remake.twelvepm.de/forum/
+  Credits:   See in-game help browser
 
 
-2. Getting Started
+* 2. Getting Started
 
 
- A Java Runtime Environment version 7 (or later) is required (Oracle JRE, OpenJDK).
+  A Java Runtime Environment version 7 (or later) is required (Oracle JRE, OpenJDK).
 
- Start with:  java -jar imperialism-remake.jar
+  Start with:  java -jar imperialism-remake.jar
 
- or with click/double click on the jar file if your system is configured
- to execute jar files directly. (Linux: Set it executable first.)
-
-
-3. Support
+  Or with click/double click on the jar file if your system is configured
+  to execute jar files directly. (Linux: Set it executable first.)
 
 
- Troubleshooting:  http://remake.twelvepm.de/?page=faq
- Community Forum:  http://remake.twelvepm.de/forum/viewtopic.php?f=4&t=1052
- Contact form:     http://remake.twelvepm.de/contact.php
+* 3. Support
 
 
-4. License
+  Windows: If the java launcher cannot find the main class, it is most probably outdated.
+           Update Java to version 7. http://java.com/en/download/index.jsp
+
+  Troubleshooting:  http://remake.twelvepm.de/?page=faq
+  Community Forum:  http://remake.twelvepm.de/forum/viewtopic.php?f=4&t=1052
+  Contact form:     http://remake.twelvepm.de/contact.php
 
 
- Source code under GPLv3+.   (http://www.gnu.org/licenses/gpl.html)
- Artwork under CC-BY-SA 3.0. (http://creativecommons.org/licenses/by-sa/3.0/)
+* 4. License
+
+
+  Source code under GPLv3+.   (http://www.gnu.org/licenses/gpl.html)
+  Artwork under CC-BY-SA 3.0. (http://creativecommons.org/licenses/by-sa/3.0/)

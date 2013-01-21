@@ -64,7 +64,7 @@ public class SPIDecoderTest {
         }
     }
 
-    @Test
+    // @Test
     public void testPlayFile() {
         try {
             System.out.println("Start : " + filename);
@@ -101,7 +101,7 @@ public class SPIDecoderTest {
         }
     }
 
-    // @Test
+    @Test
     public void testPlayURL() {
         try {
             System.out.println("Start : " + fileurl);

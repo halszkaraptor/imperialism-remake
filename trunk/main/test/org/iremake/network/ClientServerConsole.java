@@ -16,7 +16,7 @@
  */
 package org.iremake.network;
 
-import org.tools.io.TestIOManager;
+import icons.TestIOManager;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;

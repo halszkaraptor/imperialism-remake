@@ -16,6 +16,7 @@
  */
 package org.iremake.xml;
 
+import icons.TestIOManager;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -50,7 +51,6 @@ import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 import org.tools.io.FileResource;
 import org.tools.io.Resource;
-import org.tools.io.TestIOManager;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;

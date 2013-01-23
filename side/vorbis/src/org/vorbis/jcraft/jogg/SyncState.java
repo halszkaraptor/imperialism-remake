@@ -42,9 +42,8 @@ public class SyncState {
     int headerbytes;
     int bodybytes;
 
-    public int clear() {
+    public void clear() {
         data = null;
-        return 0;
     }
 
     public int buffer(int size) {

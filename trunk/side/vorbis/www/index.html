@@ -4,9 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Vorbis Support Java Library</title>
 <style type="text/css">
-body {
-	background: #304070;
-}
+body { background: #304070; }
 div#main {
 	background: #fffaf0;
 	border-style:slid;
@@ -16,6 +14,23 @@ div#main {
 	width: 1000px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
+p {
+	font-size: 0.8em;
+	text-align:justify;
+}
+div.code {
+	white-space:pre;
+	background-color:#eeeae0;
+	font-family: monospace;
+	tab-size: 4;
+}
+a:link { text-decoration:none; }
+a:hover {
+	background-color:#eeeae0;
+	text-decoration:underline;	
+}
+h1 { font-size: 1.6em; }
+h2 { font-size: 1.2em; }
 </style
 </head>
 
@@ -23,21 +38,97 @@ div#main {
 
 <div id="main">
 
-	<h1>Vorbis Support - All-in-One OGG Vorbis Decoder</h1>
+	<h1>Vorbis Support - All-in-One OGG Vorbis Decoder in Java</h1>
 
 	<h2>What is Vorbis Support?</h2>
 	
 	<p>Ogg/Vorbis is a free audio format featuring high compression ratios. It is widely used and there are libraries who enable support for Ogg in Java. <a href="http://www.jcraft.com/jorbis/">JOrbis</a>
-	by JCraft is a pure Java Ogg/Vorbis decoder and <a href="http://www.javazoom.net/vorbisspi/vorbisspi.html">	Ogg Vorbis SPI</a> by JavaZoom registers JOrbis as a service for the
-	<a href="http://docs.oracle.com/javase/tutorial/sound/TOC.html"Java Sound API</a>. The later also relies partly on the <a href="http://www.tritonus.org/">Tritonus</a> library (shared plugin).
+	by JCraft is a pure Java Ogg/Vorbis decoder and <a href="http://www.javazoom.net/vorbisspi/vorbisspi.html">Ogg Vorbis SPI</a> by JavaZoom registers JOrbis as a service for the
+	<a href="http://docs.oracle.com/javase/tutorial/sound/TOC.html">Java Sound API</a>. The later also relies partly on the <a href="http://www.tritonus.org/">Tritonus</a> library (shared plugin).
+	They are however inactive now for several years. The reference implementation for Ogg/Vorbis is <a href="http://xiph.org/vorbis/">libvorbis</a> in C.</p>
+	
+	<p>Vorbis Support is the all-in-one combination of JOrbis, JavaSPI and Tritonus-Share.</p>
+	
+	<p>Alternatives are <a href="http://www.paulscode.com/forum/index.php?topic=4.0">Paul's SoundSystem</a> (full support of Java Sound, JOAL, LWJGL gaming libraries, wrappers around JOrbis, J-OGG),
+	<a href="http://downloads.xiph.org/releases/vorbis-java/">Vorbis-Java</a> (Java encoder and decoder at xiph.org), <a href="http://www.cokeandcode.com/index.html?page=libs">EasyOgg</a> (wrapper around JOrbis)
+	and <a href="http://www.j-ogg.de/">J-OGG</a> (independent ogg/vorbis decode). Except the first they have stopped development for years now.</p>
 
 	<h2>Why Vorbis Support?</h2>
+	
+	<p>The three libraries are almost always bundled together. Together they constitute a complete plattform independent Ogg/Vorbis support for the Java Sound API. Fortunately they share the same open source license.
+	Combining them together makes distribution and handling easier, can reduce the size of the download and makes testing and debugging easier. Also increasing the efficiency by optimizing the code is easier.</p>
+	
+	<p>However since these libraries already exist, this project does not need to take care of backwards compatibility, since there is always the fallback to the original libraries. Therefore to ease maintenance and use newer
+	features of the Java language, the required version of Java is 7 or later.</p>
 
 	<h2>Download</h2>
+	
+	<p>Latest version: 1.0 (21th January 2013) - Bundling of the libraries, cleanup of the code and testing
+	
+	<p>License: <a href="http://www.gnu.org/licenses/gpl-2.0.txt">GPLv2+</a></p>
+	
+	<p>Requirement: Java 7 or later</p>
+	
+	<p>Download library: <a href="http://imperialism-remake.googlecode.com/files/vorbis-support-1.0.jar">vorbis-support-1.0.jar</a> (97 kB only)</p>
+	
+	<p>Download sources: <a href="http://imperialism-remake.googlecode.com/files/vorbis-support-1.0-sources.zip">vorbis-support-1.0-sources.zip</a></p>
 
 	<h2>Example</h2>
+	
+	<p>This library used the Services Provider Interface to enable Ogg/Vorbis playback under the hood without changing any of the code on the client's library side. Just put this library in the classpath and access your
+	sound resources (SourceDataLine or Clip) as you would without Ogg/Vorbis support. See the Java Tutorial on <a href="http://docs.oracle.com/javase/tutorial/sound/playing.html">Playing Back Audio</a> for more information.
+	And here is also an example that plays an entire ogg file.</p>
+	
+	<div class="code">
+try {
+    AudioInputStream in = AudioSystem.getAudioInputStream(new File("xyz.ogg");
+    if (in != null) {
+        AudioFormat baseFormat = in.getFormat();
 
+        AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(),
+        16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
+
+        AudioInputStream dataIn = AudioSystem.getAudioInputStream(targetFormat, in);
+
+        byte[] buffer = new byte[4096];
+
+        // get a line from a mixer in the system with the wanted format
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, targetFormat);
+        SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+
+        if (line != null) {
+            line.open();
+
+            line.start();
+            int nBytesRead = 0, nBytesWritten = 0;
+            while (nBytesRead != -1) {
+                nBytesRead = dataIn.read(buffer, 0, buffer.length);
+                if (nBytesRead != -1) {
+                    nBytesWritten = line.write(buffer, 0, nBytesRead);
+                }
+            }
+
+            line.drain();
+            line.stop();
+            line.close();
+
+            dataIn.close();
+        }
+		
+        in.close();
+        // playback finished
+    }
+} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+    // failed
+}
+</div>
+	
 	<h2>Support</h2>
+	
+	<p>Contact the <a href="http://remake.twelvepm.de/contact.php">author</a> (just use the contact form) or post in the <a href="http://remake.twelvepm.de/forum/viewtopic.php?f=10&t=1068">support thread</a> (guests can post,
+	but you can also register, the forum is part of a game remake where vorbis support is a side project).</p>
+	
+	<p>Bug reports as well as enhancement request or just any kind of feedback - all is welcome.</p>
 
 </div>
 

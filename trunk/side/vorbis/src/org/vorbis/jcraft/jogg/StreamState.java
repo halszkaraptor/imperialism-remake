@@ -39,7 +39,6 @@ public class StreamState {
     int lacing_returned;
     byte[] header = new byte[282]; /* working space for header encode */
 
-    int header_fill;
     public int e_o_s; /* set when we have buffered the last packet in the
      logical bitstream */
 
@@ -520,8 +519,6 @@ public class StreamState {
         lacing_fill = 0;
         lacing_packet = 0;
         lacing_returned = 0;
-
-        header_fill = 0;
 
         e_o_s = 0;
         b_o_s = 0;

@@ -39,7 +39,7 @@ public class Page {
                 r <<= 1;
             }
         }
-        return r & 0xffffffff;
+        return r;
     }
     public byte[] header_base;
     public int header;

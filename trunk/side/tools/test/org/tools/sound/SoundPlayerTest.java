@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
@@ -51,10 +50,5 @@ public class SoundPlayerTest {
         AudioInputStream data = AudioSystem.getAudioInputStream(TargetFormat, in);
 
         control.play(data);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SoundPlayerTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

@@ -68,8 +68,13 @@ public class StreamPlayerControl {
 
     public void play(AudioInputStream in) {
         state = State.PLAYING;
-
         player.play(in);
+    }
+
+    public void stop() {
+        if (state == State.PLAYING) {
+            player.play(null);
+        }
     }
 
     public void pause() {

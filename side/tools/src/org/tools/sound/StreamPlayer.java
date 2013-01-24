@@ -28,13 +28,10 @@ import javax.sound.sampled.SourceDataLine;
 public class StreamPlayer implements Runnable {
 
     private static final Logger LOG = Logger.getLogger(StreamPlayer.class.getName());
-
     private final byte[] buffer = new byte[4096];
     private final SourceDataLine line;
-
-    private AudioInputStream stream;
-
-    private boolean exit = false;
+    private volatile AudioInputStream stream;
+    private volatile boolean exit = false;
 
     public StreamPlayer(SourceDataLine line) {
         this.line = line;
@@ -45,13 +42,10 @@ public class StreamPlayer implements Runnable {
     }
 
     public void play(AudioInputStream data) {
-        synchronized (stream) {
-            if (stream == null) {
-                stream = data;
-            }
+        if (stream == null) {
+            stream = data;
         }
     }
-
 
     @Override
     public void run() {
@@ -67,7 +61,6 @@ public class StreamPlayer implements Runnable {
                 while (nBytesRead != -1) {
                     try {
                         nBytesRead = stream.read(buffer, 0, buffer.length);
-                        System.out.println("Bytes read " + nBytesRead);
                     } catch (IOException ex) {
                         LOG.log(Level.SEVERE, null, ex);
                         // TODO exit graciously

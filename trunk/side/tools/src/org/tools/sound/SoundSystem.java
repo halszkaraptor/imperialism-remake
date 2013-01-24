@@ -34,8 +34,8 @@ import javax.sound.sampled.SourceDataLine;
 public class SoundSystem {
 
     private static final Logger LOG = Logger.getLogger(SoundSystem.class.getName());
-    private static final AudioFormat RequestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
-    private static final DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, RequestedFormat);
+    private static final AudioFormat TargetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
+    private static final DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, TargetFormat);
     private static final int MinLines = 2;
     private static List<Mixer> availableMixers = new LinkedList<>();
     private static Mixer usedMixer;

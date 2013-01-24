@@ -18,7 +18,9 @@ package org.tools.sound;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Control;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 
@@ -38,7 +40,7 @@ public class SoundUtils {
      *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LineUnavailableException {
         printAvailableMixers();
     }
 
@@ -46,7 +48,7 @@ public class SoundUtils {
      * Get all mixers that can handle at least two lines of signed PCM, 44kHz,
      * stereo, 16bit, little endian output.
      */
-    public static void printAvailableMixers() {
+    public static void printAvailableMixers() throws LineUnavailableException {
         // audio format, standard high quality, stereo output
         AudioFormat requestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
         // an output data line
@@ -62,6 +64,12 @@ public class SoundUtils {
             // at least two or not specified, print info
             if (maxLines == AudioSystem.NOT_SPECIFIED || maxLines >= 2) {
                 System.out.println("Description: " + mixerInfo.getDescription() + " Vendor: " + mixerInfo.getVendor() + " Name: " + mixerInfo.getName());
+                SourceDataLine line = (SourceDataLine) mixer.getLine(lineInfo);
+                line.open();
+                for (Control control : line.getControls()) {
+                    System.out.println("Line has control: " + control);
+                }
+                line.close();
             }
         }
     }

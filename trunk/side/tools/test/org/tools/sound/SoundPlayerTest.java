@@ -19,8 +19,8 @@ package org.tools.sound;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.LinkedList;
+import java.util.List;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -29,6 +29,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import org.junit.Test;
+import org.tools.io.Resource;
+import org.tools.io.URLResource;
 
 /**
  *
@@ -38,17 +40,48 @@ public class SoundPlayerTest {
     private static final AudioFormat TargetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
 
     @Test
-    public void StreamingPlayerTest() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void PlayListTest() throws LineUnavailableException, InterruptedException {
+
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
+        SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+        JukeBox jukebox = JukeBox.create(line, "Music");
+
+        List<Resource> list = new LinkedList<>();
+        list.add(new URLResource("http://www.twelvepm.de/vorbis/Agogo.ogg"));
+        jukebox.setSongList(list);
+
+        jukebox.play();
+
+        Thread.sleep(3000);
+    }
+
+    // @Test
+    public void StreamingPlayerTest() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
         SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 
-        StreamPlayerControl control = StreamPlayerControl.create(line, "Music-Thread");
+        StreamPlayer player = StreamPlayer.create(line, "Music-Thread");
 
         URL url = new URL("http://www.twelvepm.de/vorbis/Agogo.ogg");
         AudioInputStream in = AudioSystem.getAudioInputStream(url);
         AudioInputStream data = AudioSystem.getAudioInputStream(TargetFormat, in);
 
-        control.play(data);
+        player.setDefaultVolume(0.8f);
+        player.setDefaultFadingTime(6000);
+        player.play(data);
+        Thread.sleep(6000);
+
+        /*
+         Thread.sleep(2000);
+         player.pause();
+         // player.mute(true);
+         Thread.sleep(2000);
+         // player.mute(false);
+         player.resume();
+         Thread.sleep(2000);
+         player.stop();
+         Thread.sleep(3000);
+         */
     }
 }

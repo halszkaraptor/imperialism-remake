@@ -17,9 +17,14 @@
 package org.tools.sound;
 
 import java.io.IOException;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.BooleanControl;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
@@ -29,36 +34,165 @@ public class StreamPlayer implements Runnable {
 
     private static final Logger LOG = Logger.getLogger(StreamPlayer.class.getName());
     private final byte[] buffer = new byte[4096];
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition actionCondition = lock.newCondition();
+    private final Condition resumeCondition = lock.newCondition();
     private final SourceDataLine line;
+    private final BooleanControl muteControl;
+    private final FloatControl volumeControl;
+    private final float volumeRange;
+    private final float minimumVolume;
+    private volatile float defaultVolume = 0.8f;
+    private volatile int defaultFadingTime = 0;
+    private volatile boolean stop;
+    private volatile boolean pause;
     private volatile AudioInputStream stream;
-    private volatile boolean exit = false;
+    private volatile boolean exit;
 
-    public StreamPlayer(SourceDataLine line) {
+    /**
+     *
+     * @param line
+     */
+    private StreamPlayer(SourceDataLine line) {
+        // TODO insert code that checks if the controls are available, otherwise disable functionality
+        muteControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+        volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+        minimumVolume = Math.max(volumeControl.getMinimum(), -40); // not less than -30dB
+        volumeRange = volumeControl.getMaximum() - minimumVolume;
+        setVolume();
+
         this.line = line;
     }
 
-    public void exit() {
-        exit = true;
+    /**
+     *
+     * @param line
+     * @param name
+     * @return
+     * @throws LineUnavailableException
+     */
+    public static StreamPlayer create(SourceDataLine line, String name) throws LineUnavailableException {
+        if (!line.isOpen()) {
+            line.open();
+        }
+        StreamPlayer player = new StreamPlayer(line);
+        new Thread(player, name).start();
+        return player;
     }
 
-    public void play(AudioInputStream data) {
-        if (stream == null) {
-            stream = data;
+    /**
+     *
+     */
+    public void destroy() {
+        stop();
+
+        lock.lock();
+        try {
+            exit = true;
+            actionCondition.signal();
+        } finally {
+            lock.unlock();
         }
     }
 
+    /**
+     *
+     * @param data
+     */
+    public void play(AudioInputStream data) {
+        lock.lock();
+        try {
+            if (stream == null) {
+                stream = data;
+
+                actionCondition.signal();
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isPlaying() {
+        return stream != null;
+    }
+
+    /**
+     *
+     */
+    public void pause() {
+        lock.lock();
+        try {
+            if (stream != null) {
+                pause = true;
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     *
+     */
+    public void resume() {
+        lock.lock();
+        try {
+            if (stream != null) {
+                pause = false;
+                resumeCondition.signal();
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     *
+     */
+    public void stop() {
+        lock.lock();
+        try {
+            if (stream != null) {
+                stop = true;
+            }
+        } finally {
+            lock.unlock();
+        }
+        resume();
+    }
+
+    /**
+     *
+     */
     @Override
     public void run() {
-        // a loop until we are signalled to die
         while (!exit) {
 
-            // there is a new song, we play it
-            if (stream != null) {
+            lock.lock();
+            try {
+                actionCondition.await();
+            } catch (InterruptedException ex) {
+            } finally {
+                lock.unlock();
+            }
+
+            // something happened, if it is a new song, tell it
+            if (!exit && stream != null) {
 
                 line.start();
+                stop = false;
+                pause = false;
                 int nBytesRead = 0, nBytesWritten = 0;
 
-                while (nBytesRead != -1) {
+                // start of a song, fade in
+                if (defaultFadingTime > 0) {
+                    fadeIn(defaultFadingTime);
+                }
+
+                while (!stop && nBytesRead != -1) {
                     try {
                         nBytesRead = stream.read(buffer, 0, buffer.length);
                     } catch (IOException ex) {
@@ -69,14 +203,115 @@ public class StreamPlayer implements Runnable {
                         nBytesWritten = line.write(buffer, 0, nBytesRead);
                     }
                     // TODO check for line closed, stopped, flushed
-                    // TODO is stop is wanted we should do it here
-                }
-                line.drain();
-                line.stop();
 
-                stream = null;
+                    // we're just pausing
+                    if (pause) {
+                        lock.lock();
+                        try {
+                            resumeCondition.await();
+                        } catch (InterruptedException ex) {
+                        } finally {
+                            lock.unlock();
+                        }
+                    }
+
+                    // TODO fading out not yet supported
+                }
             }
+
+
+            line.drain();
+            line.stop();
+
+            stream = null;
         }
+
         line.close();
+    }
+
+    /**
+     *
+     * @param mute
+     */
+    public void mute(boolean mute) {
+        muteControl.setValue(mute);
+    }
+
+    /**
+     *
+     */
+    private void setVolume() {
+        volumeControl.setValue(defaultVolume * volumeRange + minimumVolume);
+        mute(false); // setting a volume always unchecks mute
+    }
+
+    /**
+     *
+     * @param volume
+     */
+    public void setDefaultVolume(float volume) {
+        if (volume < 0 || volume > 1) {
+            throw new IllegalArgumentException("Volume must be between 0 and 1: " + volume);
+            // TODO throw exception
+        }
+        lock.lock();
+        try {
+            defaultVolume = volume;
+            setVolume();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getDefaultVolume() {
+        lock.lock();
+        try {
+            return defaultVolume;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /**
+     *
+     * @param volumeA
+     * @param volumeB
+     * @param time in milliseconds
+     */
+    private void fade(float volumeA, float volumeB, int time) {
+        volumeControl.shift(volumeA * volumeRange + minimumVolume, volumeB * volumeRange + minimumVolume, time * 1000);
+    }
+
+    /**
+     *
+     * @param time
+     */
+    public void fadeOut(int time) {
+        fade(defaultVolume, 0, time);
+    }
+
+    /**
+     *
+     * @param time
+     */
+    public void fadeIn(int time) {
+        fade(0, defaultVolume, time);
+    }
+
+    /**
+     *
+     * @param time
+     */
+    public void setDefaultFadingTime(int time) {
+        lock.lock();
+        try {
+            defaultFadingTime = time;
+        } finally {
+            lock.unlock();
+        }
     }
 }

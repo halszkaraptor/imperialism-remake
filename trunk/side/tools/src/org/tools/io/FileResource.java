@@ -51,7 +51,6 @@ public class FileResource implements Resource {
      * {@inheritDoc }
      * Does the file/directory exist?
      */
-    @Override
     public boolean exists() {
         return file.exists();
     }
@@ -59,7 +58,6 @@ public class FileResource implements Resource {
     /**
      *
      */
-    @Override
     public void createNew() throws IOException {
         if (!exists()) {
             // first try to create the parent directory if not already

@@ -136,18 +136,8 @@ public class ArchiveResource implements Resource {
      * {@inheritDoc }
      * Archive and entry inside archive must exist.
      */
-    @Override
     public boolean exists() {
         return entry != null;
-    }
-
-    /**
-     *
-     * @throws IOException
-     */
-    @Override
-    public void createNew() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

@@ -33,37 +33,6 @@ import java.util.List;
 public interface Resource {
 
     /**
-     * A standard comparator used for simple ordering. It redirects to the
-     * compareTo method of the getName components.
-     */
-    public static final Comparator<Resource> comparator = new Comparator<Resource>() {
-        @Override
-        public int compare(Resource r1, Resource r2) {
-            String s1 = r1.getName();
-            String s2 = r2.getName();
-            if (s1 == null) {
-                return -1;
-            }
-            return s1.compareTo(s2);
-        }
-    };
-
-    /**
-     * Existing or not.
-     *
-     * @return True if the Resource corresponds to any existing resource.
-     */
-    public boolean exists();
-
-    /**
-     * Create new resource. Existence should then be guaranteed. If already
-     * existing nothing is done.
-     *
-     * @throws IOException If the creation failed.
-     */
-    public void createNew() throws IOException;
-
-    /**
      * Deletes a resource if it is existing and can be deleted. Otherwise
      * nothing is done.
      *
@@ -81,8 +50,7 @@ public interface Resource {
 
     /**
      * Returns a meaningful string representation of the Resource. File names,
-     * entries names in archives, ... in most cases without path. Used in the
-     * comparator.
+     * entries names in archives, ... in most cases without path.
      *
      * @return A name
      */

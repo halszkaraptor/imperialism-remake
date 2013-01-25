@@ -16,17 +16,22 @@
  */
 package org.tools.sound;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import org.tools.io.Resource;
 
 /**
  *
@@ -35,6 +40,7 @@ public class SoundSystem {
 
     private static final Logger LOG = Logger.getLogger(SoundSystem.class.getName());
     private static final AudioFormat TargetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
+
     private static final DataLine.Info lineInfo = new DataLine.Info(SourceDataLine.class, TargetFormat);
     private static final int MinLines = 2;
     private static List<Mixer> availableMixers = new LinkedList<>();
@@ -44,6 +50,30 @@ public class SoundSystem {
      * No instantiation.
      */
     private SoundSystem() {
+    }
+
+    public static AudioInputStream getAudioInputStream(Resource resource) {
+        if (resource == null) {
+            throw new IllegalArgumentException("Resource cannot be null.");
+        }
+        try {
+            return getAudioInputStream(resource.getInputStream());
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    public static AudioInputStream getAudioInputStream(InputStream is) {
+
+        AudioInputStream in;
+        try {
+            in = AudioSystem.getAudioInputStream(is);
+        } catch (UnsupportedAudioFileException | IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+            return null;
+        }
+        return AudioSystem.getAudioInputStream(TargetFormat, in);
     }
 
     /**

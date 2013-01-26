@@ -19,51 +19,28 @@ package org.tools.sound;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
 import org.tools.io.Resource;
 
 /**
  *
  */
-public class JukeBox implements Runnable {
+public class JukeBox implements SongOverListener {
 
-    private final ReentrantLock lock = new ReentrantLock();
-    private final Condition actionCondition = lock.newCondition();
-    private volatile boolean exit;
-    private boolean autoRewind = false;
-    private boolean autoContinue = true;
-    private List<Resource> list = new ArrayList<>();
-    private int nextItem = 0;
-    private StreamPlayer player;
+    private volatile boolean autoRewind = false;
+    private volatile boolean autoContinue = true;
+    private volatile List<Resource> list = new ArrayList<>(0);
+    private volatile int nextItem = 0;
+    private final StreamPlayer player;
 
-    public JukeBox(StreamPlayer player) {
-        this.player = player;
+    private JukeBox(StreamPlayer player) {
+       this.player = player;
     }
 
-    public static JukeBox create(SourceDataLine line, String name) throws LineUnavailableException {
-        StreamPlayer player = StreamPlayer.create(line, name + " player");
+    public static JukeBox create(StreamPlayer player) {
         JukeBox jukebox = new JukeBox(player);
-        new Thread(jukebox, name + " jukebox").start();
+        player.setListener(jukebox);
         return jukebox;
-    }
-
-    /**
-     *
-     */
-    public void destroy() {
-        stop();
-
-        lock.lock();
-        try {
-            exit = true;
-            actionCondition.signal();
-        } finally {
-            lock.unlock();
-        }
     }
 
     public StreamPlayer getPlayer() {
@@ -74,6 +51,7 @@ public class JukeBox implements Runnable {
      * Definitely stops playing.
      *
      * You can only change the list completely so far.
+     * @param list
      */
     public void setSongList(List<Resource> list) {
         if (list == null || list.isEmpty()) {
@@ -118,6 +96,20 @@ public class JukeBox implements Runnable {
         return autoContinue;
     }
 
+    @Override
+    public void completedSong() {
+        if (autoContinue && nextItem < list.size() - 1) {
+            nextItem++;
+        }
+        if (autoContinue && autoRewind && nextItem == list.size() - 1) {
+            nextItem = 0;
+        }
+        if (autoContinue) {
+            play();
+        }
+
+    }
+
     /**
      * Plays the next song in the list. If we have stopped or at the beginning,
      * the first song will be played.
@@ -139,10 +131,8 @@ public class JukeBox implements Runnable {
         if (player.isPlaying()) {
             player.stop();
         }
+        System.out.println("Playing " + list.get(index).getPath());
         player.play(is);
-
-        // increment index
-        nextItem = (index + 1) % list.size();
     }
 
     /**
@@ -150,23 +140,5 @@ public class JukeBox implements Runnable {
      */
     public void stop() {
         nextItem = 0;
-    }
-
-    @Override
-    public void run() {
-        while (!exit) {
-
-            lock.lock();
-            try {
-                actionCondition.await();
-            } catch (InterruptedException ex) {
-            } finally {
-                lock.unlock();
-            }
-
-            if (!exit) {
-            }
-        }
-        player.destroy();
     }
 }

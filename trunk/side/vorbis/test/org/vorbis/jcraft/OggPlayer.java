@@ -29,7 +29,7 @@ import javax.sound.sampled.SourceDataLine;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -48,7 +48,7 @@ public class OggPlayer {
     private final int BUFSIZE = 4096 * 2;
     private int convsize = BUFSIZE * 2; // 2 channels at most
     private byte[] convbuffer = new byte[convsize];
-    private SyncState oy;
+    private SyncStateO oy;
     private StreamState os;
     private Page og;
     private Packet op;
@@ -99,7 +99,7 @@ public class OggPlayer {
      * inits jorbis
      */
     private void init_jorbis() {
-        oy = new SyncState();
+        oy = new SyncStateO();
         os = new StreamState();
         og = new Page();
         op = new Packet();

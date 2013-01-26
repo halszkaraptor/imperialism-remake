@@ -24,7 +24,7 @@ import org.sound.SoundException;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 
 public class VorbisFile {
 
@@ -115,7 +115,7 @@ public class VorbisFile {
     boolean seekable = false;
     long offset;
     long end;
-    SyncState oy = new SyncState();
+    SyncStateO oy = new SyncStateO();
     int links;
     long[] offsets;
     long[] dataoffsets;

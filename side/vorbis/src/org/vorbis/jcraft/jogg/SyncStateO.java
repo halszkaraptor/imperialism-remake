@@ -32,7 +32,7 @@ package org.vorbis.jcraft.jogg;
  * raw packets out calling ogg_stream_packet() with a ogg_stream_state. See the
  * 'frame-prog.txt' docs for details and example code.
  */
-public class SyncState {
+public class SyncStateO {
 
     public byte[] data;
     int storage;

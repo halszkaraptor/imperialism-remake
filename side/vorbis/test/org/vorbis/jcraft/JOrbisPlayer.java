@@ -48,7 +48,7 @@ import javax.swing.JPanel;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -82,7 +82,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     int retry = RETRY;
     String playlistfile = "playlist";
     boolean icestats = false;
-    SyncState oy;
+    SyncStateO oy;
     StreamState os;
     Page og;
     Packet op;
@@ -142,7 +142,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     }
 
     void init_jorbis() {
-        oy = new SyncState();
+        oy = new SyncStateO();
         os = new StreamState();
         og = new Page();
         op = new Packet();

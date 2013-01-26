@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.Info;
 
@@ -103,7 +103,7 @@ class JOrbisComment {
         byte[] buffer;
         int bytes;
 
-        state.oy = new SyncState();
+        state.oy = new SyncStateO();
         state.oy.init();
 
         index = state.oy.buffer(CHUNKSIZE);
@@ -461,7 +461,7 @@ class JOrbisComment {
 class State {
 
     private static int CHUNKSIZE = 4096;
-    SyncState oy;
+    SyncStateO oy;
     StreamState os;
     Comment vc;
     Info vi;

@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 
 /**
  * Takes a vorbis bitstream from stdin and writes raw stereo PCM to stdout.
@@ -47,7 +47,7 @@ class DecodeExample {
             return;
         }
 
-        SyncState oy = new SyncState(); // sync and verify incoming physical bitstream
+        SyncStateO oy = new SyncStateO(); // sync and verify incoming physical bitstream
         StreamState os = new StreamState(); // take physical pages, weld into a logical stream of packets
         Page og = new Page(); // one Ogg bitstream page.  Vorbis packets are inside
         Packet op = new Packet(); // one raw packet of data for decode

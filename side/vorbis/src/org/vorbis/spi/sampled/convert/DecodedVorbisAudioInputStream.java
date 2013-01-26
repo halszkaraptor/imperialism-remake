@@ -28,7 +28,7 @@ import org.sound.sampled.convert.TAsynchronousFilteredAudioInputStream;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncState;
+import org.vorbis.jcraft.jogg.SyncStateO;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -41,7 +41,7 @@ import org.vorbis.spi.PropertiesContainer;
 public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInputStream implements PropertiesContainer {
 
     private InputStream oggBitStream_ = null;
-    private SyncState oggSyncState_ = null;
+    private SyncStateO oggSyncState_ = null;
     private StreamState oggStreamState_ = null;
     private Page oggPage_ = null;
     private Packet oggPacket_ = null;
@@ -87,7 +87,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
      * Initializes all the jOrbis and jOgg vars that are used for song playback.
      */
     private void init_jorbis() {
-        oggSyncState_ = new SyncState();
+        oggSyncState_ = new SyncStateO();
         oggStreamState_ = new StreamState();
         oggPage_ = new Page();
         oggPacket_ = new Packet();

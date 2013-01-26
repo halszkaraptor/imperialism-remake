@@ -44,7 +44,9 @@ public class SoundPlayerTest {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
         SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-        JukeBox jukebox = JukeBox.create(line, "Music");
+        StreamPlayer player = StreamPlayer.create(line, "Music");
+        JukeBox jukebox = JukeBox.create(player);
+        jukebox.setAutoRewind(true);
 
         List<Resource> list = new LinkedList<>();
         list.add(new URLResource("http://www.twelvepm.de/vorbis/Agogo.ogg"));
@@ -52,7 +54,7 @@ public class SoundPlayerTest {
 
         jukebox.play();
 
-        Thread.sleep(3000);
+        Thread.sleep(200000);
     }
 
     // @Test

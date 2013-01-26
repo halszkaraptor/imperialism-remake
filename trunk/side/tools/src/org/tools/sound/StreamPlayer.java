@@ -48,6 +48,7 @@ public class StreamPlayer implements Runnable {
     private volatile boolean pause;
     private volatile AudioInputStream stream;
     private volatile boolean exit;
+    private volatile SongOverListener listener;
 
     /**
      *
@@ -164,6 +165,15 @@ public class StreamPlayer implements Runnable {
         resume();
     }
 
+    public void setListener(SongOverListener l) {
+        lock.lock();
+        try {
+            listener = l;
+        } finally {
+            lock.unlock();
+        }
+    }
+
     /**
      *
      */
@@ -224,6 +234,9 @@ public class StreamPlayer implements Runnable {
             line.stop();
 
             stream = null;
+            if (listener != null) {
+                listener.completedSong();
+            }
         }
 
         line.close();

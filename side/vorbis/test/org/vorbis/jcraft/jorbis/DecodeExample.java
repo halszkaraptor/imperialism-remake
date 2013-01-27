@@ -3,8 +3,8 @@
  *               2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft.jorbis;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncStateO;
+import org.vorbis.jcraft.jogg.SyncState;
 
 /**
  * Takes a vorbis bitstream from stdin and writes raw stereo PCM to stdout.
@@ -47,7 +47,7 @@ class DecodeExample {
             return;
         }
 
-        SyncStateO oy = new SyncStateO(); // sync and verify incoming physical bitstream
+        SyncState oy = new SyncState(); // sync and verify incoming physical bitstream
         StreamState os = new StreamState(); // take physical pages, weld into a logical stream of packets
         Page og = new Page(); // one Ogg bitstream page.  Vorbis packets are inside
         Packet op = new Packet(); // one raw packet of data for decode

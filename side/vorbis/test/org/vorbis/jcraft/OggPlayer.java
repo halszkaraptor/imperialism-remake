@@ -2,8 +2,8 @@
  * Copyright (C) 2010 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft;
@@ -29,7 +29,7 @@ import javax.sound.sampled.SourceDataLine;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncStateO;
+import org.vorbis.jcraft.jogg.SyncState;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -48,7 +48,7 @@ public class OggPlayer {
     private final int BUFSIZE = 4096 * 2;
     private int convsize = BUFSIZE * 2; // 2 channels at most
     private byte[] convbuffer = new byte[convsize];
-    private SyncStateO oy;
+    private SyncState oy;
     private StreamState os;
     private Page og;
     private Packet op;
@@ -99,7 +99,7 @@ public class OggPlayer {
      * inits jorbis
      */
     private void init_jorbis() {
-        oy = new SyncStateO();
+        oy = new SyncState();
         os = new StreamState();
         og = new Page();
         op = new Packet();

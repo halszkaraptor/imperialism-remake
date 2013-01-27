@@ -40,6 +40,8 @@ public class TAudioInputStream extends AudioInputStream {
 
     /**
      * Constructor without properties. Creates an empty properties map.
+     * @param inputStream
+     * @param audioFormat
      */
     public TAudioInputStream(InputStream inputStream, AudioFormat audioFormat,
             long lLengthInFrames) {
@@ -51,6 +53,8 @@ public class TAudioInputStream extends AudioInputStream {
      * Constructor with properties. The passed properties map is not copied.
      * This allows subclasses to change values in the map after creation, and
      * the changes are reflected in the map the application program can obtain.
+     * @param inputStream
+     * @param audioFormat
      */
     public TAudioInputStream(InputStream inputStream, AudioFormat audioFormat,
             long lLengthInFrames, Map<String, Object> properties) {

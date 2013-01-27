@@ -135,6 +135,10 @@ public class StreamPlayer implements Runnable {
         }
     }
 
+    public boolean isPausing() {
+        return pause;
+    }
+
     /**
      *
      */
@@ -183,7 +187,9 @@ public class StreamPlayer implements Runnable {
 
             lock.lock();
             try {
-                actionCondition.await();
+                while (!exit && stream == null) {
+                    actionCondition.await();
+                }
             } catch (InterruptedException ex) {
             } finally {
                 lock.unlock();
@@ -205,6 +211,7 @@ public class StreamPlayer implements Runnable {
                 while (!stop && nBytesRead != -1) {
                     try {
                         nBytesRead = stream.read(buffer, 0, buffer.length);
+                        System.out.println("Bytes read " + nBytesRead);
                     } catch (IOException ex) {
                         LOG.log(Level.SEVERE, null, ex);
                         // TODO exit graciously
@@ -218,13 +225,15 @@ public class StreamPlayer implements Runnable {
                     if (pause) {
                         lock.lock();
                         try {
-                            resumeCondition.await();
+                            while (pause && !exit && !stop) {
+                                resumeCondition.await();
+                            }
                         } catch (InterruptedException ex) {
                         } finally {
                             lock.unlock();
                         }
+                        pause = false;
                     }
-
                     // TODO fading out not yet supported
                 }
             }

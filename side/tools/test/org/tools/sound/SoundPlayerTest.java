@@ -54,7 +54,7 @@ public class SoundPlayerTest {
 
         jukebox.play();
 
-        Thread.sleep(200000);
+        Thread.sleep(50000);
     }
 
     // @Test

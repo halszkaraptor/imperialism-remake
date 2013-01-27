@@ -3,8 +3,8 @@
  *               2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.jcraft;
@@ -48,7 +48,7 @@ import javax.swing.JPanel;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncStateO;
+import org.vorbis.jcraft.jogg.SyncState;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -82,7 +82,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     int retry = RETRY;
     String playlistfile = "playlist";
     boolean icestats = false;
-    SyncStateO oy;
+    SyncState oy;
     StreamState os;
     Page og;
     Packet op;
@@ -142,7 +142,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
     }
 
     void init_jorbis() {
-        oy = new SyncStateO();
+        oy = new SyncState();
         os = new StreamState();
         og = new Page();
         op = new Packet();

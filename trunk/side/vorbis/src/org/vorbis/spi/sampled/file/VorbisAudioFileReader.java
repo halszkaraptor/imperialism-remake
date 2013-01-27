@@ -3,8 +3,8 @@
  *               2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.vorbis.spi.sampled.file;
@@ -36,7 +36,7 @@ import org.sound.sampled.file.TAudioFileReader;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
-import org.vorbis.jcraft.jogg.SyncStateO;
+import org.vorbis.jcraft.jogg.SyncState;
 import org.vorbis.jcraft.jorbis.Block;
 import org.vorbis.jcraft.jorbis.Comment;
 import org.vorbis.jcraft.jorbis.DspState;
@@ -49,7 +49,7 @@ import org.vorbis.jcraft.jorbis.VorbisFile;
  */
 public class VorbisAudioFileReader extends TAudioFileReader {
 
-    private SyncStateO oggSyncState_ = null;
+    private SyncState oggSyncState_ = null;
     private StreamState oggStreamState_ = null;
     private Page oggPage_ = null;
     private Packet oggPacket_ = null;
@@ -448,7 +448,7 @@ public class VorbisAudioFileReader extends TAudioFileReader {
      * Initializes all the jOrbis and jOgg vars that are used for song playback.
      */
     private void init_jorbis() {
-        oggSyncState_ = new SyncStateO();
+        oggSyncState_ = new SyncState();
         oggStreamState_ = new StreamState();
         oggPage_ = new Page();
         oggPacket_ = new Packet();

@@ -16,6 +16,7 @@
  */
 package org.iremake.client;
 
+import java.util.Locale;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.xml.XProperty;
@@ -35,7 +36,7 @@ public enum Option {
     NetworkAlias("client.network.alias"); // this option does not need to be existing in the default options xml file, it will be added automatically
 
     /* OS name */
-    public static final boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase().startsWith("windows");
+    public static final boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH).startsWith("windows");
     /* Holds the options */
     private static XProperty options = new XProperty(20);
     /* Option name */

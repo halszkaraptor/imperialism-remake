@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.StartClient;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.ui.notification.NotificationFactory;
@@ -43,6 +44,17 @@ import org.tools.ui.utils.GraphicsUtils;
 // TODO closing listener for clicking on the cross or alt-f4
 public class FrameManager {
 
+    /**
+     *
+     */
+    private static class ShutDownOnCloseImpl implements FrameCloseListener {
+
+        @Override
+        public void close() {
+            StartClient.shutDown();
+        }
+    }
+    private static final FrameCloseListener shutDownCloseListener = new ShutDownOnCloseImpl();
     private static FrameManager singleton;
     private JFrame frame;
     private JPanel panel;
@@ -139,6 +151,10 @@ public class FrameManager {
      */
     public void setClosingListener(FrameCloseListener closingListener) {
         this.closingListener = closingListener;
+    }
+
+    public void setShutDownOnClose() {
+        setClosingListener(shutDownCloseListener);
     }
 
     /**

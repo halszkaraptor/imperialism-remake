@@ -122,7 +122,7 @@ public class TerrainTiles implements XMLable {
      * @param hex a 6 character string as "ffffff" for white
      * @return the corresponding color
      */
-    private static Color ColorFromHex(String hex) {
+    private static Color convertHexToColor(String hex) {
         int r = Integer.parseInt(hex.substring(0, 2), 16);
         int g = Integer.parseInt(hex.substring(2, 4), 16);
         int b = Integer.parseInt(hex.substring(4, 6), 16);
@@ -161,7 +161,7 @@ public class TerrainTiles implements XMLable {
             String location = child.getAttributeValue("location");
             Tile tile = new Tile();
             tile.image = IOManager.getAsImage(Places.GraphicsTerrains, location);
-            tile.color = TerrainTiles.ColorFromHex(child.getAttributeValue("color"));
+            tile.color = TerrainTiles.convertHexToColor(child.getAttributeValue("color"));
             map.put(id, tile);
         }
 

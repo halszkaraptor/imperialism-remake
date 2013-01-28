@@ -360,6 +360,7 @@ public class Scenario implements XMLable {
         if (!containsPosition(p2) || getTile(p2).provinceID == Province.NONE) {
             return TilesBorder.None;
         }
+        // TODO if p2 outside of map also province border
         if (getTile(p).provinceID != getTile(p2).provinceID) {
             return TilesBorder.Province;
             // TODO TileBorder Nation

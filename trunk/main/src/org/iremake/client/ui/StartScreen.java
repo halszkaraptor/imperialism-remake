@@ -103,12 +103,7 @@ public class StartScreen extends UIFrame {
 
         setContent(pane);
 
-        FrameManager.getInstance().setClosingListener(new FrameCloseListener() {
-            @Override
-            public void close() {
-                StartClient.shutDown();
-            }
-        });
+        FrameManager.getInstance().setShutDownOnClose();
     }
 
     /**

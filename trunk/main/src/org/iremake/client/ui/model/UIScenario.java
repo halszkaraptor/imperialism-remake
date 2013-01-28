@@ -23,8 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.model.map.MapPosition;
 
 /**
  * The client scenario extending the model scenario.

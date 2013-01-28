@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -49,6 +50,18 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private MapPosition offset = new MapPosition();
     /* the tile the mouse pointer is currently over */
     private MapPosition hoover = new MapPosition();
+
+    private static class ScreenPosition {
+
+        public final int x, y;
+        public final MapPosition p;
+
+        public ScreenPosition(int x, int y, MapPosition p) {
+            this.x = x;
+            this.y = y;
+            this.p = p;
+        }
+    }
 
     /**
      * We feed the main map a scenario.
@@ -143,7 +156,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, size.width, size.height);
 
-        // draw the tiles
+        // List of ScreenPositions
+        List<ScreenPosition> list = new ArrayList<>(100); // TODO meaningful capacity
+        List<ScreenPosition> outside = new ArrayList<>(20);
+
         Dimension tileSize = scenario.getTileSize();
         int drawnRows = size.height / tileSize.height;
         int drawnColumns = size.width / tileSize.width;
@@ -155,77 +171,93 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 int row = r + offset.row;
                 int column = c + offset.column;
                 MapPosition p = new MapPosition(row, column);
+                // compute left, upper corner (shift is every second, real row)
+                int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
+                int y = r * tileSize.height;
                 // still on the map?
                 if (row >= 0 && row < scenario.getNumberRows() && column >= 0 && column < scenario.getNumberColumns()) {
-                    // compute left, upper corner (shift is every second, real row)
-                    int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
-                    int y = r * tileSize.height;
-                    g2d.drawImage(scenario.getTerrainTileAt(p), x, y, null);
-
-                    // draw resource
-                    if (scenario.isResourceVisibleAt(p)) {
-                        g2d.drawImage(scenario.getResourceOverlayAt(p), x, y, null);
-                    }
-
-                    // draw tile border
-                    g2d.setColor(Color.white);
-                    TilesBorder border = scenario.getBorder(p, TilesTransition.East);
-                    if (border == TilesBorder.Province) {
-                        // white stripe at the right side
-                        g2d.drawLine(x + tileSize.width - 1, y, x + tileSize.width - 1, y + tileSize.height);
-                    }
-                    border = scenario.getBorder(p, TilesTransition.SouthEast);
-                    if (border == TilesBorder.Province) {
-                        // white half strip on the lower, right side
-                        g2d.drawLine(x + tileSize.width / 2, y + tileSize.height - 1, x + tileSize.width - 1, y + tileSize.height - 1);
-                    }
-                    border = scenario.getBorder(p, TilesTransition.SouthWest);
-                    if (border == TilesBorder.Province) {
-                        // white half stripe on the lower, left side
-                        g2d.drawLine(x, y + tileSize.height - 1, x + tileSize.width / 2, y + tileSize.height - 1);
-                    }
-
-                    // draw railroad
-                    // TODO really have to draw after all other tiles are drawn, otherwise parts get overdrawn again
-                    g2d.setColor(Color.black);
-                    int xc = x + tileSize.width / 2;
-                    int yc = y + tileSize.height / 2;
-                    if (scenario.hasRailRoad(p, TilesTransition.East)) {
-                        g2d.drawLine(xc, yc, xc + tileSize.width, yc);
-                    }
-                    if (scenario.hasRailRoad(p, TilesTransition.SouthEast)) {
-                        g2d.drawLine(xc, yc, xc + tileSize.width / 2, yc + tileSize.height);
-                    }
-                    if (scenario.hasRailRoad(p, TilesTransition.SouthWest)) {
-                        g2d.drawLine(xc, yc, xc - tileSize.width / 2, yc + tileSize.height);
-                    }
-
-
-                    // draw city
-                    String name = scenario.getTownAt(p);
-                    if (name != null) {
-                        // TODO draw on half translucent rounded rectangle below city
-                        g2d.drawString(name, x + 20, y + 40);
-                    }
-
+                    list.add(new ScreenPosition(x, y, p));
                 } else {
-                    // just take a nearest tile image by projecting towards the nearest map tile in row and column direction
-
-                    // compute left, upper corner (shift is every second, real row)
-                    int x = c * tileSize.width + ((row % 2 != 0) ? tileSize.width / 2 : 0);
-                    int y = r * tileSize.height;
                     row = Math.max(0, row);
                     row = Math.min(scenario.getNumberRows() - 1, row);
                     column = Math.max(0, column);
                     column = Math.min(scenario.getNumberColumns() - 1, column);
-                    g2d.drawImage(scenario.getTerrainTileAt(new MapPosition(row, column)), x, y, null);
+                    outside.add(new ScreenPosition(x, y, new MapPosition(row, column)));
                 }
             }
         }
-        // TODO gray areas (outside of map) fill with nearest image, just paint something useful
-        // TODO general transformation row, column to x, y
+
+        // draw all terrain tiles
+        for (ScreenPosition r : list) {
+            g2d.drawImage(scenario.getTerrainTileAt(r.p), r.x, r.y, null);
+        }
+
+        // draw terrain tiles for outside
+        for (ScreenPosition r : outside) {
+            g2d.drawImage(scenario.getTerrainTileAt(r.p), r.x, r.y, null);
+        }
+
+        // draw resources
+        for (ScreenPosition r : list) {
+            if (scenario.isResourceVisibleAt(r.p)) {
+                g2d.drawImage(scenario.getResourceOverlayAt(r.p), r.x, r.y, null);
+            }
+        }
+
+        // draw tile borders
+        for (ScreenPosition r : list) {
+            // draw tile border
+            g2d.setColor(Color.white);
+            TilesBorder border = scenario.getBorder(r.p, TilesTransition.East);
+            if (border == TilesBorder.Province) {
+                // white stripe at the right side
+                g2d.drawLine(r.x + tileSize.width - 1, r.y, r.x + tileSize.width - 1, r.y + tileSize.height);
+            }
+            border = scenario.getBorder(r.p, TilesTransition.SouthEast);
+            if (border == TilesBorder.Province) {
+                // white half strip on the lower, right side
+                g2d.drawLine(r.x + tileSize.width / 2, r.y + tileSize.height - 1, r.x + tileSize.width - 1, r.y + tileSize.height - 1);
+            }
+            border = scenario.getBorder(r.p, TilesTransition.SouthWest);
+            if (border == TilesBorder.Province) {
+                // white half stripe on the lower, left side
+                g2d.drawLine(r.x, r.y + tileSize.height - 1, r.x + tileSize.width / 2, r.y + tileSize.height - 1);
+            }
+            // TODO draw border nation
+        }
+
+        // draw railroad
+        for (ScreenPosition r : list) {
+            // TODO really have to draw after all other tiles are drawn, otherwise parts get overdrawn again
+            g2d.setColor(Color.black);
+            int xc = r.x + tileSize.width / 2;
+            int yc = r.y + tileSize.height / 2;
+            if (scenario.hasRailRoad(r.p, TilesTransition.East)) {
+                g2d.drawLine(xc, yc, xc + tileSize.width, yc);
+            }
+            if (scenario.hasRailRoad(r.p, TilesTransition.SouthEast)) {
+                g2d.drawLine(xc, yc, xc + tileSize.width / 2, yc + tileSize.height);
+            }
+            if (scenario.hasRailRoad(r.p, TilesTransition.SouthWest)) {
+                g2d.drawLine(xc, yc, xc - tileSize.width / 2, yc + tileSize.height);
+            }
+        }
+
+        // draw cities
+        for (ScreenPosition r : list) {
+            // draw city
+            String name = scenario.getTownAt(r.p);
+            if (name != null) {
+                // TODO draw on half translucent rounded rectangle below city
+                g2d.drawString(name, r.x + 20, r.y + 40);
+            }
+        }
 
         // draw units
+        // TODO draw units
+
+        // TODO gray areas (outside of map) fill with nearest image, just paint something useful
+        // TODO general transformation row, column to x, y
 
         // draw hoover rectangle
         if (!hoover.isOff()) {

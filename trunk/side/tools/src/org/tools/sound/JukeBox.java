@@ -25,13 +25,14 @@ import org.tools.io.Resource;
 /**
  *
  */
-public class JukeBox implements SongOverListener {
+public class JukeBox implements PlayEventListener {
 
     private volatile boolean autoRewind = false;
     private volatile boolean autoContinue = true;
     private volatile List<Resource> list = new ArrayList<>(0);
     private volatile int nextItem = 0;
     private final StreamPlayer player;
+    private volatile PlayEventListener listener;
 
     private JukeBox(StreamPlayer player) {
        this.player = player;
@@ -39,12 +40,16 @@ public class JukeBox implements SongOverListener {
 
     public static JukeBox create(StreamPlayer player) {
         JukeBox jukebox = new JukeBox(player);
-        player.setListener(jukebox);
+        player.setSongOverListener(jukebox);
         return jukebox;
     }
 
     public StreamPlayer getPlayer() {
         return player;
+    }
+
+    public void setSongBeginListener(PlayEventListener l) {
+        listener = l;
     }
 
     /**
@@ -96,8 +101,13 @@ public class JukeBox implements SongOverListener {
         return autoContinue;
     }
 
+    /**
+     * The song is over.
+     *
+     * @param event
+     */
     @Override
-    public void completedSong() {
+    public void newEvent(String event) {
         if (autoContinue && nextItem < list.size() - 1) {
             nextItem++;
         }
@@ -131,7 +141,10 @@ public class JukeBox implements SongOverListener {
         if (player.isPlaying()) {
             player.stop();
         }
-        System.out.println("Playing " + list.get(index).getPath());
+        // System.out.println("Playing " + list.get(index).getPath());
+        if (listener != null) {
+            listener.newEvent((String) is.getFormat().getProperty("title"));
+        }
         player.play(is);
     }
 

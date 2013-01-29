@@ -58,14 +58,15 @@ public class FileResource implements Resource {
     /**
      *
      */
-    public void createNew() throws IOException {
+    public boolean createNew() throws IOException {
         if (!exists()) {
             // first try to create the parent directory if not already
             File parent = file.getParentFile();
-            if (parent != null && !parent.exists() && parent.mkdir()) {
-                file.createNewFile();
+            if (parent == null || (parent != null && !parent.exists() && parent.mkdir())) {
+                return file.createNewFile();
             }
         }
+        return false;
     }
 
     /**
@@ -100,6 +101,7 @@ public class FileResource implements Resource {
     @Override
     public OutputStream getOutputStream() throws IOException {
         createNew();
+        // TODO what if we would require that it is a file and exists instead of creating on the fly?
         if (!file.isFile()) {
             throw new IOException();
         }

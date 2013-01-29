@@ -48,7 +48,7 @@ public class StreamPlayer implements Runnable {
     private volatile boolean pause;
     private volatile AudioInputStream stream;
     private volatile boolean exit;
-    private volatile SongOverListener listener;
+    private volatile PlayEventListener listener; // for songs ending
 
     /**
      *
@@ -72,9 +72,9 @@ public class StreamPlayer implements Runnable {
      * @return
      * @throws LineUnavailableException
      */
-    public static StreamPlayer create(SourceDataLine line, String name) throws LineUnavailableException {
+    public static StreamPlayer create(SourceDataLine line, String name) {
         if (!line.isOpen()) {
-            line.open();
+            throw new IllegalArgumentException("Line must be open");
         }
         StreamPlayer player = new StreamPlayer(line);
         new Thread(player, name).start();
@@ -169,7 +169,7 @@ public class StreamPlayer implements Runnable {
         resume();
     }
 
-    public void setListener(SongOverListener l) {
+    public void setSongOverListener(PlayEventListener l) {
         lock.lock();
         try {
             listener = l;
@@ -211,7 +211,7 @@ public class StreamPlayer implements Runnable {
                 while (!stop && nBytesRead != -1) {
                     try {
                         nBytesRead = stream.read(buffer, 0, buffer.length);
-                        System.out.println("Bytes read " + nBytesRead);
+                        // System.out.println("Bytes read " + nBytesRead);
                     } catch (IOException ex) {
                         LOG.log(Level.SEVERE, null, ex);
                         // TODO exit graciously
@@ -244,7 +244,7 @@ public class StreamPlayer implements Runnable {
 
             stream = null;
             if (listener != null) {
-                listener.completedSong();
+                listener.newEvent(null);
             }
         }
 

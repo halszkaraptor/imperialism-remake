@@ -19,8 +19,11 @@ package org.tools.sound;
 /**
  *
  */
-public interface SongOverListener {
+public interface PlayEventListener {
 
-    public void completedSong();
+    /**
+     *
+     */
+    public void newEvent(String event);
 
 }

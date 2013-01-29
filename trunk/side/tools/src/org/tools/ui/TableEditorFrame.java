@@ -56,6 +56,25 @@ import org.tools.xml.XTable;
 // TODO composition instead?
 public class TableEditorFrame extends BasicFrame {
 
+    private static class FileFilterImpl extends FileFilter {
+
+        private final String extension;
+
+        public FileFilterImpl(String extension) {
+            this.extension = extension;
+        }
+
+        @Override
+        public boolean accept(File f) {
+            return f.isFile() && f.getName().endsWith(extension);
+        }
+
+        @Override
+        public String getDescription() {
+            return "Table files (*.xml)";
+        }
+    }
+
     private static final Logger LOG = Logger.getLogger(TableEditorFrame.class.getName());
     private static final long serialVersionUID = 1L;
 
@@ -93,17 +112,7 @@ public class TableEditorFrame extends BasicFrame {
         final String extension = ".xml";
         final JFileChooser fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                return f.isFile() && f.getName().endsWith(extension);
-            }
-
-            @Override
-            public String getDescription() {
-                return "Table files (*.xml)";
-            }
-        });
+        fileChooser.setFileFilter(new FileFilterImpl(extension));
 
         // create buttons
         JButton newButton = new JButton("New Table");

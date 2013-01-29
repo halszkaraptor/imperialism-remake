@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -29,6 +31,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import org.junit.Test;
+import org.sound.sampled.file.TAudioFileFormat;
 import org.tools.io.Resource;
 import org.tools.io.URLResource;
 
@@ -39,7 +42,7 @@ public class SoundPlayerTest {
 
     private static final AudioFormat TargetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
 
-    @Test
+    // @Test
     public void PlayListTest() throws LineUnavailableException, InterruptedException {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
@@ -57,7 +60,7 @@ public class SoundPlayerTest {
         Thread.sleep(50000);
     }
 
-    // @Test
+    @Test
     public void StreamingPlayerTest() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
@@ -66,6 +69,12 @@ public class SoundPlayerTest {
         StreamPlayer player = StreamPlayer.create(line, "Music-Thread");
 
         URL url = new URL("http://www.twelvepm.de/vorbis/Agogo.ogg");
+        AudioFileFormat fmt = AudioSystem.getAudioFileFormat(url);
+        if (fmt instanceof TAudioFileFormat) {
+            TAudioFileFormat format = (TAudioFileFormat) fmt;
+            Map<String, Object> props = format.properties();
+            System.out.println("Title " + (String) props.get("title"));
+        }
         AudioInputStream in = AudioSystem.getAudioInputStream(url);
         AudioInputStream data = AudioSystem.getAudioInputStream(TargetFormat, in);
 

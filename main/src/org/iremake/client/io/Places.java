@@ -28,10 +28,11 @@ public enum Places {
     Common("data/game/common/"),
     Scenarios("data/game/scenarios/"),
     Graphics("data/game/artwork/graphics/"),
-    GraphicsTerrains(Graphics + "terrains/"),
-    GraphicsResources(Graphics + "resources/"),
     GraphicsIcons(Graphics + "ui/"),
     GraphicsBrowserIcons(GraphicsIcons + "browser/"),
+    GraphicsScenario(Graphics + "scenario/"),
+    GraphicsTerrains(GraphicsScenario + "terrains/"),
+    GraphicsResources(GraphicsScenario + "resources/"),
     Music("data/game/artwork/music/");
     /* the location of the place*/
     private String location;

@@ -41,7 +41,8 @@ public class MusicXMLGenerator {
 
     public static Element makeBackgroundMusicList() {
         Element parent = new Element("Background");
-        parent.appendChild(addPiece("01-Awakening.ogg"));
+        parent.addAttribute(new Attribute("base", "background"));
+        parent.appendChild(addPiece("01-Imperialism.ogg"));
         return parent;
     }
 

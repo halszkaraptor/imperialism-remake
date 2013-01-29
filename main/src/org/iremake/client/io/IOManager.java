@@ -191,7 +191,6 @@ public class IOManager {
      * @param place
      * @param location
      * @return
-     * @throws FileNotFoundException
      */
     public static InputStream getAsInputStream(Places place, String location) {
         try {

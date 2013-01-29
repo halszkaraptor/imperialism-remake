@@ -16,9 +16,70 @@
  */
 package org.iremake.client.sound;
 
+import javax.sound.sampled.SourceDataLine;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
+import org.iremake.client.ui.FrameManager;
+import org.tools.sound.JukeBox;
+import org.tools.sound.PlayEventListener;
+import org.tools.sound.SoundSystem;
+import org.tools.sound.StreamPlayer;
+
 /**
  *
  */
 public class MusicManager {
 
+    private static JukeBox jukebox;
+
+    /**
+     * No instantiation.
+     */
+    private MusicManager() {
+    }
+
+    public static void setup() {
+        // sound system setup
+        SoundSystem.setup();
+
+        // get a line and create the jukebox
+        if (SoundSystem.hasActiveMixer()) {
+            SourceDataLine line = SoundSystem.getLine();
+            StreamPlayer player = StreamPlayer.create(line, "Music");
+            jukebox = JukeBox.create(player);
+            jukebox.setAutoRewind(true);
+            /*
+            jukebox.setSongBeginListener(new PlayEventListener() {
+                @Override
+                public void newEvent(String event) {
+                    FrameManager.getInstance().scheduleInfoMessage(event, true);
+                }
+            }); */
+        }
+
+        // load music list
+        if (jukebox != null) {
+            MusicDatabase database = new MusicDatabase();
+            IOManager.setFromXML(Places.Music, "music.xml", database);
+            jukebox.setSongList(database.getBackgroundMusicList());
+        }
+
+    }
+
+    public static void start() {
+        if (jukebox != null) {
+            // start playback
+            jukebox.play();
+        }
+    }
+
+    public static void cleanup() {
+        if (jukebox != null) {
+            jukebox.stop();
+            StreamPlayer player = jukebox.getPlayer();
+            player.destroy();
+            jukebox = null;
+        }
+        SoundSystem.cleanup();
+    }
 }

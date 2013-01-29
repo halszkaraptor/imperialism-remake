@@ -208,7 +208,7 @@ public class FrameManager {
         window.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
     }
 
-    public void showInfo(String message, boolean black) {
+    public void scheduleInfoMessage(String message, boolean black) {
         Color color = black ? Color.black : Color.white;
         NotificationFactory.createInfoNotification(message, frame, color).setVisible();
     }

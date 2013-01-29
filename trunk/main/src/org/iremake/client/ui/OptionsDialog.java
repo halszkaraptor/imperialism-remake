@@ -66,7 +66,7 @@ public class OptionsDialog extends UIDialog {
                 if (isAnyModified()) {
                     if (JOptionPane.showConfirmDialog(null, "Save modified options?", "Modified options", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         updateOptions();
-                        FrameManager.getInstance().showInfo("Options updated", false);
+                        FrameManager.getInstance().scheduleInfoMessage("Options updated", false);
                     }
                 }
                 return true;

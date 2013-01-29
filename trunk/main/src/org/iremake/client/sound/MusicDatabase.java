@@ -29,9 +29,9 @@ import org.tools.xml.XMLable;
 /**
  *
  */
-public class MusicLists implements XMLable {
+public class MusicDatabase implements XMLable {
 
-    List<Resource> list;
+    private List<Resource> list;
 
     public List<Resource> getBackgroundMusicList() {
         return Collections.unmodifiableList(list);
@@ -52,9 +52,9 @@ public class MusicLists implements XMLable {
         if (child == null) {
 
         }
+        String base = child.getAttributeValue("base");
 
-
-        Elements children = parent.getChildElements();
+        Elements children = child.getChildElements();
         list = new ArrayList<>(children.size());
         for (int i = 0; i < children.size(); i++) {
             Element piece = children.get(i);
@@ -62,7 +62,7 @@ public class MusicLists implements XMLable {
             if (!"Piece".equals(child.getLocalName())) {
                 // TODO something is wrong
             }
-            Resource resource = IOManager.getAsResource(Places.Music, piece.getValue());
+            Resource resource = IOManager.getAsResource(Places.Music, base + "/" + piece.getValue());
             list.add(resource);
         }
     }

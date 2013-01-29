@@ -114,7 +114,8 @@ public class NotificationFactory {
 
         // create new dialog
         NotificationDialog dlg = new NotificationDialog(message, parent);
-        Color bgColor = new Color(128, 128, 128, 32); // just a touch of translucent gray
+        // Color bgColor = new Color(128, 128, 128, 32); // just a touch of translucent gray
+        Color bgColor = Color.black;
         JComponent content = createInfoContent(dlg, bgColor, textColor);
         dlg.setContent(content);
 

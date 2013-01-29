@@ -41,16 +41,13 @@ public class MusicXMLGenerator {
 
     public static Element makeBackgroundMusicList() {
         Element parent = new Element("Background");
-        parent.appendChild(addPiece(1, "Awakening.ogg", "Awakening", "Veneteaou"));
+        parent.appendChild(addPiece("01-Awakening.ogg"));
         return parent;
     }
 
-    public static Element addPiece(int id, String file, String title, String composer) {
+    public static Element addPiece(String file) {
         Element child = new Element("Piece");
-        child.addAttribute(new Attribute("id", String.valueOf(id)));
-        child.addAttribute(new Attribute("location", file));
-        child.addAttribute(new Attribute("title", title));
-        child.addAttribute(new Attribute("composer", composer));
+        child.appendChild(file);
         return child;
     }
 }

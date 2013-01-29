@@ -26,12 +26,14 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
+import org.iremake.client.sound.MusicLists;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
@@ -41,7 +43,10 @@ import org.iremake.common.network.NetworkLogger;
 import org.iremake.server.network.ServerLogger;
 import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
+import org.tools.sound.JukeBox;
+import org.tools.sound.PlayEventListener;
 import org.tools.sound.SoundSystem;
+import org.tools.sound.StreamPlayer;
 import org.tools.ui.utils.LookAndFeel;
 
 /**
@@ -81,7 +86,22 @@ public class StartClient {
             Option.load();
 
             // sound system
-            SoundSystem.initialize();
+            SoundSystem.setup();
+            // if (SoundSystem.hasActiveMixer()) {
+            SourceDataLine line = SoundSystem.getLine();
+            StreamPlayer player = StreamPlayer.create(line, "Music");
+            final JukeBox jukebox = JukeBox.create(player);
+            jukebox.setAutoRewind(true);
+            MusicLists database = new MusicLists();
+            IOManager.setFromXML(Places.Music, "music.xml", database);
+            jukebox.setSongList(database.getBackgroundMusicList());
+            jukebox.setSongBeginListener(new PlayEventListener() {
+                @Override
+                public void newEvent(String event) {
+                    FrameManager.getInstance().showInfo(event, true);
+                }
+            });
+            // }
 
             // set some variables in the BigBag
             NetworkLogger nLog = new NetworkLogger() {
@@ -101,6 +121,10 @@ public class StartClient {
                 public void run() {
                     UIFrame screen = new StartScreen();
                     screen.switchTo();
+
+                    // start playback
+                    jukebox.play();
+
                 }
             });
         } catch (RuntimeException | IOException ex) {
@@ -129,6 +153,8 @@ public class StartClient {
      * Shut down clean up.
      */
     public static void shutDown() {
+
+        // exit the sound streaming player
 
         // dispose of the screen frame
         FrameManager.dispose();

@@ -115,33 +115,15 @@ public class StartScreen extends UIFrame {
     private JComponent createMenuBar() {
         // scenario button
         JButton scenarioButton = Button.StartMenuScenario.create();
-        scenarioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UIDialog dialog = new NewLocalScenarioDialog();
-                dialog.start();
-            }
-        });
+        scenarioButton.addActionListener(UIDialogStartAction.create(new NewLocalScenarioDialog()));
 
         // network button
         JButton networkButton = Button.StartMenuNetwork.create();
-        networkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UIDialog dialog = new NetworkDialog();
-                dialog.start();
-            }
-        });
+        networkButton.addActionListener(UIDialogStartAction.create(new NetworkDialog()));
 
         // options button
         JButton optionsButton = Button.StartMenuOptions.create();
-        optionsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                OptionsDialog dialog = new OptionsDialog();
-                dialog.start();
-            }
-        });
+        optionsButton.addActionListener((UIDialogStartAction.create(new OptionsDialog())));
 
         // help button
         JButton helpButton = Button.StartMenuHelp.create();

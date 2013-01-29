@@ -50,6 +50,7 @@ public class FileResource implements Resource {
     /**
      * {@inheritDoc }
      * Does the file/directory exist?
+     * @return
      */
     public boolean exists() {
         return file.exists();
@@ -57,12 +58,16 @@ public class FileResource implements Resource {
 
     /**
      *
+     * @return
+     * @throws IOException
      */
     public boolean createNew() throws IOException {
         if (!exists()) {
             // first try to create the parent directory if not already
             File parent = file.getParentFile();
-            if (parent == null || (parent != null && !parent.exists() && parent.mkdir())) {
+            // either there is no parent (parent == null) or there is one and it
+            // exists or it doesn't exist but can be created.. (difficult stuff)
+            if (parent == null || (parent != null && (parent.exists() || (!parent.exists() && parent.mkdir())))) {
                 return file.createNewFile();
             }
         }

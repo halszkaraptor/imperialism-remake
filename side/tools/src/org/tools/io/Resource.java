@@ -29,6 +29,7 @@ import java.util.List;
  * Additional functionality includes an existence-check, possibility to clear or
  * create new, and list other files (contained in a directory).
  */
+// TODO how to handle resources that aren't existing
 public interface Resource {
 
     /**

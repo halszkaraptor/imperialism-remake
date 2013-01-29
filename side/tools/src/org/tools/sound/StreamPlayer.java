@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.BooleanControl;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 /**
@@ -70,7 +69,6 @@ public class StreamPlayer implements Runnable {
      * @param line
      * @param name
      * @return
-     * @throws LineUnavailableException
      */
     public static StreamPlayer create(SourceDataLine line, String name) {
         if (!line.isOpen()) {
@@ -243,7 +241,7 @@ public class StreamPlayer implements Runnable {
             line.stop();
 
             stream = null;
-            if (listener != null) {
+            if (!stop && listener != null) {
                 listener.newEvent(null);
             }
         }

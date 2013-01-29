@@ -16,16 +16,24 @@
  */
 package org.tools.sound;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import org.tools.io.Resource;
 
 /**
  *
  */
 public class JukeBox implements PlayEventListener {
+
+    private static final Logger LOG = Logger.getLogger(JukeBox.class.getName());
 
     private volatile boolean autoRewind = false;
     private volatile boolean autoContinue = true;
@@ -137,13 +145,20 @@ public class JukeBox implements PlayEventListener {
         if (index < 0 || index >= list.size()) {
             throw new IllegalArgumentException("index out of bounds.");
         }
+        AudioFileFormat fmt = null;
+        try {
+            fmt = AudioSystem.getAudioFileFormat(list.get(index).getInputStream());
+        } catch (UnsupportedAudioFileException |IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
         AudioInputStream is = SoundSystem.getAudioInputStream(list.get(index));
         if (player.isPlaying()) {
             player.stop();
         }
         // System.out.println("Playing " + list.get(index).getPath());
         if (listener != null) {
-            listener.newEvent((String) is.getFormat().getProperty("title"));
+            String title = (String) fmt.properties().get("title");
+            listener.newEvent(title + " now playing.");
         }
         player.play(is);
     }
@@ -152,6 +167,7 @@ public class JukeBox implements PlayEventListener {
      * Stops playing.
      */
     public void stop() {
+        player.stop();
         nextItem = 0;
     }
 }

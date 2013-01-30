@@ -35,7 +35,7 @@ import nu.xom.Elements;
  *
  * Can be serialized to XML.
  */
-public class XTable implements TableModel, XMLable {
+public class XTable implements TableModel, FullXMLable {
 
     private static final Logger LOG = Logger.getLogger(XTable.class.getName());
     private List<String> headers;

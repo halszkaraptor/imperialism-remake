@@ -41,7 +41,7 @@ public class StreamPlayer implements Runnable {
     private final FloatControl volumeControl;
     private final float volumeRange;
     private final float minimumVolume;
-    private volatile float defaultVolume = 0.8f;
+    private volatile float defaultVolume = 0.7f;
     private volatile int defaultFadingTime = 0;
     private volatile boolean stop;
     private volatile boolean pause;

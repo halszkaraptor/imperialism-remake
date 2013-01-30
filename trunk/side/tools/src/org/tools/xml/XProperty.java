@@ -30,19 +30,18 @@ import nu.xom.Element;
  */
 // TODO null to XML and back? how is it handled
 // TODO add statistics (how to make them transient)
-public class XProperty implements XMLable {
+public class XProperty implements FullXMLable {
 
     public final static String XMLNAME = "Properties";
     private static final Logger LOG = Logger.getLogger(XProperty.class.getName());
-    private Map<String, String> map;
-    private Map<String, Integer> stats = new HashMap<>(0);
+    private Map<String, String> content;
 
     public XProperty(int capacity) {
-        map = new HashMap<>(capacity);
+        content = new HashMap<>(capacity);
     }
 
-    public XProperty(Map<String, String> map) {
-        this.map = map;
+    public XProperty(Map<String, String> content) {
+        this.content = content;
     }
 
     /**
@@ -51,7 +50,7 @@ public class XProperty implements XMLable {
      * @return
      */
     public boolean containsKey(String key) {
-        return map.containsKey(key);
+        return content.containsKey(key);
     }
 
     /**
@@ -60,7 +59,7 @@ public class XProperty implements XMLable {
      * @return The size.
      */
     public int size() {
-        return map.size();
+        return content.size();
     }
 
     /**
@@ -69,24 +68,7 @@ public class XProperty implements XMLable {
      * @return
      */
     public String get(String key) {
-        // statistics
-        Integer count = stats.get(key);
-        if (count == null) {
-            stats.put(key, 1);
-        } else {
-            stats.put(key, count + 1);
-        }
-
-        return map.get(key);
-    }
-
-    /**
-     *
-     * @param key
-     * @return
-     */
-    public Integer getCount(String key) {
-        return stats.get(key);
+        return content.get(key);
     }
 
     /**
@@ -94,7 +76,7 @@ public class XProperty implements XMLable {
      * @return
      */
     public Set<String> keySet() {
-        return map.keySet();
+        return content.keySet();
     }
 
     /**
@@ -123,7 +105,7 @@ public class XProperty implements XMLable {
      * @param value
      */
     public void put(String key, String value) {
-        map.put(key, value);
+        content.put(key, value);
     }
 
     /**
@@ -132,7 +114,7 @@ public class XProperty implements XMLable {
      * @param value
      */
     public void putBoolean(String key, boolean value) {
-        map.put(key, Boolean.toString(value));
+        content.put(key, Boolean.toString(value));
     }
 
     /**
@@ -141,7 +123,7 @@ public class XProperty implements XMLable {
      * @param value
      */
     public void putInt(String key, int value) {
-        map.put(key, Integer.toString(value));
+        content.put(key, Integer.toString(value));
     }
 
     /**
@@ -150,14 +132,14 @@ public class XProperty implements XMLable {
      * @return
      */
     public boolean removeKey(String key) {
-        return map.remove(key) != null;
+        return content.remove(key) != null;
     }
 
     /**
      * Removes all entries.
      */
     public void clear() {
-        map.clear();
+        content.clear();
     }
 
     /**
@@ -167,7 +149,7 @@ public class XProperty implements XMLable {
      * @return
      */
     public boolean renameKey(String oldKey, String newKey) {
-        if (map.containsKey(oldKey) && !map.containsKey(newKey)) {
+        if (content.containsKey(oldKey) && !content.containsKey(newKey)) {
             String value = get(oldKey);
             removeKey(oldKey);
             put(newKey, value);
@@ -184,7 +166,7 @@ public class XProperty implements XMLable {
      */
     @Override
     public Element toXML() {
-        Element element = XMLHandler.fromStringMap(map, XMLNAME);
+        Element element = XMLHandler.fromStringMap(content, XMLNAME);
         return element;
     }
 
@@ -201,6 +183,6 @@ public class XProperty implements XMLable {
             return; // TODO more than a LOG entry maybe
         }
 
-        map = XMLHandler.toStringMap(parent);
+        content = XMLHandler.toStringMap(parent);
     }
 }

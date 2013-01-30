@@ -23,14 +23,7 @@ import nu.xom.Element;
  * from a XML node and how to save its state into a XML node. If necessary this
  * property can be nested, i.e. part of it is XMLAble itself.
  */
-public interface XMLable {
-
-    /**
-     * Save the current state of the object into a XML node.
-     *
-     * @return new xml node
-     */
-    public Element toXML();
+public interface ReadXMLable {
 
     /**
      * Sets the current state of an object according to the content of the given

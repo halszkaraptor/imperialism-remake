@@ -46,10 +46,14 @@ public class ButtonFactory {
         button.setBorder(null);
 
         // set icon
-        button.setIcon(icon);
+        if (icon != null) {
+            button.setIcon(icon);
+        }
 
-        // set tooltip text
-        button.setToolTipText(tooltip);
+        // set tooltip text (if there is any)
+        if (tooltip != null && !tooltip.isEmpty()) {
+            button.setToolTipText(tooltip);
+        }
 
         return button;
     }

@@ -47,7 +47,7 @@ import nu.xom.Elements;
  *
  * @param <E>
  */
-public class XList<E extends XMLable> implements ListModel<E>, Iterable<E>, XMLable {
+public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, FullXMLable {
 
     private String XMLName;
     private static final Logger LOG = Logger.getLogger(XList.class.getName());

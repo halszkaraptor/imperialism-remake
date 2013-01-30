@@ -187,7 +187,7 @@ public class XMLHandler {
      * @param name
      * @return
      */
-    public static <T extends XMLable> Element fromCollection(Iterable<T> list, String name) {
+    public static <T extends FullXMLable> Element fromCollection(Iterable<T> list, String name) {
         Element parent = new Element(name);
         for (T item : list) {
             Element child = item.toXML();
@@ -204,7 +204,7 @@ public class XMLHandler {
      * @param clazz
      * @return
      */
-    public static <T extends XMLable> List<T> toList(Element parent, Class<T> clazz) {
+    public static <T extends ReadXMLable> List<T> toList(Element parent, Class<T> clazz) {
         Elements children = parent.getChildElements();
 
         int size = children.size();

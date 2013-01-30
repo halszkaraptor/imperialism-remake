@@ -73,7 +73,7 @@ public class XMLHelper {
      * @throws IOException
      * @throws ParsingException
      */
-    public static void read(Resource resource, XMLable target) throws IOException, ParsingException {
+    public static void read(Resource resource, ReadXMLable target) throws IOException, ParsingException {
         Element xml = XMLHelper.read(resource);
         target.fromXML(xml); // TODO check target not null
     }
@@ -119,7 +119,7 @@ public class XMLHelper {
      * @param target
      * @throws IOException
      */
-    public static void write(Resource resource, XMLable target) throws IOException {
+    public static void write(Resource resource, FullXMLable target) throws IOException {
         Element xml = target.toXML();
         XMLHelper.write(resource, xml);
     }

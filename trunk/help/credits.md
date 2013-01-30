@@ -1,8 +1,14 @@
 ﻿# Credits
 
+## Release 0.1.2
+
+2013-03-06
+
+Programming: Trilarion (trilarion@twelvepm.de)
+
 ## Release 0.1.1
 
-2013-01-
+2013-01-06
 
 -  &bull; Improved terrain editor including basid provinces and nation editing.
 -  &bull; Prototype of the Main game screen

@@ -151,7 +151,7 @@ public class OptionsDialog extends UIDialog {
         }
 
         JCheckBox muteSound = new JCheckBox("Mute sound");
-        items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Graphics_MainScreenControlsRight));
+        items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Music_Mute));
 
         // layout
         panel.setLayout(new MigLayout("wrap 2"));

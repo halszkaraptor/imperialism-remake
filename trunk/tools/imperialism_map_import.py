@@ -48,6 +48,8 @@ def correlate_unique_elements(a, b):
         bu.sort()
         print ' goes with b: {0}'.format(bu)
 
+# -------------------------
+
 #parameters
 map_name = 's0.map'
 
@@ -63,7 +65,6 @@ rows = 60
 n = columns * rows;
 s = 36;
 
-
 # unique elements for each cell
 find_unique_elements(data, n, s)
 
@@ -76,11 +77,19 @@ terrain_overlay = crop_left(data[19 : n * s + 19: s], columns, cut)
 country = crop_left(data[3 : n * s + 3: s], columns, cut)
 resources = crop_left(data[17 : n * s + 17: s], columns, cut)
 
+railtrack = crop_left(data[6 : n * s + 6: s], columns, cut)
+
 provinceA = crop_left(data[20 : n * s + 20: s], columns, cut)
 provinceB = crop_left(data[21 : n * s + 21: s], columns, cut)
 provinces = map(lambda a, b: ord(a) * 256 + ord(b), provinceA, provinceB)
 
 cities = crop_left(data[29 : n * s + 29: s], columns, cut)
+
+# get additional records
+extra = data[columns * rows * s:]
+provinceN = []
+for x in xrange(0, 384):
+    provinceN.extend(extra[x * 198 + 166: x * 198 + 176])
 
 # even more tests
 correlate_unique_elements(terrain_underlay, resources)
@@ -95,7 +104,9 @@ terrain_overlay = list_to_array(terrain_overlay)
 country = list_to_array(country)
 resources = list_to_array(resources)
 provinces = array.array('i', provinces)
+names = list_to_array(provinceN)
 cities = list_to_array(cities)
+railtrack = list_to_array(railtrack)
 
 # save in file
 out_name = map_name[:-4] + '.imported.map'
@@ -109,6 +120,8 @@ out.write(country)
 out.write(resources)
 out.write(provinces)
 out.write(cities)
+out.write(railtrack)
+out.write(names)
 
 out.close()
 

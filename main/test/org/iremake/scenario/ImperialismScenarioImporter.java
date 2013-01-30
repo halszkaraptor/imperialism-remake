@@ -254,8 +254,8 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
         updateStatus(String.format("map size %dx%d", rows, columns));
-        // 5 chunks coming
-        int size = 6 * columns * rows;
+        // some chunks coming
+        int size = 7 * columns * rows + 384 * 10;
         if (size != ib.remaining()) {
             updateStatus("size of input data not correct, will stop");
             return;
@@ -280,6 +280,17 @@ public class ImperialismScenarioImporter extends JFrame {
 
         int[] cities = new int[chunk];
         ib.get(cities);
+
+        int[] railroad = new int[chunk];
+        ib.get(railroad);
+
+        int[] names = new int[384 * 10];
+        ib.get(names);
+
+        if (ib.hasRemaining()) {
+            updateStatus("there is some data left, which shouldn't be");
+            return;
+        }
 
         progressBar.setValue(20);
         updateStatus("data imported successfully");

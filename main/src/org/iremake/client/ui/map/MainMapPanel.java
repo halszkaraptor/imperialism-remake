@@ -259,8 +259,12 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 Font font = UIManager.getFont("Label.font");
                 Rectangle2D bounds = font.getStringBounds(name, g2d.getFontRenderContext());
                 int x = r.x + tileSize.width / 2 - (int)(bounds.getWidth() / 2);
-                int y = r.y + tileSize.height + (int)(bounds.getHeight());
-                g2d.drawString(name, x, y); // TODO antialiased
+                int y = r.y + tileSize.height;
+                int gap = 5;
+                g2d.setColor(new Color(128, 128, 128, 64));
+                g2d.fillRect(x-gap, y-gap, (int)(bounds.getWidth() + 2 * gap), (int)(bounds.getHeight() + 2 * gap));
+                g2d.setColor(Color.black);
+                g2d.drawString(name, x, y + (int)(-bounds.getY())); // TODO antialiased
             }
         }
 

@@ -70,7 +70,7 @@ public class StartScreen extends UIFrame {
         logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.logo.png"));    // set image
 
         // Version label
-        JLabel versionLabel = new JLabel("Version " + Option.Version.get());
+        JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());
         versionLabel.setForeground(Color.WHITE);    // white color
 
         RelativeLayout layout = new RelativeLayout();
@@ -115,15 +115,15 @@ public class StartScreen extends UIFrame {
     private JComponent createMenuBar() {
         // scenario button
         JButton scenarioButton = Button.StartMenuScenario.create();
-        scenarioButton.addActionListener(UIDialogStartAction.create(new NewLocalScenarioDialog()));
+        scenarioButton.addActionListener(new UIDialogStartAction(NewLocalScenarioDialog.class));
 
         // network button
         JButton networkButton = Button.StartMenuNetwork.create();
-        networkButton.addActionListener(UIDialogStartAction.create(new NetworkDialog()));
+        networkButton.addActionListener(new UIDialogStartAction(NetworkDialog.class));
 
         // options button
         JButton optionsButton = Button.StartMenuOptions.create();
-        optionsButton.addActionListener((UIDialogStartAction.create(new OptionsDialog())));
+        optionsButton.addActionListener(new UIDialogStartAction(OptionsDialog.class));
 
         // help button
         JButton helpButton = Button.StartMenuHelp.create();

@@ -16,11 +16,11 @@
  */
 package org.iremake.common.model.map.items;
 
-import org.tools.xml.XMLable;
+import org.tools.xml.FullXMLable;
 
 /**
  * Base for all map units.
  */
-public abstract class MapItem implements XMLable {
+public abstract class MapItem implements FullXMLable {
 
 }

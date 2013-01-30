@@ -61,7 +61,7 @@ public class UnregisteredServerClient extends ServerClient {
                 case Version:
                     // check version
 
-                    if (Option.Version.get().equals(msg.getText())) {
+                    if (Option.General_Version.get().equals(msg.getText())) {
                         ServerLogger.log("Version accepted.");
                         versionQuery = true;
                     } else {

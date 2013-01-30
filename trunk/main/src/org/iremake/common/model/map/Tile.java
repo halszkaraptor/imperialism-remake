@@ -27,7 +27,6 @@ import org.iremake.common.model.Province;
 public class Tile {
 
     public int terrainID = Settings.getDefaultTerrainID();
-    public int terrainSubID = 0; // TODO not used right now
 
     public int resourceID = Settings.RESOURCE_NONE;
     public boolean resourceVisible = false;

@@ -19,12 +19,12 @@ package org.iremake.common.model;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.iremake.common.model.map.MapPosition;
-import org.tools.xml.XMLable;
+import org.tools.xml.FullXMLable;
 
 /**
  * A province, currently with id, name and town position.
  */
-public class Province implements XMLable {
+public class Province implements FullXMLable {
 
     /* Sea tiles have a default value which is defined here and not in the xml */
     public static final int NONE = 0;

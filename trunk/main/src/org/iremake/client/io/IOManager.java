@@ -41,8 +41,9 @@ import nu.xom.ParsingException;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.IconLoader;
+import org.tools.xml.FullXMLable;
 import org.tools.xml.XMLHelper;
-import org.tools.xml.XMLable;
+import org.tools.xml.ReadXMLable;
 
 /**
  * Loads from the data folder.
@@ -157,7 +158,7 @@ public class IOManager {
      * @param target
      * @return
      */
-    public static boolean setFromXML(Places place, String location, XMLable target) {
+    public static boolean setFromXML(Places place, String location, ReadXMLable target) {
         try {
             XMLHelper.read(IOManager.getAsResource(place, location), target);
         } catch (IOException | ParsingException ex) {
@@ -175,7 +176,7 @@ public class IOManager {
      * @param target
      * @return
      */
-    public static boolean saveToXML(Places place, String location, XMLable target) {
+    public static boolean saveToXML(Places place, String location, FullXMLable target) {
         try {
             XMLHelper.write(IOManager.getAsResource(place, location), target);
         } catch (IOException ex) {

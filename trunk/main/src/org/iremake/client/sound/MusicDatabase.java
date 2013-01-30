@@ -24,22 +24,17 @@ import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.io.Resource;
-import org.tools.xml.XMLable;
+import org.tools.xml.ReadXMLable;
 
 /**
  *
  */
-public class MusicDatabase implements XMLable {
+public class MusicDatabase implements ReadXMLable {
 
     private List<Resource> list;
 
     public List<Resource> getBackgroundMusicList() {
         return Collections.unmodifiableList(list);
-    }
-
-    @Override
-    public Element toXML() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

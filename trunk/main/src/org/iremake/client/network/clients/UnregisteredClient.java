@@ -37,7 +37,7 @@ public class UnregisteredClient extends Client {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                boss.send(TextMessageType.Version.create(Option.Version.get()));
+                boss.send(TextMessageType.Version.create(Option.General_Version.get()));
                 boss.send(TextMessageType.ClientName.create("Name"));
             }
         }, DELAY);

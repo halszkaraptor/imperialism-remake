@@ -86,13 +86,13 @@ public class OptionsDialog extends UIDialog {
 
         // components
         JCheckBox fullScreen = new JCheckBox("Start in Full Screen");
-        items.add(new OptionsDialogCheckBoxItem(fullScreen, Option.FullScreenMode));
+        items.add(new OptionsDialogCheckBoxItem(fullScreen, Option.Graphics_FullScreenMode));
         if (!Option.isOSWindows) {
             fullScreen.setEnabled(false);
         }
 
         JCheckBox mainControlsRight = new JCheckBox("Main Screen controls on right side");
-        items.add(new OptionsDialogCheckBoxItem(mainControlsRight, Option.MainScreenControlsRight));
+        items.add(new OptionsDialogCheckBoxItem(mainControlsRight, Option.Graphics_MainScreenControlsRight));
 
         // graphics panel layout
         graphics.setLayout(new MigLayout("flowy"));
@@ -121,7 +121,7 @@ public class OptionsDialog extends UIDialog {
 
         // components
         JTextField networkAlias = new JTextField();
-        items.add(new OptionsDialogTextFieldItem(networkAlias, Option.NetworkAlias));
+        items.add(new OptionsDialogTextFieldItem(networkAlias, Option.Client_Alias));
 
         // layout
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
@@ -139,24 +139,32 @@ public class OptionsDialog extends UIDialog {
         JPanel panel = new JPanel();
 
         // TODO use OptionsDialogComboBoxItem
-        // TODO only if there are some, other disable
+        // TODO only if there are some, otherwise disable
         JComboBox<String> mixerBox = new JComboBox<>();
-        mixerModel = new SimpleComboBoxModel<>(SoundSystem.getAvailableMixerNames());
-        mixerBox.setModel(mixerModel);
-        mixerBox.setSelectedIndex(0);
-        // change from option
-        mixerBox.setToolTipText("Change will be ");
+        if (SoundSystem.hasActiveMixer()) {
+            mixerModel = new SimpleComboBoxModel<>(SoundSystem.getAvailableMixerNames());
+            mixerBox.setModel(mixerModel);
+            mixerBox.setSelectedItem(SoundSystem.getActiveMixerName());
+            mixerBox.setToolTipText("Changes will be applied upon next startup.");
+        } else {
+            mixerBox.setEnabled(false);
+        }
+
+        JCheckBox muteSound = new JCheckBox("Mute sound");
+        items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Graphics_MainScreenControlsRight));
 
         // layout
         panel.setLayout(new MigLayout("wrap 2"));
         panel.add(new JLabel("Available devices"));
         panel.add(mixerBox);
+        panel.add(muteSound);
 
         return panel;
     }
 
     /**
-     * Check upon closing if any option is modified. Iterates over the list of items.
+     * Check upon closing if any option is modified. Iterates over the list of
+     * items.
      *
      * @return
      */

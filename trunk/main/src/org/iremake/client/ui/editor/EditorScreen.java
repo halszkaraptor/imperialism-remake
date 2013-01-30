@@ -293,7 +293,7 @@ public class EditorScreen extends UIFrame {
                     if (row != -1) {
                         Nation nation = model.getElementAt(row);
                         selectedNation = nation;
-                        XList<Province> provinces = scenario.getProvinces(nation);
+                        XList<Province> provinces = nation.getProvinces();
                         // TODO tell the province panel all about it
                         provinceList.setModel(provinces);
                     } else {
@@ -382,8 +382,9 @@ public class EditorScreen extends UIFrame {
                 if (name != null) {
                     // TODO selectedNation could be null, setModel could not have been set, than this will fail
                     XList<Province> model = (XList<Province>) provinceList.getModel();
-                    Province province = scenario.newProvince(selectedNation, name);
-                    model.addElement(province);
+                    // TODO meaningful id
+                    Province province = new Province(1, name);
+                    model.addElement(province); // the model is the internal list
                 }
             }
         });
@@ -512,7 +513,7 @@ public class EditorScreen extends UIFrame {
     public void switchTo() {
         super.switchTo();
         // load initial scenario
-        IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
-        // scenario.createNew(60, 100);
+        // IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        scenario.createEmptyMap(60, 100);
     }
 }

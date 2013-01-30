@@ -18,16 +18,22 @@ package org.iremake.client.ui.map;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.font.LineMetrics;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.TilesBorder;
@@ -247,9 +253,14 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         for (ScreenPosition r : list) {
             // draw city
             String name = scenario.getTownAt(r.p);
+            name = "Test";
             if (name != null) {
                 // TODO draw on half translucent rounded rectangle below city
-                g2d.drawString(name, r.x + 20, r.y + 40);
+                Font font = UIManager.getFont("Label.font");
+                Rectangle2D bounds = font.getStringBounds(name, g2d.getFontRenderContext());
+                int x = r.x + tileSize.width / 2 - (int)(bounds.getWidth() / 2);
+                int y = r.y + tileSize.height + (int)(bounds.getHeight());
+                g2d.drawString(name, x, y); // TODO antialiased
             }
         }
 

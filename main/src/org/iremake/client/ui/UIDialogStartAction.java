@@ -18,25 +18,31 @@ package org.iremake.client.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  */
 public class UIDialogStartAction implements ActionListener {
 
-    private UIDialog dialog;
+    private static final Logger LOG = Logger.getLogger(UIDialogStartAction.class.getName());
 
-    private UIDialogStartAction(UIDialog dialog) {
-        this.dialog = dialog;
-    }
+    private Class<? extends UIDialog> clazz;
 
-    public static UIDialogStartAction create(UIDialog dialog) {
-        return new UIDialogStartAction(dialog);
+    public UIDialogStartAction(Class<? extends UIDialog> clazz) {
+        this.clazz = clazz;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        dialog.start();
+        UIDialog dialog;
+        try {
+            dialog = clazz.newInstance();
+            dialog.start();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
     }
 
 

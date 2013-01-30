@@ -26,7 +26,7 @@ import org.tools.xml.XMLHelper;
 /**
  *
  */
-public class MusicXMLGenerator {
+public class MusicDatabaseXMLGenerator {
 
     /**
      * @param args the command line arguments

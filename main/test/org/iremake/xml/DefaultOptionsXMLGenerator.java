@@ -17,6 +17,7 @@
 package org.iremake.xml;
 
 import java.io.IOException;
+import org.iremake.client.Option;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.xml.XMLHelper;
@@ -33,9 +34,13 @@ public class DefaultOptionsXMLGenerator {
     public static void main(String[] args) throws IOException {
 
         XProperty options = new XProperty(20);
-        options.put("graphics.mode.fullscreen", "true");
-        options.put("graphics.mainscreen.controlsright", "true");
-        options.put("version", "0.1.2");
+        // graphics
+        options.put(Option.Graphics_FullScreenMode.toString(), "true");
+        options.put(Option.Graphics_MainScreenControlsRight.toString(), "true");
+        // music
+        options.put(Option.Music_Mute.toString(), "false");
+        // general
+        options.put(Option.General_Version.toString(), "0.1.2");
 
         Resource resource = ResourceUtils.asResource("options.default.xml");
         XMLHelper.write(resource, options);

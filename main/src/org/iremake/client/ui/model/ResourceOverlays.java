@@ -25,7 +25,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.tools.xml.XMLable;
+import org.tools.xml.ReadXMLable;
 
 /**
  * UI part of the resource tiles, holding the image for each overlay.
@@ -33,7 +33,7 @@ import org.tools.xml.XMLable;
  * More specific a map: id -> image is stored that allows to retrieve overlay
  * images for each id.
  */
-public class ResourceOverlays implements XMLable {
+public class ResourceOverlays implements ReadXMLable {
 
     /* the map storing the ui overlay image for each id */
     private Map<Integer, Image> map = new HashMap<>();
@@ -55,14 +55,6 @@ public class ResourceOverlays implements XMLable {
      */
     public Set<Integer> getIDs() {
         return Collections.unmodifiableSet(map.keySet());
-    }
-
-    /**
-     * We never write.
-     */
-    @Override
-    public Element toXML() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

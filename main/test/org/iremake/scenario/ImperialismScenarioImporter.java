@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.xml;
+package org.iremake.scenario;
 
 import icons.TestIOManager;
 import java.awt.EventQueue;
@@ -342,7 +342,9 @@ public class ImperialismScenarioImporter extends JFrame {
                 if (!processed.contains(provinces[i])) {
                     Nation nation = nmap.get(countries[i]);
                     String name = pmap.get(provinces[i]);
-                    Province province = scenario.newProvince(nation, name);
+                    // TODO get right id
+                    Province province = new Province(1, name);
+                    nation.addProvince(province);
                     ppmap.put(provinces[i], province);
                     processed.add(provinces[i]);
                 }
@@ -447,7 +449,7 @@ public class ImperialismScenarioImporter extends JFrame {
                 }
                 // if capital, tell nation about
                 if (cities[i] == 35) {
-                    nmap.get(countries[i]).setCapitalProvince(ppmap.get(provinces[i]).getID());
+                    nmap.get(countries[i]).setCapitalProvince(ppmap.get(provinces[i]));
                 }
             }
         }

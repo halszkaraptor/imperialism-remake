@@ -28,7 +28,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.tools.xml.XMLable;
+import org.tools.xml.ReadXMLable;
 
 /**
  * UI part of the terrain tiles, holding the image and a color (for usage in the
@@ -37,7 +37,7 @@ import org.tools.xml.XMLable;
  * More specific a map: id -> Tile is stored that allows to retrieve terrain
  * images for each terrain id.
  */
-public class TerrainTiles implements XMLable {
+public class TerrainTiles implements ReadXMLable {
 
     /* the map storing the ui tile information for each terrain id */
     private Map<Integer, Tile> map = new HashMap<>();
@@ -127,14 +127,6 @@ public class TerrainTiles implements XMLable {
         int g = Integer.parseInt(hex.substring(2, 4), 16);
         int b = Integer.parseInt(hex.substring(4, 6), 16);
         return new Color(r, g, b);
-    }
-
-    /**
-     * We never write new terrain tiles, only read.
-     */
-    @Override
-    public Element toXML() {
-        throw new UnsupportedOperationException("This XMLable is read-only.");
     }
 
     /**

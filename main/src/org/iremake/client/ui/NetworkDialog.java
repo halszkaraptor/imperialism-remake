@@ -80,7 +80,7 @@ public class NetworkDialog extends UIDialog {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
 
-        JTextField networkAlias = new JTextField(Option.NetworkAlias.get());
+        JTextField networkAlias = new JTextField(Option.Client_Alias.get());
 
         JTextField serverAdress = new JTextField("127.0.0.1");
 

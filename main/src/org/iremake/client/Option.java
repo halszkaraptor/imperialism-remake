@@ -29,11 +29,15 @@ import org.tools.xml.XProperty;
 // TODO server and client options separated?, mayb common options with version number ... too?
 public enum Option {
 
-    // all options
-    Version("version"),
-    FullScreenMode("graphics.mode.fullscreen"),
-    MainScreenControlsRight("graphics.mainscreen.controlsright"),
-    NetworkAlias("client.network.alias"); // this option does not need to be existing in the default options xml file, it will be added automatically
+    // general options
+    General_Version("general.version"),
+    // graphics options
+    Graphics_FullScreenMode("graphics.mode.fullscreen"),
+    Graphics_MainScreenControlsRight("graphics.mainscreen.controlsright"),
+    // music options
+    Music_Mute("music.mute"),
+    // client options
+    Client_Alias("client.network.alias"); // this option does not need to be existing in the default options xml file, it will be added automatically
 
     /* OS name */
     public static final boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH).startsWith("windows");
@@ -87,6 +91,11 @@ public enum Option {
         options.putBoolean(name, value);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     /**
      * Loads options from known location, if not existing loads a
      * default.options copy. If even this file is not existing, we are in
@@ -99,7 +108,7 @@ public enum Option {
             // TODo what if this is not existing?
             IOManager.setFromXML(Places.Common, "options.default.xml", options);
             // some first time initializations
-            Option.NetworkAlias.put(System.getProperty("user.name"));
+            Option.Client_Alias.put(System.getProperty("user.name"));
         } else {
             IOManager.setFromXML(Places.Common, name, options);
         }

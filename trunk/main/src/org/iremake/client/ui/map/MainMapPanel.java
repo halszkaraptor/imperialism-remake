@@ -21,17 +21,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.font.LineMetrics;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.iremake.client.ui.model.UIScenario;
@@ -56,6 +55,27 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private MapPosition offset = new MapPosition();
     /* the tile the mouse pointer is currently over */
     private MapPosition hoover = new MapPosition();
+
+    private void drawProvinceTownName(Graphics2D g2d, String name, int x, int y) {
+                Font font = UIManager.getFont("Label.font");
+                Rectangle bounds = font.getStringBounds(name, g2d.getFontRenderContext()).getBounds();
+
+                Insets insets = new Insets(3, 6, 3, 6);
+
+                // draw rectangle
+                g2d.setColor(new Color(128, 128, 128, 64));
+                // g2d.fillRoundRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, 5, 5);
+                g2d.fill3DRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
+
+                // draw string
+                g2d.setColor(Color.black);
+                g2d.drawString(name, x - bounds.x - bounds.width / 2, y + insets.top - bounds.y); // TODO antialiased
+    }
+
+    private void drawImageCentered(Graphics2D g2d, Image image, int x, int y) {
+        g2d.drawImage(image, x - image.getWidth(null) / 2, y - image.getHeight(null), null);
+    }
+
 
     private static class ScreenPosition {
 
@@ -195,18 +215,18 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
         // draw all terrain tiles
         for (ScreenPosition r : list) {
-            g2d.drawImage(scenario.getTerrainTileAt(r.p), r.x, r.y, null);
+            drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
         // draw terrain tiles for outside
         for (ScreenPosition r : outside) {
-            g2d.drawImage(scenario.getTerrainTileAt(r.p), r.x, r.y, null);
+            drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
         // draw resources
         for (ScreenPosition r : list) {
             if (scenario.isResourceVisibleAt(r.p)) {
-                g2d.drawImage(scenario.getResourceOverlayAt(r.p), r.x, r.y, null);
+                drawImageCentered(g2d, scenario.getResourceOverlayAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
             }
         }
 
@@ -255,16 +275,8 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             String name = scenario.getTownAt(r.p);
             name = "Test";
             if (name != null) {
-                // TODO draw on half translucent rounded rectangle below city
-                Font font = UIManager.getFont("Label.font");
-                Rectangle2D bounds = font.getStringBounds(name, g2d.getFontRenderContext());
-                int x = r.x + tileSize.width / 2 - (int)(bounds.getWidth() / 2);
-                int y = r.y + tileSize.height;
-                int gap = 5;
-                g2d.setColor(new Color(128, 128, 128, 64));
-                g2d.fillRect(x-gap, y-gap, (int)(bounds.getWidth() + 2 * gap), (int)(bounds.getHeight() + 2 * gap));
-                g2d.setColor(Color.black);
-                g2d.drawString(name, x, y + (int)(-bounds.getY())); // TODO antialiased
+                // drawImageCentered
+                drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height);
             }
         }
 

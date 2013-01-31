@@ -28,20 +28,25 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 import org.iremake.common.model.Nation;
@@ -100,42 +105,28 @@ public class ImperialismScenarioImporter extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        importmapTextField = new JTextField();
-        chooseImportmapButton = new JButton();
-        scenarioTextField = new JTextField();
-        chooseScenarioButton = new JButton();
         importButton = new JButton();
         progressBar = new JProgressBar();
         statusScrollPane = new JScrollPane();
         statusTextArea = new JTextArea();
+        optionPanel = new JPanel();
+        importmapTextField = new JTextField();
+        scenarioTextField = new JTextField();
+        jLabel1 = new JLabel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        titleTextField = new JTextField();
+        jLabel4 = new JLabel();
+        nationsTextField = new JTextField();
+        loadButton = new JButton();
+        saveButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Imperialism Map Import");
         setLocationByPlatform(true);
         setResizable(false);
 
-        importmapTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\s0.imported.map");
-
-        chooseImportmapButton.setText("...");
-        chooseImportmapButton.setToolTipText("Choose import map file");
-        chooseImportmapButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                chooseImportmapButtonActionPerformed(evt);
-            }
-        });
-
-        scenarioTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\scenario.Europe1814.xml");
-        scenarioTextField.setToolTipText("Will be modified in the process!");
-
-        chooseScenarioButton.setText("...");
-        chooseScenarioButton.setToolTipText("Choose scenario file");
-        chooseScenarioButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                chooseScenarioButtonActionPerformed(evt);
-            }
-        });
-
-        importButton.setText("Import Now");
+        importButton.setText("Import and Convert Scenario");
         importButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 importButtonActionPerformed(evt);
@@ -148,48 +139,104 @@ public class ImperialismScenarioImporter extends JFrame {
         statusTextArea.setText("status");
         statusScrollPane.setViewportView(statusTextArea);
 
+        optionPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+
+        importmapTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\s0.imported.map");
+
+        scenarioTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\scenario.Europe1814.xml");
+        scenarioTextField.setToolTipText("Will be modified in the process!");
+
+        jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel1.setText("import file path");
+
+        jLabel2.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel2.setText("export file path");
+
+        jLabel3.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel3.setText("scenario title");
+
+        titleTextField.setText("Europe 1814");
+
+        jLabel4.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel4.setText("nation names");
+
+        nationsTextField.setText("France, Austria-Hungary, Ottoman Empire, Russian Empire, Prussia, Italy, England, Portugal, Espania, Catalonia, Morocco, Libya, Sardinia, Poland, Egpyt, Bavaria, BeNeLux, Switzerland, Danmark, Lower Saxony, Sweden, Serbia, Greece");
+
+        GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
+        optionPanel.setLayout(optionPanelLayout);
+        optionPanelLayout.setHorizontalGroup(
+            optionPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(optionPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.TRAILING, false)
+                    .addComponent(jLabel4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                    .addComponent(jLabel3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING)
+                    .addComponent(scenarioTextField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                    .addComponent(titleTextField)
+                    .addComponent(importmapTextField)
+                    .addComponent(nationsTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        optionPanelLayout.setVerticalGroup(
+            optionPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(optionPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(importmapTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(scenarioTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(titleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(nationsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(209, Short.MAX_VALUE))
+        );
+
+        loadButton.setText("Load Setting");
+
+        saveButton.setText("Save Setting");
+
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                    .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(statusScrollPane)
+                    .addComponent(optionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                            .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(Alignment.TRAILING)
-                                    .addComponent(scenarioTextField)
-                                    .addComponent(importmapTextField))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                    .addComponent(chooseImportmapButton)
-                                    .addComponent(chooseScenarioButton, Alignment.TRAILING)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(248, 248, 248)
-                        .addComponent(importButton)
-                        .addGap(0, 253, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(statusScrollPane)))
+                        .addComponent(loadButton)
+                        .addPreferredGap(ComponentPlacement.RELATED)
+                        .addComponent(saveButton)
+                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(importButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(importmapTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chooseImportmapButton))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(scenarioTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chooseScenarioButton))
+                .addComponent(optionPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(statusScrollPane, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+                .addComponent(statusScrollPane, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(importButton)
+                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(importButton)
+                    .addComponent(loadButton)
+                    .addComponent(saveButton))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -198,39 +245,18 @@ public class ImperialismScenarioImporter extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chooseImportmapButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_chooseImportmapButtonActionPerformed
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File f = fileChooser.getSelectedFile();
-            String name = f.getPath();
-            importmapTextField.setText(name);
-        }
-    }//GEN-LAST:event_chooseImportmapButtonActionPerformed
-
-    private void chooseScenarioButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_chooseScenarioButtonActionPerformed
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File f = fileChooser.getSelectedFile();
-            String name = f.getPath();
-            scenarioTextField.setText(name);
-        }
-    }//GEN-LAST:event_chooseScenarioButtonActionPerformed
-
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         progressBar.setValue(0);
 
-        // test files if they exist
+        // create files and test import file on existence
         File importFile = new File(importmapTextField.getText());
         if (!importFile.exists() || !importFile.isFile()) {
             updateStatus("import file not found, will stop");
             return;
         }
-
         File exportFile = new File(scenarioTextField.getText());
-        if (!exportFile.exists() || !exportFile.isFile()) {
-            updateStatus("export file not found, will stop");
-            return;
-        }
 
-        // read map import
+        // read import file
         ByteBuffer bb;
         try {
             FileInputStream is = new FileInputStream(importFile);
@@ -246,7 +272,7 @@ public class ImperialismScenarioImporter extends JFrame {
         IntBuffer ib = bb.asIntBuffer();
         progressBar.setValue(10);
 
-        // analyze map import
+        // read number of columns and rows
         int columns = ib.get();
         int rows = ib.get();
         if (columns < 0 || columns > 200 || rows < 0 || rows > 200) {
@@ -254,15 +280,17 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
         updateStatus(String.format("map size %dx%d", rows, columns));
-        // some chunks coming
-        int size = 7 * columns * rows + 384 * 10;
+
+        // compare remaining size with estimated size
+        final int Np = 384;
+        int size = 7 * columns * rows + Np * 10;
         if (size != ib.remaining()) {
             updateStatus("size of input data not correct, will stop");
             return;
         }
 
+        // read all chunks into different arrays
         int chunk = columns * rows;
-
         int[] terrain_underlay = new int[chunk];
         ib.get(terrain_underlay);
 
@@ -284,9 +312,10 @@ public class ImperialismScenarioImporter extends JFrame {
         int[] railroad = new int[chunk];
         ib.get(railroad);
 
-        int[] names = new int[384 * 10];
+        int[] names = new int[Np * 10];
         ib.get(names);
 
+        // this should never happen
         if (ib.hasRemaining()) {
             updateStatus("there is some data left, which shouldn't be");
             return;
@@ -295,8 +324,25 @@ public class ImperialismScenarioImporter extends JFrame {
         progressBar.setValue(20);
         updateStatus("data imported successfully");
 
+        // transform names into string array
+        String[] pnames = new String[Np];
+        for (int i = 0; i < Np; i++) {
+            StringBuilder builder = new StringBuilder(10);
+            for (int j = 0; j < 10; j++) {
+                int value = names[i * 10 + j];
+                if (value == 0) {
+                    break;
+                } else {
+                    builder.append((char) value);
+                }
+            }
+            pnames[i] = builder.toString();
+        }
+
+        // create new scenario
         Scenario scenario = new Scenario();
         scenario.createEmptyMap(rows, columns);
+        scenario.setTitle(titleTextField.getText());
 
         // check that if terrain_underlay is ocean also terrain_overlay is ocean
         for (int i = 0; i < chunk; i++) {
@@ -315,12 +361,16 @@ public class ImperialismScenarioImporter extends JFrame {
         }
         updateStatus(String.format("contains %d nations", uc.size()));
 
-        // put countries into list
+        // put countries into list and get names
         XList<Nation> nations = scenario.getNations();
-        Map<Integer, Nation> nmap = new HashMap<>();
+        Map<Integer, Nation> nmap = new HashMap<>(30);
+        String[] nationNames = nationsTextField.getText().split(", ");
         int id = 1;
         for (Integer i : uc) {
-            String name = String.format("Nation %d", id);
+            String name = String.format("Nation %2d", id);
+            if (i < nationNames.length)  {
+                name = nationNames[i];
+            }
             Nation nation = new Nation(name);
             nmap.put(i, nation);
             nations.addElement(nation);
@@ -337,24 +387,24 @@ public class ImperialismScenarioImporter extends JFrame {
         updateStatus(String.format("contains %d provinces", up.size()));
 
         // generate province names
-        Map<Integer, String> pmap = new HashMap<>();
+        Map<Integer, String> pmap = new HashMap<>(Np);
         id = 1;
         for (Integer i : up) {
-            String name = String.format("Province %d", id);
+            // String name = String.format("Province %d", id);
+            String name = pnames[i];
             pmap.put(i, name);
             id++;
         }
 
         // add provinces to scenario
-        Map<Integer, Province> ppmap = new HashMap<>();
+        Map<Integer, Province> ppmap = new HashMap<>(1000);
         Set<Integer> processed = new HashSet<>(1000);
         for (int i = 0; i < chunk; i++) {
             if (terrain_underlay[i] != 5) {
                 if (!processed.contains(provinces[i])) {
                     Nation nation = nmap.get(countries[i]);
                     String name = pmap.get(provinces[i]);
-                    // TODO get right id
-                    Province province = new Province(1, name);
+                    Province province = scenario.createProvince(name);
                     nation.addProvince(province);
                     ppmap.put(provinces[i], province);
                     processed.add(provinces[i]);
@@ -454,6 +504,17 @@ public class ImperialismScenarioImporter extends JFrame {
                     tile.provinceID = ppmap.get(provinces[i]).getID();
                 }
 
+                // set railroad (E, SE, SW)
+                if ((railroad[i] & (1 << 2)) != 0) {
+                    tile.railroadConfig &= Tile.RailroadEast;
+                }
+                if ((railroad[i] & (1 << 3)) != 0) {
+                    tile.railroadConfig &= Tile.RailroadSouthEast;
+                }
+                if ((railroad[i] & (1 << 4)) != 0) {
+                    tile.railroadConfig &= Tile.RailroadSouthWest;
+                }
+
                 // if city at this position, tell province about
                 if (cities[i] != 0) {
                     ppmap.get(provinces[i]).setTownPosition(pos);
@@ -496,13 +557,20 @@ public class ImperialismScenarioImporter extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton chooseImportmapButton;
-    private JButton chooseScenarioButton;
     private JButton importButton;
     private JTextField importmapTextField;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JButton loadButton;
+    private JTextField nationsTextField;
+    private JPanel optionPanel;
     private JProgressBar progressBar;
+    private JButton saveButton;
     private JTextField scenarioTextField;
     private JScrollPane statusScrollPane;
     private JTextArea statusTextArea;
+    private JTextField titleTextField;
     // End of variables declaration//GEN-END:variables
 }

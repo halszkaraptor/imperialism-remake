@@ -57,25 +57,24 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     private MapPosition hoover = new MapPosition();
 
     private void drawProvinceTownName(Graphics2D g2d, String name, int x, int y) {
-                Font font = UIManager.getFont("Label.font");
-                Rectangle bounds = font.getStringBounds(name, g2d.getFontRenderContext()).getBounds();
+        Font font = UIManager.getFont("Label.font");
+        Rectangle bounds = font.getStringBounds(name, g2d.getFontRenderContext()).getBounds();
 
-                Insets insets = new Insets(3, 6, 3, 6);
+        Insets insets = new Insets(3, 6, 3, 6);
 
-                // draw rectangle
-                g2d.setColor(new Color(128, 128, 128, 64));
-                // g2d.fillRoundRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, 5, 5);
-                g2d.fill3DRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
+        // draw rectangle
+        g2d.setColor(new Color(128, 128, 128, 64));
+        // g2d.fillRoundRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, 5, 5);
+        g2d.fill3DRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
 
-                // draw string
-                g2d.setColor(Color.black);
-                g2d.drawString(name, x - bounds.x - bounds.width / 2, y + insets.top - bounds.y); // TODO antialiased
+        // draw string
+        g2d.setColor(Color.black);
+        g2d.drawString(name, x - bounds.x - bounds.width / 2, y + insets.top - bounds.y); // TODO antialiased
     }
 
     private void drawImageCentered(Graphics2D g2d, Image image, int x, int y) {
-        g2d.drawImage(image, x - image.getWidth(null) / 2, y - image.getHeight(null), null);
+        g2d.drawImage(image, x - image.getWidth(null) / 2, y - image.getHeight(null) / 2, null);
     }
-
 
     private static class ScreenPosition {
 
@@ -183,7 +182,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         g2d.fillRect(0, 0, size.width, size.height);
 
         // List of ScreenPositions
-        List<ScreenPosition> list = new ArrayList<>(100); // TODO meaningful capacity
+        List<ScreenPosition> fulldrawn = new ArrayList<>(100); // TODO meaningful capacity
         List<ScreenPosition> outside = new ArrayList<>(20);
 
         Dimension tileSize = scenario.getTileSize();
@@ -202,7 +201,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 int y = r * tileSize.height;
                 // still on the map?
                 if (row >= 0 && row < scenario.getNumberRows() && column >= 0 && column < scenario.getNumberColumns()) {
-                    list.add(new ScreenPosition(x, y, p));
+                    fulldrawn.add(new ScreenPosition(x, y, p));
                 } else {
                     row = Math.max(0, row);
                     row = Math.min(scenario.getNumberRows() - 1, row);
@@ -214,7 +213,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
 
         // draw all terrain tiles
-        for (ScreenPosition r : list) {
+        for (ScreenPosition r : fulldrawn) {
             drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
@@ -224,14 +223,14 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
 
         // draw resources
-        for (ScreenPosition r : list) {
+        for (ScreenPosition r : fulldrawn) {
             if (scenario.isResourceVisibleAt(r.p)) {
                 drawImageCentered(g2d, scenario.getResourceOverlayAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
             }
         }
 
         // draw tile borders
-        for (ScreenPosition r : list) {
+        for (ScreenPosition r : fulldrawn) {
             // draw tile border
             g2d.setColor(Color.white);
             TilesBorder border = scenario.getBorder(r.p, TilesTransition.East);
@@ -253,7 +252,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
 
         // draw railroad
-        for (ScreenPosition r : list) {
+        for (ScreenPosition r : fulldrawn) {
             // TODO really have to draw after all other tiles are drawn, otherwise parts get overdrawn again
             g2d.setColor(Color.black);
             int xc = r.x + tileSize.width / 2;
@@ -270,10 +269,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
 
         // draw cities
-        for (ScreenPosition r : list) {
+        for (ScreenPosition r : fulldrawn) {
             // draw city
             String name = scenario.getTownAt(r.p);
-            name = "Test";
+            // name = "Test";
             if (name != null) {
                 // drawImageCentered
                 drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height);

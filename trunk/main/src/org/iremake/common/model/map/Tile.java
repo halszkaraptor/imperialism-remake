@@ -33,5 +33,9 @@ public class Tile {
 
     public int provinceID = Province.NONE;
 
-    public int railroadConfig = 0;
+    public static final int RailroadEast = 1;
+    public static final int RailroadSouthEast = 2;
+    public static final int RailroadSouthWest = 4;
+    
+    public int railroadConfig = 0; // 3 bits (E, SE, SW)
 }

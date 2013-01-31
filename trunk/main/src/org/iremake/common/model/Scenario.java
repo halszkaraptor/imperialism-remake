@@ -18,6 +18,8 @@ package org.iremake.common.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
@@ -44,7 +46,6 @@ public class Scenario implements FullXMLable {
     public static final int BITSIZE_RESOURCEID = 5;
     public static final int BITSIZE_PROVINCEID = 14;
     public static final int BITSIZE_RAILROAD_CONFIG = 3;
-
     private static final String XMLNAME = "Scenario";
     private static final String XMLNAME_NATIONS = "Nations";
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
@@ -205,8 +206,8 @@ public class Scenario implements FullXMLable {
     public XList<Province> getAllProvinces() {
         XList<Province> list = new XList<>(Province.class);
         list.setKeepSorted(true);
-        for (Nation nation: nations) {
-            for (Province province: nation.getProvinces()) {
+        for (Nation nation : nations) {
+            for (Province province : nation.getProvinces()) {
                 list.addElement(province);
             }
         }
@@ -223,7 +224,7 @@ public class Scenario implements FullXMLable {
         int id = getTile(p).provinceID;
         // need to go through all nations until we find the province, because no map: position -> nation is stored
         for (Nation nation : nations) {
-            for (Province province: nation.getProvinces()) {
+            for (Province province : nation.getProvinces()) {
                 if (id == province.getID()) {
                     return nation;
                 }
@@ -242,7 +243,7 @@ public class Scenario implements FullXMLable {
     public String getTownAt(MapPosition p) {
         for (Province province : getAllProvinces()) {
             if (province.getTownPosition().equals(p)) {
-                return "town";
+                return province.toString();
             }
         }
         return null;
@@ -257,7 +258,7 @@ public class Scenario implements FullXMLable {
     public Province getProvinceAt(MapPosition p) {
         int id = getTile(p).provinceID;
         for (Nation nation : nations) {
-            for (Province province: nation.getProvinces()) {
+            for (Province province : nation.getProvinces()) {
                 if (id == province.getID()) {
                     return province;
                 }
@@ -281,23 +282,23 @@ public class Scenario implements FullXMLable {
     private MapPosition getNeighbourPosition(MapPosition p, TilesTransition transition) {
         int row, column, shift;
         switch (transition) {
-            case East:
-                row = p.row;
-                column = p.column + 1;
-                break;
-            case SouthEast:
-                row = p.row + 1;
-                shift = p.row % 2 == 0 ? 1 : 0;
-                column = p.column + 1 - shift;
-                break;
-            case SouthWest:
-                row = p.row + 1;
-                shift = p.row % 2 == 0 ? 1 : 0;
-                column = p.column - shift;
-                break;
-            default:
-                row = -1;
-                column = -1;
+        case East:
+            row = p.row;
+            column = p.column + 1;
+            break;
+        case SouthEast:
+            row = p.row + 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column + 1 - shift;
+            break;
+        case SouthWest:
+            row = p.row + 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column - shift;
+            break;
+        default:
+            row = -1;
+            column = -1;
         }
         return new MapPosition(row, column);
     }
@@ -527,5 +528,24 @@ public class Scenario implements FullXMLable {
 
         // Of course everything has changed.
         fireScenarioChanged();
+    }
+
+    public Province createProvince(String name) {
+        // get new id first
+        SortedSet<Integer> ids = new TreeSet<>();
+        for (Nation nation : nations) {
+            for (Province province : nation.getProvinces()) {
+                ids.add(province.getID());
+            }
+        }
+        int id = 1;
+        if (!ids.isEmpty() && ids.first() == 1) {
+            id++;
+            while (ids.contains(id)) {
+                id++;
+            }
+        }
+        // make new province and return
+        return new Province(id, name);
     }
 }

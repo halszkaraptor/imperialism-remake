@@ -513,7 +513,7 @@ public class EditorScreen extends UIFrame {
     public void switchTo() {
         super.switchTo();
         // load initial scenario
-        // IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
-        scenario.createEmptyMap(60, 100);
+        IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        // scenario.createEmptyMap(60, 100);
     }
 }

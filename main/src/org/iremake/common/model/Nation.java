@@ -69,7 +69,7 @@ public class Nation implements FullXMLable {
      * Adds a province. The same province is never added twice, but a log entry
      * is written in this case.
      *
-     * @param id
+     * @param province
      */
     // TODO only give title?
     public void addProvince(Province province) {
@@ -81,7 +81,7 @@ public class Nation implements FullXMLable {
      * Sets the id of the capital province. If this province does not belong to
      * the nation nothing is done (but a log entry is written).
      *
-     * @param id the id of the capital province
+     * @param province 
      */
     // TODO somehow select differently?
     public void setCapitalProvince(Province province) {

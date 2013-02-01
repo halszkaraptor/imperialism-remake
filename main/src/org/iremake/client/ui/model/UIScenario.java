@@ -32,15 +32,13 @@ import org.iremake.common.model.map.MapPosition;
 public class UIScenario extends Scenario {
 
     private static final Logger LOG = Logger.getLogger(UIScenario.class.getName());
-    private TerrainTiles terrainTiles = new TerrainTiles();
-    private ResourceOverlays resourceOverlays = new ResourceOverlays();
+    private TileGraphicsRepository repository = new TileGraphicsRepository();
 
     /**
      * Load terrain and resource files.
      */
     public UIScenario() {
-        IOManager.setFromXML(Places.GraphicsTerrains, "terrains.xml", terrainTiles);
-        IOManager.setFromXML(Places.GraphicsResources, "resources.xml", resourceOverlays);
+        IOManager.setFromXML(Places.GraphicsScenario, "content.xml", repository);
     }
 
     /**
@@ -49,7 +47,7 @@ public class UIScenario extends Scenario {
      * @return
      */
     public Dimension getTileSize() {
-        return terrainTiles.getTileSize();
+        return repository.getTerrainTileSize();
     }
 
     /**
@@ -63,7 +61,7 @@ public class UIScenario extends Scenario {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return resourceOverlays.getImage(getTileAt(p).resourceID);
+        return repository.getResourceOverlay(getTileAt(p).resourceID);
     }
 
     /**
@@ -77,7 +75,7 @@ public class UIScenario extends Scenario {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return terrainTiles.getImage(getTerrainAt(p));
+        return repository.getTerrainTile(getTerrainAt(p));
     }
 
     /**
@@ -91,7 +89,7 @@ public class UIScenario extends Scenario {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;
         }
-        return terrainTiles.getColor(getTerrainAt(p));
+        return repository.getTerrainTileColor(getTerrainAt(p));
     }
 
     /**
@@ -100,8 +98,7 @@ public class UIScenario extends Scenario {
      *
      * @return
      */
-    public TerrainTiles getTerrainTiles() {
-        // TODO later replace it to more restricted calls
-        return terrainTiles;
+    public TileGraphicsRepository getTileGraphicsRepository() {
+        return repository;
     }
 }

@@ -31,8 +31,6 @@ public enum Places {
     GraphicsIcons(Graphics + "ui/"),
     GraphicsBrowserIcons(GraphicsIcons + "browser/"),
     GraphicsScenario(Graphics + "scenario/"),
-    GraphicsTerrains(GraphicsScenario + "terrains/"),
-    GraphicsResources(GraphicsScenario + "resources/"),
     Music("data/game/artwork/music/");
     /* the location of the place*/
     private String location;

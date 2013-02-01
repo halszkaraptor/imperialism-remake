@@ -24,7 +24,8 @@ import org.tools.io.ResourceUtils;
 import org.tools.xml.XMLHelper;
 
 /**
- *
+ * The bindings of terrain and resource types to numbers is the same for each
+ * scenario. The names might differ though.
  */
 public class SettingsXMLGenerator {
 

@@ -128,7 +128,7 @@ public class IOManager {
         try {
             image = ImageIO.read(resource.getInputStream());
         } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+            LOG.log(Level.SEVERE, resource.getPath(), ex);
         }
         return image;
     }

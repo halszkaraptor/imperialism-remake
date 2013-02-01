@@ -274,7 +274,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             String name = scenario.getTownAt(r.p);
             // name = "Test";
             if (name != null) {
-                // drawImageCentered
+                drawImageCentered(g2d, scenario.getTileGraphicsRepository().getMiscOverlay("city") ,r.x + tileSize.width / 2, r.y + tileSize.height / 2);
                 drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height);
             }
         }

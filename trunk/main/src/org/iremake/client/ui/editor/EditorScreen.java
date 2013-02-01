@@ -439,7 +439,7 @@ public class EditorScreen extends UIFrame {
             public void actionPerformed(ActionEvent e) {
                 Point p = terrainButton.getLocationOnScreen();
                 p.x += 50;
-                final EditorSelectTerrainDialog dialog = new EditorSelectTerrainDialog(scenario.getTerrainTiles());
+                final EditorSelectTerrainDialog dialog = new EditorSelectTerrainDialog(scenario.getTileGraphicsRepository());
                 dialog.setClosingListener(new WindowClosingListener() {
                     @Override
                     public boolean closing() {

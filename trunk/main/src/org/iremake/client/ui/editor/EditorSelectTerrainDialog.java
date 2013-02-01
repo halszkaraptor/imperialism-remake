@@ -25,7 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.UIDialog;
-import org.iremake.client.ui.model.TerrainTiles;
+import org.iremake.client.ui.model.TileGraphicsRepository;
 import org.iremake.common.Settings;
 
 /**
@@ -40,7 +40,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
      *
      * @param tiles
      */
-    public EditorSelectTerrainDialog(TerrainTiles tiles) {
+    public EditorSelectTerrainDialog(TileGraphicsRepository repository) {
         super("Select Terrain");
 
         // this listener is added to every button, the button is coded in the name
@@ -72,7 +72,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
         // add a button for each terrain tile and set tooltip text and name accordingly
         for (Integer id : IDs) {
             JButton button = new JButton();
-            button.setIcon(new ImageIcon(tiles.getImage(id)));
+            button.setIcon(new ImageIcon(repository.getTerrainTile(id)));
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setName(id.toString());
             button.setFocusable(false);

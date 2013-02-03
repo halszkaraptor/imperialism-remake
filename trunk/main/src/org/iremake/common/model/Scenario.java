@@ -311,18 +311,25 @@ public class Scenario implements FullXMLable {
      * @return the type of the border
      */
     public TilesBorder getBorder(MapPosition p, TilesTransition transition) {
-        if (getTile(p).provinceID == Province.NONE) {
+        // position has to belong to the map and there must be a province
+        if (!containsPosition(p) || getTile(p).provinceID == Province.NONE) {
             return TilesBorder.None;
         }
         MapPosition p2 = getNeighbourPosition(p, transition);
+        // neigboured postion must belong and there must be a province
         if (!containsPosition(p2) || getTile(p2).provinceID == Province.NONE) {
             return TilesBorder.None;
         }
-        // TODO if p2 outside of map also province border
         if (getTile(p).provinceID != getTile(p2).provinceID) {
+            // at least province change, detect nation change first, since nation border has priority
+            // we can compare object identities here
+            if (getNationAt(p) != getNationAt(p2)) {
+                // nation is different, return nation border
+                return TilesBorder.Nation;
+            }
             return TilesBorder.Province;
-            // TODO TileBorder Nation
         }
+        // both tiles belong to same province
         return TilesBorder.None;
     }
 

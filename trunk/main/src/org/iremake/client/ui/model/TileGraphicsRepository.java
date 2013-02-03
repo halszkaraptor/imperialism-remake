@@ -33,6 +33,8 @@ import org.tools.xml.ReadXMLable;
 /**
  *
  */
+// TODO unit overlay action, type as enum
+// TODO image not existing test
 public class TileGraphicsRepository implements ReadXMLable {
 
     /* the map storing the ui tile information for each terrain id */
@@ -41,6 +43,8 @@ public class TileGraphicsRepository implements ReadXMLable {
     private Map<Integer, Image> resourceOverlays = new HashMap<>();
     /* */
     private Map<String, Image> miscOverlays = new HashMap<>();
+    /* */
+    private Map<String, Image> unitOverlays = new HashMap<>();
 
     /* the size of the tiles, i.e. every stored image must have that size */
     private Dimension tileSize;
@@ -118,6 +122,10 @@ public class TileGraphicsRepository implements ReadXMLable {
 
     public Image getMiscOverlay(String id) {
         return miscOverlays.get(id);
+    }
+
+    public Image getUnitOverlay(String id) {
+        return unitOverlays.get(id);
     }
 
     /**
@@ -236,6 +244,28 @@ public class TileGraphicsRepository implements ReadXMLable {
             String location = child.getAttributeValue("location");
             Image image = IOManager.getAsImage(Places.GraphicsScenario, location);
             miscOverlays.put(id, image);
+        }
+
+        // import unit overlays
+        element = parent.getFirstChildElement("Unit-Overlays");
+
+        if (element == null);
+
+        base = element.getAttributeValue("base");
+
+        children = element.getChildElements();
+        for (int i = 0; i < children.size(); i++) {
+            Element child = children.get(i);
+
+            if (!"Overlay".equals(child.getLocalName())) {
+                // TODO something is wrong
+            }
+
+            String type = child.getAttributeValue("type");
+            String action = child.getAttributeValue("action");
+            String location = child.getAttributeValue("location");
+            Image image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
+            unitOverlays.put(type + "|" + action, image);
         }
     }
 }

@@ -117,7 +117,9 @@ public class ImperialismScenarioImporter extends JFrame {
         jLabel3 = new JLabel();
         titleTextField = new JTextField();
         jLabel4 = new JLabel();
-        nationsTextField = new JTextField();
+        nationNamesTextField = new JTextField();
+        jLabel5 = new JLabel();
+        nationColorsTextField = new JTextField();
         loadButton = new JButton();
         saveButton = new JButton();
 
@@ -160,7 +162,12 @@ public class ImperialismScenarioImporter extends JFrame {
         jLabel4.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel4.setText("nation names");
 
-        nationsTextField.setText("France, Austria-Hungary, Ottoman Empire, Russian Empire, Prussia, Italy, England, Portugal, Espania, Catalonia, Morocco, Libya, Sardinia, Poland, Egpyt, Bavaria, BeNeLux, Switzerland, Danmark, Lower Saxony, Sweden, Serbia, Greece");
+        nationNamesTextField.setText("France, Austria-Hungary, Ottoman Empire, Russian Empire, Prussia, Italy, England, Portugal, Espania, Catalonia, Morocco, Libya, Sardinia, Poland, Egpyt, Bavaria, BeNeLux, Switzerland, Danmark, Lower Saxony, Sweden, Serbia, Greece");
+
+        jLabel5.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel5.setText("nation colors");
+
+        nationColorsTextField.setText("0000ff");
 
         GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
         optionPanel.setLayout(optionPanelLayout);
@@ -168,17 +175,19 @@ public class ImperialismScenarioImporter extends JFrame {
             optionPanelLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.TRAILING, false)
-                    .addComponent(jLabel4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                    .addComponent(jLabel3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING, false)
+                    .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                    .addComponent(jLabel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING)
                     .addComponent(scenarioTextField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
                     .addComponent(titleTextField)
                     .addComponent(importmapTextField)
-                    .addComponent(nationsTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                    .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                    .addComponent(nationColorsTextField))
                 .addContainerGap())
         );
         optionPanelLayout.setVerticalGroup(
@@ -199,8 +208,12 @@ public class ImperialismScenarioImporter extends JFrame {
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(nationsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(209, Short.MAX_VALUE))
+                    .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nationColorsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
 
         loadButton.setText("Load Setting");
@@ -283,14 +296,14 @@ public class ImperialismScenarioImporter extends JFrame {
 
         // compare remaining size with estimated size
         final int Np = 384;
-        int size = 7 * columns * rows + Np * 10;
+        final int chunk = columns * rows;
+        int size = 8 * chunk + Np * 10;
         if (size != ib.remaining()) {
             updateStatus("size of input data not correct, will stop");
             return;
         }
 
         // read all chunks into different arrays
-        int chunk = columns * rows;
         int[] terrain_underlay = new int[chunk];
         ib.get(terrain_underlay);
 
@@ -302,6 +315,9 @@ public class ImperialismScenarioImporter extends JFrame {
 
         int[] resources = new int[chunk];
         ib.get(resources);
+
+        int[] rivers = new int[chunk];
+        ib.get(rivers);
 
         int[] provinces = new int[chunk];
         ib.get(provinces);
@@ -364,7 +380,7 @@ public class ImperialismScenarioImporter extends JFrame {
         // put countries into list and get names
         XList<Nation> nations = scenario.getNations();
         Map<Integer, Nation> nmap = new HashMap<>(30);
-        String[] nationNames = nationsTextField.getText().split(", ");
+        String[] nationNames = nationNamesTextField.getText().split(", ");
         int id = 1;
         for (Integer i : uc) {
             String name = String.format("Nation %2d", id);
@@ -563,8 +579,10 @@ public class ImperialismScenarioImporter extends JFrame {
     private JLabel jLabel2;
     private JLabel jLabel3;
     private JLabel jLabel4;
+    private JLabel jLabel5;
     private JButton loadButton;
-    private JTextField nationsTextField;
+    private JTextField nationColorsTextField;
+    private JTextField nationNamesTextField;
     private JPanel optionPanel;
     private JProgressBar progressBar;
     private JButton saveButton;

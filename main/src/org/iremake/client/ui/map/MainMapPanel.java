@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -74,6 +76,22 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     private void drawImageCentered(Graphics2D g2d, Image image, int x, int y) {
         g2d.drawImage(image, x - image.getWidth(null) / 2, y - image.getHeight(null) / 2, null);
+    }
+
+    private void drawBorder(Graphics2D g2d, TilesBorder border, int x1, int y1, int x2, int y2) {
+        switch (border) {
+        case Province:
+            g2d.setColor(Color.white);
+            g2d.setStroke(new BasicStroke(1));
+            break;
+        case Nation:
+            g2d.setColor(Color.black);
+            g2d.setStroke(new BasicStroke(3));
+            break;
+        default:
+            throw new IllegalArgumentException("");
+        }
+        g2d.drawLine(x1, y1, x2, y2);
     }
 
     private static class ScreenPosition {
@@ -229,26 +247,46 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             }
         }
 
-        // draw tile borders
+        // draw tile borders, first province borders
         for (ScreenPosition r : fulldrawn) {
             // draw tile border
             g2d.setColor(Color.white);
             TilesBorder border = scenario.getBorder(r.p, TilesTransition.East);
             if (border == TilesBorder.Province) {
-                // white stripe at the right side
-                g2d.drawLine(r.x + tileSize.width - 1, r.y, r.x + tileSize.width - 1, r.y + tileSize.height);
+                // right border
+                drawBorder(g2d, border, r.x + tileSize.width, r.y, r.x + tileSize.width, r.y + tileSize.height);
             }
             border = scenario.getBorder(r.p, TilesTransition.SouthEast);
             if (border == TilesBorder.Province) {
-                // white half strip on the lower, right side
-                g2d.drawLine(r.x + tileSize.width / 2, r.y + tileSize.height - 1, r.x + tileSize.width - 1, r.y + tileSize.height - 1);
+                // lower right side
+                drawBorder(g2d, border, r.x + tileSize.width / 2, r.y + tileSize.height, r.x + tileSize.width, r.y + tileSize.height);
             }
             border = scenario.getBorder(r.p, TilesTransition.SouthWest);
             if (border == TilesBorder.Province) {
-                // white half stripe on the lower, left side
-                g2d.drawLine(r.x, r.y + tileSize.height - 1, r.x + tileSize.width / 2, r.y + tileSize.height - 1);
+                // lower right side
+                drawBorder(g2d, border, r.x, r.y + tileSize.height, r.x + tileSize.width / 2, r.y + tileSize.height);
             }
-            // TODO draw border nation
+        }
+
+        // draw tile borders, then nation borders
+        for (ScreenPosition r : fulldrawn) {
+            // draw tile border
+            g2d.setColor(Color.white);
+            TilesBorder border = scenario.getBorder(r.p, TilesTransition.East);
+            if (border == TilesBorder.Nation) {
+                // right border
+                drawBorder(g2d, border, r.x + tileSize.width, r.y, r.x + tileSize.width, r.y + tileSize.height);
+            }
+            border = scenario.getBorder(r.p, TilesTransition.SouthEast);
+            if (border == TilesBorder.Nation) {
+                // lower right side
+                drawBorder(g2d, border, r.x + tileSize.width / 2, r.y + tileSize.height, r.x + tileSize.width, r.y + tileSize.height);
+            }
+            border = scenario.getBorder(r.p, TilesTransition.SouthWest);
+            if (border == TilesBorder.Nation) {
+                // lower right side
+                drawBorder(g2d, border, r.x, r.y + tileSize.height, r.x + tileSize.width / 2, r.y + tileSize.height);
+            }
         }
 
         // draw railroad

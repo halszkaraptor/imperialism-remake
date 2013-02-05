@@ -16,16 +16,29 @@
  */
 package org.iremake.common.network;
 
-import com.esotericsoftware.kryonet.Listener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.iremake.common.network.messages.Message;
 import org.tools.utils.TreeNode;
 
 /**
- *
+ * A queued, threaded listener.
  */
-public class QueuedThreadedListener extends Listener {
+public class HandlerChainExecutor {
 
-    public QueuedThreadedListener(TreeNode<Handler> root) {
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
+    private final TreeNode<Handler> root;
 
+    public HandlerChainExecutor(TreeNode<Handler> root) {
+        this.root = root;
     }
 
+    public void receive(final Message message) {
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                root.get().consume(message);
+            }
+        });
+    }
 }

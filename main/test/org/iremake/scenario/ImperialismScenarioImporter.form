@@ -231,7 +231,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="provinceReplacementsTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Mecklenbur&gt;&gt;Mecklenburg"/>
+            <Property name="text" type="java.lang.String" value="Mecklenbur&gt;&gt;Mecklenburg|North Rhin&gt;&gt;North Rhine"/>
           </Properties>
         </Component>
       </SubComponents>

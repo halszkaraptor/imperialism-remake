@@ -57,7 +57,7 @@ public class TreeNode<T> {
      *
      * @param data The data object.
      */
-    public void setData(T data) {
+    public void set(T data) {
         this.data = data;
     }
 
@@ -66,7 +66,7 @@ public class TreeNode<T> {
      *
      * @return The data object.
      */
-    public T getData() {
+    public T get() {
         return data;
     }
 
@@ -85,7 +85,7 @@ public class TreeNode<T> {
      * Clears the data object associated with this node.
      */
     public void clearData() {
-        setData(null);
+        set(null);
     }
 
     /**

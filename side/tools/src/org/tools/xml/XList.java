@@ -47,10 +47,12 @@ import nu.xom.Elements;
  *
  * @param <E>
  */
+// TODo having a set also, could be sorted automatically (TreeSet)
 public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, FullXMLable {
 
     private String XMLName;
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
+
     /**
      * Standard comparator, compares on the toString methods.
      */
@@ -60,39 +62,25 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
             return o1.toString().compareTo(o2.toString());
         }
     };
-    private List<E> list;
+
+    private List<E> list = new ArrayList<>(4);
     private transient List<ListDataListener> listeners = new LinkedList<>();
     private Class<E> clazz;
-    private boolean keepSorted = false;
+    private boolean sorted;
 
     /**
      * Empty list with initial capacity.
      *
      * @param clazz
      */
-    public XList(Class<E> clazz) {
-        this(new ArrayList<E>(4), clazz);
-        XMLName = "ListOf-" + clazz.getSimpleName();
+    public XList(Class<E> clazz, boolean sorted) {
+        this(clazz, sorted, "ListOf-" + clazz.getSimpleName());
     }
 
-    /**
-     * Sets the list from outside. Remains as is.
-     *
-     * @param list
-     * @param clazz
-     * @param XMLName
-     */
-    public XList(List<E> list, Class<E> clazz) {
-        this.list = list;
+    public XList(Class<E> clazz, boolean sorted, String XMLName) {
         this.clazz = clazz;
-    }
-
-    /**
-     *
-     * @param XMLName
-     */
-    public void setXMLName(String name) {
-        XMLName = name;
+        this.sorted = sorted;
+        this.XMLName = XMLName;
     }
 
     /**
@@ -103,16 +91,6 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     @Override
     public int getSize() {
         return list.size();
-    }
-
-    /**
-     *
-     * @param keepSorted
-     * @return
-     */
-    public void setKeepSorted(boolean keepSorted) {
-        this.keepSorted = keepSorted;
-        maybeSort();
     }
 
     /**
@@ -130,7 +108,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     }
 
     private void maybeSort() {
-        if (keepSorted) {
+        if (sorted) {
             Collections.sort(list, comparator);
         }
     }

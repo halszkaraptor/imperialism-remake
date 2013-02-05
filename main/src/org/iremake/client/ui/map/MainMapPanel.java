@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -65,7 +64,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         Insets insets = new Insets(3, 6, 3, 6);
 
         // draw rectangle
-        g2d.setColor(new Color(128, 128, 128, 64));
+        g2d.setColor(new Color(164, 164, 164, 240));
         // g2d.fillRoundRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, 5, 5);
         g2d.fill3DRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
 
@@ -86,7 +85,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             break;
         case Nation:
             g2d.setColor(Color.black);
-            g2d.setStroke(new BasicStroke(3));
+            g2d.setStroke(new BasicStroke(2));
             break;
         default:
             throw new IllegalArgumentException("");
@@ -313,7 +312,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             // name = "Test";
             if (name != null) {
                 drawImageCentered(g2d, scenario.getTileGraphicsRepository().getMiscOverlay("city") ,r.x + tileSize.width / 2, r.y + tileSize.height / 2);
-                drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height);
+                drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height - 10);
             }
         }
 

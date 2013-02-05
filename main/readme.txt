@@ -19,17 +19,20 @@ Imperialism Remake
 
   A Java Runtime Environment version 7 (or later) is required (Oracle JRE, OpenJDK).
 
-  Start with:  java -jar imperialism-remake.jar
 
-  Or with click/double click on the jar file if your system is configured
-  to execute jar files directly. (Linux: Set it executable first.)
+  All OS: Start with    java -jar imperialism-remake.jar
+
+   Or with click/double click on the jar file if your system is configured
+   to execute jar files directly. (Linux: Set the executable bit on the jar first.)
+
+
+  Windows: Start with   windows-launcher.exe
+
+   If the java launcher cannot find the main class, Java is most probably outdated.
+   Update Java to version 7. http://java.com/en/download/index.jsp
 
 
 * 3. Support
-
-
-  Windows: If the java launcher cannot find the main class, it is most probably outdated.
-           Update Java to version 7. http://java.com/en/download/index.jsp
 
   Troubleshooting:  http://remake.twelvepm.de/?page=faq
   Community Forum:  http://remake.twelvepm.de/forum/viewtopic.php?f=4&t=1052

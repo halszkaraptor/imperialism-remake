@@ -38,13 +38,14 @@ public class ScenarioLoadSaveTest {
         scenario.setTitle("Test Scenario");
 
         // add a nation and a province
-        Nation nation = new Nation("Test Nation");
+        Nation nation = new Nation();
+        nation.setProperty(Nation.KEY_NAME, "Test Nation");
         scenario.getNations().addElement(nation);
 
         Province province = new Province(1, "Test province");
         nation.addProvince(province);
 
-        nation.setCapitalProvince(province);
+        nation.setProperty(Nation.KEY_CAPITAL, String.valueOf(province.getID()));
 
         IOManager.saveToXML(Places.None, "test-scenario.xml", scenario);
     }

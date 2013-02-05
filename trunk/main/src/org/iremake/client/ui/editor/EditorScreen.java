@@ -93,6 +93,7 @@ public class EditorScreen extends UIFrame {
         tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         tabPane.addTab("General", createGeneralTab());
         tabPane.addTab("Map", createMapTab());
+        tabPane.addTab("Nation", createNationTab());
         tabPane.setSelectedIndex(1); // map selected initially
 
         // set layout (vertically first menubar, then tabbed pane)
@@ -232,8 +233,7 @@ public class EditorScreen extends UIFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout());
         panel.add(createGeneralPropertiesPanel(), "wrap");
-        panel.add(createNationsPanel(), "sizegroup");
-        panel.add(createProvincesPanel(), "sizegroup");
+        panel.add(createNationsPanel());
 
         return panel;
     }
@@ -311,7 +311,9 @@ public class EditorScreen extends UIFrame {
                 if (name != null) {
                     // TODO test if already existing
                     XList<Nation> model = (XList<Nation>) nationsList.getModel();
-                    model.addElement(new Nation(name));
+                    Nation nation = new Nation();
+                    nation.setProperty(Nation.KEY_NAME, name);
+                    model.addElement(nation);
                 }
             }
         });
@@ -502,6 +504,14 @@ public class EditorScreen extends UIFrame {
         panel.add(mainMapPanel, "span 1 3, grow");
         panel.add(bar.get());
         panel.add(infoPanel, "grow");
+
+        return panel;
+    }
+
+    private JComponent createNationTab() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new MigLayout());
+        panel.add(createProvincesPanel());
 
         return panel;
     }

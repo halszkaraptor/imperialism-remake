@@ -27,13 +27,14 @@ import org.tools.xml.XProperty;
  */
 public class Nation implements FullXMLable {
 
-    public static final String XMLNAME = "Nation";
+    public static final String KEY_CAPITAL = "capital province";
+    public static final String KEY_COLOR = "color";
+    public static final String KEY_NAME = "name";
+    private static final String XMLNAME = "Nation";
     /* property list */
     private XProperty properties = new XProperty(10);
     /* list of owned provinces */
-    private XList<Province> provinces = new XList<>(Province.class);
-
-
+    private XList<Province> provinces = new XList<>(Province.class, true, "Provinces");
 
     /**
      * Need an empty constructor for creation in fromXML in scenario, i.e.
@@ -41,19 +42,18 @@ public class Nation implements FullXMLable {
      * specific: see XList<E>.fromXML()).
      */
     public Nation() {
-        provinces.setKeepSorted(true);
-        provinces.setXMLName("Provinces");
+        // useful default properties
+        properties.put(KEY_NAME, "Unnamed");
+        properties.put(KEY_COLOR, "808080");
+        properties.putInt(KEY_CAPITAL, Province.NONE);
     }
 
-    /**
-     * Currently the only way to set the name property. Do we want to set it
-     * differently?
-     *
-     * @param name
-     */
-    public Nation(String name) {
-        this();
-        properties.put("name", name);
+    public void setProperty(String key, String value) {
+        properties.put(key, value);
+    }
+
+    public String getProperty(String key) {
+        return properties.get(key);
     }
 
     /**
@@ -75,17 +75,6 @@ public class Nation implements FullXMLable {
     public void addProvince(Province province) {
         // TODO check if already contained
         provinces.addElement(province);
-    }
-
-    /**
-     * Sets the id of the capital province. If this province does not belong to
-     * the nation nothing is done (but a log entry is written).
-     *
-     * @param province 
-     */
-    // TODO somehow select differently?
-    public void setCapitalProvince(Province province) {
-            properties.putInt("capital province", province.getID());
     }
 
     /**

@@ -28,7 +28,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -49,6 +48,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.JTextComponent;
+import nu.xom.Element;
+import nu.xom.Elements;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
@@ -56,6 +58,7 @@ import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 import org.tools.io.FileResource;
 import org.tools.io.Resource;
+import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
@@ -120,6 +123,8 @@ public class ImperialismScenarioImporter extends JFrame {
         nationNamesTextField = new JTextField();
         jLabel5 = new JLabel();
         nationColorsTextField = new JTextField();
+        jLabel6 = new JLabel();
+        provinceReplacementsTextField = new JTextField();
         loadButton = new JButton();
         saveButton = new JButton();
 
@@ -169,6 +174,11 @@ public class ImperialismScenarioImporter extends JFrame {
 
         nationColorsTextField.setText("0000ff");
 
+        jLabel6.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel6.setText("province replace");
+
+        provinceReplacementsTextField.setText("Mecklenbur>>Mecklenburg");
+
         GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
         optionPanel.setLayout(optionPanelLayout);
         optionPanelLayout.setHorizontalGroup(
@@ -176,6 +186,7 @@ public class ImperialismScenarioImporter extends JFrame {
             .addGroup(optionPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING, false)
+                    .addComponent(jLabel6, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -187,7 +198,8 @@ public class ImperialismScenarioImporter extends JFrame {
                     .addComponent(titleTextField)
                     .addComponent(importmapTextField)
                     .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                    .addComponent(nationColorsTextField))
+                    .addComponent(nationColorsTextField)
+                    .addComponent(provinceReplacementsTextField))
                 .addContainerGap())
         );
         optionPanelLayout.setVerticalGroup(
@@ -213,12 +225,26 @@ public class ImperialismScenarioImporter extends JFrame {
                 .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(nationColorsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(provinceReplacementsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         loadButton.setText("Load Setting");
+        loadButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                loadButtonActionPerformed(evt);
+            }
+        });
 
         saveButton.setText("Save Setting");
+        saveButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -260,6 +286,19 @@ public class ImperialismScenarioImporter extends JFrame {
 
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         progressBar.setValue(0);
+
+        // preparations
+        String text = provinceReplacementsTextField.getText();
+        Map<String, String> provinceReplacements = new HashMap<>();
+        for (String replacement : text.split("|")) {
+            String[] replace = replacement.split(">>");
+            if (replace.length != 2) {
+                updateStatus("error in replacement string");
+                return;
+            }
+            provinceReplacements.put(replace[0], replace[1]);
+        }
+
 
         // create files and test import file on existence
         File importFile = new File(importmapTextField.getText());
@@ -340,7 +379,7 @@ public class ImperialismScenarioImporter extends JFrame {
         progressBar.setValue(20);
         updateStatus("data imported successfully");
 
-        // transform names into string array
+        // transform province names into string array
         String[] pnames = new String[Np];
         for (int i = 0; i < Np; i++) {
             StringBuilder builder = new StringBuilder(10);
@@ -352,7 +391,13 @@ public class ImperialismScenarioImporter extends JFrame {
                     builder.append((char) value);
                 }
             }
-            pnames[i] = builder.toString();
+            text = builder.toString();
+            // look up replacement
+            if (provinceReplacements.containsKey(text)) {
+                text = provinceReplacements.get(text);
+            }
+            // store
+            pnames[i] = text;
         }
 
         // create new scenario
@@ -384,10 +429,11 @@ public class ImperialismScenarioImporter extends JFrame {
         int id = 1;
         for (Integer i : uc) {
             String name = String.format("Nation %2d", id);
-            if (i < nationNames.length)  {
+            if (i < nationNames.length) {
                 name = nationNames[i];
             }
-            Nation nation = new Nation(name);
+            Nation nation = new Nation();
+            nation.setProperty(Nation.KEY_NAME, name);
             nmap.put(i, nation);
             nations.addElement(nation);
             id++;
@@ -537,7 +583,7 @@ public class ImperialismScenarioImporter extends JFrame {
                 }
                 // if capital, tell nation about
                 if (cities[i] == 35) {
-                    nmap.get(countries[i]).setCapitalProvince(ppmap.get(provinces[i]));
+                    nmap.get(countries[i]).setProperty(Nation.KEY_CAPITAL, String.valueOf(ppmap.get(provinces[i]).getID()));
                 }
             }
         }
@@ -553,6 +599,49 @@ public class ImperialismScenarioImporter extends JFrame {
         updateStatus("conversion successful");
         progressBar.setValue(100);
     }//GEN-LAST:event_importButtonActionPerformed
+
+    private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+
+        Resource resource;
+        try {
+            resource = ResourceUtils.asResource("");
+        } catch (IOException ex) {
+            updateStatus("Cannot open save location.");
+            return;
+        }
+
+
+        Element parent = new Element("Scenario-Importer");
+        JTextComponent[] components = {importmapTextField, scenarioTextField, titleTextField, nationNamesTextField, nationColorsTextField, provinceReplacementsTextField};
+
+        for (JTextComponent component : components) {
+            Element child = new Element("Component");
+            child.appendChild(component.getText());
+            parent.appendChild(child);
+        }
+        try {
+            XMLHelper.write(resource, parent);
+        } catch (IOException ex) {
+            updateStatus("Cannot save to file.");
+        }
+        updateStatus("All content written.");
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void loadButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
+        Element parent = null;
+        Elements children = parent.getChildElements();
+        if (children.size() != 6) {
+            updateStatus("Wrong number of elements in xml.");
+            return;
+        }
+        importmapTextField.setText(children.get(0).getValue());
+        scenarioTextField.setText(children.get(1).getValue());
+        titleTextField.setText(children.get(2).getValue());
+        nationNamesTextField.setText(children.get(3).getValue());
+        nationColorsTextField.setText(children.get(4).getValue());
+        provinceReplacementsTextField.setText(children.get(5).getValue());
+        updateStatus("All content read.");
+    }//GEN-LAST:event_loadButtonActionPerformed
 
     private void updateStatus(String message) {
         statusTextArea.setText(statusTextArea.getText() + "\r\n" + message);
@@ -580,11 +669,13 @@ public class ImperialismScenarioImporter extends JFrame {
     private JLabel jLabel3;
     private JLabel jLabel4;
     private JLabel jLabel5;
+    private JLabel jLabel6;
     private JButton loadButton;
     private JTextField nationColorsTextField;
     private JTextField nationNamesTextField;
     private JPanel optionPanel;
     private JProgressBar progressBar;
+    private JTextField provinceReplacementsTextField;
     private JButton saveButton;
     private JTextField scenarioTextField;
     private JScrollPane statusScrollPane;

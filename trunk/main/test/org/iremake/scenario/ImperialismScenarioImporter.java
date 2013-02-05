@@ -177,7 +177,7 @@ public class ImperialismScenarioImporter extends JFrame {
         jLabel6.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel6.setText("province replace");
 
-        provinceReplacementsTextField.setText("Mecklenbur>>Mecklenburg");
+        provinceReplacementsTextField.setText("Mecklenbur>>Mecklenburg|North Rhin>>North Rhine");
 
         GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
         optionPanel.setLayout(optionPanelLayout);
@@ -587,6 +587,8 @@ public class ImperialismScenarioImporter extends JFrame {
                 }
             }
         }
+
+        // one engineer unit in all nation's capitals
 
         try {
             Resource resource = new FileResource(exportFile);

@@ -17,11 +17,17 @@
 package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
 import java.util.logging.Logger;
 import org.iremake.common.Settings;
+import org.iremake.common.network.ErrorHandler;
+import org.iremake.common.network.Handler;
+import org.iremake.common.network.HandlerChainExecutor;
+import org.iremake.common.network.SingleConnectionListener;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
+import org.tools.utils.TreeNode;
 
 /**
  * Fires up network connection for the client.
@@ -64,7 +70,12 @@ public class ClientManager {
 
         ClientLogger.log("Connected.");
 
-        client.addListener(new ClientHandler());
+        TreeNode<Handler> node = new TreeNode<Handler>();
+        Handler handler = new ErrorHandler(node);
+        node.set(handler);
+        HandlerChainExecutor executor = new HandlerChainExecutor(node);
+        Listener listener = new SingleConnectionListener(executor);
+        client.addListener(listener);
 
         return true;
     }

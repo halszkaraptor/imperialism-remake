@@ -29,10 +29,10 @@ import javax.swing.tree.TreePath;
 /**
  * A generic n-nary Tree implementation with some convenience functions.
  *
- * Each node contains one instance of type T and a list of children nodes as
+ * Each node containsChild one instance of type T and a list of children nodes as
  * well as one parent node at most. The rest is straightforward.
  *
- * This simple implementation is surely missing the Java standard libraries.
+ * This simple implementation is surely missing in the Java standard libraries.
  *
  * @param <T> The type of the object that is stored in each node.
  */
@@ -46,7 +46,7 @@ public class TreeNode<T> {
     /**
      * The data object stored in each node.
      */
-    private T data;
+    private T content;
     /**
      * A list of children nodes.
      */
@@ -55,10 +55,10 @@ public class TreeNode<T> {
     /**
      * Set the data object associated with this node.
      *
-     * @param data The data object.
+     * @param content The data object.
      */
-    public void set(T data) {
-        this.data = data;
+    public void set(T content) {
+        this.content = content;
     }
 
     /**
@@ -67,16 +67,16 @@ public class TreeNode<T> {
      * @return The data object.
      */
     public T get() {
-        return data;
+        return content;
     }
 
     /**
-     * Returns if there is a data object set for this node.
+     * Returns if there is a data object setChild for this node.
      *
      * @return True if there is a data object stored, false otherwise.
      */
-    public boolean hasData() {
-        return data == null;
+    public boolean hasContent() {
+        return content == null;
     }
 
     /**
@@ -94,6 +94,9 @@ public class TreeNode<T> {
      * @param parent The new parent node.
      */
     public void setParent(TreeNode<T> parent) {
+        if (parent == this) {
+            throw new IllegalArgumentException("Cannot have itself as parent");
+        }
         this.parent = parent;
     }
 
@@ -140,7 +143,7 @@ public class TreeNode<T> {
      * @param index The location of the child node in the list.
      * @return The child node.
      */
-    public TreeNode<T> get(int index) {
+    public TreeNode<T> getChild(int index) {
         return children.get(index);
     }
 
@@ -148,33 +151,33 @@ public class TreeNode<T> {
      * Adds a new child node at a specified index position in the children's
      * list. Other children are shifted to higher index values. If the index is
      * out of bound, an exception will occur. The parent of the provided child
-     * will be set to ourself.
+     * will be setChild to ourself.
      *
      * Comment: Specifying the index is probably never necessary and increases
      * the number of possible exceptions.
      *
      * Comment: Modifies also the child node's parent.
      *
-     * @see List#add(int, Object)
+     * @see List#addChild(int, Object)
      *
      * @param index The index in the children's list to insert the new child.
      * @param child The new child.
      */
-    public void add(int index, TreeNode<T> child) {
+    public void addChild(int index, TreeNode<T> child) {
         children.add(index, child);
         child.setParent(this);
     }
 
     /**
      * Adds a new child node to the end of the list of children. The parent of
-     * the child is set to ourself.
+     * the child is setChild to ourself.
      *
      * Comment: Modifies also the child node's parent.
      *
      * @param child The new child.
      */
-    public void add(TreeNode<T> child) {
-        add(children.size(), child);
+    public void addChild(TreeNode<T> child) {
+        addChild(children.size(), child);
     }
 
     /**
@@ -183,10 +186,10 @@ public class TreeNode<T> {
      *
      * Comment: Modifies also the child node's parent.
      *
-     * @param index The index indicating the child to remove.
+     * @param index The index indicating the child to removeChild.
      * @return The removed child node.
      */
-    public TreeNode<T> remove(int index) {
+    public TreeNode<T> removeChild(int index) {
         TreeNode<T> child = children.remove(index);
         child.setParent(null);
         return child;
@@ -195,14 +198,14 @@ public class TreeNode<T> {
     /**
      * Removes a certain child node from the children's list and will certainly
      * throw an exception if the child node is not contained in the list. It's
-     * parent field is set to null.
+     * parent field is setChild to null.
      *
      * Comment: This function modifies also the child node's parent.
      *
-     * @param child The node to remove.
+     * @param child The node to removeChild.
      */
-    public void remove(TreeNode<T> child) {
-        remove(indexOf(child));
+    public void removeChild(TreeNode<T> child) {
+        removeChild(indexOfChild(child));
     }
 
     /**
@@ -212,7 +215,7 @@ public class TreeNode<T> {
      * @param child The child node.
      * @return The index of the child node or -1 if not contained.
      */
-    public int indexOf(TreeNode<T> child) {
+    public int indexOfChild(TreeNode<T> child) {
         return children.indexOf(child);
     }
 
@@ -226,9 +229,9 @@ public class TreeNode<T> {
      * @param child The new child node.
      * @return The old child node.
      */
-    public TreeNode<T> set(int index, TreeNode<T> child) {
-        TreeNode<T> exchild = remove(index);
-        add(index, child);
+    public TreeNode<T> setChild(int index, TreeNode<T> child) {
+        TreeNode<T> exchild = removeChild(index);
+        addChild(index, child);
         return exchild;
     }
 
@@ -238,7 +241,7 @@ public class TreeNode<T> {
      *
      * Comment: Modifies also all children's parents.
      */
-    public void removeAll() {
+    public void removeAllChildren() {
         for (TreeNode<T> node : children) {
             node.setParent(null);
         }
@@ -270,7 +273,7 @@ public class TreeNode<T> {
      * @return True if child is contained in the children's list, false
      * otherwise.
      */
-    public boolean contains(TreeNode<T> child) {
+    public boolean containsChild(TreeNode<T> child) {
         return children.contains(child);
     }
 
@@ -341,23 +344,23 @@ public class TreeNode<T> {
      */
     public void removeUsFromTree() {
         if (parent != null) {
-            // remove us from the parent if there is one (setting our parent to null)
-            parent.remove(this);
-            // add our children to parent
+            // addChild our children to parent
             for (TreeNode<T> node : children) {
-                parent.add(node);
+                parent.addChild(node);
             }
-            // now we need to quietly remove our children (without changing their parent)
+            // removeChild us from the parent if there is one (setting our parent to null)
+            parent.removeChild(this);
+            // now we need to quietly removeChild our children (without changing their parent)
             children.clear();
         } else {
-            // no parent, just remove all children (and setting their parent to null)
-            removeAll();
+            // no parent, just removeChild all children (and setting their parent to null)
+            removeAllChildren();
         }
     }
 
     /**
      * Insert a node before the current in the tree hierarchy. The new node is
-     * added to the children's list of the current parent and is set as new
+     * added to the children's list of the current parent and is setChild as new
      * parent. Furthermore we will make sure to be the only child of insert,
      * i.e. we want only 'fresh' nodes to be inserted.
      *
@@ -369,15 +372,15 @@ public class TreeNode<T> {
     public TreeNode<T> insertBeforeUs(TreeNode<T> insert) {
         // first taking care about the parents
         if (parent != null) {
-            // remove us from parent and insert 'insert' in parent instantly modifying inserts current parent and our current parent
-            parent.set(indexOfUsInParent(), insert);
+            // removeChild us from parent and insert 'insert' in parent instantly modifying inserts current parent and our current parent
+            parent.setChild(indexOfUsInParent(), insert);
         } else {
             // insert is the new root, must have null as parent and our parent anyway is null, so we keep it
             insert.setParent(null);
         }
-        // now the childrens, we only have to take care about insert (set us as the only child)
-        insert.removeAll();
-        insert.add(this);
+        // now the childrens, we only have to take care about insert (setChild us as the only child)
+        insert.removeAllChildren();
+        insert.addChild(this);
         return insert;
     }
 
@@ -387,7 +390,7 @@ public class TreeNode<T> {
      * @return The index of us in the parent's children list.
      */
     private int indexOfUsInParent() {
-        int index = parent.indexOf(this);
+        int index = parent.indexOfChild(this);
         if (index == -1) {
             // the index should never be -1 in a well defined tree, however we check for it
             LOG.log(Level.SEVERE, "Node not registered as child in parent.", this);
@@ -408,7 +411,7 @@ public class TreeNode<T> {
 
     /**
      * Internal function checking the subtree for well organization. Checks
-     * recursively if parent of children is set to this.
+     * recursively if parent of children is setChild to this.
      *
      * Comment: If the subtree is indeed completely out of order (i.e. circular)
      * this might result in endless recursion until an exception is thrown!
@@ -467,7 +470,7 @@ public class TreeNode<T> {
     public static <T> TreePath getPathFor(TreeNode<T> node) {
         List<Object> list = new ArrayList<>(5);
 
-        // add all parent nodes to the list
+        // addChild all parent nodes to the list
         TreeNode<T> n = node;
         while (n != null) {
             list.add(n);
@@ -487,6 +490,6 @@ public class TreeNode<T> {
      */
     @Override
     public String toString() {
-        return data.toString();
+        return content.toString();
     }
 }

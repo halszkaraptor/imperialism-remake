@@ -18,9 +18,8 @@ package org.iremake.common.network;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.iremake.common.network.handler.Handler;
+import org.iremake.common.network.handler.HandlerNode;
 import org.iremake.common.network.messages.Message;
-import org.tools.utils.TreeNode;
 
 /**
  *
@@ -28,9 +27,9 @@ import org.tools.utils.TreeNode;
 public class ConnectedClient {
 
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
-    private final TreeNode<Handler> root;
+    private final HandlerNode root;
 
-    public ConnectedClient(TreeNode<Handler> root) {
+    public ConnectedClient(HandlerNode root) {
         this.root = root;
     }
 
@@ -38,7 +37,7 @@ public class ConnectedClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                root.get().process(message, ConnectedClient.this);
+                root.process(message);
             }
         });
     }

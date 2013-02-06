@@ -22,19 +22,23 @@ import java.util.HashMap;
 import java.util.Map;
 import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.messages.Message;
-import org.iremake.server.network.ServerFactory;
 
 /**
  *
  */
 public class ServerListener extends Listener {
 
+    private static final int MAX_CLIENTS = 100;
     private Map<Integer, ConnectedClient> map = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
-        ConnectedClient client = ServerFactory.createNewConnectedClient();
-        map.put(connection.getID(), client);
+        if (map.size() >= MAX_CLIENTS) {
+            // disconnect with message
+        } else {
+            ConnectedClient client = ServerFactory.createNewConnectedClient();
+            map.put(connection.getID(), client);
+        }
     }
 
     @Override

@@ -19,6 +19,7 @@ package org.iremake.client.network;
 import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.handler.Handler;
+import org.iremake.common.network.handler.HandlerNode;
 import org.tools.utils.TreeNode;
 
 /**
@@ -30,8 +31,9 @@ public class ClientFactory {
     }
 
     public static ConnectedClient createNewConnectedClient() {
-        TreeNode<Handler> root = new TreeNode<Handler>();
-        root.set(new ErrorHandler());
+        TreeNode<Handler> node = new TreeNode<>();
+        node.set(new ErrorHandler());
+        HandlerNode root = new HandlerNode(node);
         return new ConnectedClient(root);
     }
 }

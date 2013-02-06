@@ -18,7 +18,6 @@ package org.iremake.common.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -31,7 +30,7 @@ public class ErrorHandler implements Handler {
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, ConnectedClient client) {
+    public void process(Message message, HandlerNode node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.Error.equals(msg.getType())) {
@@ -41,6 +40,7 @@ public class ErrorHandler implements Handler {
             }
         }
         // continue broadcasting it
+        node.propagate(message);
     }
 
     @Override

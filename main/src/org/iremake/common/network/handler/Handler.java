@@ -16,7 +16,6 @@
  */
 package org.iremake.common.network.handler;
 
-import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.messages.Message;
 
 /**
@@ -24,7 +23,7 @@ import org.iremake.common.network.messages.Message;
  */
 public interface Handler {
 
-    public void process(Message message, ConnectedClient client);
+    public void process(Message message, HandlerNode node);
 
     public String name();
 }

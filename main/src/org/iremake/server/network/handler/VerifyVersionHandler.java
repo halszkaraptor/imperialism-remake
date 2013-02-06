@@ -19,9 +19,9 @@ package org.iremake.server.network.handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
-import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.handler.Handler;
+import org.iremake.common.network.handler.HandlerNode;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -33,15 +33,17 @@ public class VerifyVersionHandler implements Handler {
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, ConnectedClient client) {
+    public void process(Message message, HandlerNode node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.Version.equals(msg.getType())) {
-                if (Option.General_Version.get().equals(msg.getText()) {
+                if (Option.General_Version.get().equals(msg.getText())) {
                     // passed version test
-                    LOG.log(Level.FINE, "Client transmitted correct version" + client.name());
+                    LOG.log(Level.FINE, "Client transmitted correct version");
+                    // LOG.log(Level.FINE, "Client transmitted correct version" + client.name());
                     // remove from chain
-                    client.remove();
+                    // client.remove();
+                    node.remove();
                 }
             }
         }
@@ -51,7 +53,6 @@ public class VerifyVersionHandler implements Handler {
 
     @Override
     public String name() {
-        return "handler.versioncheck";
+        return "handler.check.version";
     }
-
 }

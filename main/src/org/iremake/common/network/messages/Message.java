@@ -21,4 +21,5 @@ package org.iremake.common.network.messages;
  * library.
  */
 public interface Message {
+
 }

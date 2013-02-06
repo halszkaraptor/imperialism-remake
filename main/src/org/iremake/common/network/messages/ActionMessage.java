@@ -22,4 +22,9 @@ package org.iremake.common.network.messages;
 public enum ActionMessage implements Message {
 
     Unused;
+
+    @Override
+    public String toString() {
+        return String.format("ActionMessage [%s]", name());
+    }
 }

@@ -39,4 +39,9 @@ public final class TextMessage implements Message {
     public TextMessageType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return String.format("TextMessage [%s,%s]", type.name(), text);
+    }
 }

@@ -20,8 +20,6 @@ import com.esotericsoftware.kryonet.Server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.Settings;
@@ -35,36 +33,6 @@ public class ServerManager {
     private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
     /* port on which we listen to clients */
     private Server server;
-    private List<ServerStatusListener> listeners = new LinkedList<>();
-
-    /**
-     * Adds a listener.
-     *
-     * @param l the listener
-     */
-    public void addStatusListener(ServerStatusListener l) {
-        listeners.add(l);
-    }
-
-    /**
-     * Removes a listener.
-     *
-     * @param l the listener
-     */
-    public void removeStatusListener(ServerStatusListener l) {
-        listeners.remove(l);
-    }
-
-    /**
-     * Tell all listeners that the status changed.
-     * 
-     * @param message
-     */
-    private void fireStatusChanged(String message) {
-        for (ServerStatusListener l : listeners) {
-            l.statusUpdate(message);
-        }
-    }
 
     /**
      * Starts the server.
@@ -72,7 +40,7 @@ public class ServerManager {
      * @return
      */
     public boolean start() {
-        ServerLogger.log("Server start initiated.");
+        LOG.log(Level.FINE, "Server start initiated.");
         if (server != null) {
             return false;
         }
@@ -87,16 +55,16 @@ public class ServerManager {
             server.bind(Settings.NETWORK_PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
-            ServerLogger.log("Could not start.");
+            LOG.log(Level.INFO, "Could not start.");
 
             stop();
 
             return false;
         }
 
-        ServerLogger.log("Bound to port.");
+        LOG.log(Level.FINE, "Bound to port.");
 
-        server.addListener(new ServerHandler());
+        // server.addListener(new ServerHandler());
 
         InetAddress own;
         try {
@@ -105,7 +73,7 @@ public class ServerManager {
             LOG.log(Level.SEVERE, null, ex); // TODO this shouldn't happen but we have to catch it.
             return true;
         }
-        fireStatusChanged("Server running at " + own.getHostAddress());
+        // ("Server running at " + own.getHostAddress());
 
         return true;
     }
@@ -124,13 +92,13 @@ public class ServerManager {
      */
     public void stop() {
         if (server != null) {
-            ServerLogger.log("Will stop.");
+            LOG.log(Level.FINE, "Will stop.");
             server.stop();
             server = null;
 
-            fireStatusChanged("Server not running.");
+            // fireStatusChanged("Server not running.");
         } else {
-            ServerLogger.log("Already stopped.");
+            LOG.log(Level.FINE, "Already stopped.");
         }
     }
 }

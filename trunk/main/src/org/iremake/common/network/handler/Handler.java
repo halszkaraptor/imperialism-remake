@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.network;
+package org.iremake.common.network.handler;
 
-import org.iremake.common.network.NetworkLogger;
+import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.messages.Message;
 
 /**
- * Just logs something.
+ *
  */
-public class ClientLogger {
+public interface Handler {
 
-    private static NetworkLogger LOG;
+    public void process(Message message, ConnectedClient client);
 
-    public static void setLogger(NetworkLogger logger) {
-        LOG = logger;
-    }
-
-    public static void log(String message) {
-        if (LOG != null) {
-            LOG.log(message);
-        }
-    }
+    public String name();
 }

@@ -63,7 +63,7 @@ public class StartScreen extends UIFrame {
 
         // background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.png"));    // set image
+        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
 
         // logo label
         JLabel logoLabel = new JLabel();
@@ -97,9 +97,7 @@ public class StartScreen extends UIFrame {
         layout.addConstraint(languageComboBox, RelativeLayoutConstraint.relative(0.7f, 0.5f));
 
         pane.setOpaque(true);
-        pane.setBackground(Color.black);
-        // set background of content pane (which is also included in layered pane)
-        // frame.getContentPane().setBackground(Color.BLACK);  // black background
+        pane.setBackground(new Color(30, 20, 0));
 
         setContent(pane);
 

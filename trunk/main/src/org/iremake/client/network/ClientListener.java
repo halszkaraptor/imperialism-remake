@@ -14,40 +14,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.messages.Message;
-import org.tools.utils.TreeNode;
 
 /**
  *
  */
-public class MultipleConnectionListener extends Listener {
+public class ClientListener extends Listener {
 
-    private Map<Integer, HandlerChainExecutor> map = new HashMap<>(10);
+    private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
+    private ConnectedClient client;
 
     @Override
     public void connected(Connection connection) {
-        HandlerChainExecutor manager = new HandlerChainExecutor(new TreeNode<Handler>());
-        map.put(connection.getID(), manager);
+        LOG.log(Level.FINE, "Client has connected.");
+        client = ClientFactory.createNewConnectedClient();
     }
 
     @Override
     public void disconnected(Connection connection) {
-        map.remove(connection.getID());
+        // TODO either we or somebody else disconnected
+        client = null;
     }
 
     @Override
-    public void received(Connection connection, final Object object) {
-        if (object instanceof Message) {
-            map.get(connection.getID()).receive((Message) object);
+    public void received(Connection connection, Object object) {
+        if (connection.isConnected() && object instanceof Message) {
+            client.process((Message) object);
         } else {
-            // disconnect
+            connection.close();
         }
     }
-
 }

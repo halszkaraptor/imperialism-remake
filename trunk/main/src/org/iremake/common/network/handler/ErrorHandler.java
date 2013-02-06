@@ -14,55 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.common.network.handler;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.tools.utils.TreeNode;
+import org.iremake.common.network.messages.TextMessageType;
 
 /**
  *
  */
-public abstract class AbstractHandler implements Handler {
+public class ErrorHandler implements Handler {
 
-    private final String name;
-    private final TreeNode<Handler> node;
-
-    public AbstractHandler(String name, TreeNode<Handler> node) {
-        this.name = name;
-        this.node = node;
-    }
+    private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void send(Message message) {
-
-    }
-
-    @Override
-    public void disconnect(TextMessage message) {
-        if (message != null) {
-            send(message);
+    public void process(Message message, ConnectedClient client) {
+        if (message instanceof TextMessage) {
+            TextMessage msg = (TextMessage) message;
+            if (TextMessageType.Error.equals(msg.getType())) {
+                LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
+                // log and disconnect
+                // disconnect(null);
+            }
         }
-    }
-
-    @Override
-    public abstract void consume(Message message);
-
-    @Override
-    public void broadcastAll(Message message) {
-        for (TreeNode<Handler> child: node.asUnmodifiableList()) {
-            child.get().consume(message);
-        }
-    }
-
-    @Override
-    public void broadcastSpecific(Message message, String name) {
-
+        // continue broadcasting it
     }
 
     @Override
     public String name() {
-        return name;
+        return "handler.error";
     }
-
 }

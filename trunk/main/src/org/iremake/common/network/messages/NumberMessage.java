@@ -39,4 +39,9 @@ public final class NumberMessage implements Message {
     public NumberMessageType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return String.format("NumberMessageMessage [%s,%d]", type.name(), number);
+    }
 }

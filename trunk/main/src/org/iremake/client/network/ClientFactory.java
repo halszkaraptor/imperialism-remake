@@ -14,33 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.client.network;
 
-import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.handler.ErrorHandler;
+import org.iremake.common.network.handler.Handler;
 import org.tools.utils.TreeNode;
 
 /**
  *
  */
-public class ErrorHandler extends AbstractHandler {
+public class ClientFactory {
 
-    public ErrorHandler(TreeNode<Handler> node) {
-        super("handler.error", node);
+    private ClientFactory() {
     }
 
-    @Override
-    public void consume(Message message) {
-        if (message instanceof TextMessage) {
-            TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Error.equals(msg.getType())) {
-                // log and disconnect
-                disconnect(null);
-            }
-        }
-        // continue broadcasting it
-
+    public static ConnectedClient createNewConnectedClient() {
+        TreeNode<Handler> root = new TreeNode<Handler>();
+        root.set(new ErrorHandler());
+        return new ConnectedClient(root);
     }
-
 }

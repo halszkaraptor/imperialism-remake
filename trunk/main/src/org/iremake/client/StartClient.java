@@ -30,7 +30,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.client.network.ClientLogger;
 import org.iremake.client.network.ClientManager;
 import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
@@ -38,8 +37,6 @@ import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
 import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
-import org.iremake.common.network.NetworkLogger;
-import org.iremake.server.network.ServerLogger;
 import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
@@ -84,16 +81,8 @@ public class StartClient {
             MusicManager.setup();
 
             // set some variables in the BigBag
-            NetworkLogger nLog = new NetworkLogger() {
-                @Override
-                public void log(String message) {
-                    LOG.log(Level.INFO, message);
-                }
-            };
             BigBag.serverManager = new ServerManager();
-            ServerLogger.setLogger(nLog);
             BigBag.clientManager = new ClientManager();
-            ClientLogger.setLogger(nLog);
 
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {
@@ -167,7 +156,7 @@ public class StartClient {
         Handler handler = new FileHandler(IOManager.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
         handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
         handler.setLevel(Level.INFO);
-        Logger.getLogger("").addHandler(handler);
+        Logger.getGlobal().addHandler(handler);
 
         // our first log message (just to get the date and time)
         LOG.log(Level.INFO, "Logger is setup");

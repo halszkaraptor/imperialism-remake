@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.server.network;
 
-import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
+import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.handler.ErrorHandler;
+import org.iremake.common.network.handler.Handler;
+import org.tools.utils.TreeNode;
 
 /**
  *
  */
-public interface Handler {
+public class ServerFactory {
 
-    public void send(Message message);
+    private ServerFactory() {
+    }
 
-    public void disconnect(TextMessage message);
+    public static ConnectedClient createNewConnectedClient() {
+        TreeNode<Handler> root = new TreeNode<Handler>();
+        root.set(new ErrorHandler());
+        return new ConnectedClient(root);
+    }
 
-    public void consume(Message message);
-
-    public void broadcastAll(Message message);
-
-    public void broadcastSpecific(Message message, String name);
-
-    public String name();
 }

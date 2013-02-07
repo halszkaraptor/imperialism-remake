@@ -18,8 +18,8 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.NodeContext;
+import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;

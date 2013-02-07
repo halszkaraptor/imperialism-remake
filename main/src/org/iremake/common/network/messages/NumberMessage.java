@@ -42,6 +42,6 @@ public final class NumberMessage implements Message {
 
     @Override
     public String toString() {
-        return String.format("NumberMessageMessage [%s,%d]", type.name(), number);
+        return String.format("NumberMessageMessage [%s, %d]", type.name(), number);
     }
 }

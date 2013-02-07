@@ -20,26 +20,33 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.ClientContext;
+import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.NetworkContext;
+import org.iremake.common.network.NodeContext;
+import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
 
 /**
  *
  */
-public class ClientListener extends Listener {
+public class ClientListener extends Listener implements NetworkContext {
 
     private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
-    private ClientContext client;
+    private ConnectedClient client;
 
     @Override
     public void connected(Connection connection) {
         LOG.log(Level.FINE, "Client has connected.");
-        client = ClientFactory.createNewConnectedClient();
+        NodeContext root = new NodeContext(new ErrorHandler(), this, connection.getID());
+        client = new ConnectedClient(root, connection);
     }
 
     @Override
     public void disconnected(Connection connection) {
+        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
         // TODO either we or somebody else disconnected
+        client.shutdown();
         client = null;
     }
 
@@ -50,5 +57,25 @@ public class ClientListener extends Listener {
         } else {
             connection.close();
         }
+    }
+
+    @Override
+    public void disconnect(Integer id, TextMessage error) {
+        client.disconnect(error);
+    }
+
+    @Override
+    public String name(Integer id) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
+    public void send(Integer id, Message message) {
+        client.send(message);
+    }
+
+    @Override
+    public void broadcast(Message message) {
+        throw new UnsupportedOperationException("Not supported.");
     }
 }

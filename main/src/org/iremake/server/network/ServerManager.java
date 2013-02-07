@@ -16,6 +16,7 @@
  */
 package org.iremake.server.network;
 
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -93,6 +94,9 @@ public class ServerManager {
     public void stop() {
         if (server != null) {
             LOG.log(Level.FINE, "Will stop.");
+            for (Connection connection: server.getConnections()) {
+                connection.close();
+            }
             server.stop();
             server = null;
 

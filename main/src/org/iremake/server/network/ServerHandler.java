@@ -20,11 +20,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
 import java.util.Map;
-import org.iremake.common.network.ClientContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.iremake.common.network.ConnectedClient;
 import org.iremake.common.network.NetworkContext;
-import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.NodeContext;
+import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
+import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.handler.ClientNameHandler;
 import org.iremake.server.network.handler.VerifyVersionHandler;
 
@@ -33,49 +37,66 @@ import org.iremake.server.network.handler.VerifyVersionHandler;
  */
 public class ServerHandler extends Listener implements NetworkContext {
 
+    private static final Logger LOG = Logger.getLogger(ServerHandler.class.getName());
     private static final int MAX_CLIENTS = 100;
-    private Map<Integer, ClientContext> map = new HashMap<>(10);
+    private Map<Integer, ConnectedClient> map = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
         if (map.size() >= MAX_CLIENTS) {
-            // disconnect with message
+            connection.sendTCP(TextMessageType.Error.create(String.format("Too many connected clients. Max = %d", MAX_CLIENTS)));
+            connection.close();
         } else {
-            ClientContext client = ServerFactory.createNewConnectedClient();
+            // initial handler chain for every connected client
+            NodeContext root = new NodeContext(new ErrorHandler(), this, connection.getID());
+            root.add(new VerifyVersionHandler()).add(new ClientNameHandler());
+            ConnectedClient client = new ConnectedClient(root, connection);
             map.put(connection.getID(), client);
         }
     }
 
-    private ClientContext newConnectedClient() {
-        NodeContext root = NodeContext.createRoot(new ErrorHandler());
-        NodeContext node = root.add(new VerifyVersionHandler());
-        node.add(new ClientNameHandler());
-
-        // return new ConnectedClient(root, this);
-        return null;
-    }
-
     @Override
     public void disconnected(Connection connection) {
+        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
+        // whether it's there or not, we remove it
+        map.get(connection.getID()).shutdown();
         map.remove(connection.getID());
-    }
-
-    public void disconnect(Integer id) {
-        if (map.containsKey(id)) {
-            // map.get(id)
-        }
     }
 
     @Override
     public void received(Connection connection, Object object) {
         if (connection.isConnected() && object instanceof Message) {
+            Message message = (Message) object;
+            LOG.log(Level.FINER, "Received message: {0}", message.toString());
             Integer id = connection.getID();
             if (!map.containsKey(id)) {
                 throw new RuntimeException("connection not registered. internal error.");
             }
-            map.get(id).process((Message) object);
+            map.get(id).process(message);
         } else {
             connection.close();
+        }
+    }
+
+    @Override
+    public void disconnect(Integer id, TextMessage error) {
+        map.get(id).disconnect(error);
+    }
+
+    @Override
+    public String name(Integer id) {
+        return map.get(id).name();
+    }
+
+    @Override
+    public void send(Integer id, Message message) {
+        map.get(id).send(message);
+    }
+
+    @Override
+    public void broadcast(Message message) {
+        for (ConnectedClient client: map.values()) {
+            client.send(message);
         }
     }
 }

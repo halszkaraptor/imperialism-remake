@@ -18,8 +18,8 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.NodeContext;
+import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -28,6 +28,7 @@ import org.iremake.common.network.messages.TextMessageType;
  * This is a stopper, either you transmit a name or you get kicked out.
  */
 public class ClientNameHandler implements Handler {
+
     private static final Logger LOG = Logger.getLogger(ClientNameHandler.class.getName());
 
     @Override
@@ -36,11 +37,11 @@ public class ClientNameHandler implements Handler {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.ClientName.equals(msg.getType())) {
                 // has sent its name
-                    LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.name(), msg.getText()});
-                    context.remove();
-                    // tell all others
-                    context.broadcast(message);
-                    return;
+                LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.name(), msg.getText()});
+                context.remove();
+                // tell all others
+                context.broadcast(message);
+                return;
             }
         }
         // otherwise disconnect with error message
@@ -51,5 +52,4 @@ public class ClientNameHandler implements Handler {
     public String name() {
         return "handler.registration.name";
     }
-
 }

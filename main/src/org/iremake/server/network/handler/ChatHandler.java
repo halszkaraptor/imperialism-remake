@@ -18,8 +18,6 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.client.Option;
-import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.NodeContext;
 import org.iremake.common.network.messages.Message;
@@ -27,32 +25,31 @@ import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
 
 /**
- * This is a stopper, either you transmit the right version or you will be kicked out.
+ *
  */
-public class VerifyVersionHandler implements Handler {
-    private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
+public class ChatHandler implements Handler {
+
+    private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
 
     @Override
     public void process(Message message, NodeContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Version.equals(msg.getType())) {
-                if (Option.General_Version.get().equals(msg.getText())) {
-                    LOG.log(Level.FINE, "Client {0} transmitted correct version", context.name());
-                    // passed version test, remove yourself from handler list
-                    context.remove();
-                    return;
-                }
+            if (TextMessageType.Chat.equals(msg.getType())) {
+                // has sent a chat message
+                LOG.log(Level.FINE, "Client transmitted chat message: {0}", msg.getText());
+                // transmit to all others
+                context.broadcast(message);
+                // done
+                return;
             }
         }
-        // disconnect with ErrorMessage
-        context.disconnect(TextMessageType.Error.create(String.format(
-                "Did not receive version message or wrong version. Was waiting for version. My version is %s",
-                Option.General_Version.get())));
+        // not a chat message just propagate further
+        context.propagate(message);
     }
 
     @Override
     public String name() {
-        return "handler.registration.version";
+        return "handler.chat.message";
     }
 }

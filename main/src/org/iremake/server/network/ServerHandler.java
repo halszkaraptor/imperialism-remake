@@ -20,30 +20,50 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
 import java.util.Map;
-import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.ClientContext;
+import org.iremake.common.network.NetworkContext;
+import org.iremake.common.network.handler.ErrorHandler;
+import org.iremake.common.network.NodeContext;
 import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.handler.ClientNameHandler;
+import org.iremake.server.network.handler.VerifyVersionHandler;
 
 /**
  *
  */
-public class ServerListener extends Listener {
+public class ServerHandler extends Listener implements NetworkContext {
 
     private static final int MAX_CLIENTS = 100;
-    private Map<Integer, ConnectedClient> map = new HashMap<>(10);
+    private Map<Integer, ClientContext> map = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
         if (map.size() >= MAX_CLIENTS) {
             // disconnect with message
         } else {
-            ConnectedClient client = ServerFactory.createNewConnectedClient();
+            ClientContext client = ServerFactory.createNewConnectedClient();
             map.put(connection.getID(), client);
         }
+    }
+
+    private ClientContext newConnectedClient() {
+        NodeContext root = NodeContext.createRoot(new ErrorHandler());
+        NodeContext node = root.add(new VerifyVersionHandler());
+        node.add(new ClientNameHandler());
+
+        // return new ConnectedClient(root, this);
+        return null;
     }
 
     @Override
     public void disconnected(Connection connection) {
         map.remove(connection.getID());
+    }
+
+    public void disconnect(Integer id) {
+        if (map.containsKey(id)) {
+            // map.get(id)
+        }
     }
 
     @Override

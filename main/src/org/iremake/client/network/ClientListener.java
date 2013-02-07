@@ -20,7 +20,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.ClientContext;
 import org.iremake.common.network.messages.Message;
 
 /**
@@ -29,7 +29,7 @@ import org.iremake.common.network.messages.Message;
 public class ClientListener extends Listener {
 
     private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
-    private ConnectedClient client;
+    private ClientContext client;
 
     @Override
     public void connected(Connection connection) {

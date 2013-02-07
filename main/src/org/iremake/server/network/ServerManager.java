@@ -64,7 +64,7 @@ public class ServerManager {
 
         LOG.log(Level.FINE, "Bound to port.");
 
-        server.addListener(new ServerListener());
+        server.addListener(new ServerHandler());
 
         InetAddress own;
         try {

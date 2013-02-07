@@ -14,26 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.network;
+package org.iremake.common.network;
 
-import org.iremake.common.network.ClientContext;
-import org.iremake.common.network.handler.ErrorHandler;
-import org.iremake.common.network.handler.Handler;
-import org.iremake.common.network.NodeContext;
-import org.tools.utils.TreeNode;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.iremake.common.network.messages.Message;
 
 /**
  *
  */
-public class ClientFactory {
+public class ClientContext {
 
-    private ClientFactory() {
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
+    private final NodeContext root;
+
+    public ClientContext(NodeContext root) {
+        this.root = root;
     }
 
-    public static ClientContext createNewConnectedClient() {
-        TreeNode<Handler> node = new TreeNode<>();
-        node.set(new ErrorHandler());
-        NodeContext root = new NodeContext(node);
-        return new ClientContext(root);
+    public void process(final Message message) {
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                root.process(message);
+            }
+        });
     }
+
 }

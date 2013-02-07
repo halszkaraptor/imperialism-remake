@@ -93,6 +93,7 @@ public class ClientManager {
         // TODO what happens to operations being sent
         if (client != null) {
             LOG.log(Level.FINE, "Will stop.");
+            client.close();
             client.stop();
             client = null;
         }

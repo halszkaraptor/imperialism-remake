@@ -19,6 +19,7 @@ package org.iremake.common.network.handler;
 import org.iremake.common.network.NodeContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.NetworkContext;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -31,18 +32,17 @@ public class ErrorHandler implements Handler {
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, NodeContext context) {
+    public void process(Message message, NodeContext node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.Error.equals(msg.getType())) {
                 LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-                // will close the connection if not closed already
-                context.disconnect(null);
+                node.disconnect(null);
                 return;
             }
         }
         // continue broadcasting it
-        context.propagate(message);
+        node.propagate(message);
     }
 
     @Override

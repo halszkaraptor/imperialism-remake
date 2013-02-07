@@ -16,9 +16,20 @@
  */
 package org.iremake.common.network;
 
+import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
+
 /**
  *
  */
 public interface NetworkContext {
+
+    public void disconnect(Integer id, TextMessage error);
+
+    public String name(Integer id);
+
+    public void send(Integer id, Message message);
+
+    public void broadcast(Message message);
 
 }

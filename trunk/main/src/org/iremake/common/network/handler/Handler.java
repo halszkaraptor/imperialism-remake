@@ -24,7 +24,16 @@ import org.iremake.common.network.messages.Message;
  */
 public interface Handler {
 
+    /**
+     *
+     * @param message
+     * @param context
+     */
     public void process(Message message, NodeContext context);
 
+    /**
+     *
+     * @return
+     */
     public String name();
 }

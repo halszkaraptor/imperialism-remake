@@ -16,10 +16,11 @@
  */
 package org.iremake.common.network;
 
-import org.iremake.common.network.NetworkContext;
+import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
+import org.iremake.server.network.ServerHandler;
 import org.tools.utils.TreeNode;
 
 /**
@@ -31,20 +32,36 @@ public class NodeContext {
     private final NetworkContext context;
     private final Integer id;
 
-    public NodeContext(TreeNode<Handler> node, NetworkContext context, Integer id) {
+    public NodeContext(Handler handler, NetworkContext context, Integer id) {
+        this.node = new TreeNode<Handler>();
+        node.set(handler);
+        this.context = context;
+        this.id = id;
+    }
+
+    private NodeContext(TreeNode<Handler> node, NetworkContext context, Integer id) {
         // TODO check not null
         this.node = node;
         this.context = context;
         this.id = id;
     }
 
+    public Integer getID() {
+        return id;
+    }
+
     public void process(Message message) {
         node.get().process(message, this);
     }
 
+    private void propagate(TreeNode<Handler> child, Message message) {
+        NodeContext n = new NodeContext(child, context, id);
+        n.process(message);
+    }
+
     public void propagate(Message message) {
         for (TreeNode<Handler> child : node.asUnmodifiableList()) {
-            child.get().process(message, new NodeContext(child, context, id));
+            propagate(child, message);
         }
     }
 
@@ -52,7 +69,7 @@ public class NodeContext {
         for (TreeNode<Handler> child : node.asUnmodifiableList()) {
             Handler handler = child.get();
             if (handler.name().startsWith(prefix)) {
-                handler.process(message, new NodeContext(child, context, id));
+                propagate(child, message);
             }
         }
     }
@@ -70,31 +87,25 @@ public class NodeContext {
         return new NodeContext(n, context, id);
     }
 
-    public static NodeContext createRoot(Handler handler) {
-        // return new NodeContext(wrap(handler));
-        return null;
-    }
-
     private static TreeNode<Handler> wrap(Handler handler) {
         TreeNode<Handler> node = new TreeNode<>();
         node.set(handler);
         return node;
     }
 
-    public void disconnect(TextMessage error) {
-        // TODO if we aren't already disconnected, disconnect this connection
-    }
-
     public String name() {
-        // TODO get connection id plus name
-        return null;
+        return context.name(id);
     }
 
     public void reply(Message message) {
-        // TODO send to your own
+        context.send(id, message);
     }
 
     public void broadcast(Message message) {
-        // TODO tell all others
+        context.broadcast(message);
+    }
+
+    public void disconnect(TextMessage error) {
+        context.disconnect(id, error);
     }
 }

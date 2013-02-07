@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientManager;
+import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.ServerManager;
 
 /**
@@ -39,9 +40,9 @@ public class ClientServerTest {
         // setup logger
         System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s [%2$s]%n");
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.FINE);
+        handler.setLevel(Level.FINER);
         Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.FINE);
+        Logger.getLogger("").setLevel(Level.FINER);
 
         // load options
         Option.load();
@@ -53,6 +54,8 @@ public class ClientServerTest {
         // start and connect client
         final ClientManager client = new ClientManager();
         client.start();
+
+        // client.send(TextMessageType.Chat.create("chat message"));
 
         // in 5s stop everything
         final Timer timer = new Timer();

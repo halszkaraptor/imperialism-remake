@@ -16,9 +16,9 @@
  */
 package org.iremake.server.network;
 
-import org.iremake.common.network.ConnectedClient;
+import org.iremake.common.network.ClientContext;
 import org.iremake.common.network.handler.ErrorHandler;
-import org.iremake.common.network.handler.HandlerNode;
+import org.iremake.common.network.NodeContext;
 import org.iremake.server.network.handler.ClientNameHandler;
 import org.iremake.server.network.handler.VerifyVersionHandler;
 
@@ -30,12 +30,12 @@ public class ServerFactory {
     private ServerFactory() {
     }
 
-    public static ConnectedClient createNewConnectedClient() {
-        HandlerNode root = HandlerNode.createRoot(new ErrorHandler());
-        HandlerNode node = root.add(new VerifyVersionHandler());
+    public static ClientContext createNewConnectedClient() {
+        NodeContext root = NodeContext.createRoot(new ErrorHandler());
+        NodeContext node = root.add(new VerifyVersionHandler());
         node.add(new ClientNameHandler());
 
-        return new ConnectedClient(root);
+        return new ClientContext(root);
     }
 
 }

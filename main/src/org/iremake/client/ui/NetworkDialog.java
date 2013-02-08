@@ -16,6 +16,8 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -29,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
+import org.iremake.common.BigBag;
 import org.tools.ui.ButtonBar;
 
 /**
@@ -36,6 +39,9 @@ import org.tools.ui.ButtonBar;
  * on. Chatting. Proposing a game.
  */
 public class NetworkDialog extends UIDialog {
+
+    private JTextField serverAddress;
+    private JLabel clientStatus;
 
     /**
      * Setup of the dialog, layout of all components.
@@ -63,10 +69,28 @@ public class NetworkDialog extends UIDialog {
     private JComponent createMenuBar() {
         // load button
         JButton serverStartButton = Button.NetworkConnect.create();
+        serverStartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BigBag.clientManager.start(serverAddress.getText());
+                clientStatus.setText(BigBag.clientManager.getStatus());
+            }
+        });
+
+        // stop button
+        JButton serverStopButton = Button.NetworkDisconnect.create();
+        serverStopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BigBag.clientManager.stop();
+                clientStatus.setText(BigBag.clientManager.getStatus());
+            }
+        });
 
         // add buttons to tool bar
         ButtonBar bar = new ButtonBar();
-        bar.add(serverStartButton);
+        bar.add(serverStartButton, serverStopButton);
+
 
         return bar.get();
     }
@@ -80,15 +104,19 @@ public class NetworkDialog extends UIDialog {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
 
+        clientStatus = new JLabel();
+        clientStatus.setText(BigBag.clientManager.getStatus());
+
         JTextField networkAlias = new JTextField(Option.Client_Alias.get());
 
-        JTextField serverAdress = new JTextField("127.0.0.1");
+        serverAddress = new JTextField("localhost"); // or also 127.0.0.1
 
         panel.setLayout(new MigLayout("wrap 2"));
+        panel.add(clientStatus, "span 2");
         panel.add(new JLabel("Network alias"));
         panel.add(networkAlias, "wmin 150");
         panel.add(new JLabel("Server address"));
-        panel.add(serverAdress, "wmin 150");
+        panel.add(serverAddress, "wmin 150");
 
         return panel;
     }

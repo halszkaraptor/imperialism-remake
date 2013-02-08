@@ -38,7 +38,7 @@ public class ConnectedClient {
         this.connection = connection;
 
         InetSocketAddress address = connection.getRemoteAddressTCP();
-        name = String.format("[%d,%s]", connection.getID(), address != null ? address.toString() : "");
+        name = String.format("[%d,%s]", connection.getID(), address != null ? address.getHostString() : "");
     }
 
     public void process(final Message message) {

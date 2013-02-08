@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import java.net.InetSocketAddress;
@@ -26,14 +26,14 @@ import org.iremake.common.network.messages.TextMessage;
 /**
  *
  */
-public class ConnectedClient {
+public class ServerConnectedClient {
 
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
-    private final NodeContext root;
+    private final ServerNodeContext root;
     private final Connection connection;
     private final String name;
 
-    public ConnectedClient(NodeContext root, Connection connection) {
+    public ServerConnectedClient(ServerNodeContext root, Connection connection) {
         this.root = root;
         this.connection = connection;
 

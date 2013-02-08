@@ -18,21 +18,20 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.NodeContext;
-import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.server.network.ServerNodeContext;
 
 /**
  *
  */
-public class ChatHandler implements Handler {
+public class ChatHandler implements ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
 
     @Override
-    public void process(Message message, NodeContext context) {
+    public void process(Message message, ServerNodeContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.Chat.equals(msg.getType())) {

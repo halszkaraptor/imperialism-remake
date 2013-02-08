@@ -22,24 +22,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.ConnectedClient;
-import org.iremake.common.network.NetworkContext;
-import org.iremake.common.network.NodeContext;
-import org.iremake.common.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.handler.ClientNameHandler;
+import org.iremake.server.network.handler.ErrorHandler;
 import org.iremake.server.network.handler.VerifyVersionHandler;
 
 /**
  *
  */
-public class ServerHandler extends Listener implements NetworkContext {
+public class ServerHandler extends Listener implements ServerContext {
 
     private static final Logger LOG = Logger.getLogger(ServerHandler.class.getName());
     private static final int MAX_CLIENTS = 100;
-    private Map<Integer, ConnectedClient> map = new HashMap<>(10);
+    private Map<Integer, ServerConnectedClient> map = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
@@ -48,9 +45,9 @@ public class ServerHandler extends Listener implements NetworkContext {
             connection.close();
         } else {
             // initial handler chain for every connected client
-            NodeContext root = new NodeContext(new ErrorHandler(), this, connection.getID());
+            ServerNodeContext root = new ServerNodeContext(new ErrorHandler(), this, connection.getID());
             root.add(new VerifyVersionHandler()).add(new ClientNameHandler());
-            ConnectedClient client = new ConnectedClient(root, connection);
+            ServerConnectedClient client = new ServerConnectedClient(root, connection);
             map.put(connection.getID(), client);
         }
     }
@@ -95,7 +92,7 @@ public class ServerHandler extends Listener implements NetworkContext {
 
     @Override
     public void broadcast(Message message) {
-        for (ConnectedClient client: map.values()) {
+        for (ServerConnectedClient client: map.values()) {
             client.send(message);
         }
     }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network;
+package org.iremake.client.network;
 
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
@@ -22,14 +22,10 @@ import org.iremake.common.network.messages.TextMessage;
 /**
  *
  */
-public interface NetworkContext {
+public interface ClientContext {
 
-    public void disconnect(Integer id, TextMessage error);
+    public void disconnect(TextMessage error);
 
-    public String name(Integer id);
-
-    public void send(Integer id, Message message);
-
-    public void broadcast(Message message);
+    public void send(Message message);
 
 }

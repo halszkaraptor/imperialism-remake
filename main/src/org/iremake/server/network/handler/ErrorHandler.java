@@ -16,36 +16,36 @@
  */
 package org.iremake.server.network.handler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.NodeContext;
-import org.iremake.common.network.handler.Handler;
-import org.iremake.common.network.messages.ActionMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
+import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.server.network.ServerNodeContext;
 
 /**
  *
  */
-public class LobbyRegistrationHandler implements Handler {
+public class ErrorHandler implements ServerHandler {
 
-    private static final Logger LOG = Logger.getLogger(LobbyRegistrationHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, NodeContext context) {
-        if (ActionMessage.LOBBY_REGISTER.equals(message)) {
-            // Todo: do registration
-            return;
+    public void process(Message message, ServerNodeContext node) {
+        if (message instanceof TextMessage) {
+            TextMessage msg = (TextMessage) message;
+            if (TextMessageType.Error.equals(msg.getType())) {
+                LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
+                node.disconnect(null);
+                return;
+            }
         }
-        if (ActionMessage.LOBBY_UNREGISTER.equals(message)) {
-            // TODo: do unregistration
-            return;
-        }
-        // just propagate
-        context.propagate(message);
+        // continue broadcasting it
+        node.propagate(message);
     }
 
     @Override
     public String name() {
-        return "handler.lobby.registration";
+        return "handler.error";
     }
-
 }

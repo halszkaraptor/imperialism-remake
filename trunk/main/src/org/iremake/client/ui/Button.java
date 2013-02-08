@@ -52,6 +52,7 @@ public enum Button {
     EditorProvince("editor/editor.button.province.png"),
     // normal size buttons used in the network dialog
     NetworkConnect("misc/network.button.connect.png"),
+    NetworkDisconnect("misc/network.button.connect.png"),
     // normal sized buttons with general options for a scenario
     ScenarioLoad("misc/scenario.button.load.png"),
     ScenarioStart("misc/scenario.button.start.png"),

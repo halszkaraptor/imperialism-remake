@@ -16,11 +16,11 @@
  */
 package org.iremake.common.network;
 
-import org.iremake.common.network.handler.ErrorHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.server.network.ServerHandler;
 import org.tools.utils.TreeNode;
 
 /**
@@ -28,12 +28,13 @@ import org.tools.utils.TreeNode;
  */
 public class NodeContext {
 
+    private static final Logger LOG = Logger.getLogger(NodeContext.class.getName());
     private final TreeNode<Handler> node;
     private final NetworkContext context;
     private final Integer id;
 
     public NodeContext(Handler handler, NetworkContext context, Integer id) {
-        this.node = new TreeNode<Handler>();
+        this.node = new TreeNode<>();
         node.set(handler);
         this.context = context;
         this.id = id;
@@ -60,6 +61,9 @@ public class NodeContext {
     }
 
     public void propagate(Message message) {
+        if (node.getChildCount() == 0) {
+            LOG.log(Level.FINER, "Propagation of message {0} without any nodes to propagate to.", message.toString());
+        }
         for (TreeNode<Handler> child : node.asUnmodifiableList()) {
             propagate(child, message);
         }

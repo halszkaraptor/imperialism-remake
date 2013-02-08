@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,17 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages;
+package org.iremake.server.client;
 
 /**
- * A Message solely consisting of an enum, indicating a certain action.
+ *
  */
-public enum ActionMessage implements Message {
+public class ServerClient {
 
-    LOBBY_REGISTER, LOBBY_UNREGISTER;
+    private String name;
 
-    @Override
-    public String toString() {
-        return String.format("ActionMessage [%s]", name());
+
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
+
 }

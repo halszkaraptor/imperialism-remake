@@ -16,6 +16,10 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -26,8 +30,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
+import org.iremake.common.BigBag;
+import org.iremake.server.network.ServerManager;
 import org.tools.sound.SoundSystem;
 import org.tools.ui.SimpleComboBoxModel;
 
@@ -119,12 +126,37 @@ public class OptionsDialog extends UIDialog {
     private JPanel createServerPanel() {
         JPanel panel = new JPanel();
 
+        // server toggle
+        final ServerManager serverManager = BigBag.serverManager;
+        final JLabel serverStatus = new JLabel();
+        serverStatus.setText(serverManager.getStatus());
+
+        final JToggleButton serverToggleButton = new JToggleButton("Start local server");
+        serverToggleButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                int state = itemEvent.getStateChange();
+                if (state == ItemEvent.SELECTED) {
+                    serverManager.start();
+                    serverToggleButton.setText("Shutdown local server");
+                } else {
+                    serverManager.stop();
+                    serverToggleButton.setText("Start local server");
+                }
+                // update status
+                serverStatus.setText(serverManager.getStatus());
+            }
+        });
+
         // components
         JTextField networkAlias = new JTextField();
         items.add(new OptionsDialogTextFieldItem(networkAlias, Option.Client_Alias));
 
         // layout
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
+        panel.add(serverStatus, "span 2");
+        panel.add(new JLabel("Start/stop local server"));
+        panel.add(serverToggleButton);
         panel.add(new JLabel("Default network alias"));
         panel.add(networkAlias, "wmin 200");
 

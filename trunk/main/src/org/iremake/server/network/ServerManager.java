@@ -67,15 +67,6 @@ public class ServerManager {
 
         server.addListener(new ServerHandler());
 
-        InetAddress own;
-        try {
-            own = InetAddress.getLocalHost();
-        } catch (UnknownHostException ex) {
-            LOG.log(Level.SEVERE, null, ex); // TODO this shouldn't happen but we have to catch it.
-            return true;
-        }
-        // ("Server running at " + own.getHostAddress());
-
         return true;
     }
 
@@ -103,6 +94,22 @@ public class ServerManager {
             // fireStatusChanged("Server not running.");
         } else {
             LOG.log(Level.FINE, "Already stopped.");
+        }
+    }
+
+    public String getStatus() {
+        if (server != null) {
+            // TODO other way to get connections
+            InetAddress address;
+            try {
+                address = InetAddress.getLocalHost();
+            } catch (UnknownHostException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+                return "Local server running. Cannot determine IP adress.";
+            }
+            return String.format("Local server running at %s with %d connections.", address.getHostAddress(), server.getConnections().length);
+        } else {
+            return "Local server not running.";
         }
     }
 }

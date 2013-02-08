@@ -18,21 +18,20 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.NodeContext;
-import org.iremake.common.network.handler.Handler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.server.network.ServerNodeContext;
 
 /**
  * This is a stopper, either you transmit a name or you get kicked out.
  */
-public class ClientNameHandler implements Handler {
+public class ClientNameHandler implements ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ClientNameHandler.class.getName());
 
     @Override
-    public void process(Message message, NodeContext context) {
+    public void process(Message message, ServerNodeContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.ClientName.equals(msg.getType())) {

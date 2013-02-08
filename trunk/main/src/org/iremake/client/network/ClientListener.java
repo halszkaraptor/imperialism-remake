@@ -18,64 +18,64 @@ package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.ConnectedClient;
-import org.iremake.common.network.NetworkContext;
-import org.iremake.common.network.NodeContext;
-import org.iremake.common.network.handler.ErrorHandler;
+import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 
 /**
  *
  */
-public class ClientListener extends Listener implements NetworkContext {
+public class ClientListener extends Listener implements ClientContext {
 
     private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
-    private ConnectedClient client;
+    private ExecutorService threadPool;
+    private ClientNodeContext root;
+    private Connection connection;
 
     @Override
-    public void connected(Connection connection) {
+    public void connected(Connection c) {
         LOG.log(Level.FINE, "Client has connected.");
-        NodeContext root = new NodeContext(new ErrorHandler(), this, connection.getID());
-        client = new ConnectedClient(root, connection);
+        threadPool = Executors.newFixedThreadPool(1);
+        root = new ClientNodeContext(new ErrorHandler(), this);
+        connection = c;
     }
 
     @Override
-    public void disconnected(Connection connection) {
-        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
+    public void disconnected(Connection c) {
+        LOG.log(Level.FINE, "Connection {0} disconnected.", c.getID());
         // TODO either we or somebody else disconnected
-        client.shutdown();
-        client = null;
+        threadPool.shutdown();
+        connection = null;
     }
 
     @Override
-    public void received(Connection connection, Object object) {
-        if (connection.isConnected() && object instanceof Message) {
-            client.process((Message) object);
+    public void received(Connection c, final Object object) {
+        if (c.isConnected() && object instanceof Message) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    root.process((Message) object);
+                }
+            });
         } else {
-            connection.close();
+            c.close();
         }
     }
 
     @Override
-    public void disconnect(Integer id, TextMessage error) {
-        client.disconnect(error);
+    public void disconnect(TextMessage error) {
+        if (error != null) {
+            send(error);
+        }
+        connection.close();
     }
 
     @Override
-    public String name(Integer id) {
-        throw new UnsupportedOperationException("Not supported.");
-    }
-
-    @Override
-    public void send(Integer id, Message message) {
-        client.send(message);
-    }
-
-    @Override
-    public void broadcast(Message message) {
-        throw new UnsupportedOperationException("Not supported.");
+    public void send(Message message) {
+        connection.sendTCP(message);
     }
 }

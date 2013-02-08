@@ -19,8 +19,6 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
@@ -43,6 +41,7 @@ public class ClientManager {
     /**
      * Connects to server.
      *
+     * @param host
      * @return
      */
     public boolean start(String host) {

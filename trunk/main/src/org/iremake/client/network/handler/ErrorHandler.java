@@ -14,43 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.handler;
+package org.iremake.client.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.client.Option;
+import org.iremake.client.network.ClientNodeContext;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
-import org.iremake.server.network.ServerNodeContext;
 
 /**
- * This is a stopper, either you transmit the right version or you will be kicked out.
+ *
  */
-public class VerifyVersionHandler implements ServerHandler {
+public class ErrorHandler implements ClientHandler {
+
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, ServerNodeContext context) {
+    public void process(Message message, ClientNodeContext node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Version.equals(msg.getType())) {
-                if (Option.General_Version.get().equals(msg.getText())) {
-                    LOG.log(Level.FINE, "Client {0} transmitted correct version", context.name());
-                    // passed version test, remove yourself from handler list
-                    context.remove();
-                    return;
-                }
+            if (TextMessageType.Error.equals(msg.getType())) {
+                LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
+                node.disconnect(null);
+                return;
             }
         }
-        // disconnect with ErrorMessage
-        context.disconnect(TextMessageType.Error.create(String.format(
-                "Did not receive version message or wrong version. Was waiting for version. My version is %s",
-                Option.General_Version.get())));
+        // continue broadcasting it
+        node.propagate(message);
     }
 
     @Override
     public String name() {
-        return "handler.registration.version";
+        return "handler.error";
     }
 }

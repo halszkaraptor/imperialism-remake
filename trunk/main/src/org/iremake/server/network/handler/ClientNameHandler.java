@@ -35,11 +35,11 @@ public class ClientNameHandler implements ServerHandler {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.ClientName.equals(msg.getType())) {
-                // has sent its name
-                LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.name(), msg.getText()});
+                // context.setName(msg.getText());
+                LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.getName(), msg.getText()});
                 context.remove();
                 // tell all others
-                context.broadcast(message);
+                context.broadcast("handler.chat", message);
                 return;
             }
         }

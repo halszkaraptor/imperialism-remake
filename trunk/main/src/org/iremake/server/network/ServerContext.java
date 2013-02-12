@@ -26,10 +26,13 @@ public interface ServerContext {
 
     public void disconnect(Integer id, TextMessage error);
 
-    public String name(Integer id);
+    public void setName(Integer id, String name);
+
+    public String getName(Integer id);
 
     public void send(Integer id, Message message);
 
     public void broadcast(Message message);
 
+    public void broadcast(String domain, Message message);
 }

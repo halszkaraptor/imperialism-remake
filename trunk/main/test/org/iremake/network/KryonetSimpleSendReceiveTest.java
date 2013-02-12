@@ -54,7 +54,7 @@ public class KryonetSimpleSendReceiveTest {
         client.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                System.out.println("Received message in thread " + Thread.currentThread().toString());
+                System.out.println("Received message " + object.toString() + " in thread " + Thread.currentThread().toString());
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {

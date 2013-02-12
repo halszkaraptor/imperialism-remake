@@ -22,21 +22,24 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
+import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
 
 /**
  * Fires up network connection for the client.
  */
-public class ClientManager {
+public class ClientManager implements ClientContext {
 
     /* Timeout in ms for connection */
     private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
     /* Kryonet client */
     private Client client;
+    private ClientNodeContext root;
 
     /**
      * Connects to server.
@@ -56,7 +59,7 @@ public class ClientManager {
 
         client.start();
 
-        Listener listener = new ClientListener();
+        Listener listener = new ClientListener(this);
         client.addListener(listener);
 
         try {
@@ -67,6 +70,8 @@ public class ClientManager {
             stop();
             return false;
         }
+
+        root = new ClientNodeContext(new ErrorHandler(), this);
 
         send(TextMessageType.Version.create(Option.General_Version.get()));
         send(TextMessageType.ClientName.create("client-name"));
@@ -80,6 +85,7 @@ public class ClientManager {
      * @param message
      */
     // TODO do we need this here?
+    @Override
     public void send(Message message) {
         if (client != null && client.isConnected()) {
             LOG.log(Level.FINE, "Send message: {0}", message.toString());
@@ -110,5 +116,20 @@ public class ClientManager {
 
     public boolean isRunning() {
         return client != null;
+    }
+
+    @Override
+    public void disconnect(TextMessage error) {
+        if (client != null) {
+            if (error != null) {
+                send(error);
+            }
+            client.close();
+        }
+    }
+
+    @Override
+    public void process(Message message) {
+        root.process(message);
     }
 }

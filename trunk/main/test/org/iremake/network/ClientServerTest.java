@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientManager;
+import org.iremake.common.network.messages.ActionMessage;
+import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.ServerManager;
 
 /**
@@ -54,7 +56,8 @@ public class ClientServerTest {
         final ClientManager client = new ClientManager();
         client.start("localhost");
 
-        // client.send(TextMessageType.Chat.create("chat message"));
+        client.send(ActionMessage.LOBBY_REGISTER);
+        client.send(TextMessageType.Chat.create("chat message"));
 
         // in 5s stop everything
         final Timer timer = new Timer();

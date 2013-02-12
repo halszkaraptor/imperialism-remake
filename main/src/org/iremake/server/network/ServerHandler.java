@@ -81,8 +81,8 @@ public class ServerHandler extends Listener implements ServerContext {
     }
 
     @Override
-    public String name(Integer id) {
-        return map.get(id).name();
+    public String getName(Integer id) {
+        return map.get(id).getName();
     }
 
     @Override
@@ -96,4 +96,20 @@ public class ServerHandler extends Listener implements ServerContext {
             client.send(message);
         }
     }
+
+    @Override
+    public void broadcast(String domain, Message message) {
+        for (ServerConnectedClient client: map.values()) {
+            if (client.hasHandler(domain)) {
+                client.send(message);
+            }
+        }
+    }
+
+    @Override
+    public void setName(Integer id, String name) {
+        map.get(id).setName(name);
+    }
+
+
 }

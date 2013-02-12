@@ -28,4 +28,6 @@ public interface ClientContext {
 
     public void send(Message message);
 
+    public void process(Message message);
+
 }

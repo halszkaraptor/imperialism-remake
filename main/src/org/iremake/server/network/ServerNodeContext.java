@@ -97,8 +97,12 @@ public class ServerNodeContext {
         return node;
     }
 
-    public String name() {
-        return context.name(id);
+    public void setName(String name) {
+        context.setName(id, name);
+    }
+
+    public String getName() {
+        return context.getName(id);
     }
 
     public void reply(Message message) {
@@ -109,7 +113,20 @@ public class ServerNodeContext {
         context.broadcast(message);
     }
 
+    public void broadcast(String domain, Message message) {
+        context.broadcast(domain, message);
+    }
+
     public void disconnect(TextMessage error) {
         context.disconnect(id, error);
+    }
+
+    public boolean hasHandler(String domain) {
+        for (TreeNode<ServerHandler> n: node.subTreeNodesList()) {
+            if (n.get().name().startsWith(domain)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

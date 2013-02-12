@@ -36,7 +36,7 @@ public class VerifyVersionHandler implements ServerHandler {
             TextMessage msg = (TextMessage) message;
             if (TextMessageType.Version.equals(msg.getType())) {
                 if (Option.General_Version.get().equals(msg.getText())) {
-                    LOG.log(Level.FINE, "Client {0} transmitted correct version", context.name());
+                    LOG.log(Level.FINE, "Client {0} transmitted correct version", context.getName());
                     // passed version test, remove yourself from handler list
                     context.remove();
                     return;

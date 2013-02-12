@@ -31,7 +31,7 @@ public class ServerConnectedClient {
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final ServerNodeContext root;
     private final Connection connection;
-    private final String name;
+    private String name;
 
     public ServerConnectedClient(ServerNodeContext root, Connection connection) {
         this.root = root;
@@ -61,11 +61,19 @@ public class ServerConnectedClient {
         connection.sendTCP(message);
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
 
     public void shutdown() {
         threadPool.shutdown();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean hasHandler(String domain) {
+        return root.hasHandler(domain);
     }
 }

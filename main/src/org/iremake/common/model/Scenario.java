@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Element;
+import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 import org.iremake.common.model.map.TilesBorder;
@@ -203,6 +204,20 @@ public class Scenario implements FullXMLable {
             }
         }
         list.sort();
+        return list;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public XList<MapItem> getAllUnits() {
+        XList<MapItem> list = new XList<>(MapItem.class);
+        for (Nation nation : nations) {
+            for (MapItem unit : nation.getUnits()) {
+                list.addElement(unit);
+            }
+        }
         return list;
     }
 

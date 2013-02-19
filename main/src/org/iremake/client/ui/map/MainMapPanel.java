@@ -35,6 +35,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import org.iremake.client.ui.model.UIScenario;
+import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.TilesBorder;
 import org.iremake.common.model.map.TilesTransition;
@@ -79,16 +80,16 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
     private void drawBorder(Graphics2D g2d, TilesBorder border, int x1, int y1, int x2, int y2) {
         switch (border) {
-        case Province:
-            g2d.setColor(Color.white);
-            g2d.setStroke(new BasicStroke(1));
-            break;
-        case Nation:
-            g2d.setColor(Color.black);
-            g2d.setStroke(new BasicStroke(2));
-            break;
-        default:
-            throw new IllegalArgumentException("");
+            case Province:
+                g2d.setColor(Color.white);
+                g2d.setStroke(new BasicStroke(1));
+                break;
+            case Nation:
+                g2d.setColor(Color.black);
+                g2d.setStroke(new BasicStroke(2));
+                break;
+            default:
+                throw new IllegalArgumentException("");
         }
         g2d.drawLine(x1, y1, x2, y2);
     }
@@ -234,7 +235,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
-        // draw terrain tiles for outside
+        // draw terrain tiles for outside areas
         for (ScreenPosition r : outside) {
             drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
@@ -245,6 +246,9 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
                 drawImageCentered(g2d, scenario.getResourceOverlayAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
             }
         }
+
+        // draw rivers
+        // TODO rivers?
 
         // draw tile borders, first province borders
         for (ScreenPosition r : fulldrawn) {
@@ -311,15 +315,24 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
             String name = scenario.getTownAt(r.p);
             // name = "Test";
             if (name != null) {
-                drawImageCentered(g2d, scenario.getTileGraphicsRepository().getMiscOverlay("city") ,r.x + tileSize.width / 2, r.y + tileSize.height / 2);
+                drawImageCentered(g2d, scenario.getTileGraphicsRepository().getMiscOverlay("city"), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
                 drawProvinceTownName(g2d, name, r.x + tileSize.width / 2, r.y + tileSize.height - 10);
             }
         }
 
         // draw units
-        // TODO draw units
+        for (MapItem unit : scenario.getAllUnits()) {
+            MapPosition p = unit.getPosition();
 
-        // TODO gray areas (outside of map) fill with nearest image, just paint something useful
+            int r = p.row - offset.row;
+            int c = p.column - offset.column;
+            // compute left, upper corner (shift is every second, real row)
+            int x = c * tileSize.width + ((p.row % 2 != 0) ? tileSize.width / 2 : 0);
+            int y = r * tileSize.height;
+
+            drawImageCentered(g2d, scenario.getTileGraphicsRepository().getUnitOverlay("infantry", "stand"), x + tileSize.width / 2, y + tileSize.height / 2);
+        }
+
         // TODO general transformation row, column to x, y
 
         // draw hoover rectangle

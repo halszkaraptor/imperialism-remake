@@ -334,4 +334,17 @@ public class GraphicsUtils {
         }
         return type;
     }
+
+    /**
+     * Parses a six character string (hex presentation) into a Color object.
+     *
+     * @param hex a 6 character string as "ffffff" for white
+     * @return the corresponding color
+     */
+    public static Color convertHexToColor(String hex) {
+        int r = Integer.parseInt(hex.substring(0, 2), 16);
+        int g = Integer.parseInt(hex.substring(2, 4), 16);
+        int b = Integer.parseInt(hex.substring(4, 6), 16);
+        return new Color(r, g, b);
+    }
 }

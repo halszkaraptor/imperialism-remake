@@ -39,6 +39,10 @@ public class MapItem implements FullXMLable {
         this.position = position;
     }
 
+    public MapPosition getPosition() {
+        return position;
+    }
+
     @Override
     public Element toXML() {
         Element element = new Element(XML_NAME);

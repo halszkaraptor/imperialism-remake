@@ -28,6 +28,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.tools.ui.utils.GraphicsUtils;
 import org.tools.xml.ReadXMLable;
 
 /**
@@ -86,19 +87,6 @@ public class TileGraphicsRepository implements ReadXMLable {
      */
     public Dimension getTerrainTileSize() {
         return new Dimension(tileSize);
-    }
-
-    /**
-     * Parses a six character string (hex presentation) into a Color object.
-     *
-     * @param hex a 6 character string as "ffffff" for white
-     * @return the corresponding color
-     */
-    private static Color convertHexToColor(String hex) {
-        int r = Integer.parseInt(hex.substring(0, 2), 16);
-        int g = Integer.parseInt(hex.substring(2, 4), 16);
-        int b = Integer.parseInt(hex.substring(4, 6), 16);
-        return new Color(r, g, b);
     }
 
     /**
@@ -202,7 +190,7 @@ public class TileGraphicsRepository implements ReadXMLable {
             String location = child.getAttributeValue("location");
             Tile tile = new Tile();
             tile.image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
-            tile.color = convertHexToColor(child.getAttributeValue("color"));
+            tile.color = GraphicsUtils.convertHexToColor(child.getAttributeValue("color"));
             terrainTiles.put(id, tile);
         }
 

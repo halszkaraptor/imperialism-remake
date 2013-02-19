@@ -43,6 +43,9 @@ public enum Button {
     SmallDelete("misc/generic.button.delete.png"),
     SmallEdit("misc/generic.button.edit.png"),
     SmallExit("misc/generic.button.exit.png"),
+    // small sized minimap button
+    MiniMapGeographical("misc/generic.button.add.png"),
+    MiniMapPolitical("misc/generic.button.add.png"),
     // normal sized buttons used everywhere
     NormalExit("misc/main.button.exit.png"),
     NormalHelp("misc/main.button.help.png"),

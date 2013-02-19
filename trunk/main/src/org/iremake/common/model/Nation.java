@@ -69,6 +69,10 @@ public class Nation implements FullXMLable {
         return provinces;
     }
 
+    public XList<MapItem> getUnits() {
+        return units;
+    }
+
     /**
      * Adds a province. The same province is never added twice, but a log entry
      * is written in this case.
@@ -121,7 +125,7 @@ public class Nation implements FullXMLable {
 
         properties.fromXML(children.get(0));
         provinces.fromXML(children.get(1));
-        units.fromXML(children.get(2));
+        // units.fromXML(children.get(2));
         // TODO get children by name instead of fixed indices
 
         // we add an engineer unit to the capital province

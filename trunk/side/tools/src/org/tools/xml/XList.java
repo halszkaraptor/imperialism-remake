@@ -66,20 +66,18 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     private List<E> list = new ArrayList<>(4);
     private transient List<ListDataListener> listeners = new LinkedList<>();
     private Class<E> clazz;
-    private boolean sorted;
 
     /**
      * Empty list with initial capacity.
      *
      * @param clazz
      */
-    public XList(Class<E> clazz, boolean sorted) {
-        this(clazz, sorted, "ListOf-" + clazz.getSimpleName());
+    public XList(Class<E> clazz) {
+        this(clazz, "ListOf-" + clazz.getSimpleName());
     }
 
-    public XList(Class<E> clazz, boolean sorted, String XMLName) {
+    public XList(Class<E> clazz, String XMLName) {
         this.clazz = clazz;
-        this.sorted = sorted;
         this.XMLName = XMLName;
     }
 
@@ -107,10 +105,13 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
         return b;
     }
 
-    private void maybeSort() {
-        if (sorted) {
-            Collections.sort(list, comparator);
-        }
+    /**
+     *
+     */
+    public void sort() {
+        Collections.sort(list, comparator);
+
+        fireListChanged();
     }
 
     /**
@@ -139,8 +140,6 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
         }
         list.set(index, element);
 
-        maybeSort();
-
         fireListChanged();
     }
 
@@ -166,8 +165,6 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
         }
         list.add(index, element);
 
-        maybeSort();
-
         fireListChanged();
     }
 
@@ -178,8 +175,6 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
      */
     public void addElement(E element) {
         list.add(element);
-
-        maybeSort();
 
         fireListChanged();
     }
@@ -296,11 +291,5 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
             element.fromXML(children.get(i));
             list.add(element);
         }
-
-        // maybe do a sort
-        maybeSort();
-
-        // list changed
-        fireListChanged();
     }
 }

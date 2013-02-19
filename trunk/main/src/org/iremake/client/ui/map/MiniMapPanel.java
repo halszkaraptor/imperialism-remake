@@ -23,13 +23,20 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
+import org.iremake.client.ui.Button;
 import org.iremake.client.ui.model.UIScenario;
+import org.iremake.common.model.Nation;
 import org.iremake.common.model.map.MapPosition;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Mini map panel. Provides overview maps and can change the view of the main
@@ -38,6 +45,10 @@ import org.iremake.common.model.map.MapPosition;
 // TODO different views (political, geographical)
 public class MiniMapPanel extends JPanel {
 
+    private enum Type {
+
+        Geographical, Political;
+    }
     private static final long serialVersionUID = 1L;
     private Dimension size = new Dimension();
     private Rectangle focus = new Rectangle();
@@ -46,6 +57,8 @@ public class MiniMapPanel extends JPanel {
     private UIScenario scenario;
     /* the image is stored so it doesn't need to be calculated for every repaint */
     private BufferedImage buffer;
+    private int headerHeight = 0;
+    private Type type = Type.Geographical;
 
     /**
      * Feed it an scenario.
@@ -61,7 +74,7 @@ public class MiniMapPanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && focus.width > 0) {
                     int x0 = e.getX();
-                    int y0 = e.getY();
+                    int y0 = e.getY() - headerHeight;
                     x0 = Math.min(Math.max(x0, focus.width / 2), size.width - focus.width / 2);
                     y0 = Math.min(Math.max(y0, focus.height / 2), size.height - focus.height / 2);
                     if (focus.x != x0 || focus.y != y0) {
@@ -73,6 +86,28 @@ public class MiniMapPanel extends JPanel {
                 }
             }
         });
+
+        JButton geoButton = Button.MiniMapGeographical.create();
+        geoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switchTo(Type.Geographical);
+            }
+        });
+        JButton polButton = Button.MiniMapPolitical.create();
+        polButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switchTo(Type.Political);
+            }
+        });
+        // ButtonBar bar = new ButtonBar(geoButton, polButton);
+
+        headerHeight = geoButton.getPreferredSize().height;
+
+        setLayout(new MigLayout("", "0[]", "0[]"));
+        add(geoButton);
+        add(polButton);
 
         setBorder(BorderFactory.createLineBorder(Color.black, 1));
         setOpaque(true); // by default is not
@@ -87,9 +122,13 @@ public class MiniMapPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
+        Rectangle bounds = getBounds();
+        g2d.setColor(Color.lightGray);
+        g2d.fillRect(0, 0, bounds.width, headerHeight);
+
         // draw background
         if (buffer != null) {
-            g2d.drawImage(buffer, 0, 0, this);
+            g2d.drawImage(buffer, 0, headerHeight, this);
         }
 
         // the main map has told us their size, we can draw the focus rectangle
@@ -97,7 +136,7 @@ public class MiniMapPanel extends JPanel {
             Stroke oldStroke = g2d.getStroke();
             g2d.setStroke(new BasicStroke(2));
             g2d.setColor(Color.black);
-            g2d.drawRect(focus.x - focus.width / 2 + 1, focus.y - focus.height / 2 + 1, focus.width - 2, focus.height - 2);
+            g2d.drawRect(focus.x - focus.width / 2 + 1, focus.y - focus.height / 2 + 1 + headerHeight, focus.width - 2, focus.height - 2);
             g2d.setStroke(oldStroke);
         }
     }
@@ -121,17 +160,17 @@ public class MiniMapPanel extends JPanel {
     }
 
     /**
-     * somebody tells us what the correct size for the view rectangle is in normalized [0,1] coordinates.
+     * somebody tells us what the correct size for the view rectangle is in
+     * normalized [0,1] coordinates.
      *
      * @param fractionRows fraction of rows that fit into the main map
      * @param fractionColumns fraction of columns that fit into the main map
      */
     public void mapChanged(float fractionRows, float fractionColumns) {
 
-
-        size = getSize();
-        size.height = size.width * scenario.getNumberRows() / scenario.getNumberColumns();
-        setPreferredSize(size);
+        int width = getSize().width;
+        size = new Dimension(width, width * scenario.getNumberRows() / scenario.getNumberColumns());
+        setPreferredSize(new Dimension(size.width, size.height + headerHeight));
 
         focus.x = size.width / 2;
         focus.y = size.height / 2;
@@ -154,18 +193,48 @@ public class MiniMapPanel extends JPanel {
         repaint();
     }
 
+    private void switchTo(Type type) {
+        if (type != this.type) {
+            this.type = type;
+            redrawMap();
+            repaint();
+        }
+    }
+
     /**
      * Put new map content in buffer image.
      */
     private void redrawMap() {
-        buffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-        for (int x = 0; x < size.width; x++) {
-            for (int y = 0; y < size.height; y++) {
-                int column = scenario.getNumberColumns() * x / size.width; // rounding down
-                int row = scenario.getNumberRows() * y / size.height;
-                Color color = scenario.getTerrainTileColorAt(new MapPosition(row, column));
-                buffer.setRGB(x, y, color.getRGB());
-            }
+        switch (type) {
+            case Geographical:
+                buffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+                for (int x = 0; x < size.width; x++) {
+                    for (int y = 0; y < size.height; y++) {
+                        int column = scenario.getNumberColumns() * x / size.width; // rounding down
+                        int row = scenario.getNumberRows() * y / size.height;
+                        Color color = scenario.getTerrainTileColorAt(new MapPosition(row, column));
+                        buffer.setRGB(x, y, color.getRGB());
+                    }
+                }
+                break;
+
+            case Political:
+                buffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+                for (int x = 0; x < size.width; x++) {
+                    for (int y = 0; y < size.height; y++) {
+                        int column = scenario.getNumberColumns() * x / size.width; // rounding down
+                        int row = scenario.getNumberRows() * y / size.height;
+                        Nation nation = scenario.getNationAt(new MapPosition(row, column));
+                        if (nation != null) {
+                            Color color = GraphicsUtils.convertHexToColor(nation.getProperty(Nation.KEY_COLOR));
+                            buffer.setRGB(x, y, color.getRGB());
+                        } else {
+                            // TODO ocean color?
+                        }
+                    }
+                }
+                break;
         }
+
     }
 }

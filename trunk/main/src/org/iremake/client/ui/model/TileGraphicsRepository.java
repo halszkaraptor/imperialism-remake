@@ -120,12 +120,22 @@ public class TileGraphicsRepository implements ReadXMLable {
         return Collections.unmodifiableSet(resourceOverlays.keySet());
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Image getMiscOverlay(String id) {
         return miscOverlays.get(id);
     }
 
-    public Image getUnitOverlay(String id) {
-        return unitOverlays.get(id);
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Image getUnitOverlay(String type, String action) {
+        return unitOverlays.get(type + "|" + action);
     }
 
     /**

@@ -65,10 +65,6 @@ public class StartScreen extends UIFrame {
         JLabel backgroundLabel = new JLabel();
         backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
 
-        // logo label
-        JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.logo.png"));    // set image
-
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());
         versionLabel.setForeground(Color.WHITE);    // white color
@@ -79,10 +75,6 @@ public class StartScreen extends UIFrame {
         // add background image (centered)
         pane.add(backgroundLabel, new Integer(1));
         layout.addConstraint(backgroundLabel, RelativeLayoutConstraint.centered());
-
-        // add logo (horizontally centerd, vertically at 40%)
-        pane.add(logoLabel, new Integer(2));
-        layout.addConstraint(logoLabel, RelativeLayoutConstraint.relative(0.5f, 0.4f));
 
         // add Version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));

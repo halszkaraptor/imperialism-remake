@@ -53,7 +53,7 @@ public class Scenario implements FullXMLable {
     private int columns = 0;
     private Tile[][] map;
     private XProperty properties = new XProperty(10);
-    private XList<Nation> nations = new XList<>(Nation.class, true,XMLNAME_NATIONS);
+    private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     /**
@@ -196,12 +196,13 @@ public class Scenario implements FullXMLable {
      * @return a XList
      */
     public XList<Province> getAllProvinces() {
-        XList<Province> list = new XList<>(Province.class, true);
+        XList<Province> list = new XList<>(Province.class);
         for (Nation nation : nations) {
             for (Province province : nation.getProvinces()) {
                 list.addElement(province);
             }
         }
+        list.sort();
         return list;
     }
 

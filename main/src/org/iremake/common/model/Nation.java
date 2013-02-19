@@ -18,6 +18,8 @@ package org.iremake.common.model;
 
 import nu.xom.Element;
 import nu.xom.Elements;
+import org.iremake.common.model.map.MapItem;
+import org.iremake.common.model.map.MapItem.MapItemType;
 import org.tools.xml.FullXMLable;
 import org.tools.xml.XList;
 import org.tools.xml.XProperty;
@@ -30,11 +32,13 @@ public class Nation implements FullXMLable {
     public static final String KEY_CAPITAL = "capital province";
     public static final String KEY_COLOR = "color";
     public static final String KEY_NAME = "name";
-    private static final String XMLNAME = "Nation";
+    private static final String XML_NAME = "Nation";
     /* property list */
     private XProperty properties = new XProperty(10);
     /* list of owned provinces */
-    private XList<Province> provinces = new XList<>(Province.class, true, "Provinces");
+    private XList<Province> provinces = new XList<>(Province.class, "Provinces");
+    /* list of owned map items */
+    private XList<MapItem> units = new XList<>(MapItem.class, "Units");
 
     /**
      * Need an empty constructor for creation in fromXML in scenario, i.e.
@@ -75,6 +79,8 @@ public class Nation implements FullXMLable {
     public void addProvince(Province province) {
         // TODO check if already contained
         provinces.addElement(province);
+        // what if they are renamed, sorting here?
+        provinces.sort();
     }
 
     /**
@@ -94,10 +100,11 @@ public class Nation implements FullXMLable {
      */
     @Override
     public Element toXML() {
-        Element element = new Element(XMLNAME);
+        Element element = new Element(XML_NAME);
 
         element.appendChild(properties.toXML());
         element.appendChild(provinces.toXML());
+        element.appendChild(units.toXML());
 
         return element;
     }
@@ -114,6 +121,16 @@ public class Nation implements FullXMLable {
 
         properties.fromXML(children.get(0));
         provinces.fromXML(children.get(1));
+        units.fromXML(children.get(2));
         // TODO get children by name instead of fixed indices
+
+        // we add an engineer unit to the capital province
+        int capital = properties.getInt(KEY_CAPITAL);
+        for (Province province: provinces) {
+            if (province.getID() == capital) {
+                MapItem unit = new MapItem(MapItemType.Engineer, province.getTownPosition());
+                units.addElement(unit);
+            }
+        }
     }
 }

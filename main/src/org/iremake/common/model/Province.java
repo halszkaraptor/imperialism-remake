@@ -28,13 +28,14 @@ public class Province implements FullXMLable {
 
     /* Sea tiles have a default value which is defined here and not in the xml */
     public static final int NONE = 0;
-    public static final String XMLNAME = "Province";
+    private static final String XML_NAME = "Province";
     private int id;
     private String name;
     private MapPosition town = new MapPosition();
 
     /**
-     * Empty constructor for creation in XList<E>.fromXML() using class.newInstance().
+     * Empty constructor for creation in XList<E>.fromXML() using
+     * class.newInstance().
      */
     public Province() {
     }
@@ -96,7 +97,7 @@ public class Province implements FullXMLable {
      */
     @Override
     public Element toXML() {
-        Element element = new Element(XMLNAME);
+        Element element = new Element(XML_NAME);
         element.addAttribute(new Attribute("id", Integer.toString(id)));
         element.addAttribute(new Attribute("name", name));
         element.addAttribute(new Attribute("town-row", String.valueOf(town.row)));

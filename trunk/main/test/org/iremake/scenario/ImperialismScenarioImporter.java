@@ -49,8 +49,10 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.JTextComponent;
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
+import nu.xom.ParsingException;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
@@ -125,6 +127,8 @@ public class ImperialismScenarioImporter extends JFrame {
         nationColorsTextField = new JTextField();
         jLabel6 = new JLabel();
         provinceReplacementsTextField = new JTextField();
+        jLabel7 = new JLabel();
+        baseTextField = new JTextField();
         loadButton = new JButton();
         saveButton = new JButton();
 
@@ -148,141 +152,152 @@ public class ImperialismScenarioImporter extends JFrame {
 
         optionPanel.setBorder(BorderFactory.createTitledBorder("Options"));
 
-        importmapTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\s0.imported.map");
+        importmapTextField.setName("import-file"); // NOI18N
 
-        scenarioTextField.setText("C:\\40_Programmieren\\02_Java Projects\\Imperialism Remake\\tools\\scenario.Europe1814.xml");
         scenarioTextField.setToolTipText("Will be modified in the process!");
+        scenarioTextField.setName("export-file"); // NOI18N
 
         jLabel1.setHorizontalAlignment(SwingConstants.TRAILING);
-        jLabel1.setText("import file path");
+        jLabel1.setText("import file name");
 
         jLabel2.setHorizontalAlignment(SwingConstants.TRAILING);
-        jLabel2.setText("export file path");
+        jLabel2.setText("export file name");
 
         jLabel3.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel3.setText("scenario title");
 
-        titleTextField.setText("Europe 1814");
+        titleTextField.setName("title"); // NOI18N
 
         jLabel4.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel4.setText("nation names");
 
-        nationNamesTextField.setText("France, Austria-Hungary, Ottoman Empire, Russian Empire, Prussia, Italy, England, Portugal, Espania, Catalonia, Morocco, Libya, Sardinia, Poland, Egpyt, Bavaria, BeNeLux, Switzerland, Danmark, Lower Saxony, Sweden, Serbia, Greece");
+        nationNamesTextField.setName("nation-names"); // NOI18N
 
         jLabel5.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel5.setText("nation colors");
 
-        nationColorsTextField.setText("0000ff");
+        nationColorsTextField.setName("nation-colors"); // NOI18N
 
         jLabel6.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel6.setText("province replace");
 
-        provinceReplacementsTextField.setText("Mecklenbur>>Mecklenburg|North Rhin>>North Rhine");
+        provinceReplacementsTextField.setName("province-replacements"); // NOI18N
 
-        GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
-        optionPanel.setLayout(optionPanelLayout);
-        optionPanelLayout.setHorizontalGroup(
-            optionPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(optionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING, false)
-                    .addComponent(jLabel6, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                    .addComponent(jLabel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(scenarioTextField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
-                    .addComponent(titleTextField)
-                    .addComponent(importmapTextField)
-                    .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                    .addComponent(nationColorsTextField)
-                    .addComponent(provinceReplacementsTextField))
-                .addContainerGap())
-        );
-        optionPanelLayout.setVerticalGroup(
-            optionPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(optionPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(importmapTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(scenarioTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(titleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(nationColorsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(provinceReplacementsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(169, Short.MAX_VALUE))
-        );
+        jLabel7.setHorizontalAlignment(SwingConstants.TRAILING);
+        jLabel7.setText("base path");
 
-        loadButton.setText("Load Setting");
-        loadButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                loadButtonActionPerformed(evt);
-            }
-        });
+        baseTextField.setText("C:\\Users\\jkeller1\\Dropbox\\remake\\import\\europe 1814\\");
 
-        saveButton.setText("Save Setting");
-        saveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
+            GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
+            optionPanel.setLayout(optionPanelLayout);
+            optionPanelLayout.setHorizontalGroup(
+                optionPanelLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(optionPanelLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING, false)
+                        .addComponent(jLabel7, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                        .addComponent(jLabel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.LEADING)
+                        .addComponent(scenarioTextField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                        .addComponent(titleTextField)
+                        .addComponent(importmapTextField)
+                        .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                        .addComponent(nationColorsTextField)
+                        .addComponent(provinceReplacementsTextField, GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE)
+                        .addComponent(baseTextField))
+                    .addContainerGap())
+            );
+            optionPanelLayout.setVerticalGroup(
+                optionPanelLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(optionPanelLayout.createSequentialGroup()
+                    .addGap(12, 12, 12)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(baseTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(importmapTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(scenarioTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(titleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(nationNamesTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(nationColorsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(optionPanelLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(provinceReplacementsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(145, Short.MAX_VALUE))
+            );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(statusScrollPane)
-                    .addComponent(optionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+            loadButton.setText("Load Setting");
+            loadButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    loadButtonActionPerformed(evt);
+                }
+            });
+
+            saveButton.setText("Save Setting");
+            saveButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    saveButtonActionPerformed(evt);
+                }
+            });
+
+            GroupLayout layout = new GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                        .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(statusScrollPane)
+                        .addComponent(optionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(loadButton)
+                            .addPreferredGap(ComponentPlacement.RELATED)
+                            .addComponent(saveButton)
+                            .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(importButton)))
+                    .addContainerGap())
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(optionPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addComponent(statusScrollPane, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(importButton)
                         .addComponent(loadButton)
-                        .addPreferredGap(ComponentPlacement.RELATED)
-                        .addComponent(saveButton)
-                        .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(importButton)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(optionPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(statusScrollPane, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(Alignment.BASELINE)
-                    .addComponent(importButton)
-                    .addComponent(loadButton)
-                    .addComponent(saveButton))
-                .addPreferredGap(ComponentPlacement.RELATED)
-                .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+                        .addComponent(saveButton))
+                    .addPreferredGap(ComponentPlacement.RELATED)
+                    .addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+            );
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 
     private void importButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         progressBar.setValue(0);
@@ -290,8 +305,8 @@ public class ImperialismScenarioImporter extends JFrame {
         // preparations
         String text = provinceReplacementsTextField.getText();
         Map<String, String> provinceReplacements = new HashMap<>();
-        for (String replacement : text.split("|")) {
-            String[] replace = replacement.split(">>");
+        for (String replacement : text.split("\\|")) { // because split uses regex
+            String[] replace = replacement.split(":");
             if (replace.length != 2) {
                 updateStatus("error in replacement string");
                 return;
@@ -301,12 +316,14 @@ public class ImperialismScenarioImporter extends JFrame {
 
 
         // create files and test import file on existence
-        File importFile = new File(importmapTextField.getText());
+        String in = baseTextField.getText() + importmapTextField.getText();
+        File importFile = new File(in);
         if (!importFile.exists() || !importFile.isFile()) {
-            updateStatus("import file not found, will stop");
+            updateStatus("import file " + in + " not found, will stop");
             return;
         }
-        File exportFile = new File(scenarioTextField.getText());
+        String out = baseTextField.getText() + scenarioTextField.getText();
+        File exportFile = new File(out);
 
         // read import file
         ByteBuffer bb;
@@ -426,14 +443,18 @@ public class ImperialismScenarioImporter extends JFrame {
         XList<Nation> nations = scenario.getNations();
         Map<Integer, Nation> nmap = new HashMap<>(30);
         String[] nationNames = nationNamesTextField.getText().split(", ");
+        String[] nationColors = nationColorsTextField.getText().split(", ");
         int id = 1;
         for (Integer i : uc) {
             String name = String.format("Nation %2d", id);
-            if (i < nationNames.length) {
-                name = nationNames[i];
+            if (id <= nationNames.length) {
+                name = nationNames[id-1];
             }
             Nation nation = new Nation();
             nation.setProperty(Nation.KEY_NAME, name);
+            if (id <= nationColors.length) {
+                nation.setProperty(Nation.KEY_COLOR, nationColors[id-1]);
+            }
             nmap.put(i, nation);
             nations.addElement(nation);
             id++;
@@ -598,50 +619,75 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
 
+        updateStatus("written to " + out);
         updateStatus("conversion successful");
         progressBar.setValue(100);
     }//GEN-LAST:event_importButtonActionPerformed
 
     private void saveButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
 
+        String out = baseTextField.getText() + "import.settings.xml";
+
         Resource resource;
         try {
-            resource = ResourceUtils.asResource("");
+            resource = ResourceUtils.asResource(out);
         } catch (IOException ex) {
             updateStatus("Cannot open save location.");
             return;
         }
 
-
         Element parent = new Element("Scenario-Importer");
         JTextComponent[] components = {importmapTextField, scenarioTextField, titleTextField, nationNamesTextField, nationColorsTextField, provinceReplacementsTextField};
 
         for (JTextComponent component : components) {
-            Element child = new Element("Component");
-            child.appendChild(component.getText());
+            Element child = new Element("Component-" + component.getName());
+            // child.appendChild(component.getText());
+            child.addAttribute(new Attribute("content", component.getText()));
             parent.appendChild(child);
         }
         try {
             XMLHelper.write(resource, parent);
         } catch (IOException ex) {
             updateStatus("Cannot save to file.");
+            return;
         }
+
         updateStatus("All content written.");
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void loadButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        Element parent = null;
+
+        String in = baseTextField.getText() + "import.settings.xml";
+
+        Resource resource;
+        try {
+            resource = ResourceUtils.asResource(in);
+        } catch (IOException ex) {
+            updateStatus("Cannot open load location.");
+            return;
+        }
+
+        Element parent;
+        try {
+            parent = XMLHelper.read(resource);
+        } catch (IOException | ParsingException ex) {
+            updateStatus("Cannot load content.");
+            return;
+        }
+
         Elements children = parent.getChildElements();
         if (children.size() != 6) {
             updateStatus("Wrong number of elements in xml.");
             return;
         }
-        importmapTextField.setText(children.get(0).getValue());
-        scenarioTextField.setText(children.get(1).getValue());
-        titleTextField.setText(children.get(2).getValue());
-        nationNamesTextField.setText(children.get(3).getValue());
-        nationColorsTextField.setText(children.get(4).getValue());
-        provinceReplacementsTextField.setText(children.get(5).getValue());
+
+        importmapTextField.setText(children.get(0).getAttributeValue("content"));
+        scenarioTextField.setText(children.get(1).getAttributeValue("content"));
+        titleTextField.setText(children.get(2).getAttributeValue("content"));
+        nationNamesTextField.setText(children.get(3).getAttributeValue("content"));
+        nationColorsTextField.setText(children.get(4).getAttributeValue("content"));
+        provinceReplacementsTextField.setText(children.get(5).getAttributeValue("content"));
+
         updateStatus("All content read.");
     }//GEN-LAST:event_loadButtonActionPerformed
 
@@ -664,6 +710,7 @@ public class ImperialismScenarioImporter extends JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private JTextField baseTextField;
     private JButton importButton;
     private JTextField importmapTextField;
     private JLabel jLabel1;
@@ -672,6 +719,7 @@ public class ImperialismScenarioImporter extends JFrame {
     private JLabel jLabel4;
     private JLabel jLabel5;
     private JLabel jLabel6;
+    private JLabel jLabel7;
     private JButton loadButton;
     private JTextField nationColorsTextField;
     private JTextField nationNamesTextField;

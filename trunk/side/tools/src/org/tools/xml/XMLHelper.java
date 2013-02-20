@@ -95,7 +95,7 @@ public class XMLHelper {
 
         Serializer serializer = new Serializer(out, "UTF-8");
         serializer.setIndent(1);
-        serializer.setMaxLength(80);
+        serializer.setMaxLength(0); // otherwise spaces are not preserved!
         serializer.write(document);
     }
 

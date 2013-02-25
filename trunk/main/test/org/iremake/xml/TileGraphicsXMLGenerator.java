@@ -38,11 +38,18 @@ public class TileGraphicsXMLGenerator {
         parent.addAttribute(new Attribute("tile-height", "80"));
 
         parent.appendChild(createTerrain());
+        parent.appendChild(createRiver());
         parent.appendChild(createResources());
         parent.appendChild(createMisc());
         parent.appendChild(createUnits());
         Resource resource = ResourceUtils.asResource("content.xml");
         XMLHelper.write(resource, parent);
+    }
+
+    public static Element createRiver() {
+        Element parent = new Element("River-Overlays");
+        parent.addAttribute(new Attribute("location", "river.overlays.png"));
+        return parent;
     }
 
     /**

@@ -205,6 +205,23 @@ public class TileGraphicsRepository implements ReadXMLable {
             }
         }
 
+        {
+            // import river overlay
+            element = parent.getFirstChildElement("River-Overlays");
+            String location = element.getAttributeValue("location");
+            Image rivers = IOManager.getAsImage(Places.GraphicsScenario, location);
+            // test if width and height is a multiple of tileSize
+            if (rivers.getWidth(null) % tileSize.width != 0 || rivers.getHeight(null) % tileSize.height != 0) {
+                // LOG
+            }
+            int columns = rivers.getWidth(null) / tileSize.width;
+            int rows = rivers.getHeight(null) / tileSize.height;
+            // image too small
+            if (rows * columns < 36) {
+            }
+            // lets copy out the parts and store them
+        }
+
         // import resource overlays
         element = parent.getFirstChildElement("Resource-Overlays");
 

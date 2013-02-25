@@ -12,7 +12,7 @@
 
 # TODO ord instead of strings in the display
 
-import array, struct
+import array, struct, os
 import tools
 
 def find_unique_elements(data, n, s):
@@ -51,9 +51,11 @@ def correlate_unique_elements(a, b):
 # -------------------------
 
 #parameters
+map_location = 'C:/Users/jkeller1/Dropbox/remake/scenario import/europe 1814'
 map_name = 's0.map'
 
 # read file
+os.chdir(map_location)
 in_file = open(map_name, 'rb')
 data = in_file.read()
 in_file.close()

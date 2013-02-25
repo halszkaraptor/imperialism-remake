@@ -186,7 +186,7 @@ public class ImperialismScenarioImporter extends JFrame {
         jLabel7.setHorizontalAlignment(SwingConstants.TRAILING);
         jLabel7.setText("base path");
 
-        baseTextField.setText("C:\\Users\\jkeller1\\Dropbox\\remake\\import\\europe 1814\\");
+        baseTextField.setText("C:\\Users\\jkeller1\\Dropbox\\remake\\scenario import\\europe 1814\\");
 
             GroupLayout optionPanelLayout = new GroupLayout(optionPanel);
             optionPanel.setLayout(optionPanelLayout);
@@ -564,8 +564,11 @@ public class ImperialismScenarioImporter extends JFrame {
                     tile.resourceID = 6;
                     tile.resourceVisible = true;
                 }
+                if (terrain_overlay[i] == 15) {
+                    int v = resources[i];
+                }
                 // scrubforest
-                if (resources[i] == 17 && terrain_overlay[i] == 15) {
+                if (resources[i] == 2 && terrain_overlay[i] == 15) {
                     tile.resourceID = 7;
                     tile.resourceVisible = true;
                 }

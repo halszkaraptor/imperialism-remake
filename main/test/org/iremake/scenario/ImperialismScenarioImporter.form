@@ -249,7 +249,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="baseTextField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cjkeller1\u005cDropbox\u005cremake\u005cimport\u005ceurope 1814\u005c" containsInvalidXMLChars="true"/>
+            <Property name="text" type="java.lang.String" value="C:\u005cUsers\u005cjkeller1\u005cDropbox\u005cremake\u005cscenario import\u005ceurope 1814\u005c" containsInvalidXMLChars="true"/>
           </Properties>
         </Component>
       </SubComponents>

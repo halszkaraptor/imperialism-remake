@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model;
 
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.iremake.common.model.map.MapPosition;
@@ -27,6 +28,9 @@ import org.tools.xml.FullXMLable;
 public class Province implements FullXMLable {
 
     /* Sea tiles have a default value which is defined here and not in the xml */
+    /**
+     *
+     */
     public static final int NONE = 0;
     private static final String XML_NAME = "Province";
     private int id;
@@ -120,4 +124,5 @@ public class Province implements FullXMLable {
         int column = Integer.parseInt(parent.getAttributeValue("town-column"));
         town = new MapPosition(row, column);
     }
+    private static final Logger LOG = Logger.getLogger(Province.class.getName());
 }

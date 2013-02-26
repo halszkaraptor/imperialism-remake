@@ -17,6 +17,7 @@
 package org.tools.ui;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
 
 /**
@@ -28,6 +29,10 @@ public class SimpleListModel<E> extends AbstractListModel<E> {
     private static final long serialVersionUID = 1L;
     private List<E> content;
 
+    /**
+     *
+     * @param list
+     */
     public SimpleListModel(List<E> list) {
         content = list; // TODO make copy?
     }
@@ -41,4 +46,5 @@ public class SimpleListModel<E> extends AbstractListModel<E> {
     public E getElementAt(int index) {
         return content.get(index);
     }
+    private static final Logger LOG = Logger.getLogger(SimpleListModel.class.getName());
 }

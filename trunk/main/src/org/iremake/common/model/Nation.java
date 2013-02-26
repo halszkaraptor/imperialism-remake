@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model;
 
+import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.common.model.map.MapItem;
@@ -29,8 +30,17 @@ import org.tools.xml.XProperty;
  */
 public class Nation implements FullXMLable {
 
+    /**
+     *
+     */
     public static final String KEY_CAPITAL = "capital province";
+    /**
+     *
+     */
     public static final String KEY_COLOR = "color";
+    /**
+     *
+     */
     public static final String KEY_NAME = "name";
     private static final String XML_NAME = "Nation";
     /* property list */
@@ -52,10 +62,20 @@ public class Nation implements FullXMLable {
         properties.putInt(KEY_CAPITAL, Province.NONE);
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     public void setProperty(String key, String value) {
         properties.put(key, value);
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String getProperty(String key) {
         return properties.get(key);
     }
@@ -69,6 +89,10 @@ public class Nation implements FullXMLable {
         return provinces;
     }
 
+    /**
+     *
+     * @return
+     */
     public XList<MapItem> getUnits() {
         return units;
     }
@@ -137,4 +161,5 @@ public class Nation implements FullXMLable {
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(Nation.class.getName());
 }

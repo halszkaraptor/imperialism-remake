@@ -19,6 +19,7 @@ package org.tools.io;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import org.junit.Test;
 
 /**
@@ -33,6 +34,9 @@ public class ResourcesTest {
     public void PerformanceTest() {
     }
 
+    /**
+     *
+     */
     @Test
     public void FileOpening() {
         System.out.println("TEST file open");
@@ -47,6 +51,10 @@ public class ResourcesTest {
         // conclusion: a new File instance can always be created, it does not have to exist
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     public void FileCreation() throws IOException {
         System.out.println("TEST file creation");
@@ -66,28 +74,40 @@ public class ResourcesTest {
         // deletion should check (canWrite, isDirecty(), list.isEmpty(), and then call delete(), call to exists then gives righty false
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     public void ReadingAFile() throws IOException {
         System.out.println("TEST reading a file");
         Resource res = ResourceUtils.asResource("readme.txt");
         String n = res.getName();
         System.out.println("file: " + n);
-        BufferedReader r = ResourceUtils.getReader(res);
-        System.out.println(" first line: " + r.readLine()); // only print first line
-        r.close();
+        try (BufferedReader r = ResourceUtils.getReader(res)) {
+            System.out.println(" first line: " + r.readLine());
+        }
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     public void ReadingInsideArchive() throws IOException {
         System.out.println("TEST reading inside an archive");
         Resource res = ResourceUtils.asResource("JLokalize.jar/lang/JLokalize_de.properties");
         String n = res.getName();
         System.out.println("file: " + n);
-        BufferedReader r = ResourceUtils.getReader(res);
-        System.out.println(" first line: " + r.readLine()); // only print first line
-        r.close();
+        try (BufferedReader r = ResourceUtils.getReader(res)) {
+            System.out.println(" first line: " + r.readLine());
+        }
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     public void ReadingTwiceInsideArchiveAtTheSameTime() throws IOException {
         System.out.println("TEST reading in an archive two times at the same time");
@@ -96,18 +116,21 @@ public class ResourcesTest {
 
         String n1 = res1.getName();
         System.out.println("file: " + n1);
-        BufferedReader r1 = ResourceUtils.getReader(res1);
-        System.out.println(" first line: " + r1.readLine()); // only print first line
-
-        String n2 = res2.getName();
-        System.out.println("file: " + n2);
-        BufferedReader r2 = ResourceUtils.getReader(res2);
-        System.out.println(" first line: " + r2.readLine()); // only print first line
-
-        r1.close();
+        BufferedReader r2;
+        try (BufferedReader r1 = ResourceUtils.getReader(res1)) {
+            System.out.println(" first line: " + r1.readLine());
+            String n2 = res2.getName();
+            System.out.println("file: " + n2);
+            r2 = ResourceUtils.getReader(res2);
+            System.out.println(" first line: " + r2.readLine());
+        }
         r2.close();
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     public void ReadingArchiveNoPath() throws IOException {
         System.out.println("TEST operations inside an archive");
@@ -124,4 +147,5 @@ public class ResourcesTest {
             System.out.println(r.getName());
         }
     }
+    private static final Logger LOG = Logger.getLogger(ResourcesTest.class.getName());
 }

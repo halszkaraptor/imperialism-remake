@@ -20,6 +20,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -95,4 +96,5 @@ public class EditorSelectTerrainDialog extends UIDialog {
     public int getSelection() {
         return selected;
     }
+    private static final Logger LOG = Logger.getLogger(EditorSelectTerrainDialog.class.getName());
 }

@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.util.logging.Logger;
 import javax.swing.JTextField;
 import org.iremake.client.Option;
 
@@ -57,4 +58,5 @@ public class OptionsDialogTextFieldItem implements OptionsDialogItem {
     public void updateOption() {
         option.put(item.getText());
     }
+    private static final Logger LOG = Logger.getLogger(OptionsDialogTextFieldItem.class.getName());
 }

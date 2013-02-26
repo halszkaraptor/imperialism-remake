@@ -31,6 +31,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -99,7 +100,7 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         public final int x, y;
         public final MapPosition p;
 
-        public ScreenPosition(int x, int y, MapPosition p) {
+        ScreenPosition(int x, int y, MapPosition p) {
             this.x = x;
             this.y = y;
             this.p = p;
@@ -421,4 +422,5 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
     public void mapChanged() {
         repaint();
     }
+    private static final Logger LOG = Logger.getLogger(MainMapPanel.class.getName());
 }

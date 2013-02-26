@@ -23,6 +23,7 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -100,4 +101,5 @@ public class FullFrame {
         frame.setVisible(true);
         timer.start();
     }
+    private static final Logger LOG = Logger.getLogger(FullFrame.class.getName());
 }

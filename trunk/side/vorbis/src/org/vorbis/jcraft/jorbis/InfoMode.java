@@ -16,10 +16,13 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class InfoMode {
 
     public int blockflag;
     public int windowtype;
     public int transformtype;
     public int mapping;
+    private static final Logger LOG = Logger.getLogger(InfoMode.class.getName());
 }

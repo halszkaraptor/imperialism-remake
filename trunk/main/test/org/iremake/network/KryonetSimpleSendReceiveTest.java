@@ -83,4 +83,5 @@ public class KryonetSimpleSendReceiveTest {
             }
         }, 5000);
     }
+    private static final Logger LOG = Logger.getLogger(KryonetSimpleSendReceiveTest.class.getName());
 }

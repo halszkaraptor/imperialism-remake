@@ -264,7 +264,7 @@ class DecodeExample {
                                                 val = -32768;
                                             }
                                             if (val < 0) {
-                                                val = val | 0x8000;
+                                                val |= 0x8000;
                                             }
                                             convbuffer[ptr] = (byte) (val);
                                             convbuffer[ptr + 1] = (byte) (val >>> 8);

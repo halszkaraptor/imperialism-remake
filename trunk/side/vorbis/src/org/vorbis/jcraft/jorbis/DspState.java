@@ -17,8 +17,13 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class DspState {
 
     static final float M_PI = 3.1415926539f;
@@ -59,6 +64,9 @@ public class DspState {
     byte[] header1;
     byte[] header2;
 
+    /**
+     *
+     */
     public DspState() {
         transform = new Object[2][];
         window = new float[2][][][][];
@@ -205,6 +213,11 @@ public class DspState {
         return 0;
     }
 
+    /**
+     *
+     * @param vi
+     * @return
+     */
     public int synthesis_init(Info vi) {
         init(vi);
         // Adjust centerW to allow an easier mechanism for determining output
@@ -218,6 +231,11 @@ public class DspState {
     // Unike in analysis, the window is only partially applied for each
     // block.  The time domain envelope is not yet handled at the point of
     // calling (as it relies on the previous block).
+    /**
+     *
+     * @param vb
+     * @return
+     */
     public int synthesis_blockin(Block vb) {
         // Shift out any PCM/multipliers that we returned previously
         // centerW is currently the center of the last block added
@@ -333,6 +351,12 @@ public class DspState {
     }
 
     // pcm==NULL indicates we just want the pending samples, no more
+    /**
+     *
+     * @param _pcm
+     * @param index
+     * @return
+     */
     public int synthesis_pcmout(float[][][] _pcm, int[] index) {
         if (pcm_returned < centerW) {
             if (_pcm != null) {
@@ -346,6 +370,11 @@ public class DspState {
         return 0;
     }
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     public int synthesis_read(int bytes) {
         if (bytes != 0 && pcm_returned + bytes > centerW) {
             return -1;
@@ -354,6 +383,10 @@ public class DspState {
         return 0;
     }
 
+    /**
+     *
+     */
     public void clear() {
     }
+    private static final Logger LOG = Logger.getLogger(DspState.class.getName());
 }

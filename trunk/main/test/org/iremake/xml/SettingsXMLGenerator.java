@@ -17,6 +17,7 @@
 package org.iremake.xml;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.io.Resource;
@@ -85,4 +86,5 @@ public class SettingsXMLGenerator {
         child.addAttribute(new Attribute("visible", String.valueOf(visible)));
         return child;
     }
+    private static final Logger LOG = Logger.getLogger(SettingsXMLGenerator.class.getName());
 }

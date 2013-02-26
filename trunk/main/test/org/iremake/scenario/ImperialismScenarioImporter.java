@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -120,8 +121,8 @@ public class ImperialismScenarioImporter extends JFrame {
         riverIDs.put(22,13);
         riverIDs.put(23,15);
         riverIDs.put(24,14);
-        riverIDs.put(25,12);
-        riverIDs.put(26,19);
+        riverIDs.put(25,16);
+        riverIDs.put(26,18);
 
         // heads
         riverIDs.put(43,20);
@@ -129,8 +130,8 @@ public class ImperialismScenarioImporter extends JFrame {
         riverIDs.put(45,22);
         riverIDs.put(46,23);
         riverIDs.put(47,24);
-        riverIDs.put(48,25);
-        riverIDs.put(49,26);
+        riverIDs.put(48,26);
+        riverIDs.put(49,25);
         riverIDs.put(50,27);
 
         // mouths
@@ -139,8 +140,8 @@ public class ImperialismScenarioImporter extends JFrame {
         riverIDs.put(53,30);
         riverIDs.put(54,31);
         riverIDs.put(55,32);
-        riverIDs.put(56,33);
-        riverIDs.put(57,34);
+        riverIDs.put(56,34);
+        riverIDs.put(57,33);
         riverIDs.put(58,35);
 
     }
@@ -782,4 +783,5 @@ public class ImperialismScenarioImporter extends JFrame {
     private JTextArea statusTextArea;
     private JTextField titleTextField;
     // End of variables declaration//GEN-END:variables
+    private static final Logger LOG = Logger.getLogger(ImperialismScenarioImporter.class.getName());
 }

@@ -22,6 +22,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -153,6 +154,9 @@ public class FrameManager {
         this.closingListener = closingListener;
     }
 
+    /**
+     *
+     */
     public void setShutDownOnClose() {
         setClosingListener(shutDownCloseListener);
     }
@@ -208,8 +212,14 @@ public class FrameManager {
         window.setLocation(bounds.x + bounds.width / 2 - size.width / 2, bounds.y + bounds.height / 2 - size.height / 2);
     }
 
+    /**
+     *
+     * @param message
+     * @param black
+     */
     public void scheduleInfoMessage(String message, boolean black) {
         Color color = black ? Color.black : Color.white;
         NotificationFactory.createInfoNotification(message, frame, color).setVisible();
     }
+    private static final Logger LOG = Logger.getLogger(FrameManager.class.getName());
 }

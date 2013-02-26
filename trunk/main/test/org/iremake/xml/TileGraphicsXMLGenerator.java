@@ -17,6 +17,7 @@
 package org.iremake.xml;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.io.Resource;
@@ -46,6 +47,10 @@ public class TileGraphicsXMLGenerator {
         XMLHelper.write(resource, parent);
     }
 
+    /**
+     *
+     * @return
+     */
     public static Element createRiver() {
         Element parent = new Element("River-Overlays");
         parent.addAttribute(new Attribute("location", "river.overlays.png"));
@@ -169,4 +174,5 @@ public class TileGraphicsXMLGenerator {
         child.addAttribute(new Attribute("color", color));
         return child;
     }
+    private static final Logger LOG = Logger.getLogger(TileGraphicsXMLGenerator.class.getName());
 }

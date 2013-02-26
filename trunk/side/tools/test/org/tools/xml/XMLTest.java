@@ -36,6 +36,9 @@ public class XMLTest {
 
     private static final Logger LOG = Logger.getLogger(XMLTest.class.getName());
 
+    /**
+     *
+     */
     @Test
     public void PropertyNullTest() {
         XProperty p = new XProperty(10);
@@ -52,6 +55,11 @@ public class XMLTest {
         }
     }
 
+    /**
+     *
+     * @throws IOException
+     * @throws ParsingException
+     */
     @Test
     public void PropertyIOTest() throws IOException, ParsingException {
 
@@ -67,13 +75,12 @@ public class XMLTest {
 
         // write to file
         Resource location = ResourceUtils.asResource("XMLTest.Property.xml");
-        OutputStream out = location.getOutputStream();
-        XMLHelper.write(out, root);
-        out.close();
-
-        InputStream in = location.getInputStream();
-        root = XMLHelper.read(in);
-        in.close();
+        try (OutputStream out = location.getOutputStream()) {
+            XMLHelper.write(out, root);
+        }
+        try (InputStream in = location.getInputStream()) {
+            root = XMLHelper.read(in);
+        }
         p.fromXML(root);
 
         // some tests

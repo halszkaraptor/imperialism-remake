@@ -20,13 +20,29 @@ package org.sound.sampled;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class TAudioFormat extends AudioFormat {
 
     private Map<String, Object> m_properties;
     private Map<String, Object> m_unmodifiableProperties;
 
+    /**
+     *
+     * @param encoding
+     * @param sampleRate
+     * @param sampleSizeInBits
+     * @param channels
+     * @param frameSize
+     * @param frameRate
+     * @param bigEndian
+     * @param properties
+     */
     public TAudioFormat(AudioFormat.Encoding encoding, float sampleRate,
             int sampleSizeInBits, int channels, int frameSize, float frameRate,
             boolean bigEndian, Map<String, Object> properties) {
@@ -62,6 +78,15 @@ public class TAudioFormat extends AudioFormat {
         m_properties.putAll(properties);
     }
 
+    /**
+     *
+     * @param sampleRate
+     * @param sampleSizeInBits
+     * @param channels
+     * @param signed
+     * @param bigEndian
+     * @param properties
+     */
     public TAudioFormat(float sampleRate, int sampleSizeInBits, int channels,
             boolean signed, boolean bigEndian, Map<String, Object> properties) {
         super(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
@@ -95,10 +120,16 @@ public class TAudioFormat extends AudioFormat {
         return m_properties.get(key);
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     protected void setProperty(String key, Object value) {
         if (m_properties == null) {
             initMaps(null);
         }
         m_properties.put(key, value);
     }
+    private static final Logger LOG = Logger.getLogger(TAudioFormat.class.getName());
 }

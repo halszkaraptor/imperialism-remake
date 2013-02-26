@@ -20,12 +20,17 @@ package org.vorbis.jcraft.jorbis;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
+import java.util.logging.Logger;
 import org.sound.SoundException;
 import org.vorbis.jcraft.jogg.Packet;
 import org.vorbis.jcraft.jogg.Page;
 import org.vorbis.jcraft.jogg.StreamState;
 import org.vorbis.jcraft.jogg.SyncState;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class VorbisFile {
 
     private static class SeekableInputStream extends InputStream {
@@ -137,6 +142,11 @@ public class VorbisFile {
     Block vb = new Block(vd); // local working space for packet->PCM decode
 
     //ov_callbacks callbacks;
+    /**
+     *
+     * @param file
+     * @throws SoundException
+     */
     public VorbisFile(String file) throws SoundException {
         super();
         InputStream is = null;
@@ -159,6 +169,13 @@ public class VorbisFile {
         }
     }
 
+    /**
+     *
+     * @param is
+     * @param initial
+     * @param ibytes
+     * @throws SoundException
+     */
     public VorbisFile(InputStream is, byte[] initial, int ibytes)
             throws SoundException {
         super();
@@ -758,11 +775,19 @@ public class VorbisFile {
     }
 
     // How many logical bitstreams in this physical bitstream?
+    /**
+     *
+     * @return
+     */
     public int streams() {
         return links;
     }
 
     // Is the FILE * associated with vf seekable?
+    /**
+     *
+     * @return
+     */
     public boolean seekable() {
         return seekable;
     }
@@ -775,6 +800,11 @@ public class VorbisFile {
     //
     // If you want the actual bitrate field settings, get them from the
     // vorbis_info structs
+    /**
+     *
+     * @param i
+     * @return
+     */
     public int bitrate(int i) {
         if (i >= links) {
             return -1;
@@ -812,6 +842,10 @@ public class VorbisFile {
 
     // returns the actual bitrate since last call.  returns -1 if no
     // additional data to offer since last call (or at beginning of stream)
+    /**
+     *
+     * @return
+     */
     public int bitrate_instant() {
         int _link = (seekable ? current_link : 0);
         if (samptrack == 0) {
@@ -823,6 +857,11 @@ public class VorbisFile {
         return ret;
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public int serialnumber(int i) {
         if (i >= links) {
             return -1;
@@ -840,6 +879,11 @@ public class VorbisFile {
     // returns: total raw (compressed) length of content if i==-1
     //          raw (compressed) length of that logical bitstream for i==0 to n
     //          -1 if the stream is not seekable (we can't know the length)
+    /**
+     *
+     * @param i
+     * @return
+     */
     public long raw_total(int i) {
         if (!seekable || i >= links) {
             return -1;
@@ -858,6 +902,11 @@ public class VorbisFile {
     // returns: total PCM length (samples) of content if i==-1
     //          PCM length (samples) of that logical bitstream for i==0 to n
     //          -1 if the stream is not seekable (we can't know the length)
+    /**
+     *
+     * @param i
+     * @return
+     */
     public long pcm_total(int i) {
         if (!seekable || i >= links) {
             return -1;
@@ -876,6 +925,11 @@ public class VorbisFile {
     // returns: total seconds of content if i==-1
     //          seconds in that logical bitstream for i==0 to n
     //          -1 if the stream is not seekable (we can't know the length)
+    /**
+     *
+     * @param i
+     * @return
+     */
     public float time_total(int i) {
         if (!seekable || i >= links) {
             return -1;
@@ -898,6 +952,11 @@ public class VorbisFile {
     // surprises).
     //
     // returns zero on success, nonzero on failure
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public int raw_seek(int pos) {
         if (!seekable) {
             return -1; // don't dump machine if we can't seek
@@ -966,6 +1025,11 @@ public class VorbisFile {
 
     // seek to a sample offset relative to the decompressed pcm stream
     // returns zero on success, nonzero on failure
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public int pcm_seek(long pos) {
         long total = pcm_total(-1);
 
@@ -1120,16 +1184,28 @@ public class VorbisFile {
 
     // tell the current stream offset cursor.  Note that seek followed by
     // tell will likely not give the set offset due to caching
+    /**
+     *
+     * @return
+     */
     public long raw_tell() {
         return offset;
     }
 
     // return PCM offset (sample) of next PCM sample to be read
+    /**
+     *
+     * @return
+     */
     public long pcm_tell() {
         return pcm_offset;
     }
 
     // return time offset (seconds) of next PCM sample to be read
+    /**
+     *
+     * @return
+     */
     public float time_tell() {
         // translate time to PCM position and call pcm_seek
 
@@ -1161,6 +1237,11 @@ public class VorbisFile {
     // In the case of a non-seekable bitstream, any call returns the
     // current bitstream.  NULL in the case that the machine is not
     // initialized
+    /**
+     *
+     * @param link
+     * @return
+     */
     public Info getInfo(int link) {
         if (seekable) {
             if (link < 0) {
@@ -1185,6 +1266,11 @@ public class VorbisFile {
         }
     }
 
+    /**
+     *
+     * @param link
+     * @return
+     */
     public Comment getComment(int link) {
         if (seekable) {
             if (link < 0) {
@@ -1375,15 +1461,28 @@ public class VorbisFile {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Info[] getInfo() {
         return vi;
     }
 
+    /**
+     *
+     * @return
+     */
     public Comment[] getComment() {
         return vc;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void close() throws IOException {
         datasource.close();
     }
+    private static final Logger LOG = Logger.getLogger(VorbisFile.class.getName());
 }

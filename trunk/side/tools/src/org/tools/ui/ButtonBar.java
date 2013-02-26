@@ -17,6 +17,7 @@
 package org.tools.ui;
 
 import java.awt.Color;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
@@ -58,4 +59,5 @@ public class ButtonBar {
     public JPanel get() {
         return panel;
     }
+    private static final Logger LOG = Logger.getLogger(ButtonBar.class.getName());
 }

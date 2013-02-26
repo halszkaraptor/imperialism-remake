@@ -16,6 +16,7 @@
  */
 package org.tools.ui.utils;
 
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -28,6 +29,10 @@ public class BasicFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     *
+     * @param title
+     */
     public BasicFrame(String title) {
         super(title);
         initComponents();
@@ -40,4 +45,5 @@ public class BasicFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
     }
+    private static final Logger LOG = Logger.getLogger(BasicFrame.class.getName());
 }

@@ -16,6 +16,7 @@
  */
 package org.tools.ui;
 
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
@@ -57,4 +58,5 @@ public class ButtonFactory {
 
         return button;
     }
+    private static final Logger LOG = Logger.getLogger(ButtonFactory.class.getName());
 }

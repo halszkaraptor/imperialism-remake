@@ -18,9 +18,14 @@
  */
 package org.sound.sampled;
 
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class AudioFormats {
 
     private static boolean doMatch(int i1, int i2) {
@@ -94,4 +99,8 @@ public class AudioFormats {
                 && (Math.abs(format1.getSampleRate() - format2.getSampleRate()) < 1.0e-9)
                 && (Math.abs(format1.getFrameRate() - format2.getFrameRate()) < 1.0e-9);
     }
+
+    private AudioFormats() {
+    }
+    private static final Logger LOG = Logger.getLogger(AudioFormats.class.getName());
 }

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import org.sound.TDebug;
@@ -318,7 +319,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
                         val = -32768;
                     }
                     if (val < 0) {
-                        val = val | 0x8000;
+                        val |= 0x8000;
                     }
                     convbuffer[pointer] = (byte) (val);
                     convbuffer[pointer + 1] = (byte) (val >>> 8);
@@ -492,7 +493,7 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
             }
             bytes = -1;
         }
-        currentBytes = currentBytes + bytes;
+        currentBytes += bytes;
         return bytes;
     }
 
@@ -504,4 +505,5 @@ public class DecodedVorbisAudioInputStream extends TAsynchronousFilteredAudioInp
         super.close();
         oggBitStream_.close();
     }
+    private static final Logger LOG = Logger.getLogger(DecodedVorbisAudioInputStream.class.getName());
 }

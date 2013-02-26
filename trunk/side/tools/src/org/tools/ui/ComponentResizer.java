@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import org.tools.ui.utils.GraphicsUtils;
 import org.tools.ui.utils.WindowSide;
@@ -37,7 +38,7 @@ import org.tools.ui.utils.WindowSide;
  * Based on the wonderful work of Rob Camick, who made his code free. Thanks!
  * http://tips4java.wordpress.com/2009/09/13/resizing-components/
  */
-public final class ComponentResizer extends MouseAdapter {
+public class ComponentResizer extends MouseAdapter {
 
     private WindowSide horizontal, vertical;
     private Insets dragInsets;
@@ -273,7 +274,7 @@ public final class ComponentResizer extends MouseAdapter {
         changeBounds(source, bounds, pressed, dragged);
     }
 
-    protected void changeBounds(Component source, Rectangle bounds, Point pressed, Point current) {
+    void changeBounds(Component source, Rectangle bounds, Point pressed, Point current) {
         //  Start with original locaton and size
 
         int x = bounds.x;
@@ -353,4 +354,5 @@ public final class ComponentResizer extends MouseAdapter {
 
         return drag;
     }
+    private static final Logger LOG = Logger.getLogger(ComponentResizer.class.getName());
 }

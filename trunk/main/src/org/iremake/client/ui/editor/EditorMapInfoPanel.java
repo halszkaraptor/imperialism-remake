@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.editor;
 
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -82,4 +83,5 @@ public class EditorMapInfoPanel extends JPanel {
             province.setText("Province: " + scenario.getProvinceAt(p));
         }
     }
+    private static final Logger LOG = Logger.getLogger(EditorMapInfoPanel.class.getName());
 }

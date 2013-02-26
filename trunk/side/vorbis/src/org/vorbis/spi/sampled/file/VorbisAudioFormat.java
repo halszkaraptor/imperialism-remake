@@ -18,6 +18,7 @@
 package org.vorbis.spi.sampled.file;
 
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import org.sound.sampled.TAudioFormat;
 
@@ -54,4 +55,5 @@ public class VorbisAudioFormat extends TAudioFormat {
     public Map properties() {
         return super.properties();
     }
+    private static final Logger LOG = Logger.getLogger(VorbisAudioFormat.class.getName());
 }

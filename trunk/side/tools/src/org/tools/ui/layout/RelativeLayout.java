@@ -23,6 +23,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import org.tools.utils.Pair;
 
 /**
@@ -113,4 +114,5 @@ public class RelativeLayout implements LayoutManager {
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(RelativeLayout.class.getName());
 }

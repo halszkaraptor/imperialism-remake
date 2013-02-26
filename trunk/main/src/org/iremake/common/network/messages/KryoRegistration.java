@@ -17,6 +17,7 @@
 package org.iremake.common.network.messages;
 
 import com.esotericsoftware.kryo.Kryo;
+import java.util.logging.Logger;
 
 /**
  * Registration of Message classes to the Kryo serializer. All objects that are
@@ -40,4 +41,8 @@ public class KryoRegistration {
         kryo.register(NumberMessage.class);
         kryo.register(NumberMessageType.class);
     }
+
+    private KryoRegistration() {
+    }
+    private static final Logger LOG = Logger.getLogger(KryoRegistration.class.getName());
 }

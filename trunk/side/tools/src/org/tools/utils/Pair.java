@@ -16,6 +16,8 @@
  */
 package org.tools.utils;
 
+import java.util.logging.Logger;
+
 /**
  * Generic Pair<A, B> implementation to help when you really only need a simple
  * Pair, nothing else. In all examples where semantics would help coding it
@@ -102,4 +104,5 @@ public class Pair<A, B> {
     public String toString() {
         return "(" + a + ", " + b + ")";
     }
+    private static final Logger LOG = Logger.getLogger(Pair.class.getName());
 }

@@ -17,6 +17,12 @@
  */
 package org.vorbis.jcraft.jogg;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class Buffer {
 
     private static final int BUFFER_INCREMENT = 256;
@@ -32,6 +38,9 @@ public class Buffer {
     int endbyte = 0;
     int storage = 0;
 
+    /**
+     *
+     */
     public void writeinit() {
         buffer = new byte[BUFFER_INCREMENT];
         ptr = 0;
@@ -39,6 +48,10 @@ public class Buffer {
         storage = BUFFER_INCREMENT;
     }
 
+    /**
+     *
+     * @param s
+     */
     public void write(byte[] s) {
         for (int i = 0; i < s.length; i++) {
             if (s[i] == 0) {
@@ -48,6 +61,11 @@ public class Buffer {
         }
     }
 
+    /**
+     *
+     * @param s
+     * @param bytes
+     */
     public void read(byte[] s, int bytes) {
         int i = 0;
         while (bytes-- != 0) {
@@ -55,14 +73,28 @@ public class Buffer {
         }
     }
 
+    /**
+     *
+     */
     public void writeclear() {
         buffer = null;
     }
 
+    /**
+     *
+     * @param buf
+     * @param bytes
+     */
     public void readinit(byte[] buf, int bytes) {
         readinit(buf, 0, bytes);
     }
 
+    /**
+     *
+     * @param buf
+     * @param start
+     * @param bytes
+     */
     public void readinit(byte[] buf, int start, int bytes) {
         ptr = start;
         buffer = buf;
@@ -70,6 +102,11 @@ public class Buffer {
         storage = bytes;
     }
 
+    /**
+     *
+     * @param value
+     * @param bits
+     */
     public void write(int value, int bits) {
         if (endbyte + 4 >= storage) {
             byte[] foo = new byte[storage + BUFFER_INCREMENT];
@@ -104,6 +141,11 @@ public class Buffer {
         endbit = bits & 7;
     }
 
+    /**
+     *
+     * @param bits
+     * @return
+     */
     public int look(int bits) {
         int ret;
         int m = mask[bits];
@@ -132,6 +174,10 @@ public class Buffer {
         return m & ret;
     }
 
+    /**
+     *
+     * @return
+     */
     public int look1() {
         if (endbyte >= storage) {
             return -1;
@@ -139,6 +185,10 @@ public class Buffer {
         return (buffer[ptr] >> endbit) & 1;
     }
 
+    /**
+     *
+     * @param bits
+     */
     public void adv(int bits) {
         bits += endbit;
         ptr += bits / 8;
@@ -146,6 +196,9 @@ public class Buffer {
         endbit = bits & 7;
     }
 
+    /**
+     *
+     */
     public void adv1() {
         ++endbit;
         if (endbit > 7) {
@@ -155,6 +208,11 @@ public class Buffer {
         }
     }
 
+    /**
+     *
+     * @param bits
+     * @return
+     */
     public int read(int bits) {
         int ret;
         int m = mask[bits];
@@ -193,6 +251,11 @@ public class Buffer {
         return ret;
     }
 
+    /**
+     *
+     * @param bits
+     * @return
+     */
     public int readB(int bits) {
         int ret;
         int m = 32 - bits;
@@ -231,6 +294,10 @@ public class Buffer {
         return ret;
     }
 
+    /**
+     *
+     * @return
+     */
     public int read1() {
         int ret;
         if (endbyte >= storage) {
@@ -255,15 +322,28 @@ public class Buffer {
         return ret;
     }
 
+    /**
+     *
+     * @return
+     */
     public int bytes() {
         return endbyte + (endbit + 7) / 8;
     }
 
+    /**
+     *
+     * @return
+     */
     public int bits() {
         return endbyte * 8 + endbit;
     }
 
+    /**
+     *
+     * @return
+     */
     public byte[] buffer() {
         return buffer;
     }
+    private static final Logger LOG = Logger.getLogger(Buffer.class.getName());
 }

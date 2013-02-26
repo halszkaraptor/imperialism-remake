@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jogg;
 
+import java.util.logging.Logger;
+
 /**
  * DECODING PRIMITIVES: packet streaming layer
  *
@@ -34,6 +36,9 @@ package org.vorbis.jcraft.jogg;
  */
 public class SyncState {
 
+    /**
+     *
+     */
     public byte[] data;
     int storage;
     int fill;
@@ -42,10 +47,18 @@ public class SyncState {
     int headerbytes;
     int bodybytes;
 
+    /**
+     *
+     */
     public void clear() {
         data = null;
     }
 
+    /**
+     *
+     * @param size
+     * @return
+     */
     public int buffer(int size) {
         // first, clear out any space that has been previously returned
         if (returned != 0) {
@@ -72,6 +85,11 @@ public class SyncState {
         return fill;
     }
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     public int wrote(int bytes) {
         if (fill + bytes > storage) {
             return -1;
@@ -89,6 +107,11 @@ public class SyncState {
     private Page pageseek = new Page();
     private final byte[] chksum = new byte[4];
 
+    /**
+     *
+     * @param og
+     * @return
+     */
     public int pageseek(Page og) {
         int page = returned;
         int next;
@@ -216,6 +239,11 @@ public class SyncState {
     //
     // Returns pointers into buffered data; invalidated by next call to
     // _stream, _clear, _init, or _buffer
+    /**
+     *
+     * @param og
+     * @return
+     */
     public int pageout(Page og) {
         // all we need to do is verify a page at the head of the stream
         // buffer.  If it doesn't verify, we look for the next potential
@@ -242,6 +270,10 @@ public class SyncState {
     }
 
     // clear things to an initial state.  Good to call, eg, before seeking
+    /**
+     *
+     * @return
+     */
     public int reset() {
         fill = 0;
         returned = 0;
@@ -251,14 +283,26 @@ public class SyncState {
         return 0;
     }
 
+    /**
+     *
+     */
     public void init() {
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDataOffset() {
         return returned;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getBufferOffset() {
         return fill;
     }
+    private static final Logger LOG = Logger.getLogger(SyncState.class.getName());
 }

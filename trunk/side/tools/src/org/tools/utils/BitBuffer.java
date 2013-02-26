@@ -16,6 +16,8 @@
  */
 package org.tools.utils;
 
+import java.util.logging.Logger;
+
 /**
  * Circular bit buffer allowing reading and writing chunks up to 32 bits to and
  * from the buffer at the same time. It's length is not self-adjusting but the
@@ -99,7 +101,7 @@ public class BitBuffer {
 
         end += number;
         if (end > capacity) {
-            end = end % capacity;
+            end %= capacity;
         }
         size += number;
     }
@@ -145,7 +147,7 @@ public class BitBuffer {
 
         start += number;
         if (start > capacity) {
-            start = start % capacity;
+            start %= capacity;
         }
 
         size -= number;
@@ -310,4 +312,5 @@ public class BitBuffer {
 
         return copy;
     }
+    private static final Logger LOG = Logger.getLogger(BitBuffer.class.getName());
 }

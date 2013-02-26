@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -150,4 +151,5 @@ public class StartScreen extends UIFrame {
 
         return bar.get();
     }
+    private static final Logger LOG = Logger.getLogger(StartScreen.class.getName());
 }

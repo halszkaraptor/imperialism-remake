@@ -18,6 +18,7 @@ package org.tools.xml;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Added ability to keep counting statistics.
@@ -26,10 +27,18 @@ public class XPropertyWithStatistics extends XProperty {
 
     private Map<String, Integer> stats = new HashMap<>(0);
 
+    /**
+     *
+     * @param capacity
+     */
     public XPropertyWithStatistics(int capacity) {
         super(capacity);
     }
 
+    /**
+     *
+     * @param content
+     */
     public XPropertyWithStatistics(Map<String, String> content) {
         super(content);
     }
@@ -55,5 +64,6 @@ public class XPropertyWithStatistics extends XProperty {
     public Integer getCount(String key) {
         return stats.containsKey(key) ? stats.get(key) : 0;
     }
+    private static final Logger LOG = Logger.getLogger(XPropertyWithStatistics.class.getName());
 
 }

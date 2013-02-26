@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class Drft {
 
     int n;
@@ -1352,4 +1354,5 @@ class Drft {
             c[i] = ch[i];
         }
     }
+    private static final Logger LOG = Logger.getLogger(Drft.class.getName());
 }

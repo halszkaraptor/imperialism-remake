@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -41,6 +42,10 @@ public class SPIDecoderTest {
     private String filename = null;
     private String fileurl = null;
 
+    /**
+     *
+     * @throws IOException
+     */
     public SPIDecoderTest() throws IOException {
 
         Properties props = new Properties();
@@ -49,6 +54,9 @@ public class SPIDecoderTest {
         fileurl = props.getProperty("stream");
     }
 
+    /**
+     *
+     */
     @Test
     public void testPlayFile() {
         try {
@@ -86,6 +94,9 @@ public class SPIDecoderTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void testPlayURL() {
         try {
@@ -153,4 +164,5 @@ public class SPIDecoderTest {
             dataIn.close();
         }
     }
+    private static final Logger LOG = Logger.getLogger(SPIDecoderTest.class.getName());
 }

@@ -17,6 +17,12 @@
  */
 package org.vorbis.jcraft.jogg;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class Page {
 
     private static final int[] crc_lookup = new int[256];
@@ -41,11 +47,29 @@ public class Page {
         }
         return r;
     }
+    /**
+     *
+     */
     public byte[] header_base;
+    /**
+     *
+     */
     public int header;
+    /**
+     *
+     */
     public int header_len;
+    /**
+     *
+     */
     public byte[] body_base;
+    /**
+     *
+     */
     public int body;
+    /**
+     *
+     */
     public int body_len;
 
     int version() {
@@ -56,14 +80,26 @@ public class Page {
         return header_base[header + 5] & 0x01;
     }
 
+    /**
+     *
+     * @return
+     */
     public int bos() {
         return header_base[header + 5] & 0x02;
     }
 
+    /**
+     *
+     * @return
+     */
     public int eos() {
         return header_base[header + 5] & 0x04;
     }
 
+    /**
+     *
+     * @return
+     */
     public long granulepos() {
         long foo = header_base[header + 13] & 0xff;
         foo = (foo << 8) | (header_base[header + 12] & 0xff);
@@ -76,6 +112,10 @@ public class Page {
         return foo;
     }
 
+    /**
+     *
+     * @return
+     */
     public int serialno() {
         return (header_base[header + 14] & 0xff) | ((header_base[header + 15] & 0xff) << 8)
                 | ((header_base[header + 16] & 0xff) << 16)
@@ -105,10 +145,19 @@ public class Page {
         header_base[header + 25] = (byte) (crc_reg >>> 24);
     }
 
+    /**
+     *
+     * @return
+     */
     public Page copy() {
         return copy(new Page());
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     public Page copy(Page p) {
         byte[] tmp = new byte[header_len];
         System.arraycopy(header_base, header, tmp, 0, header_len);
@@ -122,4 +171,5 @@ public class Page {
         p.body = 0;
         return p;
     }
+    private static final Logger LOG = Logger.getLogger(Page.class.getName());
 }

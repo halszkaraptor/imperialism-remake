@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.editor;
 
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,4 +54,5 @@ public class EditorNewScenarioDialog extends UIDialog {
         setMinimumSize(0, 0);
         setContent(content);
     }
+    private static final Logger LOG = Logger.getLogger(EditorNewScenarioDialog.class.getName());
 }

@@ -17,6 +17,7 @@
  */
 package org.vorbis.spi.sampled.file;
 
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 
 /**
@@ -24,6 +25,9 @@ import javax.sound.sampled.AudioFormat;
  */
 public class VorbisEncoding extends AudioFormat.Encoding {
 
+    /**
+     *
+     */
     public static final AudioFormat.Encoding VORBISENC = new VorbisEncoding("VORBISENC");
 
     /**
@@ -32,4 +36,5 @@ public class VorbisEncoding extends AudioFormat.Encoding {
     public VorbisEncoding(String name) {
         super(name);
     }
+    private static final Logger LOG = Logger.getLogger(VorbisEncoding.class.getName());
 }

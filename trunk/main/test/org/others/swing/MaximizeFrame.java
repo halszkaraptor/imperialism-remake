@@ -18,6 +18,7 @@ package org.others.swing;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -59,4 +60,5 @@ public class MaximizeFrame {
         // set visible
         frame.setVisible(true);
     }
+    private static final Logger LOG = Logger.getLogger(MaximizeFrame.class.getName());
 }

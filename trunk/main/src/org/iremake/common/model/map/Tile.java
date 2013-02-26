@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model.map;
 
+import java.util.logging.Logger;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
@@ -27,18 +28,46 @@ import org.iremake.common.model.Scenario;
  */
 public class Tile {
 
+    /**
+     *
+     */
     public int terrainID = Settings.getDefaultTerrainID();
 
+    /**
+     *
+     */
     public int resourceID = Settings.RESOURCE_NONE;
+    /**
+     *
+     */
     public boolean resourceVisible = false;
 
+    /**
+     *
+     */
     public int provinceID = Province.NONE;
 
+    /**
+     *
+     */
     public int riverID = Scenario.RIVERID_NONE;
 
+    /**
+     *
+     */
     public static final int RailroadEast = 1;
+    /**
+     *
+     */
     public static final int RailroadSouthEast = 2;
+    /**
+     *
+     */
     public static final int RailroadSouthWest = 4;
 
+    /**
+     *
+     */
     public int railroadConfig = 0; // 3 bits (E, SE, SW)
+    private static final Logger LOG = Logger.getLogger(Tile.class.getName());
 }

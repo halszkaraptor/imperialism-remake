@@ -17,6 +17,7 @@
  */
 package org.vorbis.spi.sampled.file;
 
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 
 /**
@@ -24,5 +25,12 @@ import javax.sound.sampled.AudioFileFormat;
  */
 public class VorbisFileFormatType {
 
+    /**
+     *
+     */
     public static final AudioFileFormat.Type OGG = new AudioFileFormat.Type("OGG", "ogg");
+
+    private VorbisFileFormatType() {
+    }
+    private static final Logger LOG = Logger.getLogger(VorbisFileFormatType.class.getName());
 }

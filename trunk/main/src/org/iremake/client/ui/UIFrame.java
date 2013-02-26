@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 
 /**
@@ -41,4 +42,5 @@ public class UIFrame {
     public void switchTo() {
         FrameManager.getInstance().switchTo(content);
     }
+    private static final Logger LOG = Logger.getLogger(UIFrame.class.getName());
 }

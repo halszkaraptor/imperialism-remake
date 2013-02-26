@@ -18,6 +18,7 @@ package icons;
 
 import java.awt.Image;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.tools.ui.utils.IconLoader;
@@ -91,4 +92,5 @@ public class TestIOManager {
         };
         return loader;
     }
+    private static final Logger LOG = Logger.getLogger(TestIOManager.class.getName());
 }

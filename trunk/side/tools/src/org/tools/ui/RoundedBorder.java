@@ -25,6 +25,7 @@ import java.awt.Shape;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.logging.Logger;
 import javax.swing.border.Border;
 
 /**
@@ -36,6 +37,15 @@ public class RoundedBorder implements Border {
     private final int arc, dr;
     private Color color;
 
+    /**
+     *
+     * @param top
+     * @param left
+     * @param bottom
+     * @param right
+     * @param arc
+     * @param color
+     */
     public RoundedBorder(int top, int left, int bottom, int right, int arc, Color color) {
         if (top < 0 || left < 0 || bottom < 0 || right < 0 || arc < 0) {
             throw new IllegalArgumentException();
@@ -80,4 +90,5 @@ public class RoundedBorder implements Border {
     public boolean isBorderOpaque() {
         return true;
     }
+    private static final Logger LOG = Logger.getLogger(RoundedBorder.class.getName());
 }

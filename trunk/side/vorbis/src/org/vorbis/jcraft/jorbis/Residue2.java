@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class Residue2 extends Residue0 {
 
     @Override
@@ -33,4 +35,5 @@ class Residue2 extends Residue0 {
 
         return _2inverse(vb, vl, in, ch);
     }
+    private static final Logger LOG = Logger.getLogger(Residue2.class.getName());
 }

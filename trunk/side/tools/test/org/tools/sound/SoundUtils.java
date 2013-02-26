@@ -16,6 +16,7 @@
  */
 package org.tools.sound;
 
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Control;
@@ -64,13 +65,14 @@ public class SoundUtils {
             // at least two or not specified, print info
             if (maxLines == AudioSystem.NOT_SPECIFIED || maxLines >= 2) {
                 System.out.println("Description: " + mixerInfo.getDescription() + " Vendor: " + mixerInfo.getVendor() + " Name: " + mixerInfo.getName());
-                SourceDataLine line = (SourceDataLine) mixer.getLine(lineInfo);
-                line.open();
-                for (Control control : line.getControls()) {
-                    System.out.println("Line has control: " + control);
+                try (SourceDataLine line = (SourceDataLine) mixer.getLine(lineInfo)) {
+                    line.open();
+                    for (Control control : line.getControls()) {
+                        System.out.println("Line has control: " + control);
+                    }
                 }
-                line.close();
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(SoundUtils.class.getName());
 }

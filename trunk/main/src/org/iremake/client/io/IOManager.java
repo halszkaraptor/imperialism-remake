@@ -19,7 +19,6 @@ package org.iremake.client.io;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -42,8 +41,8 @@ import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.IconLoader;
 import org.tools.xml.FullXMLable;
-import org.tools.xml.XMLHelper;
 import org.tools.xml.ReadXMLable;
+import org.tools.xml.XMLHelper;
 
 /**
  * Loads from the data folder.

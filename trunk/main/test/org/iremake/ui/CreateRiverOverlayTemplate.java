@@ -25,6 +25,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 
@@ -148,4 +149,5 @@ public class CreateRiverOverlayTemplate {
         File outputfile = new File(OutFileName);
         ImageIO.write(image, "png", outputfile);
     }
+    private static final Logger LOG = Logger.getLogger(CreateRiverOverlayTemplate.class.getName());
 }

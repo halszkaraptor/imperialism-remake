@@ -16,10 +16,12 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.logging.Logger;
+
 /**
  * A message consisting of some text and a type (given by an enum).
  */
-public final class TextMessage implements Message {
+public class TextMessage implements Message {
 
     private String text;
     private TextMessageType type;
@@ -27,15 +29,28 @@ public final class TextMessage implements Message {
     private TextMessage() {
     }
 
+    /**
+     *
+     * @param type
+     * @param text
+     */
     public TextMessage(TextMessageType type, String text) {
         this.type = type;
         this.text = text;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     *
+     * @return
+     */
     public TextMessageType getType() {
         return type;
     }
@@ -44,4 +59,5 @@ public final class TextMessage implements Message {
     public String toString() {
         return String.format("TextMessage [%s, %s]", type.name(), text);
     }
+    private static final Logger LOG = Logger.getLogger(TextMessage.class.getName());
 }

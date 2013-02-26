@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -335,7 +336,7 @@ class Floor1 extends FuncFloor {
                 if (val != 0) {
                     if (val >= room) {
                         if (hiroom > loroom) {
-                            val = val - loroom;
+                            val -= loroom;
                         } else {
                             val = -1 - (val - hiroom);
                         }
@@ -489,7 +490,7 @@ class Floor1 extends FuncFloor {
 
         d[x] *= FLOOR_fromdB_LOOKUP[y];
         while (++x < x1) {
-            err = err + ady;
+            err += ady;
             if (err >= adx) {
                 err -= adx;
                 y += sy;
@@ -608,4 +609,5 @@ class Floor1 extends FuncFloor {
         long frameno;
         long codes;
     }*/ // unused
+    private static final Logger LOG = Logger.getLogger(Floor1.class.getName());
 }

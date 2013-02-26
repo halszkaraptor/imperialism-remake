@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -526,4 +527,5 @@ public class EditorScreen extends UIFrame {
         IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
         // scenario.createEmptyMap(60, 100);
     }
+    private static final Logger LOG = Logger.getLogger(EditorScreen.class.getName());
 }

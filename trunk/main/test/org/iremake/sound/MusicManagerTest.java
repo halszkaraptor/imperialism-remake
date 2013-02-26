@@ -16,6 +16,7 @@
  */
 package org.iremake.sound;
 
+import java.util.logging.Logger;
 import org.iremake.client.sound.MusicManager;
 
 /**
@@ -32,4 +33,5 @@ public class MusicManagerTest {
         Thread.sleep(5000);
         MusicManager.cleanup();
     }
+    private static final Logger LOG = Logger.getLogger(MusicManagerTest.class.getName());
 }

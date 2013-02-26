@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class Lookup {
 
     static final int COS_LOOKUP_SZ = 128;
@@ -137,4 +139,8 @@ class Lookup {
         return (i < 0) ? 1.f : ((i >= (FROMdB_LOOKUP_SZ << FROMdB_SHIFT)) ? 0.f
                 : FROMdB_LOOKUP[i >>> FROMdB_SHIFT] * FROMdB2_LOOKUP[i & FROMdB2_MASK]);
     }
+
+    private Lookup() {
+    }
+    private static final Logger LOG = Logger.getLogger(Lookup.class.getName());
 }

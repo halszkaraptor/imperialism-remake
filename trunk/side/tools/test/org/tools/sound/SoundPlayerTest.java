@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -43,6 +44,11 @@ public class SoundPlayerTest {
     private static final AudioFormat TargetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false);
 
     // @Test
+    /**
+     *
+     * @throws LineUnavailableException
+     * @throws InterruptedException
+     */
     public void PlayListTest() throws LineUnavailableException, InterruptedException {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
@@ -60,6 +66,14 @@ public class SoundPlayerTest {
         Thread.sleep(50000);
     }
 
+    /**
+     *
+     * @throws MalformedURLException
+     * @throws UnsupportedAudioFileException
+     * @throws IOException
+     * @throws LineUnavailableException
+     * @throws InterruptedException
+     */
     @Test
     public void StreamingPlayerTest() throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 
@@ -95,4 +109,5 @@ public class SoundPlayerTest {
          Thread.sleep(3000);
          */
     }
+    private static final Logger LOG = Logger.getLogger(SoundPlayerTest.class.getName());
 }

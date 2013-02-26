@@ -16,6 +16,7 @@
  */
 package org.iremake.common.model.map;
 
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.xml.FullXMLable;
@@ -27,18 +28,45 @@ public class MapItem implements FullXMLable {
 
     private static final String XML_NAME = "MapItem";
 
+    /**
+     *
+     */
     public enum MapItemType {
 
-        Engineer, Army, Fleet, City;
+        /**
+         *
+         */
+        Engineer,
+        /**
+         *
+         */
+        Army,
+        /**
+         *
+         */
+        Fleet,
+        /**
+         *
+         */
+        City;
     }
     private MapItemType type;
     private MapPosition position;
 
+    /**
+     *
+     * @param type
+     * @param position
+     */
     public MapItem(MapItemType type, MapPosition position) {
         this.type = type;
         this.position = position;
     }
 
+    /**
+     *
+     * @return
+     */
     public MapPosition getPosition() {
         return position;
     }
@@ -63,4 +91,5 @@ public class MapItem implements FullXMLable {
         int column = Integer.parseInt(parent.getAttributeValue("position-column"));
         position = new MapPosition(row, column);
     }
+    private static final Logger LOG = Logger.getLogger(MapItem.class.getName());
 }

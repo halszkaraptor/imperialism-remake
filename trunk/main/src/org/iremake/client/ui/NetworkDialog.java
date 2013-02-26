@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -161,4 +162,5 @@ public class NetworkDialog extends UIDialog {
         chatInput.setBorder(BorderFactory.createTitledBorder("Send message"));
         return chatInput;
     }
+    private static final Logger LOG = Logger.getLogger(NetworkDialog.class.getName());
 }

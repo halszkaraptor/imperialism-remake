@@ -17,28 +17,52 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Buffer;
 import org.vorbis.jcraft.jogg.Packet;
 
 // the comments are not part of vorbis_info so that vorbis_info can be
 // static storage
+/**
+ *
+ * @author jkeller1
+ */
 public class Comment {
 
     private static byte[] _vorbis = "vorbis".getBytes();
     private static byte[] _vendor = "Xiphophorus libVorbis I 20000508".getBytes();
     private static final int OV_EIMPL = -130;
     // unlimited user comment fields.
+    /**
+     *
+     */
     public byte[][] user_comments;
+    /**
+     *
+     */
     public int[] comment_lengths;
+    /**
+     *
+     */
     public int comments;
+    /**
+     *
+     */
     public byte[] vendor;
 
+    /**
+     *
+     */
     public void init() {
         user_comments = null;
         comments = 0;
         vendor = null;
     }
 
+    /**
+     *
+     * @param comment
+     */
     public void add(String comment) {
         add(comment.getBytes());
     }
@@ -64,6 +88,11 @@ public class Comment {
         user_comments[comments] = null;
     }
 
+    /**
+     *
+     * @param tag
+     * @param contents
+     */
     public void add_tag(String tag, String contents) {
         if (contents == null) {
             contents = "";
@@ -91,10 +120,21 @@ public class Comment {
         return true;
     }
 
+    /**
+     *
+     * @param tag
+     * @return
+     */
     public String query(String tag) {
         return query(tag, 0);
     }
 
+    /**
+     *
+     * @param tag
+     * @param count
+     * @return
+     */
     public String query(String tag, int count) {
         int foo = query(tag.getBytes(), count);
         if (foo == -1) {
@@ -190,6 +230,11 @@ public class Comment {
         return 0;
     }
 
+    /**
+     *
+     * @param op
+     * @return
+     */
     public int header_out(Packet op) {
         Buffer opb = new Buffer();
         opb.writeinit();
@@ -216,10 +261,19 @@ public class Comment {
         vendor = null;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getVendor() {
         return new String(vendor, 0, vendor.length - 1);
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public String getComment(int i) {
         if (comments <= i) {
             return null;
@@ -239,4 +293,5 @@ public class Comment {
         builder.append("\n");
         return builder.toString();
     }
+    private static final Logger LOG = Logger.getLogger(Comment.class.getName());
 }

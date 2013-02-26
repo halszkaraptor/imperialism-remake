@@ -19,6 +19,7 @@ package org.tools.utils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 /**
  * A very simple storage for all kind of static, global objects we might need
@@ -103,4 +104,5 @@ public class CentralStatic {
     public static boolean remove(String id) {
         return storage.remove(id) != null;
     }
+    private static final Logger LOG = Logger.getLogger(CentralStatic.class.getName());
 }

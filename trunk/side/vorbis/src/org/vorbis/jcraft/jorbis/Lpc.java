@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class Lpc {
     // en/decode lookups
 
@@ -179,4 +181,5 @@ class Lpc {
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(Lpc.class.getName());
 }

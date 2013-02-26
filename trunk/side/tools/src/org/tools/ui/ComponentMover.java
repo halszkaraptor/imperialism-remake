@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
@@ -44,7 +45,7 @@ import org.tools.ui.utils.GraphicsUtils;
  * Based on the wonderful work of Rob Camick, who made his code free. Thanks!
  * http://tips4java.wordpress.com/2009/06/14/moving-windows/
  */
-public final class ComponentMover extends MouseAdapter {
+public class ComponentMover extends MouseAdapter {
 
     private Insets dragInsets = new Insets(0, 0, 0, 0);
     private Dimension snapSize = new Dimension(1, 1);
@@ -289,4 +290,5 @@ public final class ComponentMover extends MouseAdapter {
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(ComponentMover.class.getName());
 }

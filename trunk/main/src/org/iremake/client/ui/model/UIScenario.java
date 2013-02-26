@@ -101,4 +101,17 @@ public class UIScenario extends Scenario {
     public TileGraphicsRepository getTileGraphicsRepository() {
         return repository;
     }
+
+    /**
+     *
+     * @param p
+     * @return
+     */
+    public Image getRiverOverlayAt(MapPosition p) {
+        int id = getRiverIDAt(p);
+        if (id == Scenario.RIVERID_NONE) {
+            return null;
+        }
+        return repository.getRiverOverlay(id);
+    }
 }

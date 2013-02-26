@@ -18,6 +18,7 @@ package org.iremake.common.model.map;
 
 import org.iremake.common.Settings;
 import org.iremake.common.model.Province;
+import org.iremake.common.model.Scenario;
 
 /**
  * A tile holds the map together. A map is an array of tiles.
@@ -33,9 +34,11 @@ public class Tile {
 
     public int provinceID = Province.NONE;
 
+    public int riverID = Scenario.RIVERID_NONE;
+
     public static final int RailroadEast = 1;
     public static final int RailroadSouthEast = 2;
     public static final int RailroadSouthWest = 4;
-    
+
     public int railroadConfig = 0; // 3 bits (E, SE, SW)
 }

@@ -71,6 +71,8 @@ import org.tools.xml.XMLHelper;
  */
 public class ImperialismScenarioImporter extends JFrame {
 
+    private final Map<Integer, Integer> riverIDs = new HashMap<>();
+
     private static final FileFilter ImportFileFilter = new FileFilter() {
         @Override
         public boolean accept(File f) {
@@ -99,6 +101,48 @@ public class ImperialismScenarioImporter extends JFrame {
         fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(ImportFileFilter);
+
+        // river overlay IDs
+        riverIDs.put(0, Scenario.RIVERID_NONE);
+
+        // connections
+        riverIDs.put(11,1);
+        riverIDs.put(12,2);
+        riverIDs.put(13,4);
+        riverIDs.put(14,3);
+        riverIDs.put(15,6);
+        riverIDs.put(16,10);
+        riverIDs.put(17,8);
+        riverIDs.put(18,12);
+        riverIDs.put(19,7);
+        riverIDs.put(20,11);
+        riverIDs.put(21,9);
+        riverIDs.put(22,13);
+        riverIDs.put(23,15);
+        riverIDs.put(24,14);
+        riverIDs.put(25,12);
+        riverIDs.put(26,19);
+
+        // heads
+        riverIDs.put(43,20);
+        riverIDs.put(44,21);
+        riverIDs.put(45,22);
+        riverIDs.put(46,23);
+        riverIDs.put(47,24);
+        riverIDs.put(48,25);
+        riverIDs.put(49,26);
+        riverIDs.put(50,27);
+
+        // mouths
+        riverIDs.put(51,28);
+        riverIDs.put(52,29);
+        riverIDs.put(53,30);
+        riverIDs.put(54,31);
+        riverIDs.put(55,32);
+        riverIDs.put(56,33);
+        riverIDs.put(57,34);
+        riverIDs.put(58,35);
+
     }
 
     /**
@@ -600,6 +644,9 @@ public class ImperialismScenarioImporter extends JFrame {
                 if ((railroad[i] & (1 << 4)) != 0) {
                     tile.railroadConfig &= Tile.RailroadSouthWest;
                 }
+
+                // river
+                tile.riverID = riverIDs.get(rivers[i]);
 
                 // if city at this position, tell province about
                 if (cities[i] != 0) {

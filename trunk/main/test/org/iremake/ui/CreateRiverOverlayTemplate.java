@@ -19,11 +19,14 @@ package org.iremake.ui;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.UIManager;
 
 /**
  * Creates an template overlay image for creating river overlays.
@@ -38,16 +41,13 @@ public class CreateRiverOverlayTemplate {
     private static final Color BorderColor = Color.gray;
     private static final Color MarkerColor = Color.red;
     private static final Color ConnectionColor = Color.blue;
-    private static final String OutFileName = "C:\\Users\\jkeller1\\Dropbox\\remake\\graphics\\Trilarion\\rivers\\template.png";
-
-    private static final int[][] Connections =
-        {{0, 0, 2, 0, 3, 2}, {0, 1, 2, 0, 2, 3}, {0, 2, 2, 0, 1, 3}, {0, 3, 2, 0, 0, 2}, {0, 4, 2, 0, 0, 1}, {0, 5, 3, 1, 2, 3},
-         {0, 6, 3, 1, 1, 3}, {0, 7, 3, 1, 0, 2}, {1, 0, 3, 1, 0, 1}, {1, 1, 3, 1, 1, 0}, {1, 2, 3, 2, 1, 3}, {1, 3, 3, 2, 0, 2},
-         {1, 4, 3, 2, 0, 1}, {1, 5, 3, 2, 1, 0}, {1, 6, 2, 3, 0, 2}, {1, 7, 2, 3, 0, 1}, {2, 0, 2, 3, 1, 0}, {2, 1, 1, 3, 0, 1},
-         {2, 2, 1, 3, 1, 0}, {2, 3, 0, 2, 1, 0}, {2, 4, 2, 0, 2, 1}, {2, 5, 3, 1, 2, 1}, {2, 6, 3, 2, 2, 2}, {2, 7, 2, 3, 2, 2},
-         {3, 0, 1, 3, 1, 2}, {3, 1, 0, 2, 1, 2}, {3, 2, 0, 1, 1, 1}, {3, 3, 1, 0, 1, 1}};
-    private static final int[][] Mounds =
-        {{3, 4, 2, 0}, {3, 5, 3, 1}, {3, 6, 3, 2}, {3, 7, 2, 3}, {4, 0, 1, 3}, {4, 1, 0, 2}, {4, 2, 0, 1}, {4, 3, 1, 0}};
+    private static final String OutFileName = "template.png";
+    private static final int[][] Connections = {{0, 0, 2, 0, 3, 2}, {0, 1, 2, 0, 2, 3}, {0, 2, 2, 0, 1, 3}, {0, 3, 2, 0, 0, 2}, {0, 4, 2, 0, 0, 1}, {0, 5, 3, 1, 2, 3},
+        {0, 6, 3, 1, 1, 3}, {0, 7, 3, 1, 0, 2}, {1, 0, 3, 1, 0, 1}, {1, 1, 3, 1, 1, 0}, {1, 2, 3, 2, 1, 3}, {1, 3, 3, 2, 0, 2},
+        {1, 4, 3, 2, 0, 1}, {1, 5, 3, 2, 1, 0}, {1, 6, 2, 3, 0, 2}, {1, 7, 2, 3, 0, 1}, {2, 0, 2, 3, 1, 0}, {2, 1, 1, 3, 0, 1},
+        {2, 2, 1, 3, 1, 0}, {2, 3, 0, 2, 1, 0}, {2, 4, 2, 0, 2, 1}, {2, 5, 3, 1, 2, 1}, {2, 6, 3, 2, 2, 2}, {2, 7, 2, 3, 2, 2},
+        {3, 0, 1, 3, 1, 2}, {3, 1, 0, 2, 1, 2}, {3, 2, 0, 1, 1, 1}, {3, 3, 1, 0, 1, 1}};
+    private static final int[][] Mounds = {{3, 4, 2, 0}, {3, 5, 3, 1}, {3, 6, 3, 2}, {3, 7, 2, 3}, {4, 0, 1, 3}, {4, 1, 0, 2}, {4, 2, 0, 1}, {4, 3, 1, 0}};
     private static final int[][] Unused = {{4, 4}, {4, 5}, {4, 6}, {4, 7}};
     private static final int[] Location = {0, TileSize / 4, TileSize * 3 / 4, TileSize};
 
@@ -78,6 +78,18 @@ public class CreateRiverOverlayTemplate {
         for (int i = 1; i < Rows; i++) {
             int y = i * TileSize;
             g2.drawLine(0, y, width, y);
+        }
+
+        // big numbers
+        Font font = UIManager.getFont("Label.font");
+        for (int c = 0; c < Columns; c++) {
+            int x = c * TileSize + TileSize / 2;
+            for (int r = 0; r < Rows; r++) {
+                int y = r * TileSize + TileSize / 2;
+                String text = String.valueOf(r * Columns + c + 1);
+                Rectangle bounds = font.getStringBounds(text, g2.getFontRenderContext()).getBounds();
+                g2.drawString(text, x - bounds.x - bounds.width / 2, y - bounds.y - bounds.height / 2);
+            }
         }
 
         // small red lines

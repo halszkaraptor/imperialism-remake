@@ -248,7 +248,13 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         }
 
         // draw rivers
-        // TODO rivers?
+        for (ScreenPosition r : fulldrawn) {
+            Image overlay = scenario.getRiverOverlayAt(r.p);
+            if (overlay != null) {
+                drawImageCentered(g2d, overlay, r.x + tileSize.width / 2, r.y + tileSize.height / 2);
+            }
+        }
+
 
         // draw tile borders, first province borders
         for (ScreenPosition r : fulldrawn) {

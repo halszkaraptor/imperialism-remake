@@ -121,7 +121,7 @@ public class IOManager {
      * @param location
      * @return
      */
-    public static Image getAsImage(Places place, String location) {
+    public static BufferedImage getAsImage(Places place, String location) {
         Resource resource = getAsResource(place, location);
         statistics.add(resource.getPath());
         BufferedImage image = null;

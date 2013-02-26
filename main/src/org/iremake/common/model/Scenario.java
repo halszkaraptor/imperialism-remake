@@ -47,6 +47,8 @@ public class Scenario implements FullXMLable {
     public static final int BITSIZE_RESOURCEID = 5;
     public static final int BITSIZE_PROVINCEID = 14;
     public static final int BITSIZE_RAILROAD_CONFIG = 3;
+    public static final int BITSIZE_RIVERID = 6;
+    public static final int RIVERID_NONE = 63;
     private static final String XMLNAME = "Scenario";
     private static final String XMLNAME_NATIONS = "Nations";
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
@@ -153,6 +155,19 @@ public class Scenario implements FullXMLable {
             return null;
         }
         return getTile(p).terrainID;
+    }
+
+    /**
+     *
+     * @param p
+     * @return
+     */
+    public int getRiverIDAt(MapPosition p) {
+        if (!containsPosition(p)) {
+            LOG.log(Level.INFO, "Terrain position outside of map.");
+            return -1;
+        }
+        return getTile(p).riverID;
     }
 
     /**
@@ -465,6 +480,17 @@ public class Scenario implements FullXMLable {
         schild.appendChild(railMapBuffer.toXMLString());
         child.appendChild(schild);
 
+        // river overlay
+        BitBuffer riverBuffer = new BitBuffer(BITSIZE_RIVERID * rows * columns);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                riverBuffer.add(map[row][column].riverID, BITSIZE_RIVERID);
+            }
+        }
+        schild = new Element("Rivers");
+        schild.appendChild(riverBuffer.toXMLString());
+        child.appendChild(schild);
+
         // nation list
         parent.appendChild(nations.toXML());
 
@@ -518,6 +544,11 @@ public class Scenario implements FullXMLable {
         BitBuffer railbuffer = BitBuffer.fromXMLString(content);
         railbuffer.trimTo(BITSIZE_RAILROAD_CONFIG * size);
 
+        // reading of rivers map
+        content = child.getFirstChildElement("Rivers").getValue();
+        BitBuffer riverbuffer = BitBuffer.fromXMLString(content);
+        riverbuffer.trimTo(BITSIZE_RIVERID * size);
+
         // TODO test size of string with size
         // TODO more checks (positivity)
         for (int row = 0; row < rows; row++) {
@@ -528,6 +559,7 @@ public class Scenario implements FullXMLable {
                 tile.resourceVisible = resbuffer.get();
                 tile.provinceID = probuffer.get(BITSIZE_PROVINCEID);
                 tile.railroadConfig = railbuffer.get(BITSIZE_RAILROAD_CONFIG);
+                tile.riverID = riverbuffer.get(BITSIZE_RIVERID);
                 map[row][column] = tile;
             }
         }

@@ -19,6 +19,7 @@ package org.iremake.client.ui.model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +47,8 @@ public class TileGraphicsRepository implements ReadXMLable {
     private Map<String, Image> miscOverlays = new HashMap<>();
     /* */
     private Map<String, Image> unitOverlays = new HashMap<>();
+
+    private Image[] riverOverlays;
 
     /* the size of the tiles, i.e. every stored image must have that size */
     private Dimension tileSize;
@@ -124,6 +127,15 @@ public class TileGraphicsRepository implements ReadXMLable {
      */
     public Image getUnitOverlay(String type, String action) {
         return unitOverlays.get(type + "|" + action);
+    }
+
+    /**
+     * 
+     * @param id
+     * @return
+     */
+    public Image getRiverOverlay(int id) {
+        return riverOverlays[id];
     }
 
     /**
@@ -209,7 +221,7 @@ public class TileGraphicsRepository implements ReadXMLable {
             // import river overlay
             element = parent.getFirstChildElement("River-Overlays");
             String location = element.getAttributeValue("location");
-            Image rivers = IOManager.getAsImage(Places.GraphicsScenario, location);
+            BufferedImage rivers = IOManager.getAsImage(Places.GraphicsScenario, location);
             // test if width and height is a multiple of tileSize
             if (rivers.getWidth(null) % tileSize.width != 0 || rivers.getHeight(null) % tileSize.height != 0) {
                 // LOG
@@ -220,6 +232,12 @@ public class TileGraphicsRepository implements ReadXMLable {
             if (rows * columns < 36) {
             }
             // lets copy out the parts and store them
+            riverOverlays = new Image[36];
+            for (int i = 0; i < 36; i++) {
+                int x = i % 8 * tileSize.width;
+                int y = i / 8 * tileSize.height;
+                riverOverlays[i] = rivers.getSubimage(x, y, tileSize.width, tileSize.height);
+            }
         }
 
         // import resource overlays

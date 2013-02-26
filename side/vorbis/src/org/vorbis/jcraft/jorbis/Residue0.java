@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -321,4 +322,5 @@ class Residue0 extends FuncResidue {
             return 0;
         }
     }
+    private static final Logger LOG = Logger.getLogger(Residue0.class.getName());
 }

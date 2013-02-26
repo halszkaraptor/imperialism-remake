@@ -16,12 +16,11 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -217,4 +216,5 @@ public class OptionsDialog extends UIDialog {
             item.updateOption();
         }
     }
+    private static final Logger LOG = Logger.getLogger(OptionsDialog.class.getName());
 }

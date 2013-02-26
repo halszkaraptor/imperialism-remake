@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.game;
 
+import java.util.logging.Logger;
 import org.iremake.client.ui.UIDialog;
 
 /**
@@ -25,7 +26,11 @@ import org.iremake.client.ui.UIDialog;
  */
 public class NewsPaperDialog extends UIDialog {
 
+    /**
+     *
+     */
     public NewsPaperDialog() {
         super("");
     }
+    private static final Logger LOG = Logger.getLogger(NewsPaperDialog.class.getName());
 }

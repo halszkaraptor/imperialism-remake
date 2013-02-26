@@ -18,6 +18,7 @@ package org.iremake.client.ui.game;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -30,6 +31,10 @@ import org.iremake.client.ui.UIDialog;
 // TODO unstatic
 public class GameDialogBuilder {
 
+    /**
+     *
+     * @param panel
+     */
     public static void build(GamePanel panel) {
 
         JPanel content = new JPanel();
@@ -61,4 +66,5 @@ public class GameDialogBuilder {
 
     private GameDialogBuilder() {
     }
+    private static final Logger LOG = Logger.getLogger(GameDialogBuilder.class.getName());
 }

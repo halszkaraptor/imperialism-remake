@@ -18,10 +18,9 @@ package org.iremake.client.ui;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.WindowConstants;
@@ -156,6 +155,7 @@ public class UIDialog {
         dialog.setContent(content);
         dialog.start();
     }
+    private static final Logger LOG = Logger.getLogger(UIDialog.class.getName());
 }
 
 

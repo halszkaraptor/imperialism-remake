@@ -68,6 +68,10 @@ public class OggPlayer {
         outputLine = line;
     }
 
+    /**
+     *
+     * @param arg
+     */
     public static void main(String[] arg) {
         // get a line and construct a new player
         AudioFormat requestedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, Rate, 16, Channels, 4, Rate, false);
@@ -296,7 +300,7 @@ public class OggPlayer {
                                                 val = -32768;
                                             }
                                             if (val < 0) {
-                                                val = val | 0x8000;
+                                                val |= 0x8000;
                                             }
                                             convbuffer[ptr] = (byte) (val);
                                             convbuffer[ptr + 1] = (byte) (val >>> 8);

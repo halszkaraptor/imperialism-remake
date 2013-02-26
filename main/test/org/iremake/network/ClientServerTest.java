@@ -71,4 +71,5 @@ public class ClientServerTest {
         }, 5000);
 
     }
+    private static final Logger LOG = Logger.getLogger(ClientServerTest.class.getName());
 }

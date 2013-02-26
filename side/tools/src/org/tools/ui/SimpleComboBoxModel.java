@@ -17,6 +17,7 @@
 package org.tools.ui;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;
 
@@ -105,4 +106,5 @@ public class SimpleComboBoxModel<E> implements ComboBoxModel<E> {
     @Override
     public void removeListDataListener(ListDataListener l) {
     }
+    private static final Logger LOG = Logger.getLogger(SimpleComboBoxModel.class.getName());
 }

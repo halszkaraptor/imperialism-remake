@@ -17,10 +17,15 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 import org.vorbis.jcraft.jogg.Packet;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class Info {
 
     private static final int OV_EBADPACKET = -136;
@@ -33,8 +38,17 @@ public class Info {
     private static final int VI_RESB = 3;
     private static final int VI_MAPB = 1;
     private static final int VI_WINDOWB = 1;
+    /**
+     *
+     */
     public int version;
+    /**
+     *
+     */
     public int channels;
+    /**
+     *
+     */
     public int rate;
     // The below bitrate declarations are *hints*.
     // Combinations of the three values carry the following implications:
@@ -83,10 +97,16 @@ public class Info {
     float preecho_clamp;
 
     // used by synthesis, which has a full, alloced vi
+    /**
+     *
+     */
     public void init() {
         rate = 0;
     }
 
+    /**
+     *
+     */
     public void clear() {
         for (int i = 0; i < modes; i++) {
             mode_param[i] = null;
@@ -296,6 +316,12 @@ public class Info {
     // the first page that identifies basic parameters, a second packet
     // with bitstream comments and a third packet that holds the
     // codebook.
+    /**
+     *
+     * @param vc
+     * @param op
+     * @return
+     */
     public int synthesis_headerin(Comment vc, Packet op) {
         Buffer opb = new Buffer();
 
@@ -420,6 +446,11 @@ public class Info {
         return 0;
     }
 
+    /**
+     *
+     * @param op
+     * @return
+     */
     public int blocksize(Packet op) {
         //codec_setup_info
         Buffer opb = new Buffer();
@@ -454,4 +485,5 @@ public class Info {
     public String toString() {
         return String.format("version: %d, channels: %d, rate %d, bitrate %d, %d, %d", version, channels, rate, bitrate_upper, bitrate_nominal, bitrate_lower);
     }
+    private static final Logger LOG = Logger.getLogger(Info.class.getName());
 }

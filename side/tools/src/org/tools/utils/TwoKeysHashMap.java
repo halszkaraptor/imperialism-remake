@@ -19,6 +19,7 @@ package org.tools.utils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * This class realizes a simple two key hash map, i.e. a 2D hash map. Data can
@@ -145,4 +146,5 @@ public class TwoKeysHashMap<K1, K2, V> {
     public boolean isEmpty() {
         return map.isEmpty();
     }
+    private static final Logger LOG = Logger.getLogger(TwoKeysHashMap.class.getName());
 }

@@ -16,6 +16,7 @@
  */
 package org.iremake.scenario;
 
+import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.common.model.Nation;
@@ -49,4 +50,5 @@ public class ScenarioLoadSaveTest {
 
         IOManager.saveToXML(Places.None, "test-scenario.xml", scenario);
     }
+    private static final Logger LOG = Logger.getLogger(ScenarioLoadSaveTest.class.getName());
 }

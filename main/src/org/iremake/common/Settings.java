@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
@@ -40,7 +41,9 @@ import org.iremake.client.io.Places;
  */
 public class Settings {
 
-    /* common port for the network communication */
+    /**
+     * common port for the network communication
+     */
     public static final int NETWORK_PORT = 19357;
     /* mapping: id -> description of terrain types */
     private static Map<Integer, String> terrainNames;
@@ -48,7 +51,9 @@ public class Settings {
     private static int defaultTerrainID;
     /* mapping: id -> description of resource types */
     private static Map<Integer, String> resourceNames;
-    /* the default (none) resource id */
+    /**
+     * the default (none) resource id
+     */
     public static final int RESOURCE_NONE = 0;
 
     /**
@@ -127,4 +132,5 @@ public class Settings {
     public static int getDefaultTerrainID() {
         return defaultTerrainID;
     }
+    private static final Logger LOG = Logger.getLogger(Settings.class.getName());
 }

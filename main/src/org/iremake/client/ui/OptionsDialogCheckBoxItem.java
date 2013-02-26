@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import org.iremake.client.Option;
 
@@ -58,4 +59,5 @@ public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
     public void updateOption() {
         option.putBoolean(item.isSelected());
     }
+    private static final Logger LOG = Logger.getLogger(OptionsDialogCheckBoxItem.class.getName());
 }

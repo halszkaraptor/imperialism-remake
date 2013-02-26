@@ -25,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * We should make sure that we close everything if an error occurs.
@@ -215,4 +216,5 @@ public class ResourceUtils {
             }
         }
     }
+    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
 }

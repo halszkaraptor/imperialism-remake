@@ -60,7 +60,7 @@ public class TableEditorFrame extends BasicFrame {
 
         private final String extension;
 
-        public FileFilterImpl(String extension) {
+        FileFilterImpl(String extension) {
             this.extension = extension;
         }
 

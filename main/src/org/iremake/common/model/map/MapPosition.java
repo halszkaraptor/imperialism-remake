@@ -16,6 +16,8 @@
  */
 package org.iremake.common.model.map;
 
+import java.util.logging.Logger;
+
 /**
  * A general position. Used in our context for addressing the position on the
  * map with (-1,-1) being the generic 'off' value.
@@ -100,11 +102,12 @@ public class MapPosition {
     }
 
     /**
-     * 
+     *
      * @return
      */
     @Override
     public int hashCode() {
         return row + 13 * column;
     }
+    private static final Logger LOG = Logger.getLogger(MapPosition.class.getName());
 }

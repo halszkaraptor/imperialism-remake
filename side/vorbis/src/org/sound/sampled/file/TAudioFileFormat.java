@@ -20,6 +20,7 @@ package org.sound.sampled.file;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 
@@ -43,6 +44,14 @@ public class TAudioFileFormat extends AudioFileFormat {
         super(type, nLengthInBytes, audioFormat, nLengthInFrames);
     }
 
+    /**
+     *
+     * @param type
+     * @param audioFormat
+     * @param nLengthInFrames
+     * @param nLengthInBytes
+     * @param properties
+     */
     public TAudioFileFormat(Type type, AudioFormat audioFormat, int nLengthInFrames,
             int nLengthInBytes, Map<String, Object> properties) {
         super(type, nLengthInBytes, audioFormat, nLengthInFrames);
@@ -63,7 +72,13 @@ public class TAudioFileFormat extends AudioFileFormat {
         return m_unmodifiableProperties;
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     protected void setProperty(String key, Object value) {
         m_properties.put(key, value);
     }
+    private static final Logger LOG = Logger.getLogger(TAudioFileFormat.class.getName());
 }

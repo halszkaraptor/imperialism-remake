@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -163,4 +164,5 @@ public class FullScreenSizedFrame {
         frame.setVisible(true);
         timer.start();
     }
+    private static final Logger LOG = Logger.getLogger(FullScreenSizedFrame.class.getName());
 }

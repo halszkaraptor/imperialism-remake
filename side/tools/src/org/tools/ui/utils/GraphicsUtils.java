@@ -31,6 +31,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
@@ -45,6 +46,9 @@ import javax.swing.KeyStroke;
  */
 public class GraphicsUtils {
 
+    /**
+     *
+     */
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     /**
@@ -52,6 +56,9 @@ public class GraphicsUtils {
      */
     private static final String KEYID = "scrambledEggs";
     private final static Rectangle ScreenBounds;
+    /**
+     *
+     */
     public final static Rectangle MaximumBounds;
 
     /* We determine the screen bounds once at the start of the programm in this static initialization section */
@@ -347,4 +354,5 @@ public class GraphicsUtils {
         int b = Integer.parseInt(hex.substring(4, 6), 16);
         return new Color(r, g, b);
     }
+    private static final Logger LOG = Logger.getLogger(GraphicsUtils.class.getName());
 }

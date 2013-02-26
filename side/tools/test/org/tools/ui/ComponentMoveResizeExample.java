@@ -16,6 +16,8 @@
  */
 package org.tools.ui;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -27,4 +29,5 @@ public class ComponentMoveResizeExample {
     public static void main(String[] args) {
         // TODO code application logic here
     }
+    private static final Logger LOG = Logger.getLogger(ComponentMoveResizeExample.class.getName());
 }

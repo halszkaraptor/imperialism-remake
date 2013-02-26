@@ -17,6 +17,12 @@
  */
 package org.vorbis.jcraft.jogg;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class StreamState {
 
     byte[] body_data; /* bytes from packet bodies */
@@ -39,6 +45,9 @@ public class StreamState {
     int lacing_returned;
     byte[] header = new byte[282]; /* working space for header encode */
 
+    /**
+     *
+     */
     public int e_o_s; /* set when we have buffered the last packet in the
      logical bitstream */
 
@@ -55,6 +64,9 @@ public class StreamState {
 
     long granulepos;
 
+    /**
+     *
+     */
     public StreamState() {
         init();
     }
@@ -72,7 +84,11 @@ public class StreamState {
         granule_vals = new long[lacing_storage];
     }
 
-    public final void init(int serialno) {
+    /**
+     *
+     * @param serialno
+     */
+    public void init(int serialno) {
         if (body_data == null) {
             init();
         } else {
@@ -89,6 +105,9 @@ public class StreamState {
         this.serialno = serialno;
     }
 
+    /**
+     *
+     */
     public void clear() {
         body_data = null;
         lacing_vals = null;
@@ -118,6 +137,11 @@ public class StreamState {
     }
 
     /* submit data to the internal buffer of the framing engine */
+    /**
+     *
+     * @param op
+     * @return
+     */
     public int packetin(Packet op) {
         int lacing_val = op.bytes / 255 + 1;
 
@@ -168,6 +192,11 @@ public class StreamState {
         return 0;
     }
 
+    /**
+     *
+     * @param op
+     * @return
+     */
     public int packetout(Packet op) {
 
         /* The last part of decode. We have the stream broken into packet
@@ -224,6 +253,11 @@ public class StreamState {
 
     // add the incoming page to the stream state; we decompose the page
     // into packet segments here as well.
+    /**
+     *
+     * @param og
+     * @return
+     */
     public int pagein(Page og) {
         byte[] header_base = og.header_base;
         int header_here = og.header;
@@ -370,6 +404,11 @@ public class StreamState {
      undersized; you almost certainly want to use ogg_stream_pageout
      (and *not* ogg_stream_flush) unless you need to flush an undersized
      page in the middle of a stream for some reason. */
+    /**
+     *
+     * @param og
+     * @return
+     */
     public int flush(Page og) {
 
         int i;
@@ -498,6 +537,11 @@ public class StreamState {
     /* This constructs pages from buffered packet segments.  The pointers
      returned are to static buffers; do not free. The returned buffers are
      good only until the next call (using the same ogg_stream_state) */
+    /**
+     *
+     * @param og
+     * @return
+     */
     public int pageout(Page og) {
         if ((e_o_s != 0 && lacing_fill != 0)
                 || /* 'were done, now flush' case */ body_fill - body_returned > 4096
@@ -508,10 +552,18 @@ public class StreamState {
         return 0;
     }
 
+    /**
+     *
+     * @return
+     */
     public int eof() {
         return e_o_s;
     }
 
+    /**
+     *
+     * @return
+     */
     public int reset() {
         body_fill = 0;
         body_returned = 0;
@@ -527,4 +579,5 @@ public class StreamState {
         granulepos = 0;
         return 0;
     }
+    private static final Logger LOG = Logger.getLogger(StreamState.class.getName());
 }

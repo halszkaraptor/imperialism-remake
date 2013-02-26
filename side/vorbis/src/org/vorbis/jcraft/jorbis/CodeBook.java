@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -469,4 +470,5 @@ class CodeBook {
 
         return t;
     }
+    private static final Logger LOG = Logger.getLogger(CodeBook.class.getName());
 }

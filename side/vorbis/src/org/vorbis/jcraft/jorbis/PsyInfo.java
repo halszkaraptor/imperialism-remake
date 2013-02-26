@@ -18,6 +18,9 @@
 package org.vorbis.jcraft.jorbis;
 
 // psychoacoustic setup
+
+import java.util.logging.Logger;
+
 class PsyInfo {
 
     int athp;
@@ -57,4 +60,5 @@ class PsyInfo {
 
     void free() {
     }
+    private static final Logger LOG = Logger.getLogger(PsyInfo.class.getName());
 }

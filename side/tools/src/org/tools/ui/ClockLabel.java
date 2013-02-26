@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -74,4 +75,5 @@ public class ClockLabel extends JLabel {
         // new Date() implicitely calls System.currentTimeMillis()
         setText(format.format(new Date()));
     }
+    private static final Logger LOG = Logger.getLogger(ClockLabel.class.getName());
 }

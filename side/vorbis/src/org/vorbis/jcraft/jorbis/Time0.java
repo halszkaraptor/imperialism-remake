@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Buffer;
 
 class Time0 extends FuncTime {
@@ -47,4 +48,5 @@ class Time0 extends FuncTime {
     int inverse(Block vb, Object i, float[] in, float[] out) {
         return 0;
     }
+    private static final Logger LOG = Logger.getLogger(Time0.class.getName());
 }

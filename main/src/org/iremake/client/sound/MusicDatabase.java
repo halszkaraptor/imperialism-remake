@@ -19,6 +19,7 @@ package org.iremake.client.sound;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
@@ -33,6 +34,10 @@ public class MusicDatabase implements ReadXMLable {
 
     private List<Resource> list;
 
+    /**
+     *
+     * @return
+     */
     public List<Resource> getBackgroundMusicList() {
         return Collections.unmodifiableList(list);
     }
@@ -61,5 +66,6 @@ public class MusicDatabase implements ReadXMLable {
             list.add(resource);
         }
     }
+    private static final Logger LOG = Logger.getLogger(MusicDatabase.class.getName());
 
 }

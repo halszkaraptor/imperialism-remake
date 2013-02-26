@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 /**
  * function: LSP (also called LSF) conversion routines
  *
@@ -90,4 +92,8 @@ class Lsp {
 
         }
     }
+
+    private Lsp() {
+    }
+    private static final Logger LOG = Logger.getLogger(Lsp.class.getName());
 }

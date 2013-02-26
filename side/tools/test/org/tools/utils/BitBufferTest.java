@@ -16,6 +16,7 @@
  */
 package org.tools.utils;
 
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.junit.Test;
 
@@ -169,4 +170,5 @@ public class BitBufferTest {
         Assert.assertEquals(0, buffer.size());
         Assert.assertEquals(0, copy.size());
     }
+    private static final Logger LOG = Logger.getLogger(BitBufferTest.class.getName());
 }

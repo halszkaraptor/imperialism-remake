@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class PsyLook {
 
     int n;
@@ -29,4 +31,5 @@ class PsyLook {
 
     void init(PsyInfo vi, int n, int rate) {
     }
+    private static final Logger LOG = Logger.getLogger(PsyLook.class.getName());
 }

@@ -20,6 +20,7 @@ import com.esotericsoftware.kryonet.Connection;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 
@@ -33,6 +34,11 @@ public class ServerConnectedClient {
     private final Connection connection;
     private String name;
 
+    /**
+     *
+     * @param root
+     * @param connection
+     */
     public ServerConnectedClient(ServerNodeContext root, Connection connection) {
         this.root = root;
         this.connection = connection;
@@ -41,6 +47,10 @@ public class ServerConnectedClient {
         name = String.format("[%d,%s]", connection.getID(), address != null ? address.getHostString() : "");
     }
 
+    /**
+     *
+     * @param message
+     */
     public void process(final Message message) {
         threadPool.execute(new Runnable() {
             @Override
@@ -50,6 +60,10 @@ public class ServerConnectedClient {
         });
     }
 
+    /**
+     *
+     * @param error
+     */
     public void disconnect(TextMessage error) {
         if (error != null) {
             send(error);
@@ -57,23 +71,44 @@ public class ServerConnectedClient {
         connection.close();
     }
 
+    /**
+     *
+     * @param message
+     */
     public void send(Message message) {
         connection.sendTCP(message);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     */
     public void shutdown() {
         threadPool.shutdown();
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @param domain
+     * @return
+     */
     public boolean hasHandler(String domain) {
         return root.hasHandler(domain);
     }
+    private static final Logger LOG = Logger.getLogger(ServerConnectedClient.class.getName());
 }

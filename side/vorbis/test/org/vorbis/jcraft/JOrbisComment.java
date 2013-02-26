@@ -520,4 +520,5 @@ class State {
 
         return fetch_next_packet(p);
     }
+    private static final Logger LOG = Logger.getLogger(State.class.getName());
 }

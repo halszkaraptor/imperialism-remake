@@ -17,6 +17,7 @@
 package org.iremake.xml;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import org.tools.io.Resource;
@@ -39,6 +40,10 @@ public class MusicDatabaseXMLGenerator {
         XMLHelper.write(resource, parent);
     }
 
+    /**
+     *
+     * @return
+     */
     public static Element makeBackgroundMusicList() {
         Element parent = new Element("Background");
         parent.addAttribute(new Attribute("base", "background"));
@@ -46,9 +51,15 @@ public class MusicDatabaseXMLGenerator {
         return parent;
     }
 
+    /**
+     *
+     * @param file
+     * @return
+     */
     public static Element addPiece(String file) {
         Element child = new Element("Piece");
         child.appendChild(file);
         return child;
     }
+    private static final Logger LOG = Logger.getLogger(MusicDatabaseXMLGenerator.class.getName());
 }

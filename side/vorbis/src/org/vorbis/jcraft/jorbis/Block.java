@@ -17,9 +17,14 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.vorbis.jcraft.jogg.Buffer;
 import org.vorbis.jcraft.jogg.Packet;
 
+/**
+ *
+ * @author jkeller1
+ */
 public class Block {
     ///necessary stream state for linking to the framing abstraction
 
@@ -40,6 +45,10 @@ public class Block {
     int floor_bits;
     int res_bits;
 
+    /**
+     *
+     * @param vd
+     */
     public Block(DspState vd) {
         this.vd = vd;
         if (vd.analysisp != 0) {
@@ -47,10 +56,18 @@ public class Block {
         }
     }
 
+    /**
+     *
+     * @param vd
+     */
     public void init(DspState vd) {
         this.vd = vd;
     }
 
+    /**
+     *
+     * @return
+     */
     public int clear() {
         if (vd != null) {
             if (vd.analysisp != 0) {
@@ -60,6 +77,11 @@ public class Block {
         return 0;
     }
 
+    /**
+     *
+     * @param op
+     * @return
+     */
     public int synthesis(Packet op) {
         Info vi = vd.vi;
 
@@ -115,4 +137,5 @@ public class Block {
         int type = vi.map_type[vi.mode_param[mode].mapping];
         return FuncMapping.mapping_P[type].inverse(this, vd.mode[mode]);
     }
+    private static final Logger LOG = Logger.getLogger(Block.class.getName());
 }

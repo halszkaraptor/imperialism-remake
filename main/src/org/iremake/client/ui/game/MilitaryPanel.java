@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui.game;
 
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -25,10 +26,14 @@ public class MilitaryPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     *
+     */
     public MilitaryPanel() {
         initComponents();
     }
 
     private void initComponents() {
     }
+    private static final Logger LOG = Logger.getLogger(MilitaryPanel.class.getName());
 }

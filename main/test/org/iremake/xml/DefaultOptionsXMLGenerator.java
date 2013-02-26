@@ -17,6 +17,7 @@
 package org.iremake.xml;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
@@ -45,4 +46,5 @@ public class DefaultOptionsXMLGenerator {
         Resource resource = ResourceUtils.asResource("options.default.xml");
         XMLHelper.write(resource, options);
     }
+    private static final Logger LOG = Logger.getLogger(DefaultOptionsXMLGenerator.class.getName());
 }

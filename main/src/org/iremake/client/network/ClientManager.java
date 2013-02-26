@@ -106,6 +106,10 @@ public class ClientManager implements ClientContext {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getStatus() {
         if (client != null) {
             return String.format("Connected to server at %s.", client.getRemoteAddressTCP().getHostString());
@@ -114,10 +118,18 @@ public class ClientManager implements ClientContext {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRunning() {
         return client != null;
     }
 
+    /**
+     *
+     * @param error
+     */
     @Override
     public void disconnect(TextMessage error) {
         if (client != null) {
@@ -128,6 +140,10 @@ public class ClientManager implements ClientContext {
         }
     }
 
+    /**
+     *
+     * @param message
+     */
     @Override
     public void process(Message message) {
         root.process(message);

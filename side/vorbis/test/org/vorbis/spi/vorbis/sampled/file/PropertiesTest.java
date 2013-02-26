@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -43,6 +44,10 @@ public class PropertiesTest {
     private String filename = null;
     private String fileurl = null;
 
+    /**
+     *
+     * @throws IOException
+     */
     public PropertiesTest() throws IOException {
 
         Properties props = new Properties();
@@ -51,6 +56,9 @@ public class PropertiesTest {
         fileurl = (String) props.getProperty("stream");
     }
 
+    /**
+     *
+     */
     @Test
     public void testPropertiesFile() {
         String[] testPropsAFF = {"duration", "title", "author", "album", "date", "comment",
@@ -94,6 +102,9 @@ public class PropertiesTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void testPropertiesURL() {
         String[] testPropsAFF = {"duration", "title", "author", "album", "date", "comment",
@@ -134,4 +145,5 @@ public class PropertiesTest {
             Assert.fail("testPropertiesURL : " + e.getMessage());
         }
     }
+    private static final Logger LOG = Logger.getLogger(PropertiesTest.class.getName());
 }

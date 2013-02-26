@@ -16,6 +16,8 @@
  */
 package org.iremake.server.client;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -24,12 +26,21 @@ public class ServerClient {
     private String name;
 
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
+    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());
 
 }

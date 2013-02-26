@@ -47,7 +47,7 @@ public abstract class Notification {
     /**
      * @return the message text
      */
-    public final String getMessage() {
+    public String getMessage() {
         return message;
     }
 
@@ -56,7 +56,7 @@ public abstract class Notification {
      *
      * @param l a listener
      */
-    public final void addNotificationListener(NotificationListener l) {
+    public void addNotificationListener(NotificationListener l) {
         listeners.add(l);
     }
 
@@ -65,7 +65,7 @@ public abstract class Notification {
      *
      * @param l a listener
      */
-    public final void removeNotificationListener(NotificationListener l) {
+    public void removeNotificationListener(NotificationListener l) {
         listeners.remove(l);
     }
 
@@ -77,7 +77,7 @@ public abstract class Notification {
      *
      * @param value user reaction
      */
-    protected final void notifyListeners(boolean value) {
+    protected void notifyListeners(boolean value) {
         for (NotificationListener l : listeners) {
             l.notificationResult(value);
         }

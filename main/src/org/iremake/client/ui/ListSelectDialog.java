@@ -18,6 +18,7 @@ package org.iremake.client.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -99,4 +100,5 @@ public class ListSelectDialog<E> extends UIDialog {
             return null;
         }
     }
+    private static final Logger LOG = Logger.getLogger(ListSelectDialog.class.getName());
 }

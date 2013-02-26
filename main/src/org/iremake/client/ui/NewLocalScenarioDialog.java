@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -132,4 +133,5 @@ public class NewLocalScenarioDialog extends UIDialog {
         panel.setBorder(BorderFactory.createTitledBorder("Info"));
         return panel;
     }
+    private static final Logger LOG = Logger.getLogger(NewLocalScenarioDialog.class.getName());
 }

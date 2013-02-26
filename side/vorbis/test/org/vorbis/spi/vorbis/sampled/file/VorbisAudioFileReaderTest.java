@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -41,6 +42,9 @@ public class VorbisAudioFileReaderTest {
 
     private String[] names = {"Agogo.ogg"};
 
+    /**
+     *
+     */
     @Test
     public void testGetAudioFileFormat() {
         for (String name : names) {
@@ -50,6 +54,9 @@ public class VorbisAudioFileReaderTest {
         }
     }
 
+    /**
+     *
+     */
     @Test
     public void testGetAudioInputStream() {
         for (String name : names) {
@@ -151,6 +158,10 @@ public class VorbisAudioFileReaderTest {
         }
     }
 
+    /**
+     *
+     * @param filename
+     */
     public void _testGetInfo(String filename) {
         System.out.println("*** testGetInfo ***");
         try {
@@ -204,4 +215,5 @@ public class VorbisAudioFileReaderTest {
         System.out.println("    SampleSizeInBits=" + baseFormat.getSampleSizeInBits());
         System.out.println("    Encoding=" + baseFormat.getEncoding());
     }
+    private static final Logger LOG = Logger.getLogger(VorbisAudioFileReaderTest.class.getName());
 }

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import nu.xom.Element;
 import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
@@ -130,7 +131,7 @@ public class TileGraphicsRepository implements ReadXMLable {
     }
 
     /**
-     * 
+     *
      * @param id
      * @return
      */
@@ -301,4 +302,5 @@ public class TileGraphicsRepository implements ReadXMLable {
             unitOverlays.put(type + "|" + action, image);
         }
     }
+    private static final Logger LOG = Logger.getLogger(TileGraphicsRepository.class.getName());
 }

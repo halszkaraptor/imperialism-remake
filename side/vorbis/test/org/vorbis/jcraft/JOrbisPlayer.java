@@ -34,7 +34,9 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -466,7 +468,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
                                                 val = -32768;
                                             }
                                             if (val < 0) {
-                                                val = val | 0x8000;
+                                                val |= 0x8000;
                                             }
                                             convbuffer[ptr] = (byte) (val);
                                             convbuffer[ptr + 1] = (byte) (val >>> 8);
@@ -706,10 +708,17 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTitle() {
         return (String) (cb.getSelectedItem());
     }
 
+    /**
+     *
+     */
     public void play_sound() {
         if (player != null) {
             return;
@@ -719,6 +728,9 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         player.start();
     }
 
+    /**
+     *
+     */
     public void stop_sound() {
         if (player == null) {
             return;
@@ -989,6 +1001,9 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         return rtn.toString();
     }
 
+    /**
+     *
+     */
     public JOrbisPlayer() {
     }
     JPanel panel;
@@ -1148,6 +1163,10 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         }
     }
 
+    /**
+     *
+     * @param arg
+     */
     public static void main(String[] arg) {
 
         // execute in event thread
@@ -1167,9 +1186,7 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         player.running_as_applet = false;
 
         if (arg.length > 0) {
-            for (int i = 0; i < arg.length; i++) {
-                player.playlist.add(arg[i]);
-            }
+            player.playlist.addAll(Arrays.asList(arg));
         }
 
         player.loadPlaylist();
@@ -1179,4 +1196,5 @@ public class JOrbisPlayer extends JApplet implements ActionListener, Runnable {
         frame.pack();
         frame.setVisible(true);
     }
+    private static final Logger LOG = Logger.getLogger(JOrbisPlayer.class.getName());
 }

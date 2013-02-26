@@ -18,6 +18,7 @@ package org.tools.ui.layout;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 import org.tools.ui.utils.WindowCorner;
 import org.tools.ui.utils.WindowSide;
 
@@ -149,4 +150,5 @@ public class RelativeLayoutConstraint {
         }
         return centered();
     }
+    private static final Logger LOG = Logger.getLogger(RelativeLayoutConstraint.class.getName());
 }

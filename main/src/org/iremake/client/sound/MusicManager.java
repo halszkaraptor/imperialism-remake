@@ -16,12 +16,11 @@
  */
 package org.iremake.client.sound;
 
+import java.util.logging.Logger;
 import javax.sound.sampled.SourceDataLine;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.client.ui.FrameManager;
 import org.tools.sound.JukeBox;
-import org.tools.sound.PlayEventListener;
 import org.tools.sound.SoundSystem;
 import org.tools.sound.StreamPlayer;
 
@@ -38,6 +37,9 @@ public class MusicManager {
     private MusicManager() {
     }
 
+    /**
+     *
+     */
     public static void setup() {
         // sound system setup
         SoundSystem.setup();
@@ -66,6 +68,9 @@ public class MusicManager {
 
     }
 
+    /**
+     *
+     */
     public static void start() {
         if (jukebox != null) {
             // start playback
@@ -73,6 +78,9 @@ public class MusicManager {
         }
     }
 
+    /**
+     *
+     */
     public static void cleanup() {
         if (jukebox != null) {
             jukebox.stop();
@@ -82,4 +90,5 @@ public class MusicManager {
         }
         SoundSystem.cleanup();
     }
+    private static final Logger LOG = Logger.getLogger(MusicManager.class.getName());
 }

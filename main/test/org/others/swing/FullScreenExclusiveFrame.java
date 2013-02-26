@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,4 +94,5 @@ public class FullScreenExclusiveFrame {
         gd.setFullScreenWindow(frame);
         timer.start();
     }
+    private static final Logger LOG = Logger.getLogger(FullScreenExclusiveFrame.class.getName());
 }

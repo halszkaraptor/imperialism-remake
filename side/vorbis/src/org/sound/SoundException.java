@@ -16,12 +16,26 @@
  */
 package org.sound;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class SoundException extends Exception {
 
+    /**
+     *
+     */
     public SoundException() {
     }
 
+    /**
+     *
+     * @param s
+     */
     public SoundException(String s) {
         super("Sound exception: " + s);
     }
+    private static final Logger LOG = Logger.getLogger(SoundException.class.getName());
 }

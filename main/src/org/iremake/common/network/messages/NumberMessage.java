@@ -16,10 +16,12 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.logging.Logger;
+
 /**
  * A message consisting of a number and a specific type given by an enum.
  */
-public final class NumberMessage implements Message {
+public class NumberMessage implements Message {
 
     private int number;
     private NumberMessageType type;
@@ -27,15 +29,28 @@ public final class NumberMessage implements Message {
     private NumberMessage() {
     }
 
+    /**
+     *
+     * @param type
+     * @param number
+     */
     public NumberMessage(NumberMessageType type, int number) {
         this.type = type;
         this.number = number;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     *
+     * @return
+     */
     public NumberMessageType getType() {
         return type;
     }
@@ -44,4 +59,5 @@ public final class NumberMessage implements Message {
     public String toString() {
         return String.format("NumberMessageMessage [%s, %d]", type.name(), number);
     }
+    private static final Logger LOG = Logger.getLogger(NumberMessage.class.getName());
 }

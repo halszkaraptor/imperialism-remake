@@ -17,6 +17,12 @@
  */
 package org.util;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class Utils {
 
     /**
@@ -25,6 +31,11 @@ public class Utils {
     private Utils() {
     }
 
+    /**
+     *
+     * @param v
+     * @return
+     */
     public static int ilog(int v) {
         int ret = 0;
         while (v != 0) {
@@ -34,6 +45,11 @@ public class Utils {
         return ret;
     }
 
+    /**
+     *
+     * @param v
+     * @return
+     */
     public static int ilog2(int v) {
         int ret = 0;
         while (v > 1) {
@@ -43,6 +59,11 @@ public class Utils {
         return ret;
     }
 
+    /**
+     *
+     * @param v
+     * @return
+     */
     public static int icount(int v) {
         int ret = 0;
         while (v != 0) {
@@ -51,4 +72,5 @@ public class Utils {
         }
         return ret;
     }
+    private static final Logger LOG = Logger.getLogger(Utils.class.getName());
 }

@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -359,4 +360,5 @@ class Mapping0 extends FuncMapping {
         // all done!
         return 0;
     }
+    private static final Logger LOG = Logger.getLogger(Mapping0.class.getName());
 }

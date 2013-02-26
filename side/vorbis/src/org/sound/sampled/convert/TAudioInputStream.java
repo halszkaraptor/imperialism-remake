@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
@@ -89,4 +90,5 @@ public class TAudioInputStream extends AudioInputStream {
     protected void setProperty(String key, Object value) {
         m_properties.put(key, value);
     }
+    private static final Logger LOG = Logger.getLogger(TAudioInputStream.class.getName());
 }

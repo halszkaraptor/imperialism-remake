@@ -16,6 +16,7 @@
  */
 package org.iremake.common;
 
+import java.util.logging.Logger;
 import org.iremake.client.network.ClientManager;
 import org.iremake.server.network.ServerManager;
 
@@ -26,6 +27,16 @@ import org.iremake.server.network.ServerManager;
 // TODO needs to be replaced!, currently just a big holder of static global variables
 public class BigBag {
 
+    /**
+     *
+     */
     public static ClientManager clientManager;
+    /**
+     *
+     */
     public static ServerManager serverManager;
+
+    private BigBag() {
+    }
+    private static final Logger LOG = Logger.getLogger(BigBag.class.getName());
 }

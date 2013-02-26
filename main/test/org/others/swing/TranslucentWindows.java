@@ -19,6 +19,7 @@ package org.others.swing;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsDevice.WindowTranslucency;
 import java.awt.GraphicsEnvironment;
+import java.util.logging.Logger;
 
 /**
  * Test of windows translucency capabilities of Java 7.
@@ -41,4 +42,5 @@ public class TranslucentWindows {
         System.out.println("Supported per pixel window transparency: " + gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSPARENT));
         System.out.println("Supported per pixel window translucency: " + gd.isWindowTranslucencySupported(WindowTranslucency.PERPIXEL_TRANSLUCENT));
     }
+    private static final Logger LOG = Logger.getLogger(TranslucentWindows.class.getName());
 }

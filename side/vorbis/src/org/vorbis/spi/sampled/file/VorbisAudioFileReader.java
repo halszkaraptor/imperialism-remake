@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -66,6 +67,9 @@ public class VorbisAudioFileReader extends TAudioFileReader {
     private static final int INITAL_READ_LENGTH = 64000;
     private static final int MARK_LIMIT = INITAL_READ_LENGTH + 1;
 
+    /**
+     *
+     */
     public VorbisAudioFileReader() {
         super(MARK_LIMIT, true);
     }
@@ -460,4 +464,5 @@ public class VorbisAudioFileReader extends TAudioFileReader {
         bytes = 0;
         oggSyncState_.init();
     }
+    private static final Logger LOG = Logger.getLogger(VorbisAudioFileReader.class.getName());
 }

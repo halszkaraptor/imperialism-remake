@@ -17,6 +17,8 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
+
 class Mdct {
 
     int n;
@@ -237,4 +239,5 @@ class Mdct {
         }
         return x;
     }
+    private static final Logger LOG = Logger.getLogger(Mdct.class.getName());
 }

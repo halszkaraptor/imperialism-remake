@@ -19,6 +19,7 @@ package org.tools.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -123,4 +124,5 @@ public class XMLHelper {
         Element xml = target.toXML();
         XMLHelper.write(resource, xml);
     }
+    private static final Logger LOG = Logger.getLogger(XMLHelper.class.getName());
 }

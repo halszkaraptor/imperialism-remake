@@ -17,6 +17,12 @@
  */
 package org.sound;
 
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author jkeller1
+ */
 public class TCircularBuffer {
 
     private boolean blockingRead;
@@ -239,4 +245,5 @@ public class TCircularBuffer {
         TDebug.out("availableRead()  = " + availableRead());
         TDebug.out("availableWrite() = " + availableWrite());
     }
+    private static final Logger LOG = Logger.getLogger(TCircularBuffer.class.getName());
 }

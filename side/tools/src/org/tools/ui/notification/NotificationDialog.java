@@ -21,6 +21,7 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.Timer;
@@ -299,4 +300,5 @@ public class NotificationDialog extends Notification {
             throw new IllegalArgumentException("time value cannot be negative!");
         }
     }
+    private static final Logger LOG = Logger.getLogger(NotificationDialog.class.getName());
 }

@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -421,4 +422,5 @@ class StaticCodeBook {
     static float ldexp(float foo, int e) {
         return (float) (foo * Math.pow(2, e));
     }
+    private static final Logger LOG = Logger.getLogger(StaticCodeBook.class.getName());
 }

@@ -17,6 +17,7 @@
 package org.tools.utils;
 
 import java.util.Comparator;
+import java.util.logging.Logger;
 
 /**
  * This class can be used if a number of objects must be sorted according to a
@@ -81,4 +82,5 @@ public class Named<T> {
     public String toString() {
         return getName();
     }
+    private static final Logger LOG = Logger.getLogger(Named.class.getName());
 }

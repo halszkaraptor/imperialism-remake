@@ -19,6 +19,7 @@ package org.tools.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -371,4 +372,5 @@ public class NotificationExample extends JFrame implements NotificationListener 
             statusLabel.setText("Status: Notification clicked - cancelled");
         }
     }
+    private static final Logger LOG = Logger.getLogger(NotificationExample.class.getName());
 }

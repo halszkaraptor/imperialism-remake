@@ -18,6 +18,7 @@
 package org.vorbis.spi.sampled.convert;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import org.sound.sampled.convert.TMatrixFormatConversionProvider;
@@ -224,4 +225,5 @@ public class VorbisFormatConversionProvider extends TMatrixFormatConversionProvi
             throw new IllegalArgumentException("conversion not supported");
         }
     }
+    private static final Logger LOG = Logger.getLogger(VorbisFormatConversionProvider.class.getName());
 }

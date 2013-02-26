@@ -17,6 +17,7 @@
  */
 package org.vorbis.jcraft.jorbis;
 
+import java.util.logging.Logger;
 import org.util.Utils;
 import org.vorbis.jcraft.jogg.Buffer;
 
@@ -340,4 +341,5 @@ class Floor0 extends FuncFloor {
             curve[i] = lcurve[l.linearmap[i]];
         }
     }
+    private static final Logger LOG = Logger.getLogger(Floor0.class.getName());
 }

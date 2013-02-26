@@ -16,6 +16,8 @@
  */
 package org.tools.xml;
 
+import java.util.logging.Logger;
+
 /**
  * Represents missing elements, names, attributes while converting XML to java
  * objects.
@@ -27,4 +29,5 @@ public class XMLException extends RuntimeException {
     XMLException(String message) {
         super(message);
     }
+    private static final Logger LOG = Logger.getLogger(XMLException.class.getName());
 }

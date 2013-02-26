@@ -17,6 +17,7 @@
 package org.tools.sound;
 
 import java.awt.EventQueue;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +33,10 @@ import org.tools.ui.utils.LookAndFeel;
  */
 public class OggPlayerApp {
 
+    /**
+     *
+     * @param title
+     */
     public OggPlayerApp(String title) {
         JFrame frame = new BasicFrame(title);
 
@@ -71,4 +76,5 @@ public class OggPlayerApp {
             }
         });
     }
+    private static final Logger LOG = Logger.getLogger(OggPlayerApp.class.getName());
 }

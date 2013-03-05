@@ -19,9 +19,9 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputDir=C:\40_Programmieren\02_Java Projects\Imperialism Remake\main
-OutputBaseFilename=ImperialismRemake.0.1.2.Setup.exe
-SetupIconFile=C:\40_Programmieren\02_Java Projects\Imperialism Remake\tools\windows-launcher\icon.ico
+OutputDir="."
+OutputBaseFilename="ImperialismRemake-0.1.2-Setup"
+SetupIconFile="icon.ico"
 Compression=lzma/ultra64
 SolidCompression=yes
 
@@ -32,7 +32,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\40_Programmieren\02_Java Projects\Imperialism Remake\main\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\main\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Dirs]
+Name: "{app}"; Permissions: users-modify
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

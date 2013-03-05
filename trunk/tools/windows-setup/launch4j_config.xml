@@ -2,7 +2,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>imperialism-remake.jar</jar>
-  <outfile>C:\40_Programmieren\02_Java Projects\Imperialism Remake\main\dist\windows_launcher.exe</outfile>
+  <outfile>windows_launcher.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -12,7 +12,7 @@
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>C:\40_Programmieren\02_Java Projects\Imperialism Remake\tools\windows-launcher\icon.ico</icon>
+  <icon>icon.ico</icon>
   <jre>
     <path></path>
     <minVersion>1.7.0</minVersion>
@@ -21,10 +21,4 @@
     <initialHeapSize>40</initialHeapSize>
     <maxHeapSize>400</maxHeapSize>
   </jre>
-  <splash>
-    <file>C:\40_Programmieren\02_Java Projects\Imperialism Remake\tools\windows-launcher\splash.bmp</file>
-    <waitForWindow>true</waitForWindow>
-    <timeout>60</timeout>
-    <timeoutErr>true</timeoutErr>
-  </splash>
 </launch4jConfig>

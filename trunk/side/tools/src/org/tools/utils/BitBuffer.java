@@ -19,55 +19,67 @@ package org.tools.utils;
 import java.util.logging.Logger;
 
 /**
- * Circular bit buffer allowing reading and writing chunks up to 32 bits to and
- * from the buffer at the same time. It's length is not self-adjusting but the
- * capacity can be changed during usage.
+ * Circular (LIFO) bit buffer allowing reading and writing chunks up to 32 bits
+ * to and from the buffer at the same time. The buffer's length is not
+ * self-adjusting but the capacity can be changed during usage. However this
+ * will be costly because the buffer needs to be copied.
  *
- * Not thread safe.
+ * Not thread safe!
  *
- * For usage in XML input/output the conversion to/from String are included.
+ * For usage in XML input/output the conversions to/from XML safe Strings are
+ * included.
  *
- * Bit operations on integers are also included in java.util.BitSet and
+ * Comment: Bit operations on integers are also included in java.util.BitSet and
  * java.lang.Integer but neither of them offers the abilities to store/read a
  * couple of bits at the same time.
  */
 public class BitBuffer {
 
+    /* The logger */
+    private static final Logger LOG = Logger.getLogger(BitBuffer.class.getName());
+    /* Bits per int = 32 */
     private static int BITS_PER_INT = 32;
+    /* An int with all bits set */
     private static int ALL_BITS_SET = ~0;
+    /* The circular buffer */
     private int[] buffer;
+    /* start and end position of the data in the circular buffer */
     private int start, end;
-    private int size, capacity;
+    /* current number of bits stored in data (= end - start)*/
+    private int size;
+    /* Total capacity in bits (multiple of BITS_PER_INT */
+    private int capacity;
 
     /**
-     * Private constructor for copying.
+     * Private constructor, used for cloning.
      */
     private BitBuffer() {
     }
 
     /**
-     *
-     * @param length
+     * @param length Initial capacity in bits. (Can be slightly larger due to
+     * integer storage)
      */
     public BitBuffer(int length) {
 
+        // estimate number of ints necessary to store length bits
         int len = length / BITS_PER_INT;
         if (length % BITS_PER_INT != 0) {
             len++;
         }
 
+        // allocate buffer
         buffer = new int[len];
         capacity = len * BITS_PER_INT;
 
-        start = 0;
-        end = 0;
-        size = 0;
+        // initialize start, end, .. pointers
+        reset();
     }
 
     /**
-     * Convenience method.
+     * Convenience method. Add a single bit.
      *
-     * @param bit
+     * @param bit single bit presented by a boolean
      */
     public void add(boolean bit) {
         if (bit) {
@@ -78,11 +90,13 @@ public class BitBuffer {
     }
 
     /**
+     * Add a number of bits (up to 32 bits at once). The number of bits and the
+     * bits are given in int variables.
      *
-     * @param values Integer holding the bits (in lowest bits)
-     * @param number Number of bits (1-BITS_PER_INT)
+     * @param bits Integer holding the bits (in lowest bits)
+     * @param number Number of bits (1 - BITS_PER_INT)
      */
-    public void add(int values, int number) {
+    public void add(int bits, int number) {
         if (number < 1 || number > BITS_PER_INT) {
             throw new IllegalArgumentException("Illegal number of bits " + String.valueOf(number));
         }
@@ -92,11 +106,11 @@ public class BitBuffer {
         int index = end / BITS_PER_INT;
         int position = end % BITS_PER_INT;
         buffer[index] &= ALL_BITS_SET >>> (BITS_PER_INT - position);
-        buffer[index] += values << position;
+        buffer[index] += bits << position;
 
         int excess = number - (BITS_PER_INT - position);
         if (excess > 0) {
-            buffer[(index + 1) % buffer.length] = values >>> (number - excess);
+            buffer[(index + 1) % buffer.length] = bits >>> (number - excess);
         }
 
         end += number;
@@ -107,18 +121,19 @@ public class BitBuffer {
     }
 
     /**
-     * Convenience method.
+     * Convenience method. Returns one bit and casts to a boolean.
      *
-     * @return
+     * @return The value of the actual last bit in the buffer.
      */
     public boolean get() {
         return get(1) == 1;
     }
 
     /**
+     * Returns a number of bits (up to 32 bits at once).
      *
-     * @param number
-     * @return
+     * @param number Number of bits to be returned.
+     * @return Integer holding the bits (lowest bits).
      */
     public int get(int number) {
         if (number < 1 || number > BITS_PER_INT) {
@@ -156,26 +171,33 @@ public class BitBuffer {
     }
 
     /**
-     * Deletes all the content without changing the capacity.
-     */
-    public void clear() {
-        trim(size);
-    }
-
-    /**
-     * How many bits are in the buffer.
-     *
-     * @return The size of the used bits in the buffer.
+     * @return The number of used bits in the buffer.
      */
     public int size() {
         return size;
     }
 
     /**
-     * Delete some bits from the buffer. If number exceeds size, all bits are
-     * deleted. If number is negative nothing is done.
+     * @return The current buffer's total capacity for bits.
+     */
+    public int capacity() {
+        return capacity;
+    }
+
+    /**
+     * Sets start and end pointer to zero.
+     */
+    private void reset() {
+        start = 0;
+        end = 0;
+        size = 0;
+    }
+
+    /**
+     * Deletes a certain number of bits from the buffer. If number exceeds size,
+     * all bits are deleted. If number is negative nothing is done.
      *
-     * @param number
+     * @param number Number of bits to delete.
      */
     public void trim(int number) {
         // negative number, do nothing
@@ -185,9 +207,7 @@ public class BitBuffer {
 
         if (number >= size) {
             // clear all
-            start = 0;
-            end = 0;
-            size = 0;
+            reset();
         } else {
             // decrease size and end, but be careful with underflows for end
             end -= number;
@@ -199,10 +219,10 @@ public class BitBuffer {
     }
 
     /**
-     * Convenience methods. Basically sets a new size by deleting some using
-     * trim() internally.
+     * Convenience method: Deletes all bits but the indicated number. Does not
+     * change the capacity.
      *
-     * @param size
+     * @param size Number of bits to keep.
      */
     public void trimTo(int size) {
         if (size >= 0 && size <= this.size) {
@@ -211,19 +231,23 @@ public class BitBuffer {
     }
 
     /**
-     * Total number of bits the buffer can hold.
-     *
-     * @return The total capacity for bits.
+     * Convenience method: Deletes all the content without changing the
+     * capacity.
      */
-    public int capacity() {
-        return capacity;
+    public void clear() {
+        trimTo(0);
     }
 
     /**
-     * Also moves the currently used bits to the start of the buffer. Not
-     * thread-safe. The buffer mustn't be changed during this operation.
+     * Sets a new capacity for the buffer. The new capacity cannot be smaller
+     * than the current size. It might be slightly larger due to the buffer
+     * being int. This will allocate a new buffer and copy the content of the
+     * old buffer.
      *
-     * @param length Will be rounded to next multiple of BITS_PER_INT.
+     * Not thread-safe! The buffer mustn't be changed during this operation.
+     *
+     * @param length New capacity. Will be rounded to next multiple of
+     * BITS_PER_INT.
      */
     public void extend(int length) {
         if (length < size) {
@@ -257,13 +281,12 @@ public class BitBuffer {
      * characters are valid XML characters, so we restrict ourselves to the
      * range between 0x20 and 0xD7FF
      * (http://www.w3.org/TR/2000/REC-xml-20001006#NT-Char) or even a bit less
-     * (0x100-0x8100) that means 15 bits.
+     * (range 0x100-0x8100) that means 15 bits used for 16 bits stored.
      *
      * There might be excess space in the last char, so the total size of the
      * BitBuffer should be stored externally (e.g. in an XML attribute).
      *
-     * @param buffer
-     * @return
+     * @return char[] based String
      */
     public String toXMLString() {
         int length = size / 15;
@@ -284,7 +307,7 @@ public class BitBuffer {
      * in an XML String (see toXMLString) and this is the way back.
      *
      * @param string The Input string.
-     * @return A BitBuffer.
+     * @return A new BitBuffer.
      */
     public static BitBuffer fromXMLString(String string) {
         char[] chars = string.toCharArray();
@@ -296,9 +319,9 @@ public class BitBuffer {
     }
 
     /**
-     * Prepare deep copy.
+     * A deep copy/clone method.
      *
-     * @return
+     * @return A new BitBuffer holding exactly the same data.
      */
     public BitBuffer copy() {
         BitBuffer copy = new BitBuffer();
@@ -312,5 +335,4 @@ public class BitBuffer {
 
         return copy;
     }
-    private static final Logger LOG = Logger.getLogger(BitBuffer.class.getName());
 }

@@ -1,0 +1,27 @@
+Copyright information about used libraries files
+
+
+External libraries
+
+- kryonet-2.18.all.jar
+  kryonet (http://code.google.com/p/kryonet/)
+  New BSD License (http://opensource.org/licenses/BSD-3-Clause)
+
+- miglayout-4.0-swing.jar
+  MigLayout (http://www.miglayout.com/)
+  BSD and GPL
+
+- xom-1.2.8.jar
+  XOM (http://www.xom.nu/)
+  LGPL v2.1
+
+
+Internal libraries
+
+- tools.jar
+  General purpose java algorithms
+  GPL v3+
+
+- vorbis-support-1.0.jar
+  Ogg/Vorbis support (combination of JOrbis, Tritonus, VorbisSPI)
+  LGPL v3+

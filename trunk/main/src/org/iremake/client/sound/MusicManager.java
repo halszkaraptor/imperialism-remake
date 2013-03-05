@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 import javax.sound.sampled.SourceDataLine;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.iremake.client.ui.FrameManager;
 import org.tools.sound.JukeBox;
+import org.tools.sound.PlayEventListener;
 import org.tools.sound.SoundSystem;
 import org.tools.sound.StreamPlayer;
 
@@ -50,13 +52,12 @@ public class MusicManager {
             StreamPlayer player = StreamPlayer.create(line, "Music");
             jukebox = JukeBox.create(player);
             jukebox.setAutoRewind(true);
-            /*
             jukebox.setSongBeginListener(new PlayEventListener() {
                 @Override
                 public void newEvent(String event) {
-                    FrameManager.getInstance().scheduleInfoMessage(event, true);
+                    FrameManager.getInstance().scheduleInfoMessage(event, false);
                 }
-            }); */
+            });
         }
 
         // load music list
@@ -88,7 +89,7 @@ public class MusicManager {
             player.destroy();
             jukebox = null;
         }
-        SoundSystem.cleanup();
+        SoundSystem.clearMixer();
     }
     private static final Logger LOG = Logger.getLogger(MusicManager.class.getName());
 }

@@ -45,6 +45,8 @@ import org.tools.ui.utils.GraphicsUtils;
 // TODO closing listener for clicking on the cross or alt-f4
 public class FrameManager {
 
+    private static final Logger LOG = Logger.getLogger(FrameManager.class.getName());
+
     /**
      *
      */
@@ -221,5 +223,4 @@ public class FrameManager {
         Color color = black ? Color.black : Color.white;
         NotificationFactory.createInfoNotification(message, frame, color).setVisible();
     }
-    private static final Logger LOG = Logger.getLogger(FrameManager.class.getName());
 }

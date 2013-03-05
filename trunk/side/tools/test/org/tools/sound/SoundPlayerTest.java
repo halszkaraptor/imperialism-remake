@@ -79,6 +79,7 @@ public class SoundPlayerTest {
 
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, TargetFormat);
         SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+        line.open();
 
         StreamPlayer player = StreamPlayer.create(line, "Music-Thread");
 
@@ -92,7 +93,7 @@ public class SoundPlayerTest {
         AudioInputStream in = AudioSystem.getAudioInputStream(url);
         AudioInputStream data = AudioSystem.getAudioInputStream(TargetFormat, in);
 
-        player.setDefaultVolume(0.8f);
+        player.setVolume(0.8f);
         player.setDefaultFadingTime(6000);
         player.play(data);
         Thread.sleep(6000);

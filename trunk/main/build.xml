@@ -77,6 +77,7 @@
         <!-- You can override this target in the ../build.xml file. -->
 		<delete file="dist/README.TXT"/>
 		<copy overwrite="true" tofile="dist/readme.txt" file="readme.txt" /> 		
+		<copy overwrite="true" tofile="dist/lib/license.txt" file="lib/license.txt" /> 		
 		<copy todir="dist/data">
 			<fileset dir="data"/>
 		</copy>		

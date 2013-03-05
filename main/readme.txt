@@ -1,7 +1,7 @@
 Imperialism Remake
 
 
-  Version 0.1.2 (2013-??)
+  Version 0.1.2 (2013-03-06)
   ChangeLog: http://remake.twelvepm.de/forum/viewtopic.php?f=2&t=1045
 
 
@@ -17,7 +17,7 @@ Imperialism Remake
 * 2. Getting Started
 
 
-  A Java Runtime Environment version 7 (or later) is required (Oracle JRE, OpenJDK).
+  A Java Runtime Environment version 7 (or later) is required (Oracle JRE, OpenJDK)!
 
 
   All OS: Start with    java -jar imperialism-remake.jar
@@ -42,5 +42,5 @@ Imperialism Remake
 * 4. License
 
 
-  Source code under GPLv3+.   (http://www.gnu.org/licenses/gpl.html)
-  Artwork under CC-BY-SA 3.0. (http://creativecommons.org/licenses/by-sa/3.0/)
+  Source code under GPLv3+.   		(http://www.gnu.org/licenses/gpl.html)
+  Artwork mostly under CC-BY-SA 3.0. 	(http://creativecommons.org/licenses/by-sa/3.0/) check license.txt files

@@ -10,6 +10,4 @@ Imperialism remake
 
 - Design Specifications: "design" subfolder
 
-- Manual: "help" subfolder, uses markdown text 
-
 - Python tools: "tools" subfolder

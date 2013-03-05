@@ -31,6 +31,7 @@ import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -540,6 +541,9 @@ public class ImperialismScenarioImporter extends JFrame {
             }
         }
 
+        // random number generator for scrubforest
+        Random rnd = new Random(42);
+
         // set terrain
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
@@ -608,10 +612,12 @@ public class ImperialismScenarioImporter extends JFrame {
                 if (resources[i] == 2 && terrain_overlay[i] == 13) {
                     tile.resourceID = 6;
                     tile.resourceVisible = true;
+                    // 10% of forest goes randomly to scrubforest
+                    if (rnd.nextFloat() < 0.1f) {
+                        tile.resourceID = 7;
+                    }
                 }
-                if (terrain_overlay[i] == 15) {
-                    int v = resources[i];
-                }
+
                 // scrubforest
                 if (resources[i] == 2 && terrain_overlay[i] == 15) {
                     tile.resourceID = 7;

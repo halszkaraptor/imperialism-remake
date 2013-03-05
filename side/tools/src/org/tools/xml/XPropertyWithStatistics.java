@@ -23,7 +23,11 @@ import java.util.logging.Logger;
 /**
  * Added ability to keep counting statistics.
  */
+// TODO not stored
 public class XPropertyWithStatistics extends XProperty {
+
+    /* the logger */
+    private static final Logger LOG = Logger.getLogger(XPropertyWithStatistics.class.getName());
 
     private Map<String, Integer> stats = new HashMap<>(0);
 
@@ -64,6 +68,4 @@ public class XPropertyWithStatistics extends XProperty {
     public Integer getCount(String key) {
         return stats.containsKey(key) ? stats.get(key) : 0;
     }
-    private static final Logger LOG = Logger.getLogger(XPropertyWithStatistics.class.getName());
-
 }

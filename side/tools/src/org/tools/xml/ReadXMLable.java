@@ -19,9 +19,8 @@ package org.tools.xml;
 import nu.xom.Element;
 
 /**
- * That's all we require from any class. That it knows how to read its state
- * from a XML node and how to save its state into a XML node. If necessary this
- * property can be nested, i.e. part of it is XMLAble itself.
+ * Interface for classes being able to read its state from XML. The idea is to
+ * read all children (also of type ReadXMLable) recursively.
  */
 public interface ReadXMLable {
 

@@ -17,12 +17,14 @@
 package org.tools.sound;
 
 /**
- *
+ * Listener for reacting to various events during playback.
  */
 public interface PlayEventListener {
 
     /**
+     * Something has happened.
      *
+     * @param event The event.
      */
     public void newEvent(String event);
 

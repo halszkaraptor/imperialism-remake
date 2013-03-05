@@ -19,7 +19,9 @@ package org.tools.xml;
 import nu.xom.Element;
 
 /**
- *
+ * This objects can also write their state to XML. The idea is that they iterate
+ * over their children (also FuzllXMLable) and store a tree of XML nodes as the
+ * total state of the object.
  */
 public interface FullXMLable extends ReadXMLable {
 

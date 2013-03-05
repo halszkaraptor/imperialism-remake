@@ -18,9 +18,9 @@ import tools
 
 
 # parameters
-lookup_dir = '..' + os.sep + 'help' # relative to this files location
+lookup_dir = 'C:/Users/jkeller1/Dropbox/remake/documentation' # relative to this files location
 # all following dirs are relative to the lookup dir
-install_dir = '..' + os.sep + 'main' + os.sep + 'data' + os.sep + 'help'
+install_dir = lookup_dir + '/help'
 template_dir = 'templates'
 
 lookup_files = '*.md'
@@ -72,9 +72,7 @@ for k in range(number):
     print 'processing: ' + f
 
     # need to insert the install_dir in the path at first position
-    o = d.split(os.sep)
-    o.insert(1, install_dir)
-    o = (os.sep).join(o)
+    o = install_dir + os.sep + d
 
     # if a subfolder needs to be created do it
     if not os.path.exists(o):

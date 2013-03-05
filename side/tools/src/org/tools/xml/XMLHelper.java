@@ -32,6 +32,9 @@ import org.tools.io.Resource;
  */
 public class XMLHelper {
 
+    /* the logger */
+    private static final Logger LOG = Logger.getLogger(XMLHelper.class.getName());
+
     /**
      * No instantiation.
      */
@@ -124,5 +127,4 @@ public class XMLHelper {
         Element xml = target.toXML();
         XMLHelper.write(resource, xml);
     }
-    private static final Logger LOG = Logger.getLogger(XMLHelper.class.getName());
 }

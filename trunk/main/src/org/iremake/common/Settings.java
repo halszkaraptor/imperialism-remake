@@ -21,10 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import nu.xom.Element;
-import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.tools.xml.Node;
 
 /**
  * Holds the settings, which only (in opposition to options) effect the game
@@ -41,9 +40,8 @@ import org.iremake.client.io.Places;
  */
 public class Settings {
 
-    /**
-     * common port for the network communication
-     */
+    private static final Logger LOG = Logger.getLogger(Settings.class.getName());
+    /* common port for the network communication */
     public static final int NETWORK_PORT = 19357;
     /* mapping: id -> description of terrain types */
     private static Map<Integer, String> terrainNames;
@@ -67,28 +65,24 @@ public class Settings {
      */
     public static void load() {
 
-        Element xml = IOManager.getAsXML(Places.Common, "settings.xml");
+        Node parent = IOManager.getAsXML(Places.Common, "settings.xml");
 
         // terrains
-        Element child = xml.getFirstChildElement("Terrains");
-        defaultTerrainID = Integer.parseInt(child.getAttributeValue("default-id"));
-        Elements elements = child.getChildElements("Terrain");
-        terrainNames = new HashMap<>(elements.size());
-        for (int i = 0; i < elements.size(); i++) {
-            Element element = elements.get(i);
-            int id = Integer.parseInt(element.getAttributeValue("id"));
-            String name = element.getAttributeValue("name");
+        Node node = parent.getFirstChild("Terrains");
+        defaultTerrainID = Integer.parseInt(node.getAttributeValue("default-id"));
+        terrainNames = new HashMap<>(node.getChildCount());
+        for (Node child: node.getChildren()) {
+            int id = child.getAttributeValueAsInt("id");
+            String name = child.getAttributeValue("name");
             terrainNames.put(id, name);
         }
 
         // resources
-        child = xml.getFirstChildElement("Resources");
-        elements = child.getChildElements("Resource");
-        resourceNames = new HashMap<>(elements.size());
-        for (int i = 0; i < elements.size(); i++) {
-            Element element = elements.get(i);
-            int id = Integer.parseInt(element.getAttributeValue("id"));
-            String name = element.getAttributeValue("name");
+        node = parent.getFirstChild("Resources");
+        resourceNames = new HashMap<>(node.getChildCount());
+        for (Node child: node.getChildren()) {
+            int id = child.getAttributeValueAsInt("id");
+            String name = child.getAttributeValue("name");
             resourceNames.put(id, name);
         }
     }
@@ -132,5 +126,4 @@ public class Settings {
     public static int getDefaultTerrainID() {
         return defaultTerrainID;
     }
-    private static final Logger LOG = Logger.getLogger(Settings.class.getName());
 }

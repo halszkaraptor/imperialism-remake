@@ -21,8 +21,8 @@ package org.iremake.client.io;
  */
 public enum Places {
 
-    // the places
-    None(""),
+    /* the places */
+    None("./"),
     Log("log/"),
     Help("data/help/"),
     Common("data/game/common/"),
@@ -32,7 +32,8 @@ public enum Places {
     GraphicsBrowserIcons(GraphicsIcons + "browser/"),
     GraphicsScenario(Graphics + "scenario/"),
     Music("data/game/artwork/music/");
-    /* the location of the place*/
+
+    /* the location of the place */
     private String location;
 
     /**
@@ -41,14 +42,14 @@ public enum Places {
      * @param location
      */
     Places(String location) {
+        if (location == null || !location.endsWith("/")) {
+            throw new IllegalArgumentException("Location cannot be null, must end with '/'!");
+        }
         this.location = location;
-        // TODO must end with '/', otherwise throw exception
     }
 
     /**
-     * We use the toString method to naturally return the location.
-     *
-     * @return
+     * @return The location.
      */
     @Override
     public String toString() {

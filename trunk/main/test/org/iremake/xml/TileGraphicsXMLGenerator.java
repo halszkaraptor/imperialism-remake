@@ -18,10 +18,9 @@ package org.iremake.xml;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import nu.xom.Attribute;
-import nu.xom.Element;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
+import org.tools.xml.Node;
 import org.tools.xml.XMLHelper;
 
 /**
@@ -34,9 +33,9 @@ public class TileGraphicsXMLGenerator {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        Element parent = new Element("Tile-Graphics");
-        parent.addAttribute(new Attribute("tile-width", "80"));
-        parent.addAttribute(new Attribute("tile-height", "80"));
+        Node parent = new Node("Tile-Graphics");
+        parent.addAttribute("tile-width", "80");
+        parent.addAttribute("tile-height", "80");
 
         parent.appendChild(createTerrain());
         parent.appendChild(createRiver());
@@ -51,9 +50,9 @@ public class TileGraphicsXMLGenerator {
      *
      * @return
      */
-    public static Element createRiver() {
-        Element parent = new Element("River-Overlays");
-        parent.addAttribute(new Attribute("location", "river.overlays.png"));
+    public static Node createRiver() {
+        Node parent = new Node("River-Overlays");
+        parent.addAttribute("location", "river.overlays.png");
         return parent;
     }
 
@@ -61,9 +60,9 @@ public class TileGraphicsXMLGenerator {
      *
      * @return
      */
-    public static Element createUnits() {
-        Element parent = new Element("Unit-Overlays");
-        parent.addAttribute(new Attribute("base", "units"));
+    public static Node createUnits() {
+        Node parent = new Node("Unit-Overlays");
+        parent.addAttribute("base", "units");
         parent.appendChild(addUnitTile("infantry", "stand", "infantry.stand.png"));
         parent.appendChild(addUnitTile("infantry", "shoot", "infantry.shoot.png"));
         parent.appendChild(addUnitTile("infantry", "charge", "infantry.charge.png"));
@@ -77,11 +76,11 @@ public class TileGraphicsXMLGenerator {
      * @param location
      * @return
      */
-    public static Element addUnitTile(String type, String action, String location) {
-        Element child = new Element("Unit");
-        child.addAttribute(new Attribute("type", type));
-        child.addAttribute(new Attribute("action", action));
-        child.addAttribute(new Attribute("location", location));
+    public static Node addUnitTile(String type, String action, String location) {
+        Node child = new Node("Unit");
+        child.addAttribute("type", type);
+        child.addAttribute("action", action);
+        child.addAttribute("location", location);
         return child;
     }
 
@@ -89,8 +88,8 @@ public class TileGraphicsXMLGenerator {
      *
      * @return
      */
-    public static Element createMisc() {
-        Element parent = new Element("Miscellaneous-Overlays");
+    public static Node createMisc() {
+        Node parent = new Node("Miscellaneous-Overlays");
         parent.appendChild(addMiscTile("city", "city.png"));
         parent.appendChild(addMiscTile("garrison", "garrison.png"));
         return parent;
@@ -102,10 +101,10 @@ public class TileGraphicsXMLGenerator {
      * @param location
      * @return
      */
-    public static Element addMiscTile(String id, String location) {
-        Element child = new Element("Overlay");
-        child.addAttribute(new Attribute("id", id));
-        child.addAttribute(new Attribute("location", location));
+    public static Node addMiscTile(String id, String location) {
+        Node child = new Node("Overlay");
+        child.addAttribute("id", id);
+        child.addAttribute("location", location);
         return child;
     }
 
@@ -113,9 +112,9 @@ public class TileGraphicsXMLGenerator {
      *
      * @throws IOException
      */
-    public static Element createResources() {
-        Element parent = new Element("Resource-Overlays");
-        parent.addAttribute(new Attribute("base", "resources"));
+    public static Node createResources() {
+        Node parent = new Node("Resource-Overlays");
+        parent.addAttribute("base", "resources");
         parent.appendChild(addResourceOverlay(1, "resource.grain.png"));
         parent.appendChild(addResourceOverlay(2, "resource.orchard.png"));
         parent.appendChild(addResourceOverlay(3, "resource.buffalo.png"));
@@ -136,10 +135,10 @@ public class TileGraphicsXMLGenerator {
      * @param visible
      * @return
      */
-    public static Element addResourceOverlay(int id, String location) {
-        Element child = new Element("Overlay");
-        child.addAttribute(new Attribute("id", String.valueOf(id)));
-        child.addAttribute(new Attribute("location", location));
+    public static Node addResourceOverlay(int id, String location) {
+        Node child = new Node("Overlay");
+        child.addAttribute("id", String.valueOf(id));
+        child.addAttribute("location", location);
         return child;
     }
 
@@ -147,9 +146,9 @@ public class TileGraphicsXMLGenerator {
      *
      * @throws IOException
      */
-    public static Element createTerrain() {
-        Element parent = new Element("Terrain-Tiles");
-        parent.addAttribute(new Attribute("base", "terrains"));
+    public static Node createTerrain() {
+        Node parent = new Node("Terrain-Tiles");
+        parent.addAttribute("base", "terrains");
         parent.appendChild(addTerrainTile(1, "terrain.sea.png", "80a0e0"));
         parent.appendChild(addTerrainTile(2, "terrain.plains.png", "d0f0a0"));
         parent.appendChild(addTerrainTile(3, "terrain.hills.png", "604020"));
@@ -167,11 +166,11 @@ public class TileGraphicsXMLGenerator {
      * @param color
      * @return
      */
-    public static Element addTerrainTile(int id, String location, String color) {
-        Element child = new Element("Tile");
-        child.addAttribute(new Attribute("id", String.valueOf(id)));
-        child.addAttribute(new Attribute("location", location));
-        child.addAttribute(new Attribute("color", color));
+    public static Node addTerrainTile(int id, String location, String color) {
+        Node child = new Node("Tile");
+        child.addAttribute("id", String.valueOf(id));
+        child.addAttribute("location", location);
+        child.addAttribute("color", color);
         return child;
     }
     private static final Logger LOG = Logger.getLogger(TileGraphicsXMLGenerator.class.getName());

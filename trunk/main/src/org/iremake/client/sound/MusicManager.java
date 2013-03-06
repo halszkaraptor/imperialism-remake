@@ -27,10 +27,11 @@ import org.tools.sound.SoundSystem;
 import org.tools.sound.StreamPlayer;
 
 /**
- *
+ * Initializes the sound system and controls a jukebox.
  */
 public class MusicManager {
 
+    private static final Logger LOG = Logger.getLogger(MusicManager.class.getName());
     private static JukeBox jukebox;
 
     /**
@@ -40,7 +41,7 @@ public class MusicManager {
     }
 
     /**
-     *
+     * Please only call once.
      */
     public static void setup() {
         // sound system setup
@@ -70,7 +71,7 @@ public class MusicManager {
     }
 
     /**
-     *
+     * If there is a jukebox, start it.
      */
     public static void start() {
         if (jukebox != null) {
@@ -91,5 +92,4 @@ public class MusicManager {
         }
         SoundSystem.clearMixer();
     }
-    private static final Logger LOG = Logger.getLogger(MusicManager.class.getName());
 }

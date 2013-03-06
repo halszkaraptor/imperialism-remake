@@ -16,8 +16,6 @@
  */
 package org.tools.xml;
 
-import nu.xom.Element;
-
 /**
  * Interface for classes being able to read its state from XML. The idea is to
  * read all children (also of type ReadXMLable) recursively.
@@ -28,7 +26,10 @@ public interface ReadXMLable {
      * Sets the current state of an object according to the content of the given
      * XML node.
      *
+     * You can trust that Node parent is never null. Such cases will be caught
+     * before by convention.
+     *
      * @param parent a xml node
      */
-    public void fromXML(Element parent);
+    public void fromXML(Node parent);
 }

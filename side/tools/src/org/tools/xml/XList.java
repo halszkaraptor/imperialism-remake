@@ -50,9 +50,8 @@ import nu.xom.Elements;
 // TODo having a set also, could be sorted automatically (TreeSet)
 public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, FullXMLable {
 
-    private String XMLName;
+    private String XML_NAME;
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
-
     /**
      * Standard comparator, compares on the toString methods.
      */
@@ -62,7 +61,6 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
             return o1.toString().compareTo(o2.toString());
         }
     };
-
     private List<E> list = new ArrayList<>(4);
     private transient List<ListDataListener> listeners = new LinkedList<>();
     private Class<E> clazz;
@@ -78,7 +76,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
 
     public XList(Class<E> clazz, String XMLName) {
         this.clazz = clazz;
-        this.XMLName = XMLName;
+        this.XML_NAME = XMLName;
     }
 
     /**
@@ -244,12 +242,12 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
      * @return
      */
     @Override
-    public Element toXML() {
-        Element parent = new Element(XMLName);
+    public Node toXML() {
+        Node parent = new Node(XML_NAME);
 
         // store each element as child
         for (E element : list) {
-            Element child = element.toXML();
+            Node child = element.toXML();
             parent.appendChild(child);
         }
 
@@ -262,24 +260,18 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
      * @param parent
      */
     @Override
-    public void fromXML(Element parent) {
+    public void fromXML(Node parent) {
 
         // first clear
         clear();
 
-        if (parent == null || !XMLName.equals(parent.getLocalName())) {
-            LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
-            return;
-        }
+        parent.checkNode(XML_NAME);
 
-        // TODO test names
-        Elements children = parent.getChildElements();
-
-        int size = children.size();
+        int size = parent.getChildCount();
         list = new ArrayList<>(size);
 
         // parse each child and add to list
-        for (int i = 0; i < size; i++) {
+        for (Node child : parent.getChildren()) {
             // new instance of given class
             E element = null;
             try {
@@ -288,7 +280,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
                 LOG.log(Level.SEVERE, null, ex);
             }
 
-            element.fromXML(children.get(i));
+            element.fromXML(child);
             list.add(element);
         }
     }

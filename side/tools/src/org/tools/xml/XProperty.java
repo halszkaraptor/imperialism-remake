@@ -19,9 +19,7 @@ package org.tools.xml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import nu.xom.Element;
 
 /**
  * Property implementation with a HashMap and XML import/export capability.
@@ -32,7 +30,7 @@ import nu.xom.Element;
 // TODO add statistics (how to make them transient)
 public class XProperty implements FullXMLable {
 
-    public final static String XMLNAME = "Properties";
+    public final static String XML_NAME = "Properties";
     private static final Logger LOG = Logger.getLogger(XProperty.class.getName());
     private Map<String, String> content;
 
@@ -165,9 +163,8 @@ public class XProperty implements FullXMLable {
      * @return
      */
     @Override
-    public Element toXML() {
-        Element element = XMLHandler.fromStringMap(content, XMLNAME);
-        return element;
+    public Node toXML() {
+        return new Node(content, XML_NAME);
     }
 
     /**
@@ -176,13 +173,8 @@ public class XProperty implements FullXMLable {
      * @param parent
      */
     @Override
-    public void fromXML(Element parent) {
-
-        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
-            LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
-            return; // TODO more than a LOG entry maybe
-        }
-
-        content = XMLHandler.toStringMap(parent);
+    public void fromXML(Node parent) {
+        parent.checkNode(XML_NAME);
+        content = parent.toStringMap();
     }
 }

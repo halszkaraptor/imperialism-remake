@@ -40,6 +40,7 @@ import net.miginfocom.swing.MigLayout;
 import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.ui.utils.BasicFrame;
+import org.tools.xml.Node;
 import org.tools.xml.XMLHelper;
 import org.tools.xml.XTable;
 
@@ -146,7 +147,7 @@ public class TableEditorFrame extends BasicFrame {
                 if (fileChooser.showOpenDialog(TableEditorFrame.this) == JFileChooser.APPROVE_OPTION) {
                     File f = fileChooser.getSelectedFile();
                     // read file and parse to xml
-                    Element xml;
+                    Node xml;
                     try (InputStream is = new FileInputStream(f)) {
                         xml = XMLHelper.read(is);
                     } catch (ParsingException | IOException ex) {
@@ -170,7 +171,7 @@ public class TableEditorFrame extends BasicFrame {
                     if (!name.endsWith(extension)) {
                         f = new File(name + extension);
                     }
-                    Element xml = model.toXML();
+                    Node xml = model.toXML();
                     OutputStream os;
                     try {
                         os = new FileOutputStream(f);

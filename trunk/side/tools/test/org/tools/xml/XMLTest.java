@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class XMLTest {
 
         p.put(null, null);
 
-        Element root = p.toXML();
+        Node root = p.toXML();
         try {
             XMLHelper.write(System.out, root);
         } catch (UnsupportedEncodingException ex) {
@@ -71,7 +70,7 @@ public class XMLTest {
         p.putBoolean("single", true);
 
         // convert to xml
-        Element root = p.toXML();
+        Node root = p.toXML();
 
         // write to file
         Resource location = ResourceUtils.asResource("XMLTest.Property.xml");

@@ -25,8 +25,6 @@ import java.util.logging.Logger;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import nu.xom.Element;
-import nu.xom.Elements;
 
 /**
  * Table (two-dimensional array of strings plus list of column heading strings).
@@ -36,6 +34,11 @@ import nu.xom.Elements;
  * Can be serialized to XML.
  */
 public class XTable implements TableModel, FullXMLable {
+
+    private static final String XML_NAME = "Table";
+    private static final String XML_NAME_HEADER = "Column-Names";
+    private static final String XML_NAME_CONTENT = "Contents";
+    private static final String XML_NAME_ROW = "Content-Row";
 
     private static final Logger LOG = Logger.getLogger(XTable.class.getName());
     private List<String> headers;
@@ -419,9 +422,6 @@ public class XTable implements TableModel, FullXMLable {
         content.clear();
         fireTableChanged();
     }
-    private static final String NAME = "Table";
-    private static final String NAME_HEADER = "Column-Names";
-    private static final String NAME_CONTENT = "Content-Row";
 
     /**
      * Listeners are not saved.
@@ -429,17 +429,18 @@ public class XTable implements TableModel, FullXMLable {
      * @return
      */
     @Override
-    public Element toXML() {
-        Element parent = new Element(NAME);
+    public Node toXML() {
+        Node parent = new Node(XML_NAME);
 
         // store headers as list
-        Element child = XMLHandler.fromStringList(headers, NAME_HEADER);
+        Node child = new Node(headers, XML_NAME_HEADER);
         parent.appendChild(child);
 
         // store each row as list
+        child = new Node(XML_NAME_CONTENT);
         for (List<String> row : content) {
-            child = XMLHandler.fromStringList(row, NAME_CONTENT);
-            parent.appendChild(child);
+            Node node = new Node(row, XML_NAME_ROW);
+            child.appendChild(node);
         }
 
         return parent;
@@ -451,29 +452,23 @@ public class XTable implements TableModel, FullXMLable {
      * @param parent
      */
     @Override
-    public void fromXML(Element parent) {
+    public void fromXML(Node parent) {
 
         // first clear
         clear();
 
-        if (parent == null || !NAME.equals(parent.getLocalName())) {
-            LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
-            return;
-        }
-
-        // TODO test names
-        Elements children = parent.getChildElements();
+        parent.checkNode(XML_NAME);
 
         // first child contains the header names as list
-        headers = XMLHandler.toStringList(children.get(0));
+        headers = parent.getFirstChild(XML_NAME_HEADER).toStringList();
 
         // number of childs - 1 is number of rows
-        int rows = children.size() - 1;
-        content = new ArrayList<>(rows);
+        Node node = parent.getFirstChild(XML_NAME_CONTENT);
+        content = new ArrayList<>(node.getChildCount());
 
         // parse each row (one child) as a list
-        for (int i = 0; i < rows; i++) {
-            content.add(XMLHandler.toStringList(children.get(i + 1)));
+        for (Node child: node.getChildren()) {
+            content.add(child.toStringList());
         }
 
         // check consistency

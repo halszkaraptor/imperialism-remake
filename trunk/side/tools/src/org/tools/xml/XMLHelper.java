@@ -19,10 +19,14 @@ package org.tools.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 import org.tools.io.Resource;
@@ -49,10 +53,10 @@ public class XMLHelper {
      * @throws ParsingException
      * @throws IOException
      */
-    public static Element read(InputStream in) throws IOException, ParsingException {
+    public static Node read(InputStream in) throws IOException, ParsingException {
         Builder parser = new Builder();
         Document document = parser.build(in);
-        return document.getRootElement();
+        return new Node(document.getRootElement());
     }
 
     /**
@@ -63,7 +67,7 @@ public class XMLHelper {
      * @throws IOException
      * @throws ParsingException
      */
-    public static Element read(Resource resource) throws IOException, ParsingException {
+    public static Node read(Resource resource) throws IOException, ParsingException {
         try (InputStream in = resource.getInputStream()) {
             return XMLHelper.read(in);
         }
@@ -78,7 +82,7 @@ public class XMLHelper {
      * @throws ParsingException
      */
     public static void read(Resource resource, ReadXMLable target) throws IOException, ParsingException {
-        Element xml = XMLHelper.read(resource);
+        Node xml = XMLHelper.read(resource);
         target.fromXML(xml); // TODO check target not null
     }
 
@@ -89,13 +93,10 @@ public class XMLHelper {
      * @param root
      * @throws IOException
      */
-    public static void write(OutputStream out, Element root) throws IOException {
+    public static void write(OutputStream out, Node root) throws IOException {
 
         // get document, if not existing create new with this as the root node
         Document document = root.getDocument();
-        if (document == null) {
-            document = new Document(root);
-        }
 
         Serializer serializer = new Serializer(out, "UTF-8");
         serializer.setIndent(1);
@@ -110,7 +111,7 @@ public class XMLHelper {
      * @param root
      * @throws IOException
      */
-    public static void write(Resource resource, Element root) throws IOException {
+    public static void write(Resource resource, Node root) throws IOException {
         try (OutputStream out = resource.getOutputStream()) { // this will create parent directories if they aren't yet available
             XMLHelper.write(out, root);
         }
@@ -124,7 +125,7 @@ public class XMLHelper {
      * @throws IOException
      */
     public static void write(Resource resource, FullXMLable target) throws IOException {
-        Element xml = target.toXML();
+        Node xml = target.toXML();
         XMLHelper.write(resource, xml);
     }
 }

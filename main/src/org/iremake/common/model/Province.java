@@ -17,22 +17,23 @@
 package org.iremake.common.model;
 
 import java.util.logging.Logger;
-import nu.xom.Attribute;
-import nu.xom.Element;
 import org.iremake.common.model.map.MapPosition;
 import org.tools.xml.FullXMLable;
+import org.tools.xml.Node;
+import org.tools.xml.XMLHelper;
 
 /**
  * A province, currently with id, name and town position.
  */
 public class Province implements FullXMLable {
 
+    private static final Logger LOG = Logger.getLogger(Province.class.getName());
     /* Sea tiles have a default value which is defined here and not in the xml */
     /**
      *
      */
     public static final int NONE = 0;
-    private static final String XML_NAME = "Province";
+    public static final String XML_NAME = "Province";
     private int id;
     private String name;
     private MapPosition town = new MapPosition();
@@ -100,12 +101,12 @@ public class Province implements FullXMLable {
      * @return xml object
      */
     @Override
-    public Element toXML() {
-        Element element = new Element(XML_NAME);
-        element.addAttribute(new Attribute("id", Integer.toString(id)));
-        element.addAttribute(new Attribute("name", name));
-        element.addAttribute(new Attribute("town-row", String.valueOf(town.row)));
-        element.addAttribute(new Attribute("town-column", String.valueOf(town.column)));
+    public Node toXML() {
+        Node element = new Node(XML_NAME);
+        element.addAttribute("id", Integer.toString(id));
+        element.addAttribute("name", name);
+        element.addAttribute("town-row", String.valueOf(town.row));
+        element.addAttribute("town-column", String.valueOf(town.column));
 
         return element;
     }
@@ -116,13 +117,14 @@ public class Province implements FullXMLable {
      * @param parent xml object
      */
     @Override
-    public void fromXML(Element parent) {
-        // TODO checks (null, name)
-        id = Integer.parseInt(parent.getAttributeValue("id"));
+    public void fromXML(Node parent) {
+
+        parent.checkNode(XML_NAME);
+
+        id = parent.getAttributeValueAsInt("id");
         name = parent.getAttributeValue("name");
-        int row = Integer.parseInt(parent.getAttributeValue("town-row"));
-        int column = Integer.parseInt(parent.getAttributeValue("town-column"));
+        int row = parent.getAttributeValueAsInt("town-row");
+        int column = parent.getAttributeValueAsInt("town-column");
         town = new MapPosition(row, column);
     }
-    private static final Logger LOG = Logger.getLogger(Province.class.getName());
 }

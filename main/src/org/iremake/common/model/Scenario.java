@@ -22,7 +22,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nu.xom.Element;
 import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
@@ -30,7 +29,9 @@ import org.iremake.common.model.map.TilesBorder;
 import org.iremake.common.model.map.TilesTransition;
 import org.tools.utils.BitBuffer;
 import org.tools.xml.FullXMLable;
+import org.tools.xml.Node;
 import org.tools.xml.XList;
+import org.tools.xml.XMLHelper;
 import org.tools.xml.XProperty;
 
 /**
@@ -49,14 +50,14 @@ public class Scenario implements FullXMLable {
     public static final int BITSIZE_RAILROAD_CONFIG = 3;
     public static final int BITSIZE_RIVERID = 6;
     public static final int RIVERID_NONE = 63;
-    private static final String XMLNAME = "Scenario";
-    private static final String XMLNAME_NATIONS = "Nations";
+    private static final String XML_NAME = "Scenario";
+    private static final String XML_NAME_NATIONS = "Nations";
     private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
     private int rows = 0;
     private int columns = 0;
     private Tile[][] map;
     private XProperty properties = new XProperty(10);
-    private XList<Nation> nations = new XList<>(Nation.class, XMLNAME_NATIONS);
+    private XList<Nation> nations = new XList<>(Nation.class, XML_NAME_NATIONS);
     private List<ScenarioChangedListener> listeners = new LinkedList<>();
 
     /**
@@ -424,15 +425,15 @@ public class Scenario implements FullXMLable {
      * @return
      */
     @Override
-    public Element toXML() {
-        Element parent = new Element(XMLNAME);
+    public Node toXML() {
+        Node parent = new Node(XML_NAME);
 
         // update sizes and write properties
         properties.putInt("rows", rows);
         properties.putInt("columns", columns);
         parent.appendChild(properties.toXML());
 
-        Element child = new Element("Maps");
+        Node child = new Node("Maps");
         parent.appendChild(child);
 
         // terrain map
@@ -442,7 +443,7 @@ public class Scenario implements FullXMLable {
                 terrainMapBuffer.add(map[row][column].terrainID, BITSIZE_TERRAINID);
             }
         }
-        Element schild = new Element("Terrains");
+        Node schild = new Node("Terrains");
         schild.appendChild(terrainMapBuffer.toXMLString());
         child.appendChild(schild);
 
@@ -454,7 +455,7 @@ public class Scenario implements FullXMLable {
                 resourcesMapBuffer.add(map[row][column].resourceVisible);
             }
         }
-        schild = new Element("Resources");
+        schild = new Node("Resources");
         schild.appendChild(resourcesMapBuffer.toXMLString());
         child.appendChild(schild);
 
@@ -465,7 +466,7 @@ public class Scenario implements FullXMLable {
                 provinceMapBuffer.add(map[row][column].provinceID, BITSIZE_PROVINCEID);
             }
         }
-        schild = new Element("Provinces");
+        schild = new Node("Provinces");
         schild.appendChild(provinceMapBuffer.toXMLString());
         child.appendChild(schild);
 
@@ -476,7 +477,7 @@ public class Scenario implements FullXMLable {
                 railMapBuffer.add(map[row][column].railroadConfig, BITSIZE_RAILROAD_CONFIG);
             }
         }
-        schild = new Element("Railroads");
+        schild = new Node("Railroads");
         schild.appendChild(railMapBuffer.toXMLString());
         child.appendChild(schild);
 
@@ -487,7 +488,7 @@ public class Scenario implements FullXMLable {
                 riverBuffer.add(map[row][column].riverID, BITSIZE_RIVERID);
             }
         }
-        schild = new Element("Rivers");
+        schild = new Node("Rivers");
         schild.appendChild(riverBuffer.toXMLString());
         child.appendChild(schild);
 
@@ -503,49 +504,46 @@ public class Scenario implements FullXMLable {
      * @param parent
      */
     @Override
-    public void fromXML(Element parent) {
+    public void fromXML(Node parent) {
 
         // TODO clear (?) neccessary?
-        clear();
         // TODO we could also set as new of calling clear
+        clear();
 
-        if (parent == null || !XMLNAME.equals(parent.getLocalName())) {
-            LOG.log(Level.SEVERE, "Empty XML node or node name wrong.");
-            return;
-        }
+        parent.checkNode(XML_NAME);
 
         // get properties and readout sizes
-        properties.fromXML(parent.getFirstChildElement(XProperty.XMLNAME));
+        properties.fromXML(parent.getFirstChild(XProperty.XML_NAME));
         rows = properties.getInt("rows");
         columns = properties.getInt("columns");
         int size = rows * columns;
         map = new Tile[rows][columns];
 
-        Element child = parent.getFirstChildElement("Maps");
+        Node child = parent.getFirstChild("Maps");
 
         // readingt of terrain map
-        String content = child.getFirstChildElement("Terrains").getValue();
+        String content = child.getFirstChild("Terrains").getValue();
         BitBuffer terbuffer = BitBuffer.fromXMLString(content);
         terbuffer.trimTo(BITSIZE_TERRAINID * size);
 
         // readingt of terrain map
-        content = child.getFirstChildElement("Resources").getValue();
+        content = child.getFirstChild("Resources").getValue();
         BitBuffer resbuffer = BitBuffer.fromXMLString(content);
         resbuffer.trimTo((BITSIZE_RESOURCEID + 1) * size);
 
         // reading of provinces map
         // TODO if no such element returns null and getValue will throw exception
-        content = child.getFirstChildElement("Provinces").getValue();
+        content = child.getFirstChild("Provinces").getValue();
         BitBuffer probuffer = BitBuffer.fromXMLString(content);
         probuffer.trimTo(BITSIZE_PROVINCEID * size);
 
         // reading of railroads map
-        content = child.getFirstChildElement("Railroads").getValue();
+        content = child.getFirstChild("Railroads").getValue();
         BitBuffer railbuffer = BitBuffer.fromXMLString(content);
         railbuffer.trimTo(BITSIZE_RAILROAD_CONFIG * size);
 
         // reading of rivers map
-        content = child.getFirstChildElement("Rivers").getValue();
+        content = child.getFirstChild("Rivers").getValue();
         BitBuffer riverbuffer = BitBuffer.fromXMLString(content);
         riverbuffer.trimTo(BITSIZE_RIVERID * size);
 
@@ -570,7 +568,7 @@ public class Scenario implements FullXMLable {
         }
 
         // reading of nations
-        nations.fromXML(parent.getFirstChildElement(XMLNAME_NATIONS));
+        nations.fromXML(parent.getFirstChild(XML_NAME_NATIONS));
 
         // Of course everything has changed.
         fireScenarioChanged();

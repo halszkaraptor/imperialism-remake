@@ -64,6 +64,7 @@ import org.tools.io.FileResource;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
+import org.tools.xml.Node;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
 
@@ -693,13 +694,13 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
 
-        Element parent = new Element("Scenario-Importer");
+        Node parent = new Node("Scenario-Importer");
         JTextComponent[] components = {importmapTextField, scenarioTextField, titleTextField, nationNamesTextField, nationColorsTextField, provinceReplacementsTextField};
 
         for (JTextComponent component : components) {
-            Element child = new Element("Component-" + component.getName());
+            Node child = new Node("Component-" + component.getName());
             // child.appendChild(component.getText());
-            child.addAttribute(new Attribute("content", component.getText()));
+            child.addAttribute("content", component.getText());
             parent.appendChild(child);
         }
         try {
@@ -724,7 +725,7 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
 
-        Element parent;
+        Node parent;
         try {
             parent = XMLHelper.read(resource);
         } catch (IOException | ParsingException ex) {
@@ -732,18 +733,16 @@ public class ImperialismScenarioImporter extends JFrame {
             return;
         }
 
-        Elements children = parent.getChildElements();
-        if (children.size() != 6) {
+        if (parent.getChildCount() != 6) {
             updateStatus("Wrong number of elements in xml.");
             return;
         }
 
-        importmapTextField.setText(children.get(0).getAttributeValue("content"));
-        scenarioTextField.setText(children.get(1).getAttributeValue("content"));
-        titleTextField.setText(children.get(2).getAttributeValue("content"));
-        nationNamesTextField.setText(children.get(3).getAttributeValue("content"));
-        nationColorsTextField.setText(children.get(4).getAttributeValue("content"));
-        provinceReplacementsTextField.setText(children.get(5).getAttributeValue("content"));
+        JTextComponent[] components = {importmapTextField, scenarioTextField, titleTextField, nationNamesTextField, nationColorsTextField, provinceReplacementsTextField};
+
+        for (JTextComponent component : components) {
+            component.setText(parent.getFirstChild("Component-" + component.getName()).getAttributeValue("content"));
+        }
 
         updateStatus("All content read.");
     }//GEN-LAST:event_loadButtonActionPerformed

@@ -63,6 +63,7 @@ import org.iremake.common.model.Province;
 import org.iremake.common.model.ScenarioChangedListener;
 import org.iremake.common.model.map.MapPosition;
 import org.tools.ui.ButtonBar;
+import org.tools.xml.Node;
 import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
 
@@ -164,7 +165,7 @@ public class EditorScreen extends UIFrame {
                 if (FrameManager.getInstance().showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
                     File f = fileChooser.getSelectedFile();
                     // read file and parse to xml
-                    Element xml;
+                    Node xml;
                     try (InputStream is = new FileInputStream(f)) {
                         xml = XMLHelper.read(is);
                     } catch (ParsingException | IOException ex) {
@@ -195,7 +196,7 @@ public class EditorScreen extends UIFrame {
                     if (!name.endsWith(".xml")) {
                         f = new File(name + ".xml");
                     }
-                    Element xml = scenario.toXML();
+                    Node xml = scenario.toXML();
                     OutputStream os;
                     try {
                         os = new FileOutputStream(f);

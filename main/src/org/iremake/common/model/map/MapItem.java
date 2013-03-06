@@ -17,9 +17,8 @@
 package org.iremake.common.model.map;
 
 import java.util.logging.Logger;
-import nu.xom.Attribute;
-import nu.xom.Element;
 import org.tools.xml.FullXMLable;
+import org.tools.xml.Node;
 
 /**
  *
@@ -72,23 +71,23 @@ public class MapItem implements FullXMLable {
     }
 
     @Override
-    public Element toXML() {
-        Element element = new Element(XML_NAME);
+    public Node toXML() {
+        Node element = new Node(XML_NAME);
 
-        element.addAttribute(new Attribute("type", type.name()));
-        element.addAttribute(new Attribute("position-row", String.valueOf(position.row)));
-        element.addAttribute(new Attribute("position-column", String.valueOf(position.column)));
+        element.addAttribute("type", type.name());
+        element.addAttribute("position-row", String.valueOf(position.row));
+        element.addAttribute("position-column", String.valueOf(position.column));
 
         return element;
     }
 
     @Override
-    public void fromXML(Element parent) {
+    public void fromXML(Node parent) {
 
         // TODO checks (null, name)
         type = MapItemType.valueOf(parent.getAttributeValue("type"));
-        int row = Integer.parseInt(parent.getAttributeValue("position-row"));
-        int column = Integer.parseInt(parent.getAttributeValue("position-column"));
+        int row = parent.getAttributeValueAsInt("position-row");
+        int column = parent.getAttributeValueAsInt("position-column");
         position = new MapPosition(row, column);
     }
     private static final Logger LOG = Logger.getLogger(MapItem.class.getName());

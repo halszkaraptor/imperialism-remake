@@ -20,52 +20,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import nu.xom.Element;
-import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.io.Resource;
+import org.tools.xml.Node;
 import org.tools.xml.ReadXMLable;
 
 /**
- *
+ * Loads information about our music pieces from file. Just reading supported.
  */
 public class MusicDatabase implements ReadXMLable {
 
+    private static final Logger LOG = Logger.getLogger(MusicDatabase.class.getName());
+    private static final String XML_NAME = "Music";
     private List<Resource> list;
 
     /**
-     *
+     * Get background music list.
      * @return
      */
     public List<Resource> getBackgroundMusicList() {
         return Collections.unmodifiableList(list);
     }
 
+    /**
+     * Loads from XML.
+     *
+     * @param parent The XML node.
+     */
     @Override
-    public void fromXML(Element parent) {
-        if (parent == null || parent.getLocalName().equals("Music")) {
+    public void fromXML(Node parent) {
+        parent.checkNode(XML_NAME);
 
-        }
+        Node node = parent.getFirstChild("Background");
 
-        Element child = parent.getFirstChildElement("Background");
-        if (child == null) {
+        String base = node.getAttributeValue("base");
 
-        }
-        String base = child.getAttributeValue("base");
+        list = new ArrayList<>(node.getChildCount());
+        for (Node child: node.getChildren()) {
+            child.checkNode("Piece");
 
-        Elements children = child.getChildElements();
-        list = new ArrayList<>(children.size());
-        for (int i = 0; i < children.size(); i++) {
-            Element piece = children.get(i);
-
-            if (!"Piece".equals(child.getLocalName())) {
-                // TODO something is wrong
-            }
-            Resource resource = IOManager.getAsResource(Places.Music, base + "/" + piece.getValue());
+            Resource resource = IOManager.getAsResource(Places.Music, base + "/" + child.getValue());
             list.add(resource);
         }
     }
-    private static final Logger LOG = Logger.getLogger(MusicDatabase.class.getName());
-
 }

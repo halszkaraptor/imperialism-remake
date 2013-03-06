@@ -17,12 +17,12 @@
 package org.iremake.common.model;
 
 import java.util.logging.Logger;
-import nu.xom.Element;
-import nu.xom.Elements;
 import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapItem.MapItemType;
 import org.tools.xml.FullXMLable;
+import org.tools.xml.Node;
 import org.tools.xml.XList;
+import org.tools.xml.XMLHelper;
 import org.tools.xml.XProperty;
 
 /**
@@ -30,6 +30,7 @@ import org.tools.xml.XProperty;
  */
 public class Nation implements FullXMLable {
 
+    private static final Logger LOG = Logger.getLogger(Nation.class.getName());
     /**
      *
      */
@@ -127,8 +128,8 @@ public class Nation implements FullXMLable {
      * @return xml object
      */
     @Override
-    public Element toXML() {
-        Element element = new Element(XML_NAME);
+    public Node toXML() {
+        Node element = new Node(XML_NAME);
 
         element.appendChild(properties.toXML());
         element.appendChild(provinces.toXML());
@@ -143,23 +144,20 @@ public class Nation implements FullXMLable {
      * @param parent xml object
      */
     @Override
-    public void fromXML(Element parent) {
-        Elements children = parent.getChildElements();
-        // TODO checks (null, name)
+    public void fromXML(Node parent) {
 
-        properties.fromXML(children.get(0));
-        provinces.fromXML(children.get(1));
-        // units.fromXML(children.get(2));
-        // TODO get children by name instead of fixed indices
+        parent.checkNode(XML_NAME);
+
+        properties.fromXML(parent.getFirstChild(XProperty.XML_NAME));
+        provinces.fromXML(parent.getFirstChild("Provinces"));
 
         // we add an engineer unit to the capital province
         int capital = properties.getInt(KEY_CAPITAL);
-        for (Province province: provinces) {
+        for (Province province : provinces) {
             if (province.getID() == capital) {
                 MapItem unit = new MapItem(MapItemType.Engineer, province.getTownPosition());
                 units.addElement(unit);
             }
         }
     }
-    private static final Logger LOG = Logger.getLogger(Nation.class.getName());
 }

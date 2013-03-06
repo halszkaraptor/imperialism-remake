@@ -18,10 +18,9 @@ package org.iremake.xml;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import nu.xom.Attribute;
-import nu.xom.Element;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
+import org.tools.xml.Node;
 import org.tools.xml.XMLHelper;
 
 /**
@@ -34,7 +33,7 @@ public class MusicDatabaseXMLGenerator {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        Element parent = new Element("Music");
+        Node parent = new Node("Music");
         parent.appendChild(makeBackgroundMusicList());
         Resource resource = ResourceUtils.asResource("music.xml");
         XMLHelper.write(resource, parent);
@@ -44,9 +43,9 @@ public class MusicDatabaseXMLGenerator {
      *
      * @return
      */
-    public static Element makeBackgroundMusicList() {
-        Element parent = new Element("Background");
-        parent.addAttribute(new Attribute("base", "background"));
+    public static Node makeBackgroundMusicList() {
+        Node parent = new Node("Background");
+        parent.addAttribute("base", "background");
         parent.appendChild(addPiece("01-Imperialism.ogg"));
         return parent;
     }
@@ -56,8 +55,8 @@ public class MusicDatabaseXMLGenerator {
      * @param file
      * @return
      */
-    public static Element addPiece(String file) {
-        Element child = new Element("Piece");
+    public static Node addPiece(String file) {
+        Node child = new Node("Piece");
         child.appendChild(file);
         return child;
     }

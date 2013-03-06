@@ -18,10 +18,9 @@ package org.iremake.xml;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import nu.xom.Attribute;
-import nu.xom.Element;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
+import org.tools.xml.Node;
 import org.tools.xml.XMLHelper;
 
 /**
@@ -36,7 +35,7 @@ public class SettingsXMLGenerator {
      */
     public static void main(String[] args) throws IOException {
 
-        Element parent = new Element("Settings");
+        Node parent = new Node("Settings");
         parent.appendChild(createTerrainSettings());
         parent.appendChild(createResourceSettings());
 
@@ -44,9 +43,9 @@ public class SettingsXMLGenerator {
         XMLHelper.write(resource, parent);
     }
 
-    private static Element createTerrainSettings() {
-        Element parent = new Element("Terrains");
-        parent.addAttribute(new Attribute("default-id", "1"));
+    private static Node createTerrainSettings() {
+        Node parent = new Node("Terrains");
+        parent.addAttribute("default-id", "1");
         parent.appendChild(addTerrainType(1, "Sea"));
         parent.appendChild(addTerrainType(2, "Plains"));
         parent.appendChild(addTerrainType(3, "Hills"));
@@ -57,15 +56,15 @@ public class SettingsXMLGenerator {
         return parent;
     }
 
-    private static Element addTerrainType(int id, String name) {
-        Element child = new Element("Terrain");
-        child.addAttribute(new Attribute("id", String.valueOf(id)));
-        child.addAttribute(new Attribute("name", name));
+    private static Node addTerrainType(int id, String name) {
+        Node child = new Node("Terrain");
+        child.addAttribute("id", String.valueOf(id));
+        child.addAttribute("name", name);
         return child;
     }
 
-    private static Element createResourceSettings() {
-        Element parent = new Element("Resources");
+    private static Node createResourceSettings() {
+        Node parent = new Node("Resources");
         parent.appendChild(addResourceType(1, "Grain", true));
         parent.appendChild(addResourceType(2, "Orchard", true));
         parent.appendChild(addResourceType(3, "Buffalo", true));
@@ -79,11 +78,11 @@ public class SettingsXMLGenerator {
         return parent;
     }
 
-    private static Element addResourceType(int id, String name, boolean visible) {
-        Element child = new Element("Resource");
-        child.addAttribute(new Attribute("id", String.valueOf(id)));
-        child.addAttribute(new Attribute("name", name));
-        child.addAttribute(new Attribute("visible", String.valueOf(visible)));
+    private static Node addResourceType(int id, String name, boolean visible) {
+        Node child = new Node("Resource");
+        child.addAttribute("id", String.valueOf(id));
+        child.addAttribute("name", name);
+        child.addAttribute("visible", String.valueOf(visible));
         return child;
     }
     private static final Logger LOG = Logger.getLogger(SettingsXMLGenerator.class.getName());

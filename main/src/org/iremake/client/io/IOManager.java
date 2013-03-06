@@ -35,12 +35,12 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.IconLoader;
 import org.tools.xml.FullXMLable;
+import org.tools.xml.Node;
 import org.tools.xml.ReadXMLable;
 import org.tools.xml.XMLHelper;
 
@@ -139,7 +139,7 @@ public class IOManager {
      * @param location
      * @return
      */
-    public static Element getAsXML(Places place, String location) {
+    public static Node getAsXML(Places place, String location) {
         try {
             return XMLHelper.read(IOManager.getAsResource(place, location));
         } catch (IOException | ParsingException ex) {
@@ -249,6 +249,7 @@ public class IOManager {
      * @return
      */
     public static String getPath(Places place, String location) {
+
         return base + place + location;
     }
 

@@ -25,13 +25,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import nu.xom.Element;
-import nu.xom.Elements;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.ui.utils.GraphicsUtils;
+import org.tools.xml.Node;
 import org.tools.xml.ReadXMLable;
+import org.tools.xml.XMLHelper;
 
 /**
  *
@@ -40,6 +41,8 @@ import org.tools.xml.ReadXMLable;
 // TODO image not existing test
 public class TileGraphicsRepository implements ReadXMLable {
 
+    private static final Logger LOG = Logger.getLogger(TileGraphicsRepository.class.getName());
+    private static final String XML_NAME = "Tile-Graphics";
     /* the map storing the ui tile information for each terrain id */
     private Map<Integer, Tile> terrainTiles = new HashMap<>();
     /* the map storing the ui overlay image for each id */
@@ -48,7 +51,6 @@ public class TileGraphicsRepository implements ReadXMLable {
     private Map<String, Image> miscOverlays = new HashMap<>();
     /* */
     private Map<String, Image> unitOverlays = new HashMap<>();
-
     private Image[] riverOverlays;
 
     /* the size of the tiles, i.e. every stored image must have that size */
@@ -173,33 +175,27 @@ public class TileGraphicsRepository implements ReadXMLable {
     }
 
     @Override
-    public void fromXML(Element parent) {
+    public void fromXML(Node parent) {
         // clear all maps
         terrainTiles.clear();
         resourceOverlays.clear();
         miscOverlays.clear();
 
-        if (parent == null || parent.getLocalName().equals("Tile-Graphics"));
+        parent.checkNode(XML_NAME);
 
-        int width = Integer.parseInt(parent.getAttributeValue("tile-width"));
-        int height = Integer.parseInt(parent.getAttributeValue("tile-height"));
+        int width = parent.getAttributeValueAsInt("tile-width");
+        int height = parent.getAttributeValueAsInt("tile-height");
         tileSize = new Dimension(width, height);
 
         // import terrain tiles
-        Element element = parent.getFirstChildElement("Terrain-Tiles");
-
-        if (element == null);
+        Node element = parent.getFirstChild("Terrain-Tiles");
 
         String base = element.getAttributeValue("base");
 
-        Elements children = element.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = children.get(i);
+        for (Node child : element.getChildren()) {
+            child.checkNode("Tile");
 
-            if (!"Tile".equals(child.getLocalName())) {
-                // TODO something is wrong
-            }
-            Integer id = Integer.valueOf(child.getAttributeValue("id"));
+            Integer id = child.getAttributeValueAsInt("id");
             String location = child.getAttributeValue("location");
             Tile tile = new Tile();
             tile.image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
@@ -213,14 +209,14 @@ public class TileGraphicsRepository implements ReadXMLable {
             height = tile.image.getHeight(null);
             Dimension size = new Dimension(width, height);
             if (!tileSize.equals(size)) {
-                // LOG.log(Level.SEVERE, "A terrain tile differs in size");
+                LOG.log(Level.SEVERE, "A terrain tile differs in size");
                 // TODO rescale(?) or exception
             }
         }
 
         {
             // import river overlay
-            element = parent.getFirstChildElement("River-Overlays");
+            element = parent.getFirstChild("River-Overlays");
             String location = element.getAttributeValue("location");
             BufferedImage rivers = IOManager.getAsImage(Places.GraphicsScenario, location);
             // test if width and height is a multiple of tileSize
@@ -242,37 +238,24 @@ public class TileGraphicsRepository implements ReadXMLable {
         }
 
         // import resource overlays
-        element = parent.getFirstChildElement("Resource-Overlays");
-
-        if (element == null);
+        element = parent.getFirstChild("Resource-Overlays");
 
         base = element.getAttributeValue("base");
 
-        children = element.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = children.get(i);
+        for (Node child : element.getChildren()) {
+            child.checkNode("Overlay");
 
-            if (!"Overlay".equals(child.getLocalName())) {
-                // TODO something is wrong
-            }
-            Integer id = Integer.valueOf(child.getAttributeValue("id"));
+            Integer id = child.getAttributeValueAsInt("id");
             String location = child.getAttributeValue("location");
             Image image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
             resourceOverlays.put(id, image);
         }
 
         // import misc overlays
-        element = parent.getFirstChildElement("Miscellaneous-Overlays");
+        element = parent.getFirstChild("Miscellaneous-Overlays");
 
-        if (element == null);
-
-        children = element.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = children.get(i);
-
-            if (!"Overlay".equals(child.getLocalName())) {
-                // TODO something is wrong
-            }
+        for (Node child : element.getChildren()) {
+            child.checkNode("Overlay");
 
             String id = child.getAttributeValue("id");
             String location = child.getAttributeValue("location");
@@ -281,19 +264,11 @@ public class TileGraphicsRepository implements ReadXMLable {
         }
 
         // import unit overlays
-        element = parent.getFirstChildElement("Unit-Overlays");
-
-        if (element == null);
-
+        element = parent.getFirstChild("Unit-Overlays");
         base = element.getAttributeValue("base");
 
-        children = element.getChildElements();
-        for (int i = 0; i < children.size(); i++) {
-            Element child = children.get(i);
-
-            if (!"Overlay".equals(child.getLocalName())) {
-                // TODO something is wrong
-            }
+        for (Node child : element.getChildren()) {
+            child.checkNode("Unit");
 
             String type = child.getAttributeValue("type");
             String action = child.getAttributeValue("action");
@@ -302,5 +277,4 @@ public class TileGraphicsRepository implements ReadXMLable {
             unitOverlays.put(type + "|" + action, image);
         }
     }
-    private static final Logger LOG = Logger.getLogger(TileGraphicsRepository.class.getName());
 }

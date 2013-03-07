@@ -79,13 +79,22 @@ public class MusicManager {
             jukebox.play();
         }
     }
+    
+    /**
+     * 
+     */
+    public static void stop() {
+       if (jukebox != null) {
+           jukebox.stop();
+       } 
+    }
 
     /**
      *
      */
     public static void cleanup() {
+        stop();
         if (jukebox != null) {
-            jukebox.stop();
             StreamPlayer player = jukebox.getPlayer();
             player.destroy();
             jukebox = null;

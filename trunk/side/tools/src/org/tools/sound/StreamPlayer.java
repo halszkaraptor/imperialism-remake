@@ -44,8 +44,8 @@ public class StreamPlayer implements Runnable {
     private final SourceDataLine line;
     private final BooleanControl muteControl;
     private final FloatControl volumeControl;
-    private final float volumeRange;
-    private final float minimumVolume;
+    private final float volumeRange = 1;
+    private final float minimumVolume = 0;
     private volatile float volume = 0.7f;
     private volatile int defaultFadingTime = 0;
     private volatile boolean stop;
@@ -63,12 +63,15 @@ public class StreamPlayer implements Runnable {
      */
     private StreamPlayer(SourceDataLine line) {
         // TODO insert code that checks if the controls are available, otherwise disable functionality
-        muteControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
-        volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+        // muteControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE); // not available under openjdk 7 icedtea
+        muteControl = null;
+        // volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+        volumeControl = null;
+        /*
         minimumVolume = Math.max(volumeControl.getMinimum(), -40); // not less than -30dB
         volumeRange = volumeControl.getMaximum() - minimumVolume;
         volume();
-
+        */
         this.line = line;
     }
 
@@ -286,15 +289,19 @@ public class StreamPlayer implements Runnable {
      * @param mute True if setting to mute.
      */
     public void mute(boolean mute) {
-        muteControl.setValue(mute);
+        if (muteControl != null) {
+            muteControl.setValue(mute);
+        }
     }
 
     /**
      * Internally setting the volume.
      */
     private void volume() {
-        volumeControl.setValue(volume * volumeRange + minimumVolume);
-        mute(false); // setting a volume always unchecks mute
+        if (volumeControl != null) {
+            volumeControl.setValue(volume * volumeRange + minimumVolume);
+            mute(false); // setting a volume always unchecks mute
+        }
     }
 
     /**
@@ -338,7 +345,9 @@ public class StreamPlayer implements Runnable {
      * @param time Duration in milliseconds
      */
     private void fade(float value1, float value2, int time) {
-        volumeControl.shift(value1 * volumeRange + minimumVolume, value2 * volumeRange + minimumVolume, time * 1000);
+        if (volumeControl != null) {
+            volumeControl.shift(value1 * volumeRange + minimumVolume, value2 * volumeRange + minimumVolume, time * 1000);
+        }
     }
 
     /**

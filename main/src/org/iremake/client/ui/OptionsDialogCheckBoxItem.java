@@ -21,10 +21,12 @@ import javax.swing.JCheckBox;
 import org.iremake.client.Option;
 
 /**
- * Item with a check box. Internal state is a boolean.
+ * Item with a check box. Internal state is a boolean. Options is also assumed
+ * to be boolean valued.
  */
 public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
 
+    private static final Logger LOG = Logger.getLogger(OptionsDialogCheckBoxItem.class.getName());
     /* the ui element */
     private JCheckBox item;
     /* the option */
@@ -59,5 +61,4 @@ public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
     public void updateOption() {
         option.putBoolean(item.isSelected());
     }
-    private static final Logger LOG = Logger.getLogger(OptionsDialogCheckBoxItem.class.getName());
 }

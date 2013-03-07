@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.LinkedList;
@@ -32,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
+import org.iremake.client.sound.MusicManager;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerManager;
 import org.tools.sound.SoundSystem;
@@ -42,9 +44,15 @@ import org.tools.ui.SimpleComboBoxModel;
  * update and check for modified values is done by iterating over a list of
  * OptionsDIalogItems. Therefore we avoid abundant use of listeners. Anyway we
  * only want to check the options upon exit of the dialog.
+ *
+ * If any OptionItem is modified and the user accepts the change then all
+ * modified OptionItems are updated. This always changes the Option value but
+ * sometimes might have more effects. One example is the Mute Option where
+ * additionally the music system is set to mute or not mute.
  */
 public class OptionsDialog extends UIDialog {
 
+    private static final Logger LOG = Logger.getLogger(OptionsDialog.class.getName());
     /* list holding all items */
     private List<OptionsDialogItem> items = new LinkedList<>();
     /* additional item */
@@ -81,11 +89,9 @@ public class OptionsDialog extends UIDialog {
     }
 
     /**
-     * Setup of general options tab.
-     *
-     * @return
+     * @return General options tab.
      */
-    private JPanel createGeneralPanel() {
+    private Component createGeneralPanel() {
 
         JPanel graphics = new JPanel();
         graphics.setBorder(BorderFactory.createTitledBorder("Graphics"));
@@ -118,11 +124,9 @@ public class OptionsDialog extends UIDialog {
     }
 
     /**
-     * Setup of server options tab.
-     *
-     * @return
+     * @return Server options tab.
      */
-    private JPanel createServerPanel() {
+    private Component createServerPanel() {
         JPanel panel = new JPanel();
 
         // server toggle
@@ -163,10 +167,9 @@ public class OptionsDialog extends UIDialog {
     }
 
     /**
-     *
-     * @return
+     * @return Music options tab.
      */
-    private JPanel createMusicPanel() {
+    private Component createMusicPanel() {
         JPanel panel = new JPanel();
 
         // TODO use OptionsDialogComboBoxItem
@@ -182,7 +185,17 @@ public class OptionsDialog extends UIDialog {
         }
 
         JCheckBox muteSound = new JCheckBox("Mute sound");
-        items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Music_Mute));
+        items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Music_Mute) {
+            @Override
+            public void updateOption() {
+                super.updateOption(); // do not forget!
+                if (Option.Music_Mute.getBoolean() == true) {
+                    MusicManager.stop();
+                } else {
+                    MusicManager.start();
+                }
+            }
+        });
 
         // layout
         panel.setLayout(new MigLayout("wrap 2"));
@@ -197,7 +210,7 @@ public class OptionsDialog extends UIDialog {
      * Check upon closing if any option is modified. Iterates over the list of
      * items.
      *
-     * @return
+     * @return True if any Options item is modified.
      */
     private boolean isAnyModified() {
         for (OptionsDialogItem item : items) {
@@ -209,12 +222,13 @@ public class OptionsDialog extends UIDialog {
     }
 
     /**
-     * We want to save the changes, so we do it.
+     * User accepts modified Options. Update!
      */
     private void updateOptions() {
         for (OptionsDialogItem item : items) {
-            item.updateOption();
+            if (item.isModified()) {            
+                item.updateOption();
+            }                
         }
     }
-    private static final Logger LOG = Logger.getLogger(OptionsDialog.class.getName());
 }

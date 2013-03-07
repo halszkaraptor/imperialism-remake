@@ -90,13 +90,17 @@ public class StartClient {
                 public void run() {
                     UIFrame screen = new StartScreen();
                     screen.switchTo();
-                    MusicManager.start();
+                    // do not want the music to start before the screen
+                    if (Option.Music_Mute.getBoolean() == false) {
+                        MusicManager.start();
+                    }
                 }
             });
-        } catch (RuntimeException | IOException ex) {
+        } catch (Exception ex) {
+            // every possible exception is caught and logged
+            // and that's it, please contact support in this case
             LOG.log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**

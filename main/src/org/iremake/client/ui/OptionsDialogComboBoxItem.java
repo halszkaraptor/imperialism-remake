@@ -19,9 +19,11 @@ package org.iremake.client.ui;
 import java.util.logging.Logger;
 
 /**
- *
+ * Obviously not yet implemented
  */
 public class OptionsDialogComboBoxItem implements OptionsDialogItem {
+    
+    private static final Logger LOG = Logger.getLogger(OptionsDialogComboBoxItem.class.getName());    
 
     @Override
     public boolean isModified() {
@@ -32,6 +34,4 @@ public class OptionsDialogComboBoxItem implements OptionsDialogItem {
     public void updateOption() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    private static final Logger LOG = Logger.getLogger(OptionsDialogComboBoxItem.class.getName());
-
 }

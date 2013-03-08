@@ -47,6 +47,8 @@ import org.tools.ui.utils.WindowCorner;
  * with LayeredPanes. http://migcalendar.com/forums/viewtopic.php?f=8&t=4075
  */
 public class StartScreen extends UIFrame {
+    
+    private static final Logger LOG = Logger.getLogger(StartScreen.class.getName());    
 
     /**
      * Setup of the elements and layout.
@@ -152,5 +154,4 @@ public class StartScreen extends UIFrame {
 
         return bar.get();
     }
-    private static final Logger LOG = Logger.getLogger(StartScreen.class.getName());
 }

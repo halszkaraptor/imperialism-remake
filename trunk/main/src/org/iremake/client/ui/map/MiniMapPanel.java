@@ -46,6 +46,7 @@ import org.tools.ui.utils.GraphicsUtils;
 // TODO different views (political, geographical)
 public class MiniMapPanel extends JPanel {
 
+    private static final Logger LOG = Logger.getLogger(MiniMapPanel.class.getName());    
     private enum Type {
 
         Geographical, Political;
@@ -238,5 +239,4 @@ public class MiniMapPanel extends JPanel {
         }
 
     }
-    private static final Logger LOG = Logger.getLogger(MiniMapPanel.class.getName());
 }

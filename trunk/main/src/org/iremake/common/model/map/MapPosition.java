@@ -23,6 +23,8 @@ import java.util.logging.Logger;
  * map with (-1,-1) being the generic 'off' value.
  */
 public class MapPosition {
+    
+    private static final Logger LOG = Logger.getLogger(MapPosition.class.getName());    
 
     /**
      * Two coordinates (row, column).
@@ -109,5 +111,4 @@ public class MapPosition {
     public int hashCode() {
         return row + 13 * column;
     }
-    private static final Logger LOG = Logger.getLogger(MapPosition.class.getName());
 }

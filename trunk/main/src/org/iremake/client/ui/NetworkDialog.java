@@ -16,13 +16,13 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -41,6 +41,7 @@ import org.tools.ui.ButtonBar;
  */
 public class NetworkDialog extends UIDialog {
 
+    private static final Logger LOG = Logger.getLogger(NetworkDialog.class.getName());    
     private JTextField serverAddress;
     private JLabel clientStatus;
 
@@ -67,7 +68,7 @@ public class NetworkDialog extends UIDialog {
      *
      * @return a component
      */
-    private JComponent createMenuBar() {
+    private Component createMenuBar() {
         // load button
         JButton serverStartButton = Button.NetworkConnect.create();
         serverStartButton.addActionListener(new ActionListener() {
@@ -101,7 +102,7 @@ public class NetworkDialog extends UIDialog {
      *
      * @return a component
      */
-    private JComponent createInfoPanel() {
+    private Component createInfoPanel() {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
 
@@ -127,7 +128,7 @@ public class NetworkDialog extends UIDialog {
      *
      * @return a component
      */
-    private JComponent createMemberList() {
+    private Component createMemberList() {
         JList<String> list = new JList<>();
         DefaultListModel<String> model = new DefaultListModel<>();
         model.add(0, "Hallo");
@@ -141,7 +142,7 @@ public class NetworkDialog extends UIDialog {
      *
      * @return
      */
-    private JComponent createChatPane() {
+    private Component createChatPane() {
         // server chat window
         JTextArea chatText = new JTextArea();
         JScrollPane chatPane = new JScrollPane();
@@ -156,11 +157,10 @@ public class NetworkDialog extends UIDialog {
      *
      * @return a component
      */
-    private JComponent createChatInput() {
+    private Component createChatInput() {
         // chat input
         JTextField chatInput = new JTextField();
         chatInput.setBorder(BorderFactory.createTitledBorder("Send message"));
         return chatInput;
     }
-    private static final Logger LOG = Logger.getLogger(NetworkDialog.class.getName());
 }

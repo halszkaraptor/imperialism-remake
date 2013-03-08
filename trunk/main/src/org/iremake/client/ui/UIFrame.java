@@ -23,6 +23,8 @@ import javax.swing.JComponent;
  * Base class for all frame filling screens. Keeps a component and if needed replaces it in the frame.
  */
 public class UIFrame {
+    
+    private static final Logger LOG = Logger.getLogger(UIFrame.class.getName());    
 
     /* the ui element containing all the content */
     private JComponent content;
@@ -42,5 +44,4 @@ public class UIFrame {
     public void switchTo() {
         FrameManager.getInstance().switchTo(content);
     }
-    private static final Logger LOG = Logger.getLogger(UIFrame.class.getName());
 }

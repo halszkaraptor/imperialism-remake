@@ -22,18 +22,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Starts an UIDialog but doesn't contruct it before execution and contructs
+ * every time the action is performed. Only suitable for UIDialogs with
+ * argumentless constructors.
+ * 
+ * In a way it's a convenience class.
  */
 public class UIDialogStartAction implements ActionListener {
 
     private static final Logger LOG = Logger.getLogger(UIDialogStartAction.class.getName());
-
     private Class<? extends UIDialog> clazz;
 
+    /**
+     * Stores the class of the Dialog.
+     *
+     * @param clazz
+     */
     public UIDialogStartAction(Class<? extends UIDialog> clazz) {
         this.clazz = clazz;
     }
 
+    /**
+     * Action performed, construct dialog and start it.
+     *
+     * @param e Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         UIDialog dialog;
@@ -44,6 +57,4 @@ public class UIDialogStartAction implements ActionListener {
             LOG.log(Level.SEVERE, null, ex);
         }
     }
-
-
 }

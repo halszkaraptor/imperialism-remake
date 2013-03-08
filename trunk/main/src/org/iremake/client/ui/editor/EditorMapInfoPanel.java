@@ -30,6 +30,8 @@ import org.iremake.common.model.map.Tile;
  * The map info panel, located at the left lower part of the map tab. Infos about the current tile and ways to modify it.
  */
 public class EditorMapInfoPanel extends JPanel {
+    
+    private static final Logger LOG = Logger.getLogger(EditorMapInfoPanel.class.getName());    
 
     private static final long serialVersionUID = 1L;
     private JLabel tile = new JLabel();
@@ -83,5 +85,4 @@ public class EditorMapInfoPanel extends JPanel {
             province.setText("Province: " + scenario.getProvinceAt(p));
         }
     }
-    private static final Logger LOG = Logger.getLogger(EditorMapInfoPanel.class.getName());
 }

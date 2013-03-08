@@ -48,7 +48,7 @@ public class FrameManager {
     private static final Logger LOG = Logger.getLogger(FrameManager.class.getName());
 
     /**
-     *
+     * If the main frame closes we shut down.
      */
     private static class ShutDownOnCloseImpl implements FrameCloseListener {
 
@@ -219,6 +219,7 @@ public class FrameManager {
      * @param message
      * @param black
      */
+    // TODO real schedule, that is queue them instead of showing them instanteously
     public void scheduleInfoMessage(String message, boolean black) {
         Color color = black ? Color.black : Color.white;
         NotificationFactory.createInfoNotification(message, frame, color).setVisible();

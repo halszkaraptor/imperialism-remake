@@ -17,12 +17,12 @@
 package org.iremake.client.ui;
 
 /**
- *
+ * A simple close listener. Does something on close.
  */
 public interface FrameCloseListener {
 
     /**
-     * 
+     * What to do when the frame closes.
      */
     public void close();
 }

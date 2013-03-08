@@ -23,8 +23,8 @@ import java.util.logging.Logger;
  */
 public class ServerClient {
 
+    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());    
     private String name;
-
 
     /**
      *
@@ -41,6 +41,4 @@ public class ServerClient {
     public String getName() {
         return name;
     }
-    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());
-
 }

@@ -42,7 +42,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
-import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
@@ -68,10 +67,11 @@ import org.tools.xml.XList;
 import org.tools.xml.XMLHelper;
 
 /**
- * Setup of the editor screen
+ * Setup of the editor screen, almost all of the editor resides here.
  */
 public class EditorScreen extends UIFrame {
 
+    private static final Logger LOG = Logger.getLogger(EditorScreen.class.getName());    
     /** The scenario with all the additonal ui functionalities */
     private UIScenario scenario = new UIScenario();
     private Integer selectedTerrain;
@@ -528,5 +528,4 @@ public class EditorScreen extends UIFrame {
         IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
         // scenario.createEmptyMap(60, 100);
     }
-    private static final Logger LOG = Logger.getLogger(EditorScreen.class.getName());
 }

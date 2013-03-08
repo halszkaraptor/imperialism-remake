@@ -34,6 +34,7 @@ import org.iremake.common.Settings;
  */
 public class EditorSelectTerrainDialog extends UIDialog {
 
+    private static final Logger LOG = Logger.getLogger(EditorSelectTerrainDialog.class.getName());    
     /* Keeps track of the selected terrain */
     private int selected = -1;
 
@@ -96,5 +97,4 @@ public class EditorSelectTerrainDialog extends UIDialog {
     public int getSelection() {
         return selected;
     }
-    private static final Logger LOG = Logger.getLogger(EditorSelectTerrainDialog.class.getName());
 }

@@ -41,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ListSelectDialog<E> extends UIDialog {
 
+    private static final Logger LOG = Logger.getLogger(ListSelectDialog.class.getName());    
     /* the JList component */
     private JList<E> list;
     /* the list model */
@@ -100,5 +101,4 @@ public class ListSelectDialog<E> extends UIDialog {
             return null;
         }
     }
-    private static final Logger LOG = Logger.getLogger(ListSelectDialog.class.getName());
 }

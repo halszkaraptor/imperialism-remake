@@ -42,6 +42,7 @@ import org.tools.ui.SimpleListModel;
  */
 public class NewLocalScenarioDialog extends UIDialog {
 
+    private static final Logger LOG = Logger.getLogger(NewLocalScenarioDialog.class.getName());
     /* pointing to the selected scenario */
     private Resource selectedScenario;
 
@@ -133,5 +134,4 @@ public class NewLocalScenarioDialog extends UIDialog {
         panel.setBorder(BorderFactory.createTitledBorder("Info"));
         return panel;
     }
-    private static final Logger LOG = Logger.getLogger(NewLocalScenarioDialog.class.getName());
 }

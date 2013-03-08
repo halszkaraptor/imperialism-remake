@@ -35,6 +35,8 @@ import javax.swing.WindowConstants;
  * listener returning true.
  */
 public class UIDialog {
+
+    private static final Logger LOG = Logger.getLogger(UIDialog.class.getName());    
     private Dimension minimumSize;
     private Point location;
     private WindowClosingListener closingListener;
@@ -155,49 +157,4 @@ public class UIDialog {
         dialog.setContent(content);
         dialog.start();
     }
-    private static final Logger LOG = Logger.getLogger(UIDialog.class.getName());
 }
-
-
-/*
- *     public void startDialogCustom(JComponent content, String title, Dimension minimumSize) {
-
-        dialog = new JDialog(frame, true);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        dialog.setUndecorated(true);
-        dialog.setResizable(true);
-
-        dialog.getContentPane().setBackground(brown);
-
-        JPanel top = new JPanel();
-        top.setBackground(blue);
-
-        JButton exitButton = Button.SmallExit.create();
-        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        exitButton.setBorder(null);
-        exitButton.setBackground(blue);
-        exitButton.addActionListener(exitDialogListener);
-
-        JLabel titleLabel = new JLabel(title);
-
-        top.setLayout(new MigLayout("fill, insets 2"));
-        top.add(titleLabel, "alignx left");
-        top.add(exitButton, "alignx right");
-
-        dialog.setLayout(new MigLayout("wrap 1, fill, insets 0 5 5 5", "", "[][grow]"));
-        dialog.add(top, "growx");
-        dialog.add(content, String.format("grow, hmin %d, wmin %d", minimumSize.height, minimumSize.width));
-
-        // instead of this we should set the bounds from options
-        dialog.pack();
-
-        ComponentMover mover = new ComponentMover();
-        mover.setDestination(dialog);
-        mover.registerComponent(top);
-
-        ComponentResizer resizer = new ComponentResizer(new Insets(5, 5, 5, 5), new Dimension(10, 10));
-        resizer.registerComponent(dialog);
-
-        dialog.setVisible(true);
-    }
- */

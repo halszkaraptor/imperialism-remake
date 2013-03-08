@@ -25,9 +25,11 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.UIDialog;
 
 /**
- * Dialog for creating a new (and mostly empty) scenario.
+ * Dialog for creating a new (and mostly empty) scenario. Quite simple for now.
  */
 public class EditorNewScenarioDialog extends UIDialog {
+
+    private static final Logger LOG = Logger.getLogger(EditorNewScenarioDialog.class.getName());
 
     /**
      * Setup.
@@ -54,5 +56,4 @@ public class EditorNewScenarioDialog extends UIDialog {
         setMinimumSize(0, 0);
         setContent(content);
     }
-    private static final Logger LOG = Logger.getLogger(EditorNewScenarioDialog.class.getName());
 }

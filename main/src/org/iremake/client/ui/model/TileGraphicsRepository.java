@@ -32,7 +32,6 @@ import org.iremake.client.io.Places;
 import org.tools.ui.utils.GraphicsUtils;
 import org.tools.xml.Node;
 import org.tools.xml.ReadXMLable;
-import org.tools.xml.XMLHelper;
 
 /**
  *

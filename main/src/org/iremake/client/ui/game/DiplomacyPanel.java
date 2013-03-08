@@ -25,7 +25,8 @@ import javax.swing.JPanel;
 public class DiplomacyPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-
+    private static final Logger LOG = Logger.getLogger(DiplomacyPanel.class.getName());
+    
     /**
      *
      */
@@ -35,5 +36,4 @@ public class DiplomacyPanel extends JPanel {
 
     private void initComponents() {
     }
-    private static final Logger LOG = Logger.getLogger(DiplomacyPanel.class.getName());
 }

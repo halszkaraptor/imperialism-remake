@@ -574,6 +574,12 @@ public class Scenario implements FullXMLable {
         fireScenarioChanged();
     }
 
+    /**
+     * Just for ensuring they have a unique id.
+     * 
+     * @param name
+     * @return 
+     */
     public Province createProvince(String name) {
         // get new id first
         SortedSet<Integer> ids = new TreeSet<>();

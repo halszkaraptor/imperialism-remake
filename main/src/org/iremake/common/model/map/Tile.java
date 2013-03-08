@@ -22,11 +22,13 @@ import org.iremake.common.model.Province;
 import org.iremake.common.model.Scenario;
 
 /**
- * A tile holds the map together. A map is an array of tiles.
+ * A tile holds the map together. A map is an array of tiles. More like a struct here.
  *
  * Useful default values are set.
  */
 public class Tile {
+    
+    private static final Logger LOG = Logger.getLogger(Tile.class.getName());    
 
     /**
      *
@@ -69,5 +71,4 @@ public class Tile {
      *
      */
     public int railroadConfig = 0; // 3 bits (E, SE, SW)
-    private static final Logger LOG = Logger.getLogger(Tile.class.getName());
 }

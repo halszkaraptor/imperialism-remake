@@ -107,8 +107,7 @@ public class ClientManager implements ClientContext {
     }
 
     /**
-     *
-     * @return
+     * @return A text line telling to whom we are connected
      */
     public String getStatus() {
         if (client != null) {
@@ -119,16 +118,16 @@ public class ClientManager implements ClientContext {
     }
 
     /**
-     *
-     * @return
+     * @return True if running.
      */
     public boolean isRunning() {
         return client != null;
     }
 
     /**
+     * Force disconnect.
      *
-     * @param error
+     * @param error Error message, if null nothing is sent.
      */
     @Override
     public void disconnect(TextMessage error) {
@@ -141,8 +140,9 @@ public class ClientManager implements ClientContext {
     }
 
     /**
+     * Start processing a message. This is for simulating incoming messages.
      *
-     * @param message
+     * @param message Message to be processed.
      */
     @Override
     public void process(Message message) {

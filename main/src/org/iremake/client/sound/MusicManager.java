@@ -79,18 +79,19 @@ public class MusicManager {
             jukebox.play();
         }
     }
-    
+
     /**
-     * 
+     * Stop any music playing. Used when in mute mode.
      */
     public static void stop() {
-       if (jukebox != null) {
-           jukebox.stop();
-       } 
+        if (jukebox != null) {
+            jukebox.stop();
+        }
     }
 
     /**
-     *
+     * Must be called at the end to end the playing threads and the sound mixer
+     * resources.
      */
     public static void cleanup() {
         stop();

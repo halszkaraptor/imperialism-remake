@@ -60,11 +60,11 @@ import org.tools.xml.XMLHelper;
 // TODO maybe some kind of intelligent caching (what is how often loaded,...)
 public class IOManager {
 
+    private static final Logger LOG = Logger.getLogger(IOManager.class.getName());
     /* keeping track of which resource was asked for */
     private static Set<String> statistics = new HashSet<>(10);
     /* a file chooser for loading and saving */
     private static JFileChooser fileChooser;
-    private static final Logger LOG = Logger.getLogger(IOManager.class.getName());
 
     /* path to the folder where the jar resides */
     private static final String base = "";

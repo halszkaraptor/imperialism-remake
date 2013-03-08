@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import org.iremake.client.ui.options.OptionsDialog;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -14,51 +14,51 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.options;
 
 import java.util.logging.Logger;
-import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 import org.iremake.client.Option;
 
 /**
- * Item with a text field. Internal state is String. String value is directly
- * stored and taken from the Option (Options have String as natural value).
+ * Item with a check box. Internal state is a boolean. Options is also assumed
+ * to be boolean valued.
  */
-public class OptionsDialogTextFieldItem implements OptionsDialogItem {
+public class OptionsDialogCheckBoxItem implements OptionsDialogItem {
 
-   private static final Logger LOG = Logger.getLogger(OptionsDialogTextFieldItem.class.getName());    
+    private static final Logger LOG = Logger.getLogger(OptionsDialogCheckBoxItem.class.getName());
     /* the ui element */
-    private JTextField item;
+    private JCheckBox item;
     /* the option */
     private Option option;
 
     /**
-     * Initializes the text field.
+     * Initializes the check box.
      *
      * @param item the ui element
      * @param option the option
      */
-    public OptionsDialogTextFieldItem(JTextField item, Option option) {
+    public OptionsDialogCheckBoxItem(JCheckBox item, Option option) {
         this.item = item;
         this.option = option;
 
-        item.setText(option.get());
+        item.setSelected(option.getBoolean());
     }
 
     /**
-     * @return True if the option's text not equals the text from the text
-     * field.
+     * @return True if the boolean interpretation of the option is unequal to
+     * that of the check box.
      */
     @Override
     public boolean isModified() {
-        return !(option.get().equals(item.getText()));
+        return !(option.getBoolean() == item.isSelected());
     }
 
     /**
-     * Stores the text of the text field in the option.
+     * Stores the state of the check box in the option.
      */
     @Override
     public void updateOption() {
-        option.put(item.getText());
+        option.putBoolean(item.isSelected());
     }
- }
+}

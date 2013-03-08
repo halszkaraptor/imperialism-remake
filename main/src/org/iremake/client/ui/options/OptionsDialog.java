@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.options;
 
 import java.awt.Component;
 import java.awt.event.ItemEvent;
@@ -34,6 +34,9 @@ import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
 import org.iremake.client.sound.MusicManager;
+import org.iremake.client.ui.FrameManager;
+import org.iremake.client.ui.UIDialog;
+import org.iremake.client.ui.WindowClosingListener;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerManager;
 import org.tools.sound.SoundSystem;
@@ -226,9 +229,9 @@ public class OptionsDialog extends UIDialog {
      */
     private void updateOptions() {
         for (OptionsDialogItem item : items) {
-            if (item.isModified()) {            
+            if (item.isModified()) {
                 item.updateOption();
-            }                
+            }
         }
     }
 }

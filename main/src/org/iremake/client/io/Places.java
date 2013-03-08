@@ -17,7 +17,9 @@
 package org.iremake.client.io;
 
 /**
- * Logical structure of the data folders, used for input/output.
+ * Logical structure of the data folders, used for input/output. Helps when
+ * refactoring the real folder structure. Such changes must only be adapted to
+ * here.
  */
 public enum Places {
 

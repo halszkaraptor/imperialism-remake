@@ -25,7 +25,11 @@ import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 
 /**
- *
+ * Kryonet Listener implementation handles connection and disconnection. Has
+ * it's own ExecutorService since processing incoming messages could take awhile
+ * and we want to queue incoming messages during this time. However currently we
+ * will process the messages one by one, so we don't have to care about thread
+ * safety within the client.
  */
 public class ClientListener extends Listener {
 
@@ -33,27 +37,52 @@ public class ClientListener extends Listener {
     private final ClientContext context;
     private ExecutorService threadPool;
 
+    /**
+     * @param context Context to store.
+     */
     public ClientListener(ClientContext context) {
         this.context = context;
     }
 
-
+    /**
+     * We connected to the server.
+     *
+     * @param c Can be ignored, we already know the connection - it's stored in
+     * the context.
+     */
     @Override
     public void connected(Connection c) {
         LOG.log(Level.FINE, "Client has connected.");
+        // exactly one thread, so processing will be one by one
         threadPool = Executors.newFixedThreadPool(1);
     }
 
+    /**
+     * We disconnected from the server. Either the server disconnected us or we
+     * disconnected from him.
+     *
+     * @param c Can be ignored, is also stored in the context.
+     */
     @Override
     public void disconnected(Connection c) {
         LOG.log(Level.FINE, "Connection {0} disconnected.", c.getID());
-        // TODO either we or somebody else disconnected
+        // TODO either we or somebody else disconnected, tell somebody about it
         threadPool.shutdown();
     }
 
+    /**
+     * We received a message from the server, first we make sure it's of type
+     * Message, then we schedule processing of this message in the
+     * ExecutorService.
+     *
+     * @param c Used connection
+     * @param object Incoming object (message)
+     */
     @Override
     public void received(Connection c, final Object object) {
+        // want only type Message, otherwise shut down
         if (c.isConnected() && object instanceof Message) {
+            // schedule for processing
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {

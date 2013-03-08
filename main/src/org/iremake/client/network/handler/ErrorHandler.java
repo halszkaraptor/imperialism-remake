@@ -24,7 +24,8 @@ import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
 
 /**
- *
+ * This is the first handler in every processing tree. It filters out error
+ * messages, logs them and disconnect. All other messages are propagated.
  */
 public class ErrorHandler implements ClientHandler {
 

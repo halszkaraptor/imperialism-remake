@@ -20,20 +20,26 @@ import org.iremake.client.network.ClientNodeContext;
 import org.iremake.common.network.messages.Message;
 
 /**
- *
+ * A client handler can process a message and if the message is of a certain
+ * type, react specifically on it, then either consume it (not doing anything)
+ * or feeding it back to the processing tree or even feed other messages to the
+ * processing tree.
  */
 public interface ClientHandler {
 
     /**
+     * Process a message given a context. The context is responsible for client
+     * actions (replying with a message, disconnecting) or for actions regarding
+     * the processing tree (feeding the message back, ...).
      *
-     * @param message
-     * @param context
+     * @param message Message to be processed.
+     * @param context Context for what we can do.
      */
     public void process(Message message, ClientNodeContext context);
 
     /**
-     *
-     * @return
+     * @return Unique name identifier of the handler. Might be used for
+     * identifying subgroups of handlers (must then start with identical part).
      */
     public String name();
 }

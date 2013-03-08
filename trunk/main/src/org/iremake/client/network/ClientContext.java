@@ -20,14 +20,29 @@ import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 
 /**
- *
+ * What the client can do.
  */
 public interface ClientContext {
 
+    /**
+     * Force disconnection, send message before.
+     *
+     * @param error Error message, if null nothing is sent before disconnection.
+     */
     public void disconnect(TextMessage error);
 
+    /**
+     * Send message to the server.
+     *
+     * @param message Message to be sent.
+     */
     public void send(Message message);
 
+    /**
+     * Process a message further, that means send it downstream in the
+     * processing hierarchy.
+     *
+     * @param message Message to be processed.
+     */
     public void process(Message message);
-
 }

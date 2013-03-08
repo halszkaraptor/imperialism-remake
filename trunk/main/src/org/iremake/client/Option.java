@@ -26,7 +26,7 @@ import org.tools.xml.XProperty;
  * within the program by enum fields. The fields contain a keyword that is used
  * to store the values.
  */
-// TODO server and client options separated?, mayb common options with version number ... too?
+// TODO separate server and client options?, mayb common options with version number ... too?
 public enum Option {
 
     // general options

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.client.ui.options;
 
 import java.util.logging.Logger;
 
@@ -22,8 +22,8 @@ import java.util.logging.Logger;
  * Obviously not yet implemented
  */
 public class OptionsDialogComboBoxItem implements OptionsDialogItem {
-    
-    private static final Logger LOG = Logger.getLogger(OptionsDialogComboBoxItem.class.getName());    
+
+    private static final Logger LOG = Logger.getLogger(OptionsDialogComboBoxItem.class.getName());
 
     @Override
     public boolean isModified() {

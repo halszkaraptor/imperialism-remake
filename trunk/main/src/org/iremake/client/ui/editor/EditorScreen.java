@@ -20,6 +20,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -71,8 +73,10 @@ import org.tools.xml.XMLHelper;
  */
 public class EditorScreen extends UIFrame {
 
-    private static final Logger LOG = Logger.getLogger(EditorScreen.class.getName());    
-    /** The scenario with all the additonal ui functionalities */
+    private static final Logger LOG = Logger.getLogger(EditorScreen.class.getName());
+    /**
+     * The scenario with all the additional UI functionalities
+     */
     private UIScenario scenario = new UIScenario();
     private Integer selectedTerrain;
     private JList<Nation> nationsList;
@@ -175,6 +179,7 @@ public class EditorScreen extends UIFrame {
                         return;
                     }
                     scenario.fromXML(xml);
+                    initOnLoad();
                     FrameManager.getInstance().scheduleInfoMessage("Scenario " + scenario.getTitle() + " loaded.", false);
                 }
             }
@@ -185,9 +190,6 @@ public class EditorScreen extends UIFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                // update title
-                scenario.setTitle(scenarioTitle.getText());
 
                 JFileChooser fileChooser = IOManager.getFileChooser();
                 if (FrameManager.getInstance().showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
@@ -250,7 +252,16 @@ public class EditorScreen extends UIFrame {
         panel.setBorder(BorderFactory.createTitledBorder("General"));
 
         scenarioTitle = new JTextField();
-        scenarioTitle.setText(scenario.getTitle());
+        scenarioTitle.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                scenario.setTitle(scenarioTitle.getText());
+            }
+        });
 
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
         panel.add(new JLabel("Scenario Name"));
@@ -519,6 +530,14 @@ public class EditorScreen extends UIFrame {
     }
 
     /**
+     *
+     */
+    private void initOnLoad() {
+        // update title
+        scenarioTitle.setText(scenario.getTitle());
+    }
+
+    /**
      * On start we load a scenario.
      */
     @Override
@@ -526,6 +545,7 @@ public class EditorScreen extends UIFrame {
         super.switchTo();
         // load initial scenario
         IOManager.setFromXML(Places.Scenarios, "scenario.Europe1814.xml", scenario);
+        initOnLoad();
         // scenario.createEmptyMap(60, 100);
     }
 }

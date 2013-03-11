@@ -31,7 +31,6 @@ import org.tools.utils.BitBuffer;
 import org.tools.xml.FullXMLable;
 import org.tools.xml.Node;
 import org.tools.xml.XList;
-import org.tools.xml.XMLHelper;
 import org.tools.xml.XProperty;
 
 /**
@@ -576,9 +575,9 @@ public class Scenario implements FullXMLable {
 
     /**
      * Just for ensuring they have a unique id.
-     * 
+     *
      * @param name
-     * @return 
+     * @return
      */
     public Province createProvince(String name) {
         // get new id first

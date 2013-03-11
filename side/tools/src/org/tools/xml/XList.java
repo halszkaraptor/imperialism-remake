@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import nu.xom.Element;
-import nu.xom.Elements;
 
 /**
  * A List consisting of generic XMLables and also implementing the ListModel

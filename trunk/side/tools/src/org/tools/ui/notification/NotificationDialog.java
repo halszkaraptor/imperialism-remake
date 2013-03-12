@@ -48,6 +48,7 @@ import org.tools.ui.utils.WindowCorner;
  */
 public class NotificationDialog extends Notification {
 
+    private static final Logger LOG = Logger.getLogger(NotificationDialog.class.getName());
     /* one refresh every XX ms */
     private static final int TIMER_STEP = 80;
     /* the central UI element */
@@ -221,6 +222,9 @@ public class NotificationDialog extends Notification {
      */
     @Override
     public void dispose() {
+        if (timer != null) {
+            timer.stop();
+        }
         dialog.dispose();
     }
 
@@ -300,5 +304,4 @@ public class NotificationDialog extends Notification {
             throw new IllegalArgumentException("time value cannot be negative!");
         }
     }
-    private static final Logger LOG = Logger.getLogger(NotificationDialog.class.getName());
 }

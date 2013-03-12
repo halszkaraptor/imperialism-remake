@@ -24,6 +24,7 @@
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>int</word>
             <word>Iterable</word>
+            <word>ms</word>
             <word>playlist</word>
             <word>xml</word>
         </spellchecker-wordlist>

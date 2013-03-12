@@ -90,7 +90,7 @@ public enum Button {
      * @return
      */
     public static JButton create(String location) {
-        // TODO set tooltip automatically
+        // TODO set tooltip automatically from a description
         return ButtonFactory.create(IOManager.getAsIcon(Places.GraphicsIcons, location), "");
     }
 }

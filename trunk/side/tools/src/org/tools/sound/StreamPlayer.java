@@ -179,15 +179,16 @@ public class StreamPlayer implements Runnable {
     public void stop() {
         lock.lock();
         try {
+            // need to make sure stop is true after this operation
+            stop = true;
             if (stream != null) {
-                stop = true;
                 // wake thread up, if it was pausing
+                pause = false;                
                 resumeCondition.signal();
             }
         } finally {
             lock.unlock();
         }
-        resume();
     }
 
     /**

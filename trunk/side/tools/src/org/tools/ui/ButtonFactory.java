@@ -25,6 +25,7 @@ import javax.swing.JButton;
  */
 public class ButtonFactory {
 
+    private static final Logger LOG = Logger.getLogger(ButtonFactory.class.getName());
     /**
      * Avoid instantiation.
      */
@@ -58,5 +59,4 @@ public class ButtonFactory {
 
         return button;
     }
-    private static final Logger LOG = Logger.getLogger(ButtonFactory.class.getName());
 }

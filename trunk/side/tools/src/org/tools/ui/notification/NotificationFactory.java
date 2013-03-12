@@ -49,6 +49,7 @@ import org.tools.ui.utils.WindowSide;
 // TODO if several notifications are displayed, the last ones should be placed on top, is this so?
 public class NotificationFactory {
 
+    private static final Logger LOG = Logger.getLogger(NotificationFactory.class.getName());
     /* For the style with icons we need a loader, better specify it only once */
     private static IconLoader defaultLoader;
 
@@ -78,9 +79,9 @@ public class NotificationFactory {
      * @return the new notification dialog
      */
     public static NotificationDialog createStandardNotification(String message, Frame parent) {
-        // if no loader is given, delgate to the other style with black text
+        // if no loader is given, delgate to the other style with black text on white background
         if (defaultLoader == null) {
-            return createInfoNotification(message, parent, Color.black);
+            return createInfoNotification(message, parent, Color.black, Color.white);
         }
 
         // create a new notification dialog
@@ -111,12 +112,10 @@ public class NotificationFactory {
      * @param textColor the text color of the message
      * @return the new notification dialog
      */
-    public static NotificationDialog createInfoNotification(String message, Frame parent, Color textColor) {
+    public static NotificationDialog createInfoNotification(String message, Frame parent, Color textColor, Color bgColor) {
 
         // create new dialog
         NotificationDialog dlg = new NotificationDialog(message, parent);
-        // Color bgColor = new Color(128, 128, 128, 32); // just a touch of translucent gray
-        Color bgColor = Color.black;
         JComponent content = createInfoContent(dlg, bgColor, textColor);
         dlg.setContent(content);
 
@@ -135,7 +134,7 @@ public class NotificationFactory {
      * Creates the component of the standard style with icons. That is an info
      * icon to the left and a cancel button at the right side. Clicking on the
      * message text accepts the notification while clicking on the cancel button
-     * dismisses the notifcation.
+     * dismisses the notification.
      *
      * @param notification the notification (NotificationDialog) to get
      * messages...
@@ -219,5 +218,4 @@ public class NotificationFactory {
 
         return message;
     }
-    private static final Logger LOG = Logger.getLogger(NotificationFactory.class.getName());
 }

@@ -88,6 +88,7 @@ public class StartClient {
             EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
+                    FrameManager.getInstance().initialize();
                     UIFrame screen = new StartScreen();
                     screen.switchTo();
                     // do not want the music to start before the screen

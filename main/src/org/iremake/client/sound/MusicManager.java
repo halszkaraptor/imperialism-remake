@@ -56,7 +56,7 @@ public class MusicManager {
             jukebox.setSongBeginListener(new PlayEventListener() {
                 @Override
                 public void newEvent(String event) {
-                    FrameManager.getInstance().scheduleInfoMessage(event, false);
+                    FrameManager.getInstance().scheduleInfoMessage(event);
                 }
             });
         }

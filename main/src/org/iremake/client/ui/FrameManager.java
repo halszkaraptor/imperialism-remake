@@ -22,6 +22,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -34,7 +35,9 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.client.StartClient;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.tools.ui.notification.NotificationDialog;
 import org.tools.ui.notification.NotificationFactory;
+import org.tools.ui.notification.NotificationListener;
 import org.tools.ui.utils.GraphicsUtils;
 
 /**
@@ -42,11 +45,9 @@ import org.tools.ui.utils.GraphicsUtils;
  * screens) which need to be switched in between. This Manager here in the
  * singleton pattern does it.
  */
-// TODO closing listener for clicking on the cross or alt-f4
 public class FrameManager {
 
     private static final Logger LOG = Logger.getLogger(FrameManager.class.getName());
-
     /**
      * If the main frame closes we shut down.
      */
@@ -58,16 +59,30 @@ public class FrameManager {
         }
     }
     private static final FrameCloseListener shutDownCloseListener = new ShutDownOnCloseImpl();
-    private static FrameManager singleton;
+    private static FrameManager singleton = new FrameManager(); // final
     private JFrame frame;
     private JPanel panel;
     private FrameCloseListener closingListener;
+    private ConcurrentLinkedDeque<NotificationDialog> notifications = new ConcurrentLinkedDeque<>();
+    private boolean initialized = false;
 
     /**
      * Creates the main frame. Because it is private we can control how often it
      * is called. Only once in this case.
      */
     private FrameManager() {
+    }
+
+
+    /**
+     * We do it only once.
+     */
+    public void initialize() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
+
         frame = new JFrame();
 
         // undecorated ?
@@ -121,9 +136,6 @@ public class FrameManager {
      * @return The singleton instance.
      */
     public static synchronized FrameManager getInstance() {
-        if (singleton == null) {
-            singleton = new FrameManager();
-        }
         return singleton;
     }
 
@@ -132,6 +144,10 @@ public class FrameManager {
      */
     public static void dispose() {
         singleton.frame.dispose();
+        if (!singleton.notifications.isEmpty()) {
+            singleton.notifications.peek().dispose();
+            singleton.notifications.clear();
+        }
         singleton = null;
     }
 
@@ -148,7 +164,7 @@ public class FrameManager {
 
     /**
      * Set a new closing listener handling pressing the x on the frame
-     * decoration if not in fullscreen. Set to null if not needed.
+     * decoration if not in full screen. Set to null if not needed.
      *
      * @param closingListener
      */
@@ -215,13 +231,33 @@ public class FrameManager {
     }
 
     /**
+     * They get queued.
      *
      * @param message
      * @param black
      */
-    // TODO real schedule, that is queue them instead of showing them instanteously
-    public void scheduleInfoMessage(String message, boolean black) {
-        Color color = black ? Color.black : Color.white;
-        NotificationFactory.createInfoNotification(message, frame, color).setVisible();
+    public void scheduleInfoMessage(String message) {
+        // make new notification
+        NotificationDialog dlg = NotificationFactory.createInfoNotification(message, frame, Color.white, Color.black);
+        // add listener that displays the next notification
+        dlg.addNotificationListener(new NotificationListener() {
+            @Override
+            public void notificationResult(boolean value) {
+                // TODO notifications must be non-empty
+
+                // remove ourselves
+                notifications.remove();
+                // if there is another one, set it visible
+                if (!notifications.isEmpty()) {
+                    notifications.peek().setVisible();
+                }
+            }
+        });
+        // add it to the list of notifications and set it visible if it is the actual one
+        notifications.add(dlg);
+        if (notifications.peek() == dlg) {
+            dlg.setVisible();
+        }
+
     }
 }

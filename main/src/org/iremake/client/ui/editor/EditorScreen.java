@@ -180,7 +180,7 @@ public class EditorScreen extends UIFrame {
                     }
                     scenario.fromXML(xml);
                     initOnLoad();
-                    FrameManager.getInstance().scheduleInfoMessage("Scenario " + scenario.getTitle() + " loaded.", false);
+                    FrameManager.getInstance().scheduleInfoMessage("Scenario " + scenario.getTitle() + " loaded.");
                 }
             }
         });

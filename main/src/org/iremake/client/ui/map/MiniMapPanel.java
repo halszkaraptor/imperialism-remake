@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.Button;
 import org.iremake.client.ui.model.UIScenario;
+import org.iremake.common.Settings;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.map.MapPosition;
 import org.tools.ui.utils.GraphicsUtils;
@@ -43,10 +44,9 @@ import org.tools.ui.utils.GraphicsUtils;
  * Mini map panel. Provides overview maps and can change the view of the main
  * map.
  */
-// TODO different views (political, geographical)
 public class MiniMapPanel extends JPanel {
 
-    private static final Logger LOG = Logger.getLogger(MiniMapPanel.class.getName());    
+    private static final Logger LOG = Logger.getLogger(MiniMapPanel.class.getName());
     private enum Type {
 
         Geographical, Political;
@@ -232,6 +232,7 @@ public class MiniMapPanel extends JPanel {
                             buffer.setRGB(x, y, color.getRGB());
                         } else {
                             // TODO ocean color?
+                            buffer.setRGB(x, y, scenario.getTileGraphicsRepository().getTerrainTileColor(Settings.getDefaultTerrainID()).getRGB());
                         }
                     }
                 }

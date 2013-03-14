@@ -55,6 +55,14 @@ public class TileGraphicsRepository implements ReadXMLable {
     /* the size of the tiles, i.e. every stored image must have that size */
     private Dimension tileSize;
 
+    private void checkTerrainID(Integer id) {
+        if (!terrainTiles.containsKey(id)) {
+            RuntimeException ex =  new IllegalArgumentException("Terrain id " + id + " not known.");
+            LOG.log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+    }
+
     /**
      * Returns the image for a given terrain id.
      *
@@ -62,7 +70,7 @@ public class TileGraphicsRepository implements ReadXMLable {
      * @return an image
      */
     public Image getTerrainTile(Integer id) {
-        // TODO id not contained?
+        checkTerrainID(id);
         return terrainTiles.get(id).image;
     }
 
@@ -73,6 +81,7 @@ public class TileGraphicsRepository implements ReadXMLable {
      * @return a color
      */
     public Color getTerrainTileColor(Integer id) {
+        checkTerrainID(id);
         return terrainTiles.get(id).color;
     }
 
@@ -202,14 +211,14 @@ public class TileGraphicsRepository implements ReadXMLable {
             terrainTiles.put(id, tile);
         }
 
-        // TODO check tileSize is the same for all
         for (Tile tile : terrainTiles.values()) {
             width = tile.image.getWidth(null);
             height = tile.image.getHeight(null);
             Dimension size = new Dimension(width, height);
             if (!tileSize.equals(size)) {
-                LOG.log(Level.SEVERE, "A terrain tile differs in size");
-                // TODO rescale(?) or exception
+                RuntimeException ex = new RuntimeException("Terrain tiles differ in size");
+                LOG.log(Level.SEVERE, null, ex);
+                throw ex;
             }
         }
 

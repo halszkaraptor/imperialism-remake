@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,6 +33,7 @@ import java.io.OutputStream;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -80,8 +83,6 @@ public class EditorScreen extends UIFrame {
     private UIScenario scenario = new UIScenario();
     private Integer selectedTerrain;
     private JList<Nation> nationsList;
-    private Nation selectedNation;
-    private int selectedProvinceID;
     private JList<Province> provinceList;
     private MainMapPanel mainMapPanel;
     private MiniMapPanel miniMapPanel;
@@ -305,12 +306,9 @@ public class EditorScreen extends UIFrame {
                     int row = nationsList.getSelectedIndex();
                     if (row != -1) {
                         Nation nation = model.getElementAt(row);
-                        selectedNation = nation;
                         XList<Province> provinces = nation.getProvinces();
                         // TODO tell the province panel all about it
                         provinceList.setModel(provinces);
-                    } else {
-                        selectedNation = null;
                     }
                 }
             }
@@ -430,7 +428,7 @@ public class EditorScreen extends UIFrame {
         panel.setLayout(new MigLayout("wrap 1, fill", "", "[][][grow]"));
         panel.add(provinceInfoLabel);
         panel.add(pbar.get());
-        panel.add(provinceScrollPane, "height 400!, width 300!");
+        panel.add(provinceScrollPane, "height 500!, width 300!");
 
         return panel;
     }
@@ -479,7 +477,7 @@ public class EditorScreen extends UIFrame {
                     public boolean closing() {
                         Province province = dialog.getSelectedElement();
                         if (province != null) {
-                            selectedProvinceID = province.getID();
+                            // selectedProvinceID = province.getID();
                         }
                         return true;
                     }
@@ -522,8 +520,22 @@ public class EditorScreen extends UIFrame {
     }
 
     private JComponent createNationTab() {
+
+        JComboBox nationSelectBox = new JComboBox(scenario.getNations());
+        nationSelectBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    XList<Province> provinces = ((Nation) scenario.getNations().getSelectedItem()).getProvinces();
+                    // TODO tell the province panel all about it
+                    provinceList.setModel(provinces);
+                }
+            }
+        });
+
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout());
+        panel.add(nationSelectBox, "wrap");
         panel.add(createProvincesPanel());
 
         return panel;
@@ -535,6 +547,12 @@ public class EditorScreen extends UIFrame {
     private void initOnLoad() {
         // update title
         scenarioTitle.setText(scenario.getTitle());
+        scenario.getNations().setSelectedIndex(0);
+
+        XList<Province> provinces = scenario.getNations().getElementAt(0).getProvinces();
+        // TODO tell the province panel all about it
+        provinceList.setModel(provinces);
+
     }
 
     /**

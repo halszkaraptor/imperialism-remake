@@ -25,6 +25,7 @@ import org.tools.xml.Node;
  */
 public class MapItem implements FullXMLable {
 
+    private static final Logger LOG = Logger.getLogger(MapItem.class.getName());
     private static final String XML_NAME = "MapItem";
 
     /**
@@ -84,11 +85,11 @@ public class MapItem implements FullXMLable {
     @Override
     public void fromXML(Node parent) {
 
-        // TODO checks (null, name)
+        parent.checkNode(XML_NAME);
+
         type = MapItemType.valueOf(parent.getAttributeValue("type"));
         int row = parent.getAttributeValueAsInt("position-row");
         int column = parent.getAttributeValueAsInt("position-column");
         position = new MapPosition(row, column);
     }
-    private static final Logger LOG = Logger.getLogger(MapItem.class.getName());
 }

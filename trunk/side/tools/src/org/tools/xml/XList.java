@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -46,7 +47,7 @@ import javax.swing.event.ListDataListener;
  * @param <E>
  */
 // TODo having a set also, could be sorted automatically (TreeSet)
-public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, FullXMLable {
+public class XList<E extends FullXMLable> implements ListModel<E>, ComboBoxModel<E>, Iterable<E>, FullXMLable {
 
     private String XML_NAME;
     private static final Logger LOG = Logger.getLogger(XList.class.getName());
@@ -62,6 +63,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     private List<E> list = new ArrayList<>(4);
     private transient List<ListDataListener> listeners = new LinkedList<>();
     private Class<E> clazz;
+    private int selectedIndex = -1;
 
     /**
      * Empty list with initial capacity.
@@ -73,6 +75,11 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     }
 
     public XList(Class<E> clazz, String XMLName) {
+        if (clazz == null || XMLName == null) {
+            RuntimeException ex = new IllegalArgumentException("Arguments cannot be null.");
+            LOG.log(Level.SEVERE, null, ex);
+            throw ex;
+        }
         this.clazz = clazz;
         this.XML_NAME = XMLName;
     }
@@ -88,17 +95,17 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
     }
 
     /**
-     * Checks if the index is within the list.
+     * Checks if the index is within the list. We don't see it as something sever, we just inform about it.
      *
      * @param index
      * @return False if not.
      */
     private boolean indexOutOfBounds(int index) {
-        boolean b = index >= list.size() || index < 0;
-        if (b) {
+        boolean outOfBounds = index >= list.size() || index < 0;
+        if (outOfBounds) {
             LOG.log(Level.INFO, "Index out of bounds");
         }
-        return b;
+        return outOfBounds;
     }
 
     /**
@@ -201,6 +208,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
      */
     public void clear() {
         list.clear();
+        selectedIndex = -1;
         fireListChanged();
     }
 
@@ -229,6 +237,7 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
      */
     private void fireListChanged() {
         ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, list.size() - 1);
+        // ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, -1, -1);
         for (ListDataListener l : listeners) {
             l.contentsChanged(event);
         }
@@ -275,11 +284,52 @@ public class XList<E extends FullXMLable> implements ListModel<E>, Iterable<E>, 
             try {
                 element = clazz.newInstance();
             } catch (InstantiationException | IllegalAccessException ex) {
+                // there is nothing we can do about it
                 LOG.log(Level.SEVERE, null, ex);
+                throw new RuntimeException(ex);
             }
 
             element.fromXML(child);
             list.add(element);
         }
+    }
+
+    /**
+     *
+     * @param item
+     */
+    @Override
+    public void setSelectedItem(Object item) {
+        if (!clazz.isInstance(item)) {
+            // also false if item == null
+            RuntimeException ex = new IllegalArgumentException("Selected item must be of class given in the constructor and must not be null.");
+            LOG.log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+        selectedIndex = list.indexOf(item);
+        fireListChanged();
+    }
+
+    /**
+     *
+     * @param index
+     */
+    public void setSelectedIndex(int index) {
+        if (!indexOutOfBounds(index)) {
+            selectedIndex = index;
+            fireListChanged();
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Object getSelectedItem() {
+        if (selectedIndex == -1 || indexOutOfBounds(selectedIndex)) {
+            return null;
+        }
+        return list.get(selectedIndex);
     }
 }

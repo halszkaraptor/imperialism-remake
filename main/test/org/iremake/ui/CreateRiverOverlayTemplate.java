@@ -34,7 +34,9 @@ import javax.swing.UIManager;
  */
 public class CreateRiverOverlayTemplate {
 
-    private static final int TileSize = 80;
+    // private static final int TileSize = 80;
+    private static final int TileSize = 512;
+    private static final float StrokeWidth = 2;
     private static final int MarkerSize = 5;
     private static final int Columns = 8;
     private static final int Rows = 5;
@@ -69,6 +71,9 @@ public class CreateRiverOverlayTemplate {
 
         g2.setColor(BgColor);
         g2.fillRect(0, 0, width, height);
+
+        // thickness
+        g2.setStroke(new BasicStroke(StrokeWidth));
 
         // horizontal and vertical gray lines
         g2.setColor(BorderColor);

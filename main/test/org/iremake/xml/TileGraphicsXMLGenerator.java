@@ -125,6 +125,7 @@ public class TileGraphicsXMLGenerator {
         parent.appendChild(addResourceOverlay(8, "resource.oil.png"));
         parent.appendChild(addResourceOverlay(9, "resource.coal.png"));
         parent.appendChild(addResourceOverlay(10, "resource.ore.png"));
+        parent.appendChild(addResourceOverlay(11, "resource.horse.png"));        
         return parent;
     }
 

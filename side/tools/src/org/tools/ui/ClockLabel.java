@@ -35,6 +35,7 @@ import javax.swing.Timer;
 // TODO opaque(true) does not paint below, typical artifacts when using transparency the wrong way
 public class ClockLabel extends JLabel {
 
+    private static final Logger LOG = Logger.getLogger(ClockLabel.class.getName());
     private static final long serialVersionUID = 1L;
     private SimpleDateFormat format;
 
@@ -75,5 +76,4 @@ public class ClockLabel extends JLabel {
         // new Date() implicitely calls System.currentTimeMillis()
         setText(format.format(new Date()));
     }
-    private static final Logger LOG = Logger.getLogger(ClockLabel.class.getName());
 }

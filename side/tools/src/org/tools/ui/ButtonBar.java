@@ -30,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class ButtonBar {
 
+    private static final Logger LOG = Logger.getLogger(ButtonBar.class.getName());
     /* the panel holding the buttons together */
     private JPanel panel = new JPanel();
 
@@ -59,5 +60,4 @@ public class ButtonBar {
     public JPanel get() {
         return panel;
     }
-    private static final Logger LOG = Logger.getLogger(ButtonBar.class.getName());
 }

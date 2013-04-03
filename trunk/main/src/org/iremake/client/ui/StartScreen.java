@@ -16,8 +16,9 @@
  */
 package org.iremake.client.ui;
 
-import org.iremake.client.ui.options.OptionsDialog;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -33,8 +34,11 @@ import org.iremake.client.StartClient;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.ui.editor.EditorScreen;
+import org.iremake.client.ui.options.OptionsDialog;
 import org.tools.ui.BrowserPanel;
 import org.tools.ui.ButtonBar;
+import org.tools.ui.ImageMapLabel;
+import org.tools.ui.ImageMapLabel.MapItem;
 import org.tools.ui.layout.RelativeLayout;
 import org.tools.ui.layout.RelativeLayoutConstraint;
 import org.tools.ui.utils.WindowCorner;
@@ -47,8 +51,8 @@ import org.tools.ui.utils.WindowCorner;
  * with LayeredPanes. http://migcalendar.com/forums/viewtopic.php?f=8&t=4075
  */
 public class StartScreen extends UIFrame {
-    
-    private static final Logger LOG = Logger.getLogger(StartScreen.class.getName());    
+
+    private static final Logger LOG = Logger.getLogger(StartScreen.class.getName());
 
     /**
      * Setup of the elements and layout.
@@ -66,8 +70,13 @@ public class StartScreen extends UIFrame {
         languageComboBox.setToolTipText("Select language");     // tooltip
 
         // background image
-        JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
+        ImageMapLabel menuLabel = new ImageMapLabel();
+        menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
+        MapItem item = new MapItem();
+        item.area = new Rectangle(0, 0, 200, 200);
+        item.pos = new Point(0, 0);
+        item.image = IOManager.getAsImage(Places.GraphicsIcons, "start/start.button.scenario.png");
+        menuLabel.addMapItem(item);
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());
@@ -77,8 +86,8 @@ public class StartScreen extends UIFrame {
         pane.setLayout(layout);
 
         // add background image (centered)
-        pane.add(backgroundLabel, new Integer(1));
-        layout.addConstraint(backgroundLabel, RelativeLayoutConstraint.centered());
+        pane.add(menuLabel, new Integer(1));
+        layout.addConstraint(menuLabel, RelativeLayoutConstraint.centered());
 
         // add Version in the same layer (right, lower border)
         pane.add(versionLabel, new Integer(2));

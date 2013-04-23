@@ -16,15 +16,30 @@
  */
 package org.iremake.ctt;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -37,14 +52,21 @@ import org.tools.ui.utils.LookAndFeel;
  */
 public class MainFrame {
 
-    public final static int SIZE = 10; // field is 10x10
+    private final static int NUMBER_TILES = 6; // NxN field
+    private final static int PATTERN_SIZE = 20;
+    private final static int TILE_SIZE = 80;
+    private boolean[][] pattern = new boolean[NUMBER_TILES][NUMBER_TILES];
+    private Random random = new Random();
     private JFrame frame;
-    private PatternPanel pattern;
+    private JPanel patternPanel;
     private JTextField baseTerrain;
     private JTextField innerTile;
     private JTextField outerTile;
-    private JTextField tileSize;
-    private ViewPanel view;
+    private JPanel viewPanel;
+    private Image baseGraphics;
+    private Image innerGraphics;
+    private Image outerGraphics;
+
 
     /**
      *
@@ -69,16 +91,19 @@ public class MainFrame {
         frame.setVisible(true);
 
         // either load or set defaults
-        initializeByDefaults();
-
+        randomPattern();
     }
 
     /**
      *
      */
-    private void initializeByDefaults() {
-        tileSize.setText("80");
-        pattern.newRandomPattern();
+    private void randomPattern() {
+        for (int i = 0; i < NUMBER_TILES; i++) {
+            for (int j = 0; j < NUMBER_TILES; j++) {
+                pattern[i][j] = random.nextBoolean();
+            }
+        }
+        patternPanel.repaint();
     }
 
     /**
@@ -89,29 +114,69 @@ public class MainFrame {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("Select Pattern"));
 
-        pattern = new PatternPanel();
-        
-        JButton clear = new JButton("Clear");
-        clear.addActionListener(new ActionListener() {
+        patternPanel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                for (int i = 0; i < NUMBER_TILES; i++) {
+                    for (int j = 0; j < NUMBER_TILES; j++) {
+                        if (pattern[i][j] == true) {
+                            g2d.setColor(Color.black);
+                        } else {
+                            g2d.setColor(Color.white);
+                        }
+                        g2d.fillRect(i * PATTERN_SIZE + (j % 2 == 1 ? PATTERN_SIZE / 2 : 0) + 1, j * PATTERN_SIZE + 1, PATTERN_SIZE - 1, PATTERN_SIZE - 1);
+                        // g2d.fillRect(i * PATTERN_SIZE, j * PATTERN_SIZE + 1, PATTERN_SIZE - 1, PATTERN_SIZE - 1);
+                    }
+                }
+            }
+        };
+        Dimension size = new Dimension(NUMBER_TILES * PATTERN_SIZE + PATTERN_SIZE / 2 + 1, NUMBER_TILES * PATTERN_SIZE + 1);
+        patternPanel.setPreferredSize(size);
+        patternPanel.setBackground(Color.gray);
+        patternPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int j = (e.getY() - 1) / PATTERN_SIZE;
+                int i = (e.getX() - (j % 2 == 1 ? PATTERN_SIZE / 2 : 0) - 1) / PATTERN_SIZE;
+                if (pattern[i][j] == true) {
+                    pattern[i][j] = false;
+                } else {
+                    pattern[i][j] = true;
+                }
+                patternPanel.repaint();
+            }
+        });;
+
+
+        JButton clearPatternButton = new JButton("Clear");
+        clearPatternButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pattern.clearPattern();
+                for (int i = 0; i < NUMBER_TILES; i++) {
+                    for (int j = 0; j < NUMBER_TILES; j++) {
+                        pattern[i][j] = false;
+                    }
+                }
+                patternPanel.repaint();
             }
         });
-        
-        JButton random = new JButton("Random");
-        random.addActionListener(new ActionListener() {
+
+        JButton randomPatternButton = new JButton("Random");
+        randomPatternButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                pattern.newRandomPattern();
+                randomPattern();
             }
         });
 
         panel.setLayout(new MigLayout("fill"));
-        panel.add(clear);
-        panel.add(random, "wrap");
-        panel.add(pattern, "south, w pref!, h pref!");
-        
+        panel.add(clearPatternButton);
+        panel.add(randomPatternButton, "wrap");
+        panel.add(patternPanel, "south, w pref!, h pref!");
+
 
 
         return panel;
@@ -137,8 +202,6 @@ public class MainFrame {
         JButton selectOuterTile = new JButton("Select");
         selectOuterTile.addActionListener(new SelectTileListener(outerTile, frame));
 
-        tileSize = new JTextField();
-
         panel.setLayout(new MigLayout("wrap 3, fill", "[right]"));
 
         panel.add(new JLabel("Select base terrain"));
@@ -154,8 +217,6 @@ public class MainFrame {
         panel.add(selectOuterTile);
 
         panel.add(new JLabel("Tile size in view"));
-        panel.add(tileSize, "align left, wmin 50");
-
 
         return panel;
     }
@@ -168,13 +229,50 @@ public class MainFrame {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("View Tiles"));
 
-        view = new ViewPanel();
+        viewPanel = new JPanel();
+        Dimension size = new Dimension(NUMBER_TILES * TILE_SIZE + TILE_SIZE / 2 + 1, NUMBER_TILES * TILE_SIZE + 1);
+        viewPanel.setPreferredSize(size);
+        viewPanel.setBackground(Color.gray);
 
-        JButton button = new JButton("Update");
+
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    baseGraphics = importGraphics(baseTerrain.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load base terrain graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    innerGraphics = importGraphics(innerTile.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load inner tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    outerGraphics = importGraphics(outerTile.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load outer tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+            }
+
+            private Image importGraphics(String text) throws IOException {
+                BufferedImage image = ImageIO.read(new File(text));
+                image.getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_FAST);
+                return image;
+            }
+        });
 
         panel.setLayout(new MigLayout("fill"));
-        panel.add(button);
-        panel.add(view, "south, w pref!, h pref!");
+        panel.add(updateButton);
+        panel.add(viewPanel, "south, w pref!, h pref!");
 
         return panel;
     }

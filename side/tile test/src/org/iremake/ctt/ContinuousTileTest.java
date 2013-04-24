@@ -21,6 +21,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -31,10 +32,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -50,7 +50,7 @@ import org.tools.ui.utils.LookAndFeel;
 /**
  *
  */
-public class MainFrame {
+public class ContinuousTileTest {
 
     private final static int NUMBER_TILES = 6; // NxN field
     private final static int PATTERN_SIZE = 20;
@@ -66,12 +66,17 @@ public class MainFrame {
     private Image baseGraphics;
     private Image innerGraphics;
     private Image outerGraphics;
-
+    private JLabel basePreview;
+    private JLabel innerPreview;
+    private JLabel outerPreview;
+    private ActionListener baseAction;
+    private ActionListener innerAction;
+    private ActionListener outerAction;
 
     /**
      *
      */
-    public MainFrame() {
+    public ContinuousTileTest() {
         frame = new JFrame("Imperialism Continuous Tiles Test");
         frame.setResizable(false);
         frame.setLocationByPlatform(true);
@@ -83,15 +88,22 @@ public class MainFrame {
         });
 
         frame.setLayout(new MigLayout("wrap 2, fill", "[grow][]", "[][grow]"));
-        frame.add(makePatternPanel(), "w pref!, h pref!");
+        frame.add(makePatternPanel(), "aligny top, w pref!, h pref!");
         frame.add(makeTileSelectionPanel(), "aligny top");
         frame.add(makeViewPanel(), "span 2, hmin 200, grow");
 
         frame.pack();
         frame.setVisible(true);
 
-        // either load or set defaults
+        // default is random pattern
         randomPattern();
+
+        baseTerrain.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Plains.bmp");
+        baseAction.actionPerformed(null);
+        innerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Forest.bmp");
+        innerAction.actionPerformed(null);
+        outerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Hills.bmp");
+        outerAction.actionPerformed(null);
     }
 
     /**
@@ -104,6 +116,7 @@ public class MainFrame {
             }
         }
         patternPanel.repaint();
+        viewPanel.repaint();
     }
 
     /**
@@ -127,7 +140,8 @@ public class MainFrame {
                         } else {
                             g2d.setColor(Color.white);
                         }
-                        g2d.fillRect(i * PATTERN_SIZE + (j % 2 == 1 ? PATTERN_SIZE / 2 : 0) + 1, j * PATTERN_SIZE + 1, PATTERN_SIZE - 1, PATTERN_SIZE - 1);
+                        g2d.fillRect(i * PATTERN_SIZE + (j % 2 == 1 ? PATTERN_SIZE / 2 : 0), j * PATTERN_SIZE, PATTERN_SIZE, PATTERN_SIZE);
+                        // g2d.fillRect(i * PATTERN_SIZE + (j % 2 == 1 ? PATTERN_SIZE / 2 : 0) + 1, j * PATTERN_SIZE + 1, PATTERN_SIZE - 1, PATTERN_SIZE - 1);
                         // g2d.fillRect(i * PATTERN_SIZE, j * PATTERN_SIZE + 1, PATTERN_SIZE - 1, PATTERN_SIZE - 1);
                     }
                 }
@@ -147,6 +161,7 @@ public class MainFrame {
                     pattern[i][j] = true;
                 }
                 patternPanel.repaint();
+                viewPanel.repaint();
             }
         });;
 
@@ -161,6 +176,7 @@ public class MainFrame {
                     }
                 }
                 patternPanel.repaint();
+                viewPanel.repaint();
             }
         });
 
@@ -193,14 +209,67 @@ public class MainFrame {
         baseTerrain = new JTextField();
         JButton selectBaseTerrain = new JButton("Select");
         selectBaseTerrain.addActionListener(new SelectTileListener(baseTerrain, frame));
+        baseAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    baseGraphics = importGraphics(baseTerrain.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load base terrain graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    baseGraphics = null;
+                }
+                basePreview.setIcon(new ImageIcon(baseGraphics));
+                viewPanel.repaint();
+            }
+        };
+        selectBaseTerrain.addActionListener(baseAction);
+        // basePreview = new JLabel("base", JLabel.CENTER);
+        basePreview = new JLabel();
+        basePreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         innerTile = new JTextField();
         JButton selectInnerTile = new JButton("Select");
         selectInnerTile.addActionListener(new SelectTileListener(innerTile, frame));
+        innerAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    innerGraphics = importGraphics(innerTile.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load inner tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    innerGraphics = null;
+                }
+                innerPreview.setIcon(new ImageIcon(innerGraphics));
+                viewPanel.repaint();
+            }
+        };
+        selectInnerTile.addActionListener(innerAction);
+
+        // innerPreview = new JLabel("inner", JLabel.CENTER);
+        innerPreview = new JLabel();
+        innerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         outerTile = new JTextField();
         JButton selectOuterTile = new JButton("Select");
         selectOuterTile.addActionListener(new SelectTileListener(outerTile, frame));
+        outerAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    outerGraphics = importGraphics(outerTile.getText());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(frame, "Cannot load outer tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    outerGraphics = null;
+                }
+                outerPreview.setIcon(new ImageIcon(outerGraphics));
+                viewPanel.repaint();
+            }
+        };
+        selectOuterTile.addActionListener(outerAction);
+
+        // outerPreview = new JLabel("outer", JLabel.CENTER);
+        outerPreview = new JLabel();
+        outerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         panel.setLayout(new MigLayout("wrap 3, fill", "[right]"));
 
@@ -216,7 +285,9 @@ public class MainFrame {
         panel.add(outerTile, "wmin 300");
         panel.add(selectOuterTile);
 
-        panel.add(new JLabel("Tile size in view"));
+        panel.add(basePreview, String.format("spanx 3, split 3, alignx leading, w %d!, h %d!", TILE_SIZE, TILE_SIZE));
+        panel.add(innerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
+        panel.add(outerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
 
         return panel;
     }
@@ -229,52 +300,52 @@ public class MainFrame {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("View Tiles"));
 
-        viewPanel = new JPanel();
+        viewPanel = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+
+                // only if everything is successfull
+                if (baseGraphics == null) {
+                    return;
+                }
+
+                Graphics2D g2d = (Graphics2D) g;
+
+                for (int i = 0; i < NUMBER_TILES; i++) {
+                    for (int j = 0; j < NUMBER_TILES; j++) {
+                        int x = i * TILE_SIZE + (j % 2 == 1 ? TILE_SIZE / 2 : 0);
+                        int y = j * TILE_SIZE;
+                        if (pattern[i][j] == false) {
+                            g2d.drawImage(baseGraphics, x, y, null);
+                        } else {
+                        }
+                    }
+                }
+
+            }
+        };
         Dimension size = new Dimension(NUMBER_TILES * TILE_SIZE + TILE_SIZE / 2 + 1, NUMBER_TILES * TILE_SIZE + 1);
         viewPanel.setPreferredSize(size);
         viewPanel.setBackground(Color.gray);
 
-
-        JButton updateButton = new JButton("Update");
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    baseGraphics = importGraphics(baseTerrain.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load base terrain graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                try {
-                    innerGraphics = importGraphics(innerTile.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load inner tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                try {
-                    outerGraphics = importGraphics(outerTile.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load outer tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-
-            }
-
-            private Image importGraphics(String text) throws IOException {
-                BufferedImage image = ImageIO.read(new File(text));
-                image.getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_FAST);
-                return image;
-            }
-        });
-
         panel.setLayout(new MigLayout("fill"));
-        panel.add(updateButton);
         panel.add(viewPanel, "south, w pref!, h pref!");
 
         return panel;
+    }
+
+    /**
+     * Load and resize.
+     */
+    public static Image importGraphics(String text) throws IOException {
+        BufferedImage original = ImageIO.read(new File(text));
+        BufferedImage scaled = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g2d = scaled.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(original, 0, 0, TILE_SIZE, TILE_SIZE, null);
+        g2d.dispose();
+        return scaled;
     }
 
     /**
@@ -288,7 +359,7 @@ public class MainFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainFrame();
+                new ContinuousTileTest();
             }
         });
     }

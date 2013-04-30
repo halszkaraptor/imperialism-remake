@@ -37,12 +37,19 @@ public class ImageMapLabel extends JLabel {
     /**
      *
      */
-    public static class MapItem {
+    private static class MapItem {
 
         public Rectangle area;
         public Point pos;
         public Image image;
         public ActionListener action;
+
+        public MapItem(Rectangle area, Point pos, Image image, ActionListener action) {
+            this.area = area;
+            this.pos = pos;
+            this.image = image;
+            this.action = action;
+        }
     }
     /* */
     private MapItem active;
@@ -61,7 +68,7 @@ public class ImageMapLabel extends JLabel {
              */
             @Override
             public void mousePressed(MouseEvent e) {
-                if (active != null) {
+                if (active != null && active.action != null) {
                     active.action.actionPerformed(null);
                 }
             }
@@ -104,13 +111,14 @@ public class ImageMapLabel extends JLabel {
     }
 
     /**
-     * Adds another item.
      *
-     * @param item
+     * @param area
+     * @param pos
+     * @param image
+     * @param action
      */
-    public void addMapItem(MapItem item) {
-        // TODO checks, inside...
-        items.add(item);
+    public void addMapItem(Rectangle area, Point pos, Image image, ActionListener action) {
+        items.add(new MapItem(area, pos, image, action));
     }
 
     /**

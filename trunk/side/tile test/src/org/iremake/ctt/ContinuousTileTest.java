@@ -45,6 +45,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
+import org.tools.ui.utils.GraphicsUtils;
 import org.tools.ui.utils.LookAndFeel;
 
 /**
@@ -340,12 +341,7 @@ public class ContinuousTileTest {
      */
     public static Image importGraphics(String text) throws IOException {
         BufferedImage original = ImageIO.read(new File(text));
-        BufferedImage scaled = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2d = scaled.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(original, 0, 0, TILE_SIZE, TILE_SIZE, null);
-        g2d.dispose();
-        return scaled;
+        return GraphicsUtils.scaleBufferedImage(original, new Dimension(TILE_SIZE, TILE_SIZE));
     }
 
     /**

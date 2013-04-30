@@ -29,6 +29,7 @@ import org.tools.xml.XProperty;
  */
 public class DefaultOptionsXMLGenerator {
 
+    private static final Logger LOG = Logger.getLogger(DefaultOptionsXMLGenerator.class.getName());
     /**
      * @param args the command line arguments
      */
@@ -41,10 +42,9 @@ public class DefaultOptionsXMLGenerator {
         // music
         options.put(Option.Music_Mute.toString(), "false");
         // general
-        options.put(Option.General_Version.toString(), "0.1.2");
+        options.put(Option.General_Version.toString(), "0.1.3 - demo");
 
         Resource resource = ResourceUtils.asResource("options.default.xml");
         XMLHelper.write(resource, options);
     }
-    private static final Logger LOG = Logger.getLogger(DefaultOptionsXMLGenerator.class.getName());
 }

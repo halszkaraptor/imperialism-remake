@@ -38,7 +38,6 @@ import org.iremake.client.ui.options.OptionsDialog;
 import org.tools.ui.BrowserPanel;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.ImageMapLabel;
-import org.tools.ui.ImageMapLabel.MapItem;
 import org.tools.ui.layout.RelativeLayout;
 import org.tools.ui.layout.RelativeLayoutConstraint;
 import org.tools.ui.utils.WindowCorner;
@@ -69,14 +68,10 @@ public class StartScreen extends UIFrame {
         languageComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
         languageComboBox.setToolTipText("Select language");     // tooltip
 
-        // background image
+        // background image and image map items
         ImageMapLabel menuLabel = new ImageMapLabel();
         menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
-        MapItem item = new MapItem();
-        item.area = new Rectangle(0, 0, 200, 200);
-        item.pos = new Point(0, 0);
-        item.image = IOManager.getAsImage(Places.GraphicsIcons, "start/start.button.scenario.png");
-        menuLabel.addMapItem(item);
+        menuLabel.addMapItem(new Rectangle(0, 0, 200, 200), new Point(0, 0), IOManager.getAsImage(Places.GraphicsIcons, "start/start.button.scenario.png"), null);
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());

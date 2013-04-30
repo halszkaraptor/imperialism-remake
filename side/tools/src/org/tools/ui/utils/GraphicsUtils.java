@@ -21,16 +21,21 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -46,11 +51,11 @@ import javax.swing.KeyStroke;
  */
 public class GraphicsUtils {
 
+    private static final Logger LOG = Logger.getLogger(GraphicsUtils.class.getName());
     /**
      *
      */
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
-
     /**
      *
      */
@@ -120,22 +125,22 @@ public class GraphicsUtils {
      */
     private static void setLocation(Component A, Rectangle boundsA, Rectangle boundsB, WindowCorner corner) {
         switch (corner) {
-        case NorthWest:
-            boundsA.x = boundsB.x;
-            boundsA.y = boundsB.y;
-            break;
-        case NorthEast:
-            boundsA.x = boundsB.x + boundsB.width - boundsA.width;
-            boundsA.y = boundsB.y;
-            break;
-        case SouthWest:
-            boundsA.x = boundsB.x;
-            boundsA.y = boundsB.y + boundsB.height - boundsA.height;
-            break;
-        case SouthEast:
-            boundsA.x = boundsB.x + boundsB.width - boundsA.width;
-            boundsA.y = boundsB.y + boundsB.height - boundsA.height;
-            break;
+            case NorthWest:
+                boundsA.x = boundsB.x;
+                boundsA.y = boundsB.y;
+                break;
+            case NorthEast:
+                boundsA.x = boundsB.x + boundsB.width - boundsA.width;
+                boundsA.y = boundsB.y;
+                break;
+            case SouthWest:
+                boundsA.x = boundsB.x;
+                boundsA.y = boundsB.y + boundsB.height - boundsA.height;
+                break;
+            case SouthEast:
+                boundsA.x = boundsB.x + boundsB.width - boundsA.width;
+                boundsA.y = boundsB.y + boundsB.height - boundsA.height;
+                break;
         }
 
         A.setBounds(boundsA);
@@ -293,51 +298,51 @@ public class GraphicsUtils {
     public static int getResizeCursorForSide(WindowSide vertical, WindowSide horizontal) {
         int type = -1;
         switch (vertical) {
-        case North:
-            switch (horizontal) {
-            case East:
-                // N+E
-                type = Cursor.NE_RESIZE_CURSOR;
+            case North:
+                switch (horizontal) {
+                    case East:
+                        // N+E
+                        type = Cursor.NE_RESIZE_CURSOR;
+                        break;
+                    case West:
+                        // N+W
+                        type = Cursor.NW_RESIZE_CURSOR;
+                        break;
+                    case None:
+                        // N alone
+                        type = Cursor.N_RESIZE_CURSOR;
+                        break;
+                }
                 break;
-            case West:
-                // N+W
-                type = Cursor.NW_RESIZE_CURSOR;
+            case South:
+                switch (horizontal) {
+                    case East:
+                        // S+E
+                        type = Cursor.SE_RESIZE_CURSOR;
+                        break;
+                    case West:
+                        // S+W
+                        type = Cursor.SW_RESIZE_CURSOR;
+                        break;
+                    case None:
+                        // S alone
+                        type = Cursor.S_RESIZE_CURSOR;
+                        break;
+                }
                 break;
             case None:
-                // N alone
-                type = Cursor.N_RESIZE_CURSOR;
+                // assume that neither North nor South, most probably Null
+                switch (horizontal) {
+                    case East:
+                        // E alone
+                        type = Cursor.E_RESIZE_CURSOR;
+                        break;
+                    case West:
+                        // W alone
+                        type = Cursor.W_RESIZE_CURSOR;
+                        break;
+                }
                 break;
-            }
-            break;
-        case South:
-            switch (horizontal) {
-            case East:
-                // S+E
-                type = Cursor.SE_RESIZE_CURSOR;
-                break;
-            case West:
-                // S+W
-                type = Cursor.SW_RESIZE_CURSOR;
-                break;
-            case None:
-                // S alone
-                type = Cursor.S_RESIZE_CURSOR;
-                break;
-            }
-            break;
-        case None:
-            // assume that neither North nor South, most probably Null
-            switch (horizontal) {
-            case East:
-                // E alone
-                type = Cursor.E_RESIZE_CURSOR;
-                break;
-            case West:
-                // W alone
-                type = Cursor.W_RESIZE_CURSOR;
-                break;
-            }
-            break;
         }
         return type;
     }
@@ -354,5 +359,38 @@ public class GraphicsUtils {
         int b = Integer.parseInt(hex.substring(4, 6), 16);
         return new Color(r, g, b);
     }
-    private static final Logger LOG = Logger.getLogger(GraphicsUtils.class.getName());
+
+    /**
+     * Deep copy of a BufferedImage excluding the properties.
+     *
+     * @param in Input BufferedImage
+     * @return Output BufferedImage
+     */
+    public static BufferedImage deepCopyBufferedImage(BufferedImage in) {
+        ColorModel cm = in.getColorModel();
+        WritableRaster wr = in.copyData(null);
+        return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
+    }
+
+    /**
+     * Scales an Image.
+     *
+     * @param original Original image.
+     * @param dims New dimensions.
+     * @return The scaled image of type 4Byte_ABGR
+     */
+    public static BufferedImage scaleBufferedImage(Image original, Dimension dims) {
+        // create new empty image with right size
+        BufferedImage scaled = new BufferedImage(dims.width, dims.height, BufferedImage.TYPE_4BYTE_ABGR);
+
+        // get graphics context and set rendering hints to interpolation
+        Graphics2D g2d = scaled.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        // draw original into new image
+        g2d.drawImage(original, 0, 0, dims.width, dims.height, null);
+        g2d.dispose();
+
+        return scaled;
+    }
 }

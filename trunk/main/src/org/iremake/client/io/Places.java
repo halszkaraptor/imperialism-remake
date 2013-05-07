@@ -26,13 +26,21 @@ public enum Places {
     /* the places */
     None("./"),
     Log("log/"),
+
     Help("data/help/"),
+
     Common("data/game/common/"),
+
     Scenarios("data/game/scenarios/"),
+
     Graphics("data/game/artwork/graphics/"),
+
     GraphicsIcons(Graphics + "ui/"),
+    GraphicsStartup(GraphicsIcons + "start/"),
     GraphicsBrowserIcons(GraphicsIcons + "browser/"),
+
     GraphicsScenario(Graphics + "scenario/"),
+
     Music("data/game/artwork/music/");
 
     /* the location of the place */

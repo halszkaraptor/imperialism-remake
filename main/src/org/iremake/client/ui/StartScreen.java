@@ -70,8 +70,9 @@ public class StartScreen extends UIFrame {
 
         // background image and image map items
         ImageMapLabel menuLabel = new ImageMapLabel();
-        menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsIcons, "start/start.background.jpg"));    // set image
-        menuLabel.addMapItem(new Rectangle(0, 0, 200, 200), new Point(0, 0), IOManager.getAsImage(Places.GraphicsIcons, "start/start.button.scenario.png"), null);
+        menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsStartup, "start.background.jpg"));    // set image
+        // add all icons
+        menuLabel.addMapItem(new Rectangle(440, 460, 110, 90), new Point(440, 460), IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.throne.png"), new UIDialogStartAction(NewLocalScenarioDialog.class));
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());
@@ -112,8 +113,8 @@ public class StartScreen extends UIFrame {
      */
     private JComponent createMenuBar() {
         // scenario button
-        JButton scenarioButton = Button.StartMenuScenario.create();
-        scenarioButton.addActionListener(new UIDialogStartAction(NewLocalScenarioDialog.class));
+        // JButton scenarioButton = Button.StartMenuScenario.create();
+        // scenarioButton.addActionListener(new UIDialogStartAction(NewLocalScenarioDialog.class));
 
         // network button
         JButton networkButton = Button.StartMenuNetwork.create();
@@ -154,7 +155,8 @@ public class StartScreen extends UIFrame {
         });
 
         ButtonBar bar = new ButtonBar();
-        bar.add(scenarioButton, networkButton, optionsButton, helpButton, editorButton, exitButton);
+        // bar.add(scenarioButton, networkButton, optionsButton, helpButton, editorButton, exitButton);
+        bar.add(networkButton, optionsButton, helpButton, editorButton, exitButton);
 
         return bar.get();
     }

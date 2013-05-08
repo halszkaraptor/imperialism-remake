@@ -16,9 +16,14 @@
  */
 package org.tools.ui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
@@ -28,11 +33,14 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 /**
  *
  */
 public class ImageMapLabel extends JLabel {
+
+    private static final int DRAWING_ARC_SIZE = 10;
 
     /**
      *
@@ -41,12 +49,14 @@ public class ImageMapLabel extends JLabel {
 
         public Rectangle area;
         public Point pos;
+        public String tooltiptext;
         public Image image;
         public ActionListener action;
 
-        public MapItem(Rectangle area, Point pos, Image image, ActionListener action) {
+        public MapItem(Rectangle area, Point pos, String tooltiptext, Image image, ActionListener action) {
             this.area = area;
             this.pos = pos;
+            this.tooltiptext = tooltiptext;
             this.image = image;
             this.action = action;
         }
@@ -117,8 +127,8 @@ public class ImageMapLabel extends JLabel {
      * @param image
      * @param action
      */
-    public void addMapItem(Rectangle area, Point pos, Image image, ActionListener action) {
-        items.add(new MapItem(area, pos, image, action));
+    public void addMapItem(Rectangle area, Point pos, String tooltiptext, Image image, ActionListener action) {
+        items.add(new MapItem(area, pos, tooltiptext, image, action));
     }
 
     /**
@@ -137,10 +147,42 @@ public class ImageMapLabel extends JLabel {
      */
     @Override
     public void paint(Graphics g) {
+        // paint original content (backgrond image)
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        // paint borders
+        g2d.setStroke(new BasicStroke(4));
+        g2d.setColor(new Color(196, 196, 196, 128));
+        for (MapItem item : items) {
+            Rectangle r = item.area;
+            g2d.drawRoundRect(r.x, r.y, r.width, r.height, DRAWING_ARC_SIZE, DRAWING_ARC_SIZE);
+        }
+
+        // paint active overlay and border
         if (active != null) {
+            // draw image
             g2d.drawImage(active.image, active.pos.x, active.pos.y, this);
+
+            // draw border
+            g2d.setStroke(new BasicStroke(4));
+            g2d.setColor(new Color(255, 255, 255, 164));
+            Rectangle r = active.area;
+            g2d.drawRoundRect(r.x, r.y, r.width, r.height, DRAWING_ARC_SIZE, DRAWING_ARC_SIZE);
+
+            // draw tooltiptext
+            Dimension size = getSize();
+            Font font = UIManager.getFont("Label.font");
+            Rectangle bounds = font.getStringBounds(active.tooltiptext, g2d.getFontRenderContext()).getBounds();
+        Insets insets = new Insets(3, 6, 3, 6);
+
+            // draw rectangle
+            g2d.setColor(new Color(164, 164, 164, 240));
+            g2d.fill3DRect(size.width / 2  - insets.left - bounds.width / 2, size.height - insets.top - insets.bottom - bounds.height - 10, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
+
+            // draw string
+            g2d.setColor(Color.black);
+            g2d.drawString(active.tooltiptext, size.width / 2 - bounds.x - bounds.width / 2, size.height - insets.bottom + bounds.y); // TODO antialiased
         }
     }
 }

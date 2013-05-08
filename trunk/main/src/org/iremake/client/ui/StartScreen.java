@@ -61,7 +61,7 @@ public class StartScreen extends UIFrame {
         JLayeredPane pane = new JLayeredPane();
 
         // create menu bar and add to frame
-        JComponent menuBar = createMenuBar();
+        // JComponent menuBar = createMenuBar();
 
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
@@ -72,7 +72,7 @@ public class StartScreen extends UIFrame {
         ImageMapLabel menuLabel = new ImageMapLabel();
         menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsStartup, "start.background.jpg"));    // set image
         // add all icons
-        menuLabel.addMapItem(new Rectangle(440, 460, 110, 90), new Point(440, 460), IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.throne.png"), new UIDialogStartAction(NewLocalScenarioDialog.class));
+        menuLabel.addMapItem(new Rectangle(421, 459, 110, 90), new Point(421, 459), "New scenario", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.throne.png"), new UIDialogStartAction(NewLocalScenarioDialog.class));
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());
@@ -90,8 +90,8 @@ public class StartScreen extends UIFrame {
         layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthEast, 20, 20));
 
         // add menubar on top and position
-        pane.add(menuBar, new Integer(3));
-        layout.addConstraint(menuBar, RelativeLayoutConstraint.relative(0.5f, 0.6f));
+        // pane.add(menuBar, new Integer(3));
+        // layout.addConstraint(menuBar, RelativeLayoutConstraint.relative(0.5f, 0.6f));
 
         // add language combo box
         pane.add(languageComboBox, new Integer(4));

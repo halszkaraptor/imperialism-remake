@@ -25,8 +25,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +67,8 @@ public class IOManager {
     private static Set<String> statistics = new HashSet<>(10);
     /* a file chooser for loading and saving */
     private static JFileChooser fileChooser;
+    /* */
+    private static Map<String, BufferedImage> imageCache = new HashMap<>();
 
     /* path to the folder where the jar resides */
     private static final String base = "";
@@ -121,6 +125,13 @@ public class IOManager {
      * @return
      */
     public static BufferedImage getAsImage(Places place, String location) {
+
+        // first check in the cache
+        String key = getPath(place, location);
+        if (imageCache.containsKey(key)) {
+            return imageCache.get(key);
+        }
+
         Resource resource = getAsResource(place, location);
         statistics.add(resource.getPath());
         BufferedImage image = null;
@@ -129,6 +140,10 @@ public class IOManager {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, resource.getPath(), ex);
         }
+
+        // put in cache
+        imageCache.put(key, image);
+
         return image;
     }
 

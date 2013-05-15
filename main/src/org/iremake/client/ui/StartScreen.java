@@ -24,9 +24,7 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import org.iremake.client.Option;
@@ -36,7 +34,6 @@ import org.iremake.client.io.Places;
 import org.iremake.client.ui.editor.EditorScreen;
 import org.iremake.client.ui.options.OptionsDialog;
 import org.tools.ui.BrowserPanel;
-import org.tools.ui.ButtonBar;
 import org.tools.ui.ImageMapLabel;
 import org.tools.ui.layout.RelativeLayout;
 import org.tools.ui.layout.RelativeLayoutConstraint;
@@ -60,9 +57,6 @@ public class StartScreen extends UIFrame {
 
         JLayeredPane pane = new JLayeredPane();
 
-        // create menu bar and add to frame
-        // JComponent menuBar = createMenuBar();
-
         // language drop down menu
         JComboBox<String> languageComboBox = new JComboBox<>();
         languageComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"English", "Spanish", "German", "Chinese"}));   // set model
@@ -83,7 +77,7 @@ public class StartScreen extends UIFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
-                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsBrowserIcons));
+                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsBrowserIcons), IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
                 UIDialog.make(browser, "Help");
             }
         };
@@ -108,10 +102,6 @@ public class StartScreen extends UIFrame {
         pane.add(versionLabel, new Integer(2));
         layout.addConstraint(versionLabel, RelativeLayoutConstraint.corner(WindowCorner.SouthEast, 20, 20));
 
-        // add menubar on top and position
-        // pane.add(menuBar, new Integer(3));
-        // layout.addConstraint(menuBar, RelativeLayoutConstraint.relative(0.5f, 0.6f));
-
         // add language combo box
         pane.add(languageComboBox, new Integer(4));
         // layout.addConstraint(languageComboBox, RelativeLayoutConstraint.relative(0.7f, 0.5f));
@@ -123,62 +113,5 @@ public class StartScreen extends UIFrame {
         setContent(pane);
 
         FrameManager.getInstance().setShutDownOnClose();
-    }
-
-    /**
-     * Makes the menu bar.
-     *
-     * @param owner
-     * @return
-     */
-    private JComponent createMenuBar() {
-        // scenario button
-        // JButton scenarioButton = Button.StartMenuScenario.create();
-        // scenarioButton.addActionListener(new UIDialogStartAction(NewLocalScenarioDialog.class));
-
-        // network button
-        JButton networkButton = Button.StartMenuNetwork.create();
-        networkButton.addActionListener(new UIDialogStartAction(NetworkDialog.class));
-
-        // options button
-        JButton optionsButton = Button.StartMenuOptions.create();
-        optionsButton.addActionListener(new UIDialogStartAction(OptionsDialog.class));
-
-        // help button
-        JButton helpButton = Button.StartMenuHelp.create();
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                URL index = IOManager.getURL(Places.Help, "en_index.html");
-                BrowserPanel browser = new BrowserPanel(index, index, IOManager.getAsLoader(Places.GraphicsBrowserIcons));
-                UIDialog.make(browser, "Help");
-            }
-        });
-
-        // editor button
-        JButton editorButton = Button.StartMenuEditor.create();
-        editorButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UIFrame frame = new EditorScreen();
-                frame.switchTo();
-            }
-        });
-
-        // exit button
-        JButton exitButton = Button.StartMenuExit.create();
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StartClient.shutDown();
-            }
-        });
-
-        ButtonBar bar = new ButtonBar();
-        // bar.add(scenarioButton, networkButton, optionsButton, helpButton, editorButton, exitButton);
-        // bar.add(networkButton, optionsButton, helpButton, editorButton, exitButton);
-        bar.add(networkButton);
-
-        return bar.get();
     }
 }

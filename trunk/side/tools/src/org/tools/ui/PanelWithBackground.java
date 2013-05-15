@@ -35,13 +35,15 @@ public class PanelWithBackground extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // tiled drawing
-        int iw = image.getWidth(this);
-        int ih = image.getHeight(this);
-        if (iw > 0 && ih > 0) {
-            for (int x = 0; x < getWidth(); x += iw) {
-                for (int y = 0; y < getHeight(); y += ih) {
-                    g.drawImage(image, x, y, iw, ih, this);
+        if (image != null) {
+            // tiled drawing
+            int iw = image.getWidth(this);
+            int ih = image.getHeight(this);
+            if (iw > 0 && ih > 0) {
+                for (int x = 0; x < getWidth(); x += iw) {
+                    for (int y = 0; y < getHeight(); y += ih) {
+                        g.drawImage(image, x, y, iw, ih, this);
+                    }
                 }
             }
         }

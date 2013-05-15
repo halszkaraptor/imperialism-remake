@@ -17,6 +17,7 @@
 package org.tools.ui;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -39,7 +40,7 @@ import org.tools.ui.utils.IconLoader;
  * A panel consisting of a few buttons and a JEditorPane to display
  * (non-editable) text/html content.
  */
-public class BrowserPanel extends JPanel {
+public class BrowserPanel extends PanelWithBackground {
 
     private static final Logger LOG = Logger.getLogger(BrowserPanel.class.getName());
     private static final long serialVersionUID = 1L;
@@ -67,7 +68,8 @@ public class BrowserPanel extends JPanel {
      * @param start start URL
      * @param loader loader of icon resources
      */
-    public BrowserPanel(URL index, URL start, IconLoader loader) {
+    public BrowserPanel(URL index, URL start, IconLoader loader, Image background) {
+        super(background);
         // check, should not give null
         if (index == null || start == null) {
             LOG.log(Level.SEVERE, "BrowserDialog init failed");

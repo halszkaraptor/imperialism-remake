@@ -22,10 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Starts an UIDialog but doesn't contruct it before execution and contructs
+ * Starts an UIDialog but doesn't construct it before execution and constructs
  * every time the action is performed. Only suitable for UIDialogs with
  * argumentless constructors.
- * 
+ *
  * In a way it's a convenience class.
  */
 public class UIDialogStartAction implements ActionListener {

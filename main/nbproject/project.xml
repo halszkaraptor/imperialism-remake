@@ -38,6 +38,7 @@
             </reference>
         </references>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>argumentless</word>
             <word>borderless</word>
             <word>codec</word>
             <word>endian</word>

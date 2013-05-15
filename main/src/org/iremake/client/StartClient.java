@@ -19,6 +19,8 @@ package org.iremake.client;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -48,6 +50,12 @@ import org.tools.ui.utils.LookAndFeel;
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
+    public static final ActionListener ExitAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            StartClient.shutDown();
+        }
+    };
 
     /**
      * No instantiation.

@@ -31,10 +31,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.iremake.client.ui.main.MainScreen;
 import org.iremake.common.model.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
+import org.tools.ui.PanelWithBackground;
 import org.tools.ui.SimpleListModel;
 
 /**
@@ -51,7 +54,7 @@ public class NewLocalScenarioDialog extends UIDialog {
      */
     public NewLocalScenarioDialog() {
         super("Local Scenario");
-        JPanel content = new JPanel();
+        JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
 
         // create a scanner for scenarios and scan
         final ScenarioScanner scanner = new ScenarioScanner();

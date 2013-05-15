@@ -42,7 +42,7 @@ public class DefaultOptionsXMLGenerator {
         // music
         options.put(Option.Music_Mute.toString(), "false");
         // general
-        options.put(Option.General_Version.toString(), "0.1.3 - demo");
+        options.put(Option.General_Version.toString(), "0.1.3 (demo)");
 
         Resource resource = ResourceUtils.asResource("options.default.xml");
         XMLHelper.write(resource, options);

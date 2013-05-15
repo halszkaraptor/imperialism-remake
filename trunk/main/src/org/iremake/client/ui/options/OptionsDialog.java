@@ -33,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
+import org.iremake.client.io.IOManager;
+import org.iremake.client.io.Places;
 import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.UIDialog;
@@ -40,6 +42,7 @@ import org.iremake.client.ui.WindowClosingListener;
 import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerManager;
 import org.tools.sound.SoundSystem;
+import org.tools.ui.PanelWithBackground;
 import org.tools.ui.SimpleComboBoxModel;
 
 /**
@@ -97,16 +100,19 @@ public class OptionsDialog extends UIDialog {
     private Component createGeneralPanel() {
 
         JPanel graphics = new JPanel();
+        graphics.setOpaque(false);
         graphics.setBorder(BorderFactory.createTitledBorder("Graphics"));
 
         // components
         JCheckBox fullScreen = new JCheckBox("Start in Full Screen");
+        fullScreen.setOpaque(false);
         items.add(new OptionsDialogCheckBoxItem(fullScreen, Option.Graphics_FullScreenMode));
         if (!Option.isOSWindows) {
             fullScreen.setEnabled(false);
         }
 
         JCheckBox mainControlsRight = new JCheckBox("Main Screen controls on right side");
+        mainControlsRight.setOpaque(false);
         items.add(new OptionsDialogCheckBoxItem(mainControlsRight, Option.Graphics_MainScreenControlsRight));
 
         // graphics panel layout
@@ -118,7 +124,7 @@ public class OptionsDialog extends UIDialog {
         language.setBorder(BorderFactory.createTitledBorder("Language"));
 
         // layout
-        JPanel panel = new JPanel();
+        JPanel panel = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
         panel.setLayout(new MigLayout("flowy"));
         panel.add(graphics, "sizegroupx");
         panel.add(language, "sizegroupx");

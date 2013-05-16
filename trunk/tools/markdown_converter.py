@@ -13,12 +13,12 @@
 import os, fnmatch, sys, shutil, codecs
 from datetime import datetime
 
-import markdown # http://freewisdom.org/projects/python-markdown/
+import markdown # https://pypi.python.org/pypi/Markdown
 import tools
 
 
 # parameters
-lookup_dir = 'C:/Users/jkeller1/Dropbox/remake/documentation' # relative to this files location
+lookup_dir = 'C:/Users/Jan/Dropbox/remake/documentation' # relative to this files location
 # all following dirs are relative to the lookup dir
 install_dir = lookup_dir + '/help'
 template_dir = 'templates'

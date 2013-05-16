@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Imperialism Remake"
-#define MyAppVersion "0.1.2"
+#define MyAppVersion "0.1.3"
 #define MyAppURL "http://remake.twelvepm.de/"
 #define MyAppExeName "windows_launcher.exe"
 
@@ -20,7 +20,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputDir="."
-OutputBaseFilename="ImperialismRemake-0.1.2-Setup"
+OutputBaseFilename="ImperialismRemake-0.1.3-Setup"
 SetupIconFile="icon.ico"
 Compression=lzma/ultra64
 SolidCompression=yes

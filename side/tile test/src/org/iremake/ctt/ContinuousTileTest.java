@@ -21,7 +21,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -82,11 +81,6 @@ public class ContinuousTileTest {
         frame.setResizable(false);
         frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-            }
-        });
 
         frame.setLayout(new MigLayout("wrap 2, fill", "[grow][]", "[][grow]"));
         frame.add(makePatternPanel(), "aligny top, w pref!, h pref!");
@@ -209,7 +203,7 @@ public class ContinuousTileTest {
 
         baseTerrain = new JTextField();
         JButton selectBaseTerrain = new JButton("Select");
-        selectBaseTerrain.addActionListener(new SelectTileListener(baseTerrain, frame));
+        selectBaseTerrain.addActionListener(new FileSelectListener(baseTerrain, frame));
         baseAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -230,7 +224,7 @@ public class ContinuousTileTest {
 
         innerTile = new JTextField();
         JButton selectInnerTile = new JButton("Select");
-        selectInnerTile.addActionListener(new SelectTileListener(innerTile, frame));
+        selectInnerTile.addActionListener(new FileSelectListener(innerTile, frame));
         innerAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -252,7 +246,7 @@ public class ContinuousTileTest {
 
         outerTile = new JTextField();
         JButton selectOuterTile = new JButton("Select");
-        selectOuterTile.addActionListener(new SelectTileListener(outerTile, frame));
+        selectOuterTile.addActionListener(new FileSelectListener(outerTile, frame));
         outerAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

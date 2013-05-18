@@ -27,7 +27,7 @@ import javax.swing.text.JTextComponent;
 /**
  *
  */
-class SelectTileListener implements ActionListener {
+class FileSelectListener implements ActionListener {
 
     private JTextComponent textComponent;
     private Component parent;
@@ -49,7 +49,7 @@ class SelectTileListener implements ActionListener {
         });
     }
 
-    public SelectTileListener(JTextComponent textComponent, Component parent) {
+    public FileSelectListener(JTextComponent textComponent, Component parent) {
         this.textComponent = textComponent;
         this.parent = parent;
     }

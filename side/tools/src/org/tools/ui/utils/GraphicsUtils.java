@@ -366,7 +366,7 @@ public class GraphicsUtils {
      * @param in Input BufferedImage
      * @return Output BufferedImage
      */
-    public static BufferedImage deepCopyBufferedImage(BufferedImage in) {
+    public static BufferedImage copyBufferedImage(BufferedImage in) {
         ColorModel cm = in.getColorModel();
         WritableRaster wr = in.copyData(null);
         return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
@@ -392,5 +392,21 @@ public class GraphicsUtils {
         g2d.dispose();
 
         return scaled;
+    }
+    
+    /**
+     * Copies part of an image.
+     * 
+     * @param original
+     * @param area
+     * @return 
+     */
+    public static BufferedImage subBufferedImage(Image original, Rectangle area) {
+        BufferedImage cutout = new BufferedImage(area.width, area.height, BufferedImage.TYPE_4BYTE_ABGR);
+        
+        Graphics2D g2d = cutout.createGraphics();
+        g2d.drawImage(original, -area.x, -area.y, null);
+        
+        return cutout;
     }
 }

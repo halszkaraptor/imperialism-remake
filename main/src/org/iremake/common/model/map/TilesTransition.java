@@ -27,7 +27,7 @@ package org.iremake.common.model.map;
  */
 public enum TilesTransition {
 
-    East(0), SouthEast(1), SouthWest(2);
+    East(0), SouthEast(1), SouthWest(2), West(3), NorthWest(4), NorthEast(5);
 
     int order;
 

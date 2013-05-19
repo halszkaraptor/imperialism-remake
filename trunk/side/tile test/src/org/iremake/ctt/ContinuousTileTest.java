@@ -25,11 +25,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -44,8 +44,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.miginfocom.swing.MigLayout;
+import org.tools.ui.HyperlinkLabel;
 import org.tools.ui.utils.GraphicsUtils;
 import org.tools.ui.utils.LookAndFeel;
+import org.tools.utils.Pair;
 
 /**
  *
@@ -77,15 +79,22 @@ public class ContinuousTileTest {
      *
      */
     public ContinuousTileTest() {
-        frame = new JFrame("Imperialism Continuous Tiles Test");
+        frame = new JFrame("Imperialism Continuous Tiles Tester");
         frame.setResizable(false);
         frame.setLocationByPlatform(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-        frame.setLayout(new MigLayout("wrap 2, fill", "[grow][]", "[][grow]"));
-        frame.add(makePatternPanel(), "aligny top, w pref!, h pref!");
-        frame.add(makeTileSelectionPanel(), "aligny top");
-        frame.add(makeViewPanel(), "span 2, hmin 200, grow");
+        // frame.getContentPane().setBackground(new Color(230,220,210));
+
+        HyperlinkLabel title = new HyperlinkLabel("More information");
+        title.setToolTipText("Click to open the project website.");
+        title.setLink("http://remake.twelvepm.de/forum/");
+
+        frame.setLayout(new MigLayout("wrap 2, fill", "", "[][][grow]"));
+        frame.add(title, "span 2, alignx center");
+        frame.add(makePatternPanel(), "aligny top, grow");
+        frame.add(makeTileSelectionPanel());
+        frame.add(makeViewPanel(), "span 2, grow");
 
         frame.pack();
         frame.setVisible(true);
@@ -120,6 +129,7 @@ public class ContinuousTileTest {
      */
     private JComponent makePatternPanel() {
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setBorder(BorderFactory.createTitledBorder("Select Pattern"));
 
         patternPanel = new JPanel() {
@@ -142,9 +152,10 @@ public class ContinuousTileTest {
                 }
             }
         };
+        patternPanel.setToolTipText("Click for setting/clearing the terrain.");
         Dimension size = new Dimension(NUMBER_TILES * PATTERN_SIZE + PATTERN_SIZE / 2 + 1, NUMBER_TILES * PATTERN_SIZE + 1);
         patternPanel.setPreferredSize(size);
-        patternPanel.setBackground(Color.gray);
+        patternPanel.setBackground(Color.lightGray);
         patternPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -158,10 +169,11 @@ public class ContinuousTileTest {
                 patternPanel.repaint();
                 viewPanel.repaint();
             }
-        });;
+        });
 
 
         JButton clearPatternButton = new JButton("Clear");
+        clearPatternButton.setToolTipText("Clears the map.");
         clearPatternButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,6 +188,7 @@ public class ContinuousTileTest {
         });
 
         JButton randomPatternButton = new JButton("Random");
+        randomPatternButton.setToolTipText("Random pattern on the map (50% occupation)");
         randomPatternButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,9 +199,7 @@ public class ContinuousTileTest {
         panel.setLayout(new MigLayout("fill"));
         panel.add(clearPatternButton);
         panel.add(randomPatternButton, "wrap");
-        panel.add(patternPanel, "south, w pref!, h pref!");
-
-
+        panel.add(patternPanel, "span 2, aligny center, w pref!, h pref!");
 
         return panel;
     }
@@ -199,10 +210,13 @@ public class ContinuousTileTest {
      */
     private JComponent makeTileSelectionPanel() {
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setBorder(BorderFactory.createTitledBorder("Tile Selection"));
 
         baseTerrain = new JTextField();
+        baseTerrain.setEditable(false);
         JButton selectBaseTerrain = new JButton("Select");
+        selectBaseTerrain.setToolTipText("Select image file for base terrain.");
         selectBaseTerrain.addActionListener(new FileSelectListener(baseTerrain, frame));
         baseAction = new ActionListener() {
             @Override
@@ -220,10 +234,13 @@ public class ContinuousTileTest {
         selectBaseTerrain.addActionListener(baseAction);
         // basePreview = new JLabel("base", JLabel.CENTER);
         basePreview = new JLabel();
+        basePreview.setToolTipText("Base terrain tile.");
         basePreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         innerTile = new JTextField();
+        innerTile.setEditable(false);
         JButton selectInnerTile = new JButton("Select");
+        selectInnerTile.setToolTipText("Select inner image file for terrain");
         selectInnerTile.addActionListener(new FileSelectListener(innerTile, frame));
         innerAction = new ActionListener() {
             @Override
@@ -242,10 +259,13 @@ public class ContinuousTileTest {
 
         // innerPreview = new JLabel("inner", JLabel.CENTER);
         innerPreview = new JLabel();
+        innerPreview.setToolTipText("Inner version of terrain tile.");
         innerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         outerTile = new JTextField();
+        outerTile.setEditable(false);
         JButton selectOuterTile = new JButton("Select");
+        selectOuterTile.setToolTipText("Select outer image file for terrain.");
         selectOuterTile.addActionListener(new FileSelectListener(outerTile, frame));
         outerAction = new ActionListener() {
             @Override
@@ -264,7 +284,20 @@ public class ContinuousTileTest {
 
         // outerPreview = new JLabel("outer", JLabel.CENTER);
         outerPreview = new JLabel();
+        outerPreview.setToolTipText("Outer version of terrain tile.");
         outerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        JButton update = new JButton("Update");
+        update.setToolTipText("Read all files again and update view.");
+        update.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                baseAction.actionPerformed(null);
+                innerAction.actionPerformed(null);
+                outerAction.actionPerformed(null);
+                viewPanel.repaint();
+            }
+        });
 
         panel.setLayout(new MigLayout("wrap 3, fill", "[right]"));
 
@@ -280,9 +313,10 @@ public class ContinuousTileTest {
         panel.add(outerTile, "wmin 300");
         panel.add(selectOuterTile);
 
-        panel.add(basePreview, String.format("spanx 3, split 3, alignx leading, w %d!, h %d!", TILE_SIZE, TILE_SIZE));
+        panel.add(basePreview, String.format("spanx 3, split 4, alignx leading, w %d!, h %d!", TILE_SIZE, TILE_SIZE));
         panel.add(innerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
         panel.add(outerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
+        panel.add(update, "aligny top");
 
         return panel;
     }
@@ -293,6 +327,7 @@ public class ContinuousTileTest {
      */
     private JComponent makeViewPanel() {
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setBorder(BorderFactory.createTitledBorder("View Tiles"));
 
         viewPanel = new JPanel() {
@@ -301,11 +336,13 @@ public class ContinuousTileTest {
                 super.paint(g);
 
                 // only if everything is successfull
-                if (baseGraphics == null) {
+                if (baseGraphics == null || innerGraphics == null || outerGraphics == null) {
                     return;
                 }
 
                 Graphics2D g2d = (Graphics2D) g;
+
+                EnhancedTile tile = new EnhancedTile(innerGraphics, outerGraphics);
 
                 for (int i = 0; i < NUMBER_TILES; i++) {
                     for (int j = 0; j < NUMBER_TILES; j++) {
@@ -314,6 +351,11 @@ public class ContinuousTileTest {
                         if (pattern[i][j] == false) {
                             g2d.drawImage(baseGraphics, x, y, null);
                         } else {
+                            List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
+                            for (TilesTransition transition : TilesTransition.values()) {
+                                list.add(new Pair<TilesTransition, Boolean>(transition, !isTerrain(i, j, transition)));
+                            }
+                            tile.paintMany(g2d, x, y, list);
                         }
                     }
                 }
@@ -325,9 +367,60 @@ public class ContinuousTileTest {
         viewPanel.setBackground(Color.gray);
 
         panel.setLayout(new MigLayout("fill"));
-        panel.add(viewPanel, "south, w pref!, h pref!");
+        panel.add(viewPanel, "w pref!, h pref!");
 
         return panel;
+    }
+
+    /**
+     *
+     * @param i column
+     * @param j row
+     * @param transition
+     * @return
+     */
+    private boolean isTerrain(int i, int j, TilesTransition transition) {
+        switch (transition) {
+            case East:
+                if (i < NUMBER_TILES - 1) {
+                    return pattern[i + 1][j];
+                }
+                break;
+            case West:
+                if (i > 0) {
+                    return pattern[i - 1][j];
+                }
+                break;
+            case NorthWest:
+                i -= j % 2 == 1 ? 0 : 1;
+                j -= 1;
+                if (i >= 0 && j >= 0) {
+                    return pattern[i][j];
+                }
+                break;
+            case NorthEast:
+                i += j % 2 == 1 ? 1 : 0;
+                j -= 1;
+                if (i < NUMBER_TILES && j > 0) {
+                    return pattern[i][j];
+                }
+                break;
+            case SouthWest:
+                i -= j % 2 == 0 ? 1 : 0;
+                j += 1;
+                if (i > 0 && j < NUMBER_TILES) {
+                    return pattern[i][j];
+                }
+                break;
+            case SouthEast:
+                i += j % 2 == 1 ? 1 : 0;
+                j += 1;
+                if (i < NUMBER_TILES && j < NUMBER_TILES) {
+                    return pattern[i][j];
+                }
+                break;
+        }
+        return false;
     }
 
     /**

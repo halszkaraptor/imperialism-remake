@@ -16,16 +16,16 @@
  */
 package org.iremake.ctt;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.tools.ui.utils.GraphicsUtils;
+import org.tools.utils.Pair;
 
 /**
  *
@@ -45,7 +45,6 @@ public class EnhancedTile {
         }
     }
     private Map<TilesTransition, Part> library = new HashMap<>();
-    private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     /**
      *
@@ -62,90 +61,69 @@ public class EnhancedTile {
 
         Rectangle area;
         BufferedImage in, out;
+        int[] xi, yi;
 
         // NorthWest (upper, left quarter)
         area = new Rectangle(0, 0, half.width, half.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        Graphics2D g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, 0, half.width - 1}, new int[]{1, half.height, half.height}, 3);
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, 0, half.width - 1}, new int[]{1, half.height, half.height}, 3);
+        xi = new int[]{0, 0, half.width - 1};
+        yi = new int[]{1, half.height, half.height};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.NorthWest, new Part(0, 0, in, out));
 
         // NorthEast (upper, right quarter)
         area = new Rectangle(half.width, 0, half.width, half.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{half.width, half.width, 1}, new int[]{1, half.height, half.height}, 3);
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{half.width, half.width, 1}, new int[]{1, half.height, half.height}, 3);
+        xi = new int[]{half.width, half.width, 1};
+        yi = new int[]{1, half.height, half.height};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.NorthEast, new Part(half.width, 0, in, out));
 
         // East (right half)
         area = new Rectangle(half.width, 0, half.width, size.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, half.width, 0, half.width, 0}, new int[]{0, 0, half.height, size.height, size.height}, 5);        
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, half.width, 0, half.width, 0}, new int[]{0, 0, half.height, size.height, size.height}, 5);                
+        xi = new int[]{0, half.width, 0, half.width, 0};
+        yi = new int[]{0, 0, half.height, size.height, size.height};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.East, new Part(half.width, 0, in, out));
 
         // SouthEast (lower, right quarter)
         area = new Rectangle(half.width, half.height, half.width, half.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{1, half.width, half.width}, new int[]{0, 0, half.height - 1}, 3);        
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{1, half.width, half.width}, new int[]{0, 0, half.height - 1}, 3);                
+        xi = new int[]{1, half.width, half.width};
+        yi = new int[]{0, 0, half.height - 1};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.SouthEast, new Part(half.width, half.height, in, out));
 
         // SouthWest (lower, left quarter)
         area = new Rectangle(0, half.height, half.width, half.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, half.width - 1, 0}, new int[]{0, 0, half.height - 1}, 3);                
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{0, half.width - 1, 0}, new int[]{0, 0, half.height - 1}, 3);                        
+        xi = new int[]{0, half.width - 1, 0};
+        yi = new int[]{0, 0, half.height - 1};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.SouthWest, new Part(0, half.height, in, out));
 
         // West (left half)
         area = new Rectangle(0, 0, half.width, size.height);
-        in = GraphicsUtils.subBufferedImage(inner, area);
-        g2d = in.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{half.width, 0, half.width, 0, half.width}, new int[]{0, 0, half.height, size.height, size.height}, 5);                
-        out = GraphicsUtils.subBufferedImage(outer, area);
-        g2d = out.createGraphics();
-        g2d.setColor(TRANSPARENT);
-        g2d.setComposite(AlphaComposite.Src);
-        g2d.fillPolygon(new int[]{half.width, 0, half.width, 0, half.width}, new int[]{0, 0, half.height, size.height, size.height}, 5);                        
+        xi = new int[]{half.width, 0, half.width, 0, half.width};
+        yi = new int[]{0, 0, half.height, size.height, size.height};
+        in = cutout(inner, area, xi, yi);
+        out = cutout(outer, area, xi, yi);
         library.put(TilesTransition.West, new Part(0, 0, in, out));
+    }
+    
+    /**
+     * 
+     * @param original
+     * @param area
+     * @param xi
+     * @param yi
+     * @return 
+     */
+    private BufferedImage cutout(Image original, Rectangle area, int[] xi, int[] yi) {
+        BufferedImage result = GraphicsUtils.subBufferedImage(original, area);
+        GraphicsUtils.transparentFillPolygon(result, xi, yi);
+        return result;
     }
 
     /**
@@ -164,9 +142,9 @@ public class EnhancedTile {
         }
     }
 
-    public void paintMany(Graphics2D g2d, int x0, int y0, Map<TilesTransition, Boolean> set) {
-        for (TilesTransition transition : set.keySet()) {
-            paint(g2d, x0, y0, transition, set.get(transition));
+    public void paintMany(Graphics2D g2d, int x0, int y0, List<Pair<TilesTransition, Boolean>> list) {
+        for (Pair<TilesTransition, Boolean> item : list) {
+            paint(g2d, x0, y0, item.getA(), item.getB());
         }
     }
 }

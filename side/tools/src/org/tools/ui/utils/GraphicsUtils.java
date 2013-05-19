@@ -16,6 +16,7 @@
  */
 package org.tools.ui.utils;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -408,5 +409,21 @@ public class GraphicsUtils {
         g2d.drawImage(original, -area.x, -area.y, null);
         
         return cutout;
+    }
+    
+    /**
+     * 
+     * @param image
+     * @param xi
+     * @param yi 
+     */
+    public static void transparentFillPolygon(BufferedImage image, int[] xi, int[] yi) {
+        if (xi == null || yi == null || xi.length != yi.length) {
+            // TODO throw runtime exception
+        }
+        Graphics2D g2d = image.createGraphics();
+        g2d.setColor(TRANSPARENT);
+        g2d.setComposite(AlphaComposite.Src);
+        g2d.fillPolygon(xi, yi, xi.length);
     }
 }

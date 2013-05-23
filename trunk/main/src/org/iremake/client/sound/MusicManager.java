@@ -50,6 +50,11 @@ public class MusicManager {
         // get a line and create the jukebox
         if (SoundSystem.hasActiveMixer()) {
             SourceDataLine line = SoundSystem.getLine();
+            // sometimes you have a mixer, but don't get a line, disable the mixer in these cases
+            if (line == null) {
+                SoundSystem.clearMixer();
+                return;
+            }
             StreamPlayer player = StreamPlayer.create(line, "Music");
             jukebox = JukeBox.create(player);
             jukebox.setAutoRewind(true);

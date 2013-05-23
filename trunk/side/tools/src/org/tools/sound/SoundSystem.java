@@ -63,7 +63,7 @@ public class SoundSystem {
      * Gets a new line from the active mixer if there is one. It is returned
      * open.
      *
-     * @return A new SourceDataLine
+     * @return A new SourceDataLine or null if none is available
      */
     public static SourceDataLine getLine() {
         if (activeMixer != null) {

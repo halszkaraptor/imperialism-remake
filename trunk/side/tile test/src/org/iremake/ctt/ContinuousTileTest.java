@@ -17,12 +17,15 @@
 package org.iremake.ctt;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -36,13 +39,17 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.text.JTextComponent;
 import net.miginfocom.swing.MigLayout;
 import org.tools.ui.HyperlinkLabel;
 import org.tools.ui.utils.GraphicsUtils;
@@ -74,6 +81,24 @@ public class ContinuousTileTest {
     private ActionListener baseAction;
     private ActionListener innerAction;
     private ActionListener outerAction;
+    private boolean oldMode;
+    private static JFileChooser fileChooser;
+
+    {
+        fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory() || f.getName().endsWith(".png") || f.getName().endsWith(".bmp");
+            }
+
+            @Override
+            public String getDescription() {
+                return "Image files (*.png, *.bmp)";
+            }
+        });
+    }
 
     /**
      *
@@ -102,12 +127,14 @@ public class ContinuousTileTest {
         // default is random pattern
         randomPattern();
 
-        baseTerrain.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Plains.bmp");
-        baseAction.actionPerformed(null);
-        innerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Forest.bmp");
-        innerAction.actionPerformed(null);
-        outerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\Hills.bmp");
-        outerAction.actionPerformed(null);
+        /*
+         baseTerrain.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\continuous tiles\\plains.base.bmp");
+         baseAction.actionPerformed(null);
+         innerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\continuous tiles\\forest.inner.png");
+         innerAction.actionPerformed(null);
+         outerTile.setText("C:\\Users\\Jan\\Dropbox\\remake\\graphics\\Veneteaou\\continuous tiles\\forest.outer.png");
+         outerAction.actionPerformed(null);
+         */
     }
 
     /**
@@ -206,6 +233,37 @@ public class ContinuousTileTest {
 
     /**
      *
+     * @param parent
+     * @param component
+     */
+    private static void selectFile(Component parent, JTextComponent component) {
+        if (fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            component.setText(f.getPath());
+        }
+    }
+
+    /**
+     *
+     * @param parent
+     * @param tile
+     * @param icon
+     * @param component
+     */
+    private static Image importGraphics(Component parent, JLabel icon, JTextComponent component) {
+        Image tile = null;
+        try {
+            tile = importGraphics(component.getText());
+            icon.setIcon(new ImageIcon(tile));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(parent, "Cannot load graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
+            icon.setIcon(null);
+        }
+        return tile;
+    }
+
+    /**
+     *
      * @return
      */
     private JComponent makeTileSelectionPanel() {
@@ -217,17 +275,11 @@ public class ContinuousTileTest {
         baseTerrain.setEditable(false);
         JButton selectBaseTerrain = new JButton("Select");
         selectBaseTerrain.setToolTipText("Select image file for base terrain.");
-        selectBaseTerrain.addActionListener(new FileSelectListener(baseTerrain, frame));
         baseAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    baseGraphics = importGraphics(baseTerrain.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load base terrain graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    baseGraphics = null;
-                }
-                basePreview.setIcon(new ImageIcon(baseGraphics));
+                ContinuousTileTest.selectFile(frame, baseTerrain);
+                baseGraphics = ContinuousTileTest.importGraphics(frame, basePreview, baseTerrain);
                 viewPanel.repaint();
             }
         };
@@ -240,18 +292,12 @@ public class ContinuousTileTest {
         innerTile = new JTextField();
         innerTile.setEditable(false);
         JButton selectInnerTile = new JButton("Select");
-        selectInnerTile.setToolTipText("Select inner image file for terrain");
-        selectInnerTile.addActionListener(new FileSelectListener(innerTile, frame));
+        selectInnerTile.setToolTipText("Select inner (continuous) image file for terrain");
         innerAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    innerGraphics = importGraphics(innerTile.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load inner tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    innerGraphics = null;
-                }
-                innerPreview.setIcon(new ImageIcon(innerGraphics));
+                ContinuousTileTest.selectFile(frame, innerTile);
+                innerGraphics = ContinuousTileTest.importGraphics(frame, innerPreview, innerTile);
                 viewPanel.repaint();
             }
         };
@@ -259,24 +305,18 @@ public class ContinuousTileTest {
 
         // innerPreview = new JLabel("inner", JLabel.CENTER);
         innerPreview = new JLabel();
-        innerPreview.setToolTipText("Inner version of terrain tile.");
+        innerPreview.setToolTipText("Inner (continuous) version of terrain tile.");
         innerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
         outerTile = new JTextField();
         outerTile.setEditable(false);
         JButton selectOuterTile = new JButton("Select");
-        selectOuterTile.setToolTipText("Select outer image file for terrain.");
-        selectOuterTile.addActionListener(new FileSelectListener(outerTile, frame));
+        selectOuterTile.setToolTipText("Select outer (edge) image file for terrain.");
         outerAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    outerGraphics = importGraphics(outerTile.getText());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(frame, "Cannot load outer tile graphics file.", "Error", JOptionPane.ERROR_MESSAGE);
-                    outerGraphics = null;
-                }
-                outerPreview.setIcon(new ImageIcon(outerGraphics));
+                ContinuousTileTest.selectFile(frame, outerTile);
+                outerGraphics = ContinuousTileTest.importGraphics(frame, outerPreview, outerTile);
                 viewPanel.repaint();
             }
         };
@@ -284,18 +324,37 @@ public class ContinuousTileTest {
 
         // outerPreview = new JLabel("outer", JLabel.CENTER);
         outerPreview = new JLabel();
-        outerPreview.setToolTipText("Outer version of terrain tile.");
+        outerPreview.setToolTipText("Outer (edge) version of terrain tile.");
         outerPreview.setBorder(BorderFactory.createLineBorder(Color.black));
 
-        JButton update = new JButton("Update");
-        update.setToolTipText("Read all files again and update view.");
+        // reload button
+        JButton update = new JButton("Reload images");
+        update.setToolTipText("Reaload all image files again and update view.");
         update.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                baseAction.actionPerformed(null);
-                innerAction.actionPerformed(null);
-                outerAction.actionPerformed(null);
+                baseGraphics = ContinuousTileTest.importGraphics(frame, basePreview, baseTerrain);
+                innerGraphics = ContinuousTileTest.importGraphics(frame, innerPreview, innerTile);
+                outerGraphics = ContinuousTileTest.importGraphics(frame, outerPreview, outerTile);
                 viewPanel.repaint();
+            }
+        });
+        final JToggleButton oldview = new JToggleButton("Old view");
+        oldview.setToolTipText("Toggle old/new continuous mode.");
+        oldMode = false;
+        oldview.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent itemEvent) {
+                int state = itemEvent.getStateChange();
+                if (state == ItemEvent.SELECTED) {
+                    oldview.setText("Continuous view");
+                    oldMode = true;
+                    viewPanel.repaint();
+                } else {
+                    oldview.setText("Old view");
+                    oldMode = false;
+                    viewPanel.repaint();
+                }
             }
         });
 
@@ -313,10 +372,11 @@ public class ContinuousTileTest {
         panel.add(outerTile, "wmin 300");
         panel.add(selectOuterTile);
 
-        panel.add(basePreview, String.format("spanx 3, split 4, alignx leading, w %d!, h %d!", TILE_SIZE, TILE_SIZE));
+        panel.add(basePreview, String.format("spanx 3, split 5, alignx leading, w %d!, h %d!", TILE_SIZE, TILE_SIZE));
         panel.add(innerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
         panel.add(outerPreview, String.format("w %d!, h %d!", TILE_SIZE, TILE_SIZE));
         panel.add(update, "aligny top");
+        panel.add(oldview, "aligny top");
 
         return panel;
     }
@@ -353,7 +413,7 @@ public class ContinuousTileTest {
                         } else {
                             List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
                             for (TilesTransition transition : TilesTransition.values()) {
-                                list.add(new Pair<TilesTransition, Boolean>(transition, !isTerrain(i, j, transition)));
+                                list.add(new Pair<TilesTransition, Boolean>(transition, !isTerrain(i, j, transition) || oldMode));
                             }
                             tile.paintMany(g2d, x, y, list);
                         }
@@ -382,45 +442,60 @@ public class ContinuousTileTest {
     private boolean isTerrain(int i, int j, TilesTransition transition) {
         switch (transition) {
             case East:
-                if (i < NUMBER_TILES - 1) {
-                    return pattern[i + 1][j];
+                if (i == NUMBER_TILES - 1) {
+                    return false;
                 }
+                i++;
                 break;
+
             case West:
-                if (i > 0) {
-                    return pattern[i - 1][j];
+                if (i == 0) {
+                    return false;
                 }
+                i--;
                 break;
+
             case NorthWest:
-                i -= j % 2 == 1 ? 0 : 1;
-                j -= 1;
-                if (i >= 0 && j >= 0) {
-                    return pattern[i][j];
+                if (j == 0 || (i == 0 && j % 2 == 0)) {
+                    return false;
                 }
+                if (j % 2 == 0) {
+                    i--;
+                }
+                j--;
                 break;
+
             case NorthEast:
-                i += j % 2 == 1 ? 1 : 0;
-                j -= 1;
-                if (i < NUMBER_TILES && j > 0) {
-                    return pattern[i][j];
+                if (j == 0 || (i == NUMBER_TILES - 1 && j % 2 == 1)) {
+                    return false;
                 }
+                if (j % 2 == 1) {
+                    i++;
+                }
+                j--;
                 break;
+
             case SouthWest:
-                i -= j % 2 == 0 ? 1 : 0;
-                j += 1;
-                if (i > 0 && j < NUMBER_TILES) {
-                    return pattern[i][j];
+                if (j == NUMBER_TILES - 1 || (i == 0 && j % 2 == 0)) {
+                    return false;
                 }
+                if (j % 2 == 0) {
+                    i--;
+                }
+                j++;
                 break;
+
             case SouthEast:
-                i += j % 2 == 1 ? 1 : 0;
-                j += 1;
-                if (i < NUMBER_TILES && j < NUMBER_TILES) {
-                    return pattern[i][j];
+                if (j == NUMBER_TILES - 1 || (i == NUMBER_TILES - 1 && j % 2 == 1)) {
+                    return false;
                 }
+                if (j % 2 == 1) {
+                    i++;
+                }
+                j++;
                 break;
         }
-        return false;
+        return pattern[i][j];
     }
 
     /**

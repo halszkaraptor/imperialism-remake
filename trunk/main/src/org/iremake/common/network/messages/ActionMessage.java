@@ -19,12 +19,24 @@ package org.iremake.common.network.messages;
 /**
  * A Message solely consisting of an enum, indicating a certain action.
  */
-public enum ActionMessage implements Message {
+public class ActionMessage extends Message {
 
-    LOBBY_REGISTER, LOBBY_UNREGISTER;
+    private ActionType action;
+
+    private ActionMessage() {
+    }
+
+    public ActionMessage(ActionType action, Channel channel) {
+        super(channel);
+        this.action = action;
+    }
+
+    public ActionType getAction() {
+        return action;
+    }
 
     @Override
     public String toString() {
-        return String.format("ActionMessage [%s]", name());
+        return String.format("ActionMessage [%s, %s]", action, getChannel());
     }
 }

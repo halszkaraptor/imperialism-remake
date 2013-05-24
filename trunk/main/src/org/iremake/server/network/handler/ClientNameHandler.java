@@ -18,6 +18,7 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -44,7 +45,7 @@ public class ClientNameHandler implements ServerHandler {
             }
         }
         // otherwise disconnect with error message
-        context.disconnect(TextMessageType.Error.create("Expected client name."));
+        context.disconnect(new TextMessage(TextMessageType.Error, "Expected client name.", Channel.ERROR));
     }
 
     @Override

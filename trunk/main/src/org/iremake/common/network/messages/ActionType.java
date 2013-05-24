@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,21 +17,14 @@
 package org.iremake.common.network.messages;
 
 /**
- * Marker interface for Objects being sent over the network by the Kryonet
- * library.
+ *
  */
-public abstract class Message {
+public enum ActionType {
 
-    private Channel channel;
+    CHAT_REGISTER, CHAT_UNREGISTER;
 
-    protected Message() {
-    }
-
-    public Message(Channel channel) {
-        this.channel = channel;
-    }
-
-    public Channel getChannel() {
-        return channel;
+    @Override
+    public String toString() {
+        return String.format("Type : %s", name());
     }
 }

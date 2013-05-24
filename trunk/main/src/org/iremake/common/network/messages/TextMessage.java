@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 /**
  * A message consisting of some text and a type (given by an enum).
  */
-public class TextMessage implements Message {
+public class TextMessage extends Message {
+
+    private static final Logger LOG = Logger.getLogger(TextMessage.class.getName());
 
     private String text;
     private TextMessageType type;
@@ -34,7 +36,8 @@ public class TextMessage implements Message {
      * @param type
      * @param text
      */
-    public TextMessage(TextMessageType type, String text) {
+    public TextMessage(TextMessageType type, String text, Channel channel) {
+        super(channel);
         this.type = type;
         this.text = text;
     }
@@ -57,7 +60,6 @@ public class TextMessage implements Message {
 
     @Override
     public String toString() {
-        return String.format("TextMessage [%s, %s]", type.name(), text);
+        return String.format("TextMessage [%s, Text : %s, %s]", type, text, getChannel());
     }
-    private static final Logger LOG = Logger.getLogger(TextMessage.class.getName());
 }

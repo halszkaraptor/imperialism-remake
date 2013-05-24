@@ -19,6 +19,7 @@ package org.iremake.server.network.handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
+import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.TextMessageType;
@@ -44,9 +45,9 @@ public class VerifyVersionHandler implements ServerHandler {
             }
         }
         // disconnect with ErrorMessage
-        context.disconnect(TextMessageType.Error.create(String.format(
-                "Did not receive version message or wrong version. Was waiting for version. My version is %s",
-                Option.General_Version.get())));
+        context.disconnect(new TextMessage(TextMessageType.Error,
+                String.format("Did not receive version message or wrong version. Was waiting for version. My version is %s", Option.General_Version.get()),
+                Channel.ERROR));
     }
 
     @Override

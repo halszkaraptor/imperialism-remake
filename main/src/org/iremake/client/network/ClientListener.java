@@ -34,24 +34,24 @@ import org.iremake.common.network.messages.Message;
 public class ClientListener extends Listener {
 
     private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
-    private final ClientContext context;
+    private final ClientManager manager;
     private ExecutorService threadPool;
 
     /**
      * @param context Context to store.
      */
-    public ClientListener(ClientContext context) {
-        this.context = context;
+    public ClientListener(ClientManager manager) {
+        this.manager = manager;
     }
 
     /**
      * We connected to the server.
      *
-     * @param c Can be ignored, we already know the connection - it's stored in
-     * the context.
+     * @param connection Can be ignored, we already know the connection from the
+     * manager.
      */
     @Override
-    public void connected(Connection c) {
+    public void connected(Connection connection) {
         LOG.log(Level.FINE, "Client has connected.");
         // exactly one thread, so processing will be one by one
         threadPool = Executors.newFixedThreadPool(1);
@@ -61,11 +61,11 @@ public class ClientListener extends Listener {
      * We disconnected from the server. Either the server disconnected us or we
      * disconnected from him.
      *
-     * @param c Can be ignored, is also stored in the context.
+     * @param connection Can be ignored, is also stored in the context.
      */
     @Override
-    public void disconnected(Connection c) {
-        LOG.log(Level.FINE, "Connection {0} disconnected.", c.getID());
+    public void disconnected(Connection connection) {
+        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
         // TODO either we or somebody else disconnected, tell somebody about it
         threadPool.shutdown();
     }
@@ -75,22 +75,22 @@ public class ClientListener extends Listener {
      * Message, then we schedule processing of this message in the
      * ExecutorService.
      *
-     * @param c Used connection
+     * @param connection Used connection
      * @param object Incoming object (message)
      */
     @Override
-    public void received(Connection c, final Object object) {
+    public void received(Connection connection, final Object object) {
         // want only type Message, otherwise shut down
-        if (c.isConnected() && object instanceof Message) {
+        if (connection.isConnected() && object instanceof Message) {
             // schedule for processing
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    context.process((Message) object);
+                    manager.process((Message) object);
                 }
             });
         } else {
-            c.close();
+            connection.close();
         }
     }
 }

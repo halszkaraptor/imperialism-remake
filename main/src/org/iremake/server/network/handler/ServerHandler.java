@@ -17,7 +17,7 @@
 package org.iremake.server.network.handler;
 
 import org.iremake.common.network.messages.Message;
-import org.iremake.server.network.ServerNodeContext;
+import org.iremake.server.network.ServerContext;
 
 /**
  *
@@ -29,11 +29,5 @@ public interface ServerHandler {
      * @param message
      * @param context
      */
-    public void process(Message message, ServerNodeContext context);
-
-    /**
-     *
-     * @return
-     */
-    public String name();
+    public boolean process(Message message, ServerContext context);
 }

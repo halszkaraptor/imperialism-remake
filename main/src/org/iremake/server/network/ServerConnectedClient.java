@@ -29,8 +29,8 @@ import org.iremake.common.network.messages.TextMessage;
  */
 public class ServerConnectedClient {
 
+    private static final Logger LOG = Logger.getLogger(ServerConnectedClient.class.getName());    
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
-    private final ServerNodeContext root;
     private final Connection connection;
     private String name;
 
@@ -39,8 +39,7 @@ public class ServerConnectedClient {
      * @param root
      * @param connection
      */
-    public ServerConnectedClient(ServerNodeContext root, Connection connection) {
-        this.root = root;
+    public ServerConnectedClient(Connection connection) {
         this.connection = connection;
 
         InetSocketAddress address = connection.getRemoteAddressTCP();
@@ -55,7 +54,7 @@ public class ServerConnectedClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                root.process(message);
+                // process(message);
             }
         });
     }
@@ -101,14 +100,4 @@ public class ServerConnectedClient {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     *
-     * @param domain
-     * @return
-     */
-    public boolean hasHandler(String domain) {
-        return root.hasHandler(domain);
-    }
-    private static final Logger LOG = Logger.getLogger(ServerConnectedClient.class.getName());
 }

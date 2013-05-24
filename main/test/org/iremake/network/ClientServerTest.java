@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientManager;
-import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.MessageType;
@@ -53,11 +52,11 @@ public class ClientServerTest {
         Option.load();
 
         // start server
-        final ServerManager server = new ServerManager();
+        final ServerManager server = ServerManager.NETWORK;
         server.start();
 
         // start and connect client
-        final ClientManager client = new ClientManager();
+        final ClientManager client = ClientManager.NETWORK;
         client.start("localhost");
 
         client.send(new TextMessage("chat message", MessageType.Chat, Channel.LOBBY));

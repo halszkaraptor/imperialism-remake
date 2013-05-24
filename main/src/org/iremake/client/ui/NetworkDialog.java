@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
-import org.iremake.common.BigBag;
+import org.iremake.client.network.ClientManager;
 import org.tools.ui.ButtonBar;
 
 /**
@@ -74,8 +74,8 @@ public class NetworkDialog extends UIDialog {
         serverStartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BigBag.clientManager.start(serverAddress.getText());
-                clientStatus.setText(BigBag.clientManager.getStatus());
+                ClientManager.NETWORK.start(serverAddress.getText());
+                clientStatus.setText(ClientManager.NETWORK.getStatus());
             }
         });
 
@@ -84,8 +84,8 @@ public class NetworkDialog extends UIDialog {
         serverStopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BigBag.clientManager.stop();
-                clientStatus.setText(BigBag.clientManager.getStatus());
+                ClientManager.NETWORK.stop();
+                clientStatus.setText(ClientManager.NETWORK.getStatus());
             }
         });
 
@@ -107,7 +107,7 @@ public class NetworkDialog extends UIDialog {
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
 
         clientStatus = new JLabel();
-        clientStatus.setText(BigBag.clientManager.getStatus());
+        clientStatus.setText(ClientManager.NETWORK.getStatus());
 
         JTextField networkAlias = new JTextField(Option.Client_Alias.get());
 

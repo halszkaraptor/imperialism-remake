@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.MessageType;
-import org.iremake.server.network.ServerNodeContext;
+import org.iremake.server.network.ServerContext;
 
 /**
  *
@@ -31,21 +31,15 @@ public class ErrorHandler implements ServerHandler {
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
     @Override
-    public void process(Message message, ServerNodeContext node) {
+    public boolean process(Message message, ServerContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (MessageType.Error.equals(msg.getType())) {
                 LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-                node.disconnect(null);
-                return;
+                context.disconnect(null);
+                return true;
             }
         }
-        // continue broadcasting it
-        node.propagate(message);
-    }
-
-    @Override
-    public String name() {
-        return "handler.error";
+        return false;
     }
 }

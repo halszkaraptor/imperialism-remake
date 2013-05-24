@@ -34,6 +34,14 @@ public class ServerManager {
     private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
     /* port on which we listen to clients */
     private Server server;
+    
+    public static final ServerManager NETWORK = new ServerManager();
+
+    /**
+     * Avoid instantiation
+     */
+    private ServerManager() {
+    }
 
     /**
      * Starts the server.

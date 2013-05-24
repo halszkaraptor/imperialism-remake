@@ -36,6 +36,8 @@ import java.util.logging.Logger;
  */
 public class KryonetSimpleSendReceiveTest {
 
+    private static final Logger LOG = Logger.getLogger(KryonetSimpleSendReceiveTest.class.getName());
+
     /**
      * @param args the command line arguments
      * @throws IOException
@@ -43,25 +45,24 @@ public class KryonetSimpleSendReceiveTest {
     public static void main(String[] args) throws IOException {
         final Server server = new Server();
         server.start();
-
         server.bind(12345);
 
         final Client client = new Client();
         client.start();
-
         client.connect(5000, "localhost", 12345);
 
         client.addListener(new Listener() {
             @Override
             public void received(Connection connection, Object object) {
-                System.out.println("Received message " + object.toString() + " in thread " + Thread.currentThread().toString());
+                LOG.log(Level.INFO, "Received message {0} in thread {1}", new Object[]{object.toString(), Thread.currentThread().toString()});
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(KryonetSimpleSendReceiveTest.class.getName()).log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, null, ex);
                 }
             }
         });
+
         final String text = "test";
 
         final Timer timer = new Timer("timer 1");
@@ -76,12 +77,12 @@ public class KryonetSimpleSendReceiveTest {
         timer2.schedule(new TimerTask() {
             @Override
             public void run() {
+                LOG.log(Level.INFO, "cancel everything");
                 timer.cancel();
                 client.stop();
                 server.stop();
                 timer2.cancel();
             }
-        }, 5000);
+        }, 2000);
     }
-    private static final Logger LOG = Logger.getLogger(KryonetSimpleSendReceiveTest.class.getName());
 }

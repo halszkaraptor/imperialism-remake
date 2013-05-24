@@ -23,13 +23,8 @@ public enum TextMessageType {
 
     Version, Error, ClientName, Chat;
 
-    /**
-     * Directly creates a TextMessage of that type.
-     *
-     * @param text the text
-     * @return the TextMessage
-     */
-    public TextMessage create(String text) {
-        return new TextMessage(this, text);
+    @Override
+    public String toString() {
+        return String.format("Type : %s", name());
     }
 }

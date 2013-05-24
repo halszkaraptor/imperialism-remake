@@ -33,13 +33,12 @@ public class KryoRegistration {
      * @param kryo the kryo object
      */
     public static void register(Kryo kryo) {
+        kryo.register(Channel.class);
+
         kryo.register(ActionMessage.class);
 
         kryo.register(TextMessage.class);
         kryo.register(TextMessageType.class);
-
-        kryo.register(NumberMessage.class);
-        kryo.register(NumberMessageType.class);
     }
 
     private KryoRegistration() {

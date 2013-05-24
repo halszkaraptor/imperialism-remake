@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,15 @@
 package org.iremake.common.network.messages;
 
 /**
- * A type for the numbers in the NumberMessage. We use an enum.
+ *
  */
-public enum NumberMessageType {
+public enum Channel {
 
-    Unused;
+    ERROR, LOGIN, LOBBY;
 
-    /**
-     * Directly create a NumberMessage of a specific type.
-     *
-     * @param number the number to store.
-     * @return the NumberMessage
-     */
-    public NumberMessage create(int number) {
-        return new NumberMessage(this, number);
+    @Override
+    public String toString() {
+        return String.format("Channel : %s", name());
     }
+
 }

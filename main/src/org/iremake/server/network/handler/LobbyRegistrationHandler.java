@@ -30,6 +30,7 @@ public class LobbyRegistrationHandler implements ServerHandler {
 
     @Override
     public void process(Message message, ServerNodeContext context) {
+        /*
         if (ActionMessage.LOBBY_REGISTER.equals(message)) {
             // Todo: do registration
             return;
@@ -37,7 +38,7 @@ public class LobbyRegistrationHandler implements ServerHandler {
         if (ActionMessage.LOBBY_UNREGISTER.equals(message)) {
             // TODo: do unregistration
             return;
-        }
+        }*/
         // just propagate
         context.propagate(message);
     }

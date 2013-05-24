@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
+import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
@@ -73,8 +74,8 @@ public class ClientManager implements ClientContext {
 
         root = new ClientNodeContext(new ErrorHandler(), this);
 
-        send(TextMessageType.Version.create(Option.General_Version.get()));
-        send(TextMessageType.ClientName.create("client-name"));
+        send(new TextMessage(TextMessageType.Version, Option.General_Version.get(), Channel.LOGIN));
+        send(new TextMessage(TextMessageType.ClientName, "client-name", Channel.LOGIN));
 
         return true;
     }

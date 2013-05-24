@@ -24,10 +24,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientManager;
-import org.iremake.common.network.messages.ActionMessage;
+import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.network.ServerManager;
 
 /**
@@ -60,7 +60,7 @@ public class ClientServerTest {
         final ClientManager client = new ClientManager();
         client.start("localhost");
 
-        client.send(new TextMessage(TextMessageType.Chat, "chat message", Channel.LOBBY));
+        client.send(new TextMessage("chat message", MessageType.Chat, Channel.LOBBY));
 
         // in 5s stop everything
         final Timer timer = new Timer();

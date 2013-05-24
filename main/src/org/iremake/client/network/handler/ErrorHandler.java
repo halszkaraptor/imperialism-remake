@@ -20,8 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.network.ClientNodeContext;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
 
 /**
  * This is the first handler in every processing tree. It filters out error
@@ -35,7 +35,7 @@ public class ErrorHandler implements ClientHandler {
     public void process(Message message, ClientNodeContext node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Error.equals(msg.getType())) {
+            if (MessageType.Error.equals(msg.getType())) {
                 LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
                 node.disconnect(null);
                 return;

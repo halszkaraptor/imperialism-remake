@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.network.handler.ClientNameHandler;
 import org.iremake.server.network.handler.ErrorHandler;
 import org.iremake.server.network.handler.VerifyVersionHandler;
@@ -42,7 +42,7 @@ public class ServerHandler extends Listener implements ServerContext {
     @Override
     public void connected(Connection connection) {
         if (map.size() >= MAX_CLIENTS) {
-            connection.sendTCP(new TextMessage(TextMessageType.Error, String.format("Too many connected clients. Max = %d", MAX_CLIENTS), Channel.ERROR));
+            connection.sendTCP(new TextMessage(String.format("Too many connected clients. Max = %d", MAX_CLIENTS), MessageType.Error, Channel.ERROR));
             connection.close();
         } else {
             // initial handler chain for every connected client

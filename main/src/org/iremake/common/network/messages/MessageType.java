@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,14 @@
 package org.iremake.common.network.messages;
 
 /**
- * A Message solely consisting of an enum, indicating a certain action.
+ *
  */
-public class ActionMessage extends Message {
+public enum MessageType {
 
-    private ActionType action;
-
-    private ActionMessage() {
-    }
-
-    public ActionMessage(ActionType action, Channel channel) {
-        super(channel);
-        this.action = action;
-    }
-
-    public ActionType getAction() {
-        return action;
-    }
+    Version, Error, ClientName, Chat;
 
     @Override
     public String toString() {
-        return String.format("ActionMessage [%s, %s]", action, getChannel());
+        return String.format("Type : %s", name());
     }
 }

@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.network.ServerNodeContext;
 
 /**
@@ -34,7 +34,7 @@ public class ErrorHandler implements ServerHandler {
     public void process(Message message, ServerNodeContext node) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Error.equals(msg.getType())) {
+            if (MessageType.Error.equals(msg.getType())) {
                 LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
                 node.disconnect(null);
                 return;

@@ -35,10 +35,12 @@ public class KryoRegistration {
     public static void register(Kryo kryo) {
         kryo.register(Channel.class);
 
-        kryo.register(ActionMessage.class);
+        kryo.register(Message.class);
+
+        kryo.register(MessageType.class);
 
         kryo.register(TextMessage.class);
-        kryo.register(TextMessageType.class);
+
     }
 
     private KryoRegistration() {

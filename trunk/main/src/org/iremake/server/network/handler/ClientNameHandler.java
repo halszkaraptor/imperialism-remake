@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.network.ServerNodeContext;
 
 /**
@@ -35,7 +35,7 @@ public class ClientNameHandler implements ServerHandler {
     public void process(Message message, ServerNodeContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.ClientName.equals(msg.getType())) {
+            if (MessageType.ClientName.equals(msg.getType())) {
                 // context.setName(msg.getText());
                 LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.getName(), msg.getText()});
                 context.remove();
@@ -45,7 +45,7 @@ public class ClientNameHandler implements ServerHandler {
             }
         }
         // otherwise disconnect with error message
-        context.disconnect(new TextMessage(TextMessageType.Error, "Expected client name.", Channel.ERROR));
+        context.disconnect(new TextMessage("Expected client name.", MessageType.Error, Channel.ERROR));
     }
 
     @Override

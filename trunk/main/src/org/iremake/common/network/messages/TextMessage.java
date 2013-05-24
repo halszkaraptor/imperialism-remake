@@ -26,7 +26,6 @@ public class TextMessage extends Message {
     private static final Logger LOG = Logger.getLogger(TextMessage.class.getName());
 
     private String text;
-    private TextMessageType type;
 
     private TextMessage() {
     }
@@ -36,9 +35,8 @@ public class TextMessage extends Message {
      * @param type
      * @param text
      */
-    public TextMessage(TextMessageType type, String text, Channel channel) {
-        super(channel);
-        this.type = type;
+    public TextMessage(String text, MessageType type, Channel channel) {
+        super(type, channel);
         this.text = text;
     }
 
@@ -50,16 +48,8 @@ public class TextMessage extends Message {
         return text;
     }
 
-    /**
-     *
-     * @return
-     */
-    public TextMessageType getType() {
-        return type;
-    }
-
     @Override
     public String toString() {
-        return String.format("TextMessage [%s, Text : %s, %s]", type, text, getChannel());
+        return String.format("TextMessage [Text: %s, %s, %s]", text, getType(), getChannel());
     }
 }

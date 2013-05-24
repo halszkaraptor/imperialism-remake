@@ -27,8 +27,8 @@ import org.iremake.common.Settings;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
 
 /**
  * Fires up network connection for the client.
@@ -74,8 +74,8 @@ public class ClientManager implements ClientContext {
 
         root = new ClientNodeContext(new ErrorHandler(), this);
 
-        send(new TextMessage(TextMessageType.Version, Option.General_Version.get(), Channel.LOGIN));
-        send(new TextMessage(TextMessageType.ClientName, "client-name", Channel.LOGIN));
+        send(new TextMessage(Option.General_Version.get(), MessageType.Version, Channel.LOGIN));
+        send(new TextMessage("client-name", MessageType.ClientName, Channel.LOGIN));
 
         return true;
     }

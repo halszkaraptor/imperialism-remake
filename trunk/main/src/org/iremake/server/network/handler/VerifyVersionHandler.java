@@ -22,7 +22,7 @@ import org.iremake.client.Option;
 import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.TextMessageType;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.network.ServerNodeContext;
 
 /**
@@ -35,7 +35,7 @@ public class VerifyVersionHandler implements ServerHandler {
     public void process(Message message, ServerNodeContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
-            if (TextMessageType.Version.equals(msg.getType())) {
+            if (MessageType.Version.equals(msg.getType())) {
                 if (Option.General_Version.get().equals(msg.getText())) {
                     LOG.log(Level.FINE, "Client {0} transmitted correct version", context.getName());
                     // passed version test, remove yourself from handler list
@@ -45,9 +45,8 @@ public class VerifyVersionHandler implements ServerHandler {
             }
         }
         // disconnect with ErrorMessage
-        context.disconnect(new TextMessage(TextMessageType.Error,
-                String.format("Did not receive version message or wrong version. Was waiting for version. My version is %s", Option.General_Version.get()),
-                Channel.ERROR));
+        context.disconnect(new TextMessage(String.format("Did not receive version message or wrong version. Was waiting for version. My version is %s", Option.General_Version.get()),
+                MessageType.Error, Channel.ERROR));
     }
 
     @Override

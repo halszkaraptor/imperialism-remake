@@ -17,7 +17,7 @@
 package org.iremake.server.network.handler;
 
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.ActionMessage;
+import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.Message;
 import org.iremake.server.network.ServerNodeContext;
 

@@ -26,9 +26,6 @@ import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.MessageType;
-import org.iremake.server.network.handler.ClientNameHandler;
-import org.iremake.server.network.handler.ErrorHandler;
-import org.iremake.server.network.handler.VerifyVersionHandler;
 
 /**
  *
@@ -46,9 +43,7 @@ public class ServerHandler extends Listener implements ServerContext {
             connection.close();
         } else {
             // initial handler chain for every connected client
-            ServerNodeContext root = new ServerNodeContext(new ErrorHandler(), this, connection.getID());
-            root.add(new VerifyVersionHandler()).add(new ClientNameHandler());
-            ServerConnectedClient client = new ServerConnectedClient(root, connection);
+            ServerConnectedClient client = new ServerConnectedClient(connection);
             map.put(connection.getID(), client);
         }
     }
@@ -110,6 +105,26 @@ public class ServerHandler extends Listener implements ServerContext {
     @Override
     public void setName(Integer id, String name) {
         map.get(id).setName(name);
+    }
+
+    @Override
+    public void disconnect(String error) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void send(Message message) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

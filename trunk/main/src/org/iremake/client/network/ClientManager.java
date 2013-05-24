@@ -19,9 +19,14 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
+import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
 import org.iremake.common.network.messages.Channel;
@@ -39,8 +44,15 @@ public class ClientManager implements ClientContext {
     private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
     /* Kryonet client */
-    private Client client;
-    private ClientNodeContext root;
+    private Client kryoClient;
+    /* The only instance */
+    public static final ClientManager NETWORK = new ClientManager();
+
+    /**
+     * Avoid instantiation.
+     */
+    private ClientManager() {
+    }
 
     /**
      * Connects to server.
@@ -50,30 +62,31 @@ public class ClientManager implements ClientContext {
      */
     public boolean start(String host) {
         LOG.log(Level.FINE, "Client connection initiated.");
-        if (client != null) {
+        if (kryoClient != null) {
             return false;
         }
 
-        client = new Client();
+        kryoClient = new Client();
 
-        KryoRegistration.register(client.getKryo());
+        KryoRegistration.register(kryoClient.getKryo());
 
-        client.start();
+        kryoClient.start();
 
         Listener listener = new ClientListener(this);
-        client.addListener(listener);
+        kryoClient.addListener(listener);
 
         try {
-            client.connect(TIMEOUT, host, Settings.NETWORK_PORT);
+            kryoClient.connect(TIMEOUT, host, Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, "Client could not connect.");
             stop();
             return false;
         }
+        
+        registerHandler(Channel.ERROR, new ErrorHandler());
 
-        root = new ClientNodeContext(new ErrorHandler(), this);
-
+        // send version and name
         send(new TextMessage(Option.General_Version.get(), MessageType.Version, Channel.LOGIN));
         send(new TextMessage("client-name", MessageType.ClientName, Channel.LOGIN));
 
@@ -88,9 +101,9 @@ public class ClientManager implements ClientContext {
     // TODO do we need this here?
     @Override
     public void send(Message message) {
-        if (client != null && client.isConnected()) {
+        if (kryoClient != null && kryoClient.isConnected()) {
             LOG.log(Level.FINE, "Send message: {0}", message.toString());
-            client.sendTCP(message);
+            kryoClient.sendTCP(message);
         }
     }
 
@@ -99,11 +112,11 @@ public class ClientManager implements ClientContext {
      */
     public void stop() {
         // TODO what happens to operations being sent
-        if (client != null) {
+        if (kryoClient != null) {
             LOG.log(Level.FINE, "Will stop.");
-            client.close();
-            client.stop();
-            client = null;
+            kryoClient.close();
+            kryoClient.stop();
+            kryoClient = null;
         }
     }
 
@@ -111,8 +124,8 @@ public class ClientManager implements ClientContext {
      * @return A text line telling to whom we are connected
      */
     public String getStatus() {
-        if (client != null) {
-            return String.format("Connected to server at %s.", client.getRemoteAddressTCP().getHostString());
+        if (kryoClient != null) {
+            return String.format("Connected to server at %s.", kryoClient.getRemoteAddressTCP().getHostString());
         } else {
             return "Not connected.";
         }
@@ -122,7 +135,7 @@ public class ClientManager implements ClientContext {
      * @return True if running.
      */
     public boolean isRunning() {
-        return client != null;
+        return kryoClient != null;
     }
 
     /**
@@ -131,22 +144,60 @@ public class ClientManager implements ClientContext {
      * @param error Error message, if null nothing is sent.
      */
     @Override
-    public void disconnect(TextMessage error) {
-        if (client != null) {
+    public void disconnect(String error) {
+        if (kryoClient != null) {
             if (error != null) {
-                send(error);
+                send(new TextMessage(error, MessageType.Error, Channel.ERROR));
             }
-            client.close();
+            kryoClient.close();
+        }
+    }
+    private Map<Channel, List<ClientHandler>> handlerMap = new HashMap<>();
+
+    /**
+     *
+     * @param channel
+     * @param handler
+     */
+    public void registerHandler(Channel channel, ClientHandler handler) {
+        if (!handlerMap.containsKey(channel)) {
+            handlerMap.put(channel, new ArrayList<ClientHandler>());
+        }
+        List<ClientHandler> handlerList = handlerMap.get(channel);
+        if (!handlerList.contains(handler)) {
+            handlerList.add(handler);
         }
     }
 
     /**
-     * Start processing a message. This is for simulating incoming messages.
      *
-     * @param message Message to be processed.
+     * @param channel
+     * @param handler
+     * @return
      */
-    @Override
+    public boolean unregisterHandler(Channel channel, ClientHandler handler) {
+        if (!handlerMap.containsKey(channel)) {
+            return false;
+        }
+        List<ClientHandler> handlerList = handlerMap.get(channel);
+        return handlerList.remove(handler);
+    }
+
+    /**
+     * Sends to all handler in a channel until someone processed it (returns
+     * true).
+     *
+     * @param message
+     */
     public void process(Message message) {
-        root.process(message);
+        Channel channel = message.getChannel();
+        if (handlerMap.containsKey(channel)) {
+            List<ClientHandler> handlerList = handlerMap.get(channel);
+            for (ClientHandler handler : handlerList) {
+                if (handler.process(message, this)) {
+                    break;
+                }
+            }
+        }
     }
 }

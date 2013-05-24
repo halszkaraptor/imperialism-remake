@@ -37,7 +37,6 @@ import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
-import org.iremake.common.BigBag;
 import org.iremake.common.Settings;
 import org.iremake.server.network.ServerManager;
 import org.tools.io.ResourceUtils;
@@ -88,10 +87,6 @@ public class StartClient {
             // music setup
             MusicManager.setup();
 
-            // set some variables in the BigBag
-            BigBag.serverManager = new ServerManager();
-            BigBag.clientManager = new ClientManager();
-
             // fire up start frame
             EventQueue.invokeLater(new Runnable() {
                 @Override
@@ -141,15 +136,15 @@ public class StartClient {
 
         // if client is still running disconnect
 
-        if (BigBag.clientManager.isRunning()) {
+        if (ClientManager.NETWORK.isRunning()) {
             LOG.log(Level.INFO, "Client still running, shut down.");
-            BigBag.clientManager.stop();
+            ClientManager.NETWORK.stop();
         }
 
         // if server is still running shut down
-        if (BigBag.serverManager.isRunning()) {
+        if (ServerManager.NETWORK.isRunning()) {
             LOG.log(Level.INFO, "Server still running, shut down.");
-            BigBag.serverManager.stop();
+            ServerManager.NETWORK.stop();
         }
 
         // save options

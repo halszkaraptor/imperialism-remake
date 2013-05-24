@@ -39,7 +39,6 @@ import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.WindowClosingListener;
-import org.iremake.common.BigBag;
 import org.iremake.server.network.ServerManager;
 import org.tools.sound.SoundSystem;
 import org.tools.ui.PanelWithBackground;
@@ -139,9 +138,8 @@ public class OptionsDialog extends UIDialog {
         JPanel panel = new JPanel();
 
         // server toggle
-        final ServerManager serverManager = BigBag.serverManager;
         final JLabel serverStatus = new JLabel();
-        serverStatus.setText(serverManager.getStatus());
+        serverStatus.setText(ServerManager.NETWORK.getStatus());
 
         final JToggleButton serverToggleButton = new JToggleButton("Start local server");
         serverToggleButton.addItemListener(new ItemListener() {
@@ -149,14 +147,14 @@ public class OptionsDialog extends UIDialog {
             public void itemStateChanged(ItemEvent itemEvent) {
                 int state = itemEvent.getStateChange();
                 if (state == ItemEvent.SELECTED) {
-                    serverManager.start();
+                    ServerManager.NETWORK.start();
                     serverToggleButton.setText("Shutdown local server");
                 } else {
-                    serverManager.stop();
+                    ServerManager.NETWORK.stop();
                     serverToggleButton.setText("Start local server");
                 }
                 // update status
-                serverStatus.setText(serverManager.getStatus());
+                serverStatus.setText(ServerManager.NETWORK.getStatus());
             }
         });
 

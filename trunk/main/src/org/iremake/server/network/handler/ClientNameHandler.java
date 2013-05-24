@@ -18,11 +18,10 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.TextMessage;
 import org.iremake.common.network.messages.MessageType;
-import org.iremake.server.network.ServerNodeContext;
+import org.iremake.server.network.ServerContext;
 
 /**
  * This is a stopper, either you transmit a name or you get kicked out.
@@ -32,24 +31,20 @@ public class ClientNameHandler implements ServerHandler {
     private static final Logger LOG = Logger.getLogger(ClientNameHandler.class.getName());
 
     @Override
-    public void process(Message message, ServerNodeContext context) {
+    public boolean process(Message message, ServerContext context) {
         if (message instanceof TextMessage) {
             TextMessage msg = (TextMessage) message;
             if (MessageType.ClientName.equals(msg.getType())) {
                 // context.setName(msg.getText());
                 LOG.log(Level.FINE, "Client {0} transmitted name: {1}", new Object[]{context.getName(), msg.getText()});
-                context.remove();
+                // context.remove();
                 // tell all others
-                context.broadcast("handler.chat", message);
-                return;
+                // context.broadcast("handler.chat", message);
+                return true;
             }
         }
         // otherwise disconnect with error message
-        context.disconnect(new TextMessage("Expected client name.", MessageType.Error, Channel.ERROR));
-    }
-
-    @Override
-    public String name() {
-        return "handler.registration.name";
+        context.disconnect("Expected client name.");
+        return true;
     }
 }

@@ -16,7 +16,7 @@
  */
 package org.iremake.client.network.handler;
 
-import org.iremake.client.network.ClientNodeContext;
+import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
 
 /**
@@ -35,11 +35,5 @@ public interface ClientHandler {
      * @param message Message to be processed.
      * @param context Context for what we can do.
      */
-    public void process(Message message, ClientNodeContext context);
-
-    /**
-     * @return Unique name identifier of the handler. Might be used for
-     * identifying subgroups of handlers (must then start with identical part).
-     */
-    public String name();
+    public boolean process(Message message, ClientContext context);
 }

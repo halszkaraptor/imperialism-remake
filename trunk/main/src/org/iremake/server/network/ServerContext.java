@@ -17,22 +17,17 @@
 package org.iremake.server.network;
 
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
 
 /**
  *
  */
 public interface ServerContext {
 
-    public void disconnect(Integer id, TextMessage error);
+    public void disconnect(String error);
 
-    public void setName(Integer id, String name);
+    public void setName(String name);
 
-    public String getName(Integer id);
+    public String getName();
 
-    public void send(Integer id, Message message);
-
-    public void broadcast(Message message);
-
-    public void broadcast(String domain, Message message);
+    public void send(Message message);
 }

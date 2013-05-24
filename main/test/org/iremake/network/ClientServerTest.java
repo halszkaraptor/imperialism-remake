@@ -29,9 +29,11 @@ import org.iremake.common.network.messages.TextMessageType;
 import org.iremake.server.network.ServerManager;
 
 /**
- * Small brother of the console, not interactive.
+ * Small brother of the console, not interactive. Tests the network capabilities.
  */
 public class ClientServerTest {
+
+    private static final Logger LOG = Logger.getLogger(ClientServerTest.class.getName());
 
     /**
      * @param args the command line arguments
@@ -71,5 +73,4 @@ public class ClientServerTest {
         }, 5000);
 
     }
-    private static final Logger LOG = Logger.getLogger(ClientServerTest.class.getName());
 }

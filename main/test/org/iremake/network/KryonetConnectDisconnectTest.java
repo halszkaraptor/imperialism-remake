@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  * Gained wisdom: Not only when the client disconnects, but also when the server
- * disconnects a connection the disconnected method of a listener is called.
+ * disconnects a connection, the disconnected method of a listener is called.
  */
 public class KryonetConnectDisconnectTest {
 

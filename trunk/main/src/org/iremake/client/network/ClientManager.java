@@ -30,10 +30,10 @@ import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
 import org.iremake.common.network.messages.Channel;
+import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
+import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.MessageType;
-import org.iremake.common.network.messages.TextMessage;
 
 /**
  * Fires up network connection for the client.
@@ -86,10 +86,9 @@ public class ClientManager implements ClientContext {
         
         registerHandler(Channel.ERROR, new ErrorHandler());
 
-        // send version and name
-        send(new TextMessage(Option.General_Version.get(), MessageType.Version, Channel.LOGIN));
-        send(new TextMessage("client-name", MessageType.ClientName, Channel.LOGIN));
-
+        // send login message
+        send(new LoginMessage(Option.General_Version.get(), "client-name"));
+        
         return true;
     }
 
@@ -147,7 +146,7 @@ public class ClientManager implements ClientContext {
     public void disconnect(String error) {
         if (kryoClient != null) {
             if (error != null) {
-                send(new TextMessage(error, MessageType.Error, Channel.ERROR));
+                send(new ErrorMessage(error));
             }
             kryoClient.close();
         }

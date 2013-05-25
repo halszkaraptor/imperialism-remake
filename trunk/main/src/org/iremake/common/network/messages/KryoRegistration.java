@@ -18,6 +18,10 @@ package org.iremake.common.network.messages;
 
 import com.esotericsoftware.kryo.Kryo;
 import java.util.logging.Logger;
+import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.lobby.LobbyClientEntry;
+import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 
 /**
  * Registration of Message classes to the Kryo serializer. All objects that are
@@ -30,16 +34,23 @@ public class KryoRegistration {
 
     /**
      * Registers all necessary classes for our network communication.
+     *
      * @param kryo the kryo object
      */
     public static void register(Kryo kryo) {
+        // message and channel
         kryo.register(Channel.class);
-
         kryo.register(Message.class);
 
-        kryo.register(MessageType.class);
+        // error and login
+        kryo.register(ErrorMessage.class);
+        kryo.register(LoginMessage.class);
 
-        kryo.register(TextMessage.class);
+        // lobby
+        kryo.register(LobbyClientEntry.class);
+        kryo.register(LobbyChatMessage.class);
+        kryo.register(LobbyServerOverviewMessage.class);
+        kryo.register(LobbyServerUpdateMessage.class);
 
     }
 

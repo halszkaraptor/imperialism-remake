@@ -19,12 +19,24 @@ package org.iremake.common.network.messages;
 /**
  *
  */
-public enum MessageType {
+public class ErrorMessage extends Message {
 
-    Version, Error, ClientName, Chat;
+    private String text;
+
+    private ErrorMessage() {
+    }
+
+    public ErrorMessage(String text) {
+        super(Channel.ERROR);
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     @Override
     public String toString() {
-        return String.format("Type : %s", name());
+        return String.format("ErrorMessage [Text : %s, %s]", text, getChannel());
     }
 }

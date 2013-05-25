@@ -19,9 +19,8 @@ package org.iremake.client.network.handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.network.ClientContext;
+import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.MessageType;
-import org.iremake.common.network.messages.TextMessage;
 
 /**
  * This is the first handler in every processing tree. It filters out error
@@ -33,20 +32,18 @@ public class ErrorHandler implements ClientHandler {
 
     /**
      * Eat all the Error TextMessages.
-     * 
+     *
      * @param message
      * @param context
-     * @return 
+     * @return
      */
     @Override
     public boolean process(Message message, ClientContext context) {
-        if (message instanceof TextMessage) {
-            TextMessage msg = (TextMessage) message;
-            if (MessageType.Error.equals(msg.getType())) {
-                LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-                context.disconnect(null);
-                return true;
-            }
+        if (message instanceof ErrorMessage) {
+            ErrorMessage msg = (ErrorMessage) message;
+            LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
+            context.disconnect(null);
+            return true;
         }
         return false;
     }

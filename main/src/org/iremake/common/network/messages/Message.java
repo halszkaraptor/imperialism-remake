@@ -22,19 +22,13 @@ package org.iremake.common.network.messages;
  */
 public class Message {
 
-    private MessageType type;
     private Channel channel;
 
     protected Message() {
     }
 
-    public Message(MessageType type, Channel channel) {
-        this.type = type;
+    public Message(Channel channel) {
         this.channel = channel;
-    }
-
-    public MessageType getType() {
-        return type;
     }
 
     public Channel getChannel() {
@@ -43,6 +37,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return String.format("Message [%s, %s]", type, channel);
+        return String.format("Message [%s]", channel);
     }
 }

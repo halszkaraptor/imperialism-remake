@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,40 +16,33 @@
  */
 package org.iremake.common.network.messages;
 
-import java.util.logging.Logger;
-
 /**
- * A message consisting of some text and a type (given by an enum).
+ *
  */
-public class TextMessage extends Message {
+public class LoginMessage extends Message {
 
-    private static final Logger LOG = Logger.getLogger(TextMessage.class.getName());
+    private String version;
+    private String clientname;
 
-    private String text;
-
-    private TextMessage() {
+    private LoginMessage() {
     }
 
-    /**
-     *
-     * @param type
-     * @param text
-     */
-    public TextMessage(String text, MessageType type, Channel channel) {
-        super(type, channel);
-        this.text = text;
+    public LoginMessage(String version, String clientname) {
+        super(Channel.LOGIN);
+        this.version = version;
+        this.clientname = clientname;
     }
 
-    /**
-     *
-     * @return
-     */
-    public String getText() {
-        return text;
+    public String getVersion() {
+        return version;
+    }
+
+    public String getClientName() {
+        return clientname;
     }
 
     @Override
     public String toString() {
-        return String.format("TextMessage [Text: %s, %s, %s]", text, getType(), getChannel());
+        return String.format("LoginMessage [Version : %s, ClientName %s, %s]", version, clientname, getChannel());
     }
 }

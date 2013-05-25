@@ -14,17 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages;
+package org.iremake.common.network.messages.lobby;
 
 /**
  *
  */
-public enum Channel {
+public class LobbyClientEntry {
 
-    ERROR, LOGIN, LOBBY;
-
-    @Override
-    public String toString() {
-        return String.format("Channel : %s", name());
-    }
+    public String name;
+    public String ip;
+    public String joined;
 }

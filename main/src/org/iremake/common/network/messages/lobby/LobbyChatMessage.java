@@ -14,17 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages;
+package org.iremake.common.network.messages.lobby;
+
+import org.iremake.common.network.messages.Channel;
+import org.iremake.common.network.messages.Message;
 
 /**
  *
  */
-public enum Channel {
+public class LobbyChatMessage extends Message {
 
-    ERROR, LOGIN, LOBBY;
+    private String text;
+
+    private LobbyChatMessage() {
+    }
+
+    public LobbyChatMessage(String text) {
+        super(Channel.LOBBY);
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     @Override
     public String toString() {
-        return String.format("Channel : %s", name());
+        return String.format("LobbyChatMessage [Text : %s, %s]", text, getChannel());
     }
 }

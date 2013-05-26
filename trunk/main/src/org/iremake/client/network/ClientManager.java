@@ -38,7 +38,7 @@ import org.iremake.common.network.messages.Message;
 /**
  * Fires up network connection for the client.
  */
-public class ClientManager implements ClientContext {
+public class ClientManager {
 
     /* Timeout in ms for connection */
     private static final int TIMEOUT = 5000;
@@ -98,7 +98,6 @@ public class ClientManager implements ClientContext {
      * @param message
      */
     // TODO do we need this here?
-    @Override
     public void send(Message message) {
         if (kryoClient != null && kryoClient.isConnected()) {
             LOG.log(Level.FINE, "Send message: {0}", message.toString());
@@ -142,7 +141,6 @@ public class ClientManager implements ClientContext {
      *
      * @param error Error message, if null nothing is sent.
      */
-    @Override
     public void disconnect(String error) {
         if (kryoClient != null) {
             if (error != null) {
@@ -193,7 +191,7 @@ public class ClientManager implements ClientContext {
         if (handlerMap.containsKey(channel)) {
             List<ClientHandler> handlerList = handlerMap.get(channel);
             for (ClientHandler handler : handlerList) {
-                if (handler.process(message, this)) {
+                if (handler.process(message)) {
                     break;
                 }
             }

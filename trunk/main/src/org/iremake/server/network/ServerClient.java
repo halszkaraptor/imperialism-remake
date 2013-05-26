@@ -22,14 +22,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
 
 /**
  *
  */
-public class ServerConnectedClient {
+public class ServerClient {
 
-    private static final Logger LOG = Logger.getLogger(ServerConnectedClient.class.getName());    
+    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());    
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final Connection connection;
     private String name;
@@ -39,7 +38,7 @@ public class ServerConnectedClient {
      * @param root
      * @param connection
      */
-    public ServerConnectedClient(Connection connection) {
+    public ServerClient(Connection connection) {
         this.connection = connection;
 
         InetSocketAddress address = connection.getRemoteAddressTCP();
@@ -63,9 +62,9 @@ public class ServerConnectedClient {
      *
      * @param error
      */
-    public void disconnect(TextMessage error) {
+    public void disconnect(String error) {
         if (error != null) {
-            send(error);
+            // send(error);
         }
         connection.close();
     }
@@ -80,24 +79,8 @@ public class ServerConnectedClient {
 
     /**
      *
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     *
      */
     public void shutdown() {
         threadPool.shutdown();
-    }
-
-    /**
-     *
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 }

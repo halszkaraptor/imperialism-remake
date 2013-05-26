@@ -16,32 +16,27 @@
  */
 package org.iremake.server.network.handler;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.MessageType;
-import org.iremake.server.network.ServerContext;
+import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 
 /**
  *
  */
-public class ChatHandler implements ServerHandler {
+public class ChatHandler extends ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
+    
+    public ChatHandler(Integer id) {
+        super(id);
+    }
 
     @Override
-    public boolean process(Message message, ServerContext context) {
-        if (message instanceof TextMessage) {
-            TextMessage msg = (TextMessage) message;
-            if (MessageType.Chat.equals(msg.getType())) {
-                // has sent a chat message
-                LOG.log(Level.FINE, "Client transmitted chat message: {0}", msg.getText());
-                // transmit to all others
-                // context.broadcast(message);
-                // done
-                return true;
-            }
+    public boolean process(Message message) {
+        if (message instanceof LobbyChatMessage) {
+            LobbyChatMessage msg = (LobbyChatMessage) message;
+            
+            return true;
         }
         return false;
     }

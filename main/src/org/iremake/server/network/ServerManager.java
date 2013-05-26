@@ -73,7 +73,7 @@ public class ServerManager {
 
         LOG.log(Level.FINE, "Bound to port.");
 
-        server.addListener(new ServerHandler());
+        server.addListener(new ServerListener());
 
         return true;
     }

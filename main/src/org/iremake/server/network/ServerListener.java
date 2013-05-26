@@ -22,28 +22,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.Channel;
+import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.TextMessage;
-import org.iremake.common.network.messages.MessageType;
 
 /**
  *
  */
-public class ServerHandler extends Listener implements ServerContext {
+public class ServerListener extends Listener {
 
-    private static final Logger LOG = Logger.getLogger(ServerHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(ServerListener.class.getName());
     private static final int MAX_CLIENTS = 100;
-    private Map<Integer, ServerConnectedClient> map = new HashMap<>(10);
+    private Map<Integer, ServerClient> map = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
         if (map.size() >= MAX_CLIENTS) {
-            connection.sendTCP(new TextMessage(String.format("Too many connected clients. Max = %d", MAX_CLIENTS), MessageType.Error, Channel.ERROR));
+            connection.sendTCP(new ErrorMessage(String.format("Too many connected clients. Max = %d", MAX_CLIENTS)));
             connection.close();
         } else {
             // initial handler chain for every connected client
-            ServerConnectedClient client = new ServerConnectedClient(connection);
+            ServerClient client = new ServerClient(connection);
             map.put(connection.getID(), client);
         }
     }
@@ -71,61 +69,39 @@ public class ServerHandler extends Listener implements ServerContext {
         }
     }
 
-    @Override
-    public void disconnect(Integer id, TextMessage error) {
+    public void disconnect(Integer id, String error) {
         map.get(id).disconnect(error);
     }
 
-    @Override
-    public String getName(Integer id) {
-        return map.get(id).getName();
-    }
-
-    @Override
     public void send(Integer id, Message message) {
         map.get(id).send(message);
     }
 
-    @Override
     public void broadcast(Message message) {
-        for (ServerConnectedClient client: map.values()) {
+        for (ServerClient client: map.values()) {
             client.send(message);
         }
     }
-
-    @Override
-    public void broadcast(String domain, Message message) {
-        for (ServerConnectedClient client: map.values()) {
-            if (client.hasHandler(domain)) {
+/*
+    public void broadcast(Message message) {
+        for (ServerClient client: map.values()) {
                 client.send(message);
-            }
         }
-    }
+    }*/
 
-    @Override
-    public void setName(Integer id, String name) {
-        map.get(id).setName(name);
-    }
-
-    @Override
     public void disconnect(String error) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public void setName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public String getName() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public void send(Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
 }

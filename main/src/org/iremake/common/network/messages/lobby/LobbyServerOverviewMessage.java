@@ -17,13 +17,12 @@
 package org.iremake.common.network.messages.lobby;
 
 import java.util.List;
-import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 
 /**
  *
  */
-public class LobbyServerOverviewMessage extends Message {
+public class LobbyServerOverviewMessage implements Message {
 
     private List<LobbyClientEntry> clients;
     private String chatHistory;
@@ -32,7 +31,6 @@ public class LobbyServerOverviewMessage extends Message {
     }
 
     public LobbyServerOverviewMessage(List<LobbyClientEntry> clients, String chatHistory) {
-        super(Channel.LOBBY);
         if (clients == null) {
             throw new IllegalArgumentException("Arguments clients cannot be null!");
         }
@@ -51,6 +49,6 @@ public class LobbyServerOverviewMessage extends Message {
 
     @Override
     public String toString() {
-        return String.format("LobbyOverviewMessage [Clients : %d, %s]", clients.size(), getChannel());
+        return String.format("LobbyOverviewMessage [Clients : %d]", clients.size());
     }
 }

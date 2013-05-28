@@ -19,7 +19,7 @@ package org.iremake.common.network.messages;
 /**
  *
  */
-public class ErrorMessage extends Message {
+public class ErrorMessage implements Message {
 
     private String text;
 
@@ -27,7 +27,6 @@ public class ErrorMessage extends Message {
     }
 
     public ErrorMessage(String text) {
-        super(Channel.ERROR);
         this.text = text;
     }
 
@@ -37,6 +36,6 @@ public class ErrorMessage extends Message {
 
     @Override
     public String toString() {
-        return String.format("ErrorMessage [Text : %s, %s]", text, getChannel());
+        return String.format("ErrorMessage [%s]", text);
     }
 }

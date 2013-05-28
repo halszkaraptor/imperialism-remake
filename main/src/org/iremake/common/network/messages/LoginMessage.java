@@ -19,7 +19,7 @@ package org.iremake.common.network.messages;
 /**
  *
  */
-public class LoginMessage extends Message {
+public class LoginMessage implements Message {
 
     private String version;
     private String clientname;
@@ -28,7 +28,9 @@ public class LoginMessage extends Message {
     }
 
     public LoginMessage(String version, String clientname) {
-        super(Channel.LOGIN);
+        if (version == null || clientname == null) {
+            throw new IllegalArgumentException("Arguments cannot be null.");
+        }
         this.version = version;
         this.clientname = clientname;
     }
@@ -43,6 +45,6 @@ public class LoginMessage extends Message {
 
     @Override
     public String toString() {
-        return String.format("LoginMessage [Version : %s, ClientName %s, %s]", version, clientname, getChannel());
+        return String.format("LoginMessage [Version : %s, ClientName %s]", version, clientname);
     }
 }

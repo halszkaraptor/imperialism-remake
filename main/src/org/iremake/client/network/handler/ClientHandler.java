@@ -25,7 +25,7 @@ import org.iremake.common.network.messages.Message;
  * or feeding it back to the processing tree or even feed other messages to the
  * processing tree.
  */
-public abstract class ClientHandler {
+public interface ClientHandler {
 
     /**
      * Process a message given a context. The context is responsible for client
@@ -35,23 +35,5 @@ public abstract class ClientHandler {
      * @param message Message to be processed.
      * @param context Context for what we can do.
      */
-    public abstract boolean process(Message message);
-    
-    /**
-     * Force disconnection, send message before.
-     *
-     * @param error Error message, if null nothing is sent before disconnection.
-     */
-    public void disconnect(String error) {
-        ClientManager.NETWORK.disconnect(error);
-    }
-
-    /**
-     * Send message to the server.
-     *
-     * @param message Message to be sent.
-     */
-    public void send(Message message) {
-        ClientManager.NETWORK.send(message);
-    }
+    public boolean process(Message message, ClientManager manager);
 }

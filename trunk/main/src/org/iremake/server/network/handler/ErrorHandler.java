@@ -20,24 +20,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.ServerClient;
 
 /**
  *
  */
-public class ErrorHandler extends ServerHandler {
+public class ErrorHandler implements ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
     
-    public ErrorHandler(Integer id) {
-        super(id);
-    }
-
     @Override
-    public boolean process(Message message) {
+    public boolean process(Message message, ServerClient client) {
         if (message instanceof ErrorMessage) {
             ErrorMessage msg = (ErrorMessage) message;
             LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-            disconnect(null);
+            client.disconnect(null);
             return true;
         }
         return false;

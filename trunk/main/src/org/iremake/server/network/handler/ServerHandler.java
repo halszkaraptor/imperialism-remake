@@ -17,42 +17,18 @@
 package org.iremake.server.network.handler;
 
 import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.ServerClient;
 
 /**
  *
  */
-public abstract class ServerHandler {
+public interface ServerHandler {
     
-    private Integer id;
-    
-    public ServerHandler(Integer id) {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null.");
-        }
-        this.id = id;
-    }
-
     /**
      *
      * @param message
      * @param context
      */
-    public abstract boolean process(Message message);
-    
-    /**
-     * Force disconnection, send message before.
-     *
-     * @param error Error message, if null nothing is sent before disconnection.
-     */
-    public void disconnect(String error) {
-    }    
-    
-    /**
-     * Send message to the server.
-     *
-     * @param message Message to be sent.
-     */
-    public void send(Message message) {
-    }    
-    
+    public abstract boolean process(Message message, ServerClient client);
+   
 }

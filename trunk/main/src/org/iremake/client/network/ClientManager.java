@@ -21,6 +21,7 @@ import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,7 +30,6 @@ import org.iremake.client.Option;
 import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
-import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.LoginMessage;
@@ -83,12 +83,12 @@ public class ClientManager {
             stop();
             return false;
         }
-        
-        registerHandler(Channel.ERROR, new ErrorHandler());
+
+        addHandler(new ErrorHandler());
 
         // send login message
         send(new LoginMessage(Option.General_Version.get(), "client-name"));
-        
+
         return true;
     }
 
@@ -149,18 +149,15 @@ public class ClientManager {
             kryoClient.close();
         }
     }
-    private Map<Channel, List<ClientHandler>> handlerMap = new HashMap<>();
+    private ErrorHandler errorHandler;
+    private List<ClientHandler> handlerList = new LinkedList<>();
 
     /**
      *
      * @param channel
      * @param handler
      */
-    public void registerHandler(Channel channel, ClientHandler handler) {
-        if (!handlerMap.containsKey(channel)) {
-            handlerMap.put(channel, new ArrayList<ClientHandler>());
-        }
-        List<ClientHandler> handlerList = handlerMap.get(channel);
+    public void addHandler(ClientHandler handler) {
         if (!handlerList.contains(handler)) {
             handlerList.add(handler);
         }
@@ -172,11 +169,7 @@ public class ClientManager {
      * @param handler
      * @return
      */
-    public boolean unregisterHandler(Channel channel, ClientHandler handler) {
-        if (!handlerMap.containsKey(channel)) {
-            return false;
-        }
-        List<ClientHandler> handlerList = handlerMap.get(channel);
+    public boolean removeHandler(ClientHandler handler) {
         return handlerList.remove(handler);
     }
 
@@ -187,13 +180,13 @@ public class ClientManager {
      * @param message
      */
     public void process(Message message) {
-        Channel channel = message.getChannel();
-        if (handlerMap.containsKey(channel)) {
-            List<ClientHandler> handlerList = handlerMap.get(channel);
-            for (ClientHandler handler : handlerList) {
-                if (handler.process(message)) {
-                    break;
-                }
+
+        // we always check the error handler first
+        errorHandler.process(message, this);
+
+        for (ClientHandler handler : handlerList) {
+            if (handler.process(message, this)) {
+                break;
             }
         }
     }

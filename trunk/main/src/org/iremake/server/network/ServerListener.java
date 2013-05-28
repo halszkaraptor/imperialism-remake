@@ -41,7 +41,7 @@ public class ServerListener extends Listener {
             connection.close();
         } else {
             // initial handler chain for every connected client
-            ServerClient client = new ServerClient(connection);
+            ServerClient client = new ServerClient(connection, this);
             map.put(connection.getID(), client);
         }
     }

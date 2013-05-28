@@ -18,10 +18,16 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import java.net.InetSocketAddress;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import org.iremake.client.network.ClientManager;
+import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.handler.LoginHandler;
+import org.iremake.server.network.handler.ServerHandler;
 
 /**
  *
@@ -31,15 +37,22 @@ public class ServerClient {
     private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());    
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final Connection connection;
+    private final ServerListener listener;
     private String name;
+    
+    private final ErrorHandler errorHandler = new ErrorHandler();
+    private List<ServerHandler> handlerList = new LinkedList<>();
 
     /**
      *
      * @param root
      * @param connection
      */
-    public ServerClient(Connection connection) {
+    public ServerClient(Connection connection, ServerListener listener) {
         this.connection = connection;
+        this.listener = listener;
+        
+        handlerList.add(new LoginHandler());
 
         InetSocketAddress address = connection.getRemoteAddressTCP();
         name = String.format("[%d,%s]", connection.getID(), address != null ? address.getHostString() : "");
@@ -53,7 +66,12 @@ public class ServerClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                // process(message);
+                errorHandler.process(message, ClientManager.NETWORK);
+                for (ServerHandler handler: handlerList) {
+                    if (handler.process(message, ServerClient.this)) {
+                        break;
+                    }
+                }
             }
         });
     }

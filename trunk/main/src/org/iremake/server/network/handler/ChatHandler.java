@@ -19,20 +19,17 @@ package org.iremake.server.network.handler;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.server.network.ServerClient;
 
 /**
  *
  */
-public class ChatHandler extends ServerHandler {
+public class ChatHandler implements ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
     
-    public ChatHandler(Integer id) {
-        super(id);
-    }
-
     @Override
-    public boolean process(Message message) {
+    public boolean process(Message message, ServerClient client) {
         if (message instanceof LobbyChatMessage) {
             LobbyChatMessage msg = (LobbyChatMessage) message;
             

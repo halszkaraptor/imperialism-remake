@@ -20,23 +20,6 @@ package org.iremake.common.network.messages;
  * Marker interface for Objects being sent over the network by the Kryonet
  * library.
  */
-public class Message {
+public interface Message {
 
-    private Channel channel;
-
-    protected Message() {
-    }
-
-    public Message(Channel channel) {
-        this.channel = channel;
-    }
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Message [%s]", channel);
-    }
 }

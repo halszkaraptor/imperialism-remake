@@ -18,6 +18,7 @@ package org.iremake.client.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.client.network.ClientManager;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
 
@@ -25,7 +26,7 @@ import org.iremake.common.network.messages.Message;
  * This is the first handler in every processing tree. It filters out error
  * messages, logs them and disconnect. All other messages are propagated.
  */
-public class ErrorHandler extends ClientHandler {
+public class ErrorHandler implements ClientHandler {
 
     private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
 
@@ -37,11 +38,11 @@ public class ErrorHandler extends ClientHandler {
      * @return
      */
     @Override
-    public boolean process(Message message) {
+    public boolean process(Message message, ClientManager manager) {
         if (message instanceof ErrorMessage) {
             ErrorMessage msg = (ErrorMessage) message;
             LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-            disconnect(null);
+            manager.disconnect(null);
             return true;
         }
         return false;

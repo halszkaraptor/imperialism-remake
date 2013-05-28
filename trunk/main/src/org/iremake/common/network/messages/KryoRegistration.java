@@ -39,7 +39,6 @@ public class KryoRegistration {
      */
     public static void register(Kryo kryo) {
         // message and channel
-        kryo.register(Channel.class);
         kryo.register(Message.class);
 
         // error and login

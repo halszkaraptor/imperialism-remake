@@ -16,13 +16,12 @@
  */
 package org.iremake.common.network.messages.lobby;
 
-import org.iremake.common.network.messages.Channel;
 import org.iremake.common.network.messages.Message;
 
 /**
  *
  */
-public class LobbyChatMessage extends Message {
+public class LobbyChatMessage implements Message {
 
     private String text;
 
@@ -30,7 +29,6 @@ public class LobbyChatMessage extends Message {
     }
 
     public LobbyChatMessage(String text) {
-        super(Channel.LOBBY);
         this.text = text;
     }
 
@@ -40,6 +38,6 @@ public class LobbyChatMessage extends Message {
 
     @Override
     public String toString() {
-        return String.format("LobbyChatMessage [Text : %s, %s]", text, getChannel());
+        return String.format("LobbyChatMessage [%s]", text);
     }
 }

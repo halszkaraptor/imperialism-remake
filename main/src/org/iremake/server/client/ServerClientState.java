@@ -14,21 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.handler;
-
-import org.iremake.common.network.messages.Message;
-import org.iremake.server.client.ServerClient;
+package org.iremake.server.client;
 
 /**
  *
  */
-public interface ServerHandler {
+public enum ServerClientState {
     
-    /**
-     *
-     * @param message
-     * @param context
-     */
-    public abstract boolean process(Message message, ServerClient client);
-   
+    UNIDENTIFIED, LOBBY, INGAME;
+    
 }

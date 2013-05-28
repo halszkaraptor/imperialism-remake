@@ -16,6 +16,7 @@
  */
 package org.iremake.server.network;
 
+import org.iremake.server.client.ServerClient;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;

@@ -19,7 +19,7 @@ package org.iremake.server.network.handler;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.server.network.ServerClient;
+import org.iremake.server.client.ServerClient;
 
 /**
  *

@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.server.network.ServerClient;
+import org.iremake.server.client.ServerClient;
 
 /**
  *

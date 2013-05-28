@@ -16,9 +16,11 @@
  */
 package org.iremake.server.network.handler;
 
+import org.iremake.client.Option;
 import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.server.network.ServerClient;
+import org.iremake.server.client.ServerClient;
+import org.iremake.server.client.ServerClientState;
 
 /**
  *
@@ -29,6 +31,23 @@ public class LoginHandler implements ServerHandler {
     public boolean process(Message message, ServerClient client) {
         if (message instanceof LoginMessage) {
             LoginMessage msg = (LoginMessage) message;
+            
+            // test version
+            if (Option.General_Version.get().equals(msg.getVersion())) {
+                // set the new name
+                client.setName(msg.getClientName());
+                // put client in lobby
+                client.setState(ServerClientState.LOBBY);
+                // add some handlers
+                client.addHandler(new ChatHandler());
+                // send a LobbyOverviewMessage
+            } else {
+                // version different disconnect and LOG
+                client.disconnect("Client reported different version. Not compatible.");
+            }
+            
+            // no need to process further
+            return true;
         }
         return false;
     }

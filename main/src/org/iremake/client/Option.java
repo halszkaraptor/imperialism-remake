@@ -112,6 +112,7 @@ public enum Option {
         } else {
             IOManager.setFromXML(Places.Common, name, options);
         }
+        // TODO no option should be null, test
     }
 
     /**

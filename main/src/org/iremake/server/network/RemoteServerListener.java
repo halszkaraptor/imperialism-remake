@@ -53,18 +53,20 @@ public class RemoteServerListener extends Listener implements ServerContext {
         } else {
             // initial handler chain for every connected client
             Integer id = connection.getID();
-            ServerClient client = new ServerClient(id, this);
-            clients.put(id, client);
             connections.put(id, connection);
+            // we need the connection in the constructor of the serverclient already
+            clients.put(id, new ServerClient(id, this));
         }
     }
 
     @Override
     public void disconnected(Connection connection) {
-        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
-        if (clients.containsKey(connection.getID())) {
-            clients.get(connection.getID()).shutdown();
-            clients.remove(connection.getID());
+        Integer id = connection.getID();
+        LOG.log(Level.FINE, "Connection {0} disconnected.", id);
+        if (clients.containsKey(id)) {
+            clients.get(id).shutdown();
+            clients.remove(id);
+            connections.remove(id);
         }
     }
 

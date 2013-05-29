@@ -16,6 +16,7 @@
  */
 package org.iremake.client.network.handler;
 
+import javax.swing.text.JTextComponent;
 import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
@@ -27,12 +28,21 @@ import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
  *
  */
 public class LobbyHandler implements ClientHandler {
+    
+    private JTextComponent chatHistory;
+    
+    public LobbyHandler(JTextComponent chatHistory) {
+        // TODO cannot be null
+        this.chatHistory = chatHistory;
+    }
 
     @Override
     public boolean process(Message message, ClientContext context) {
         if (message instanceof LobbyMessage) {
             if (message instanceof LobbyChatMessage) {
+                LobbyChatMessage msg = (LobbyChatMessage) message;
                 // a new chat message, display it
+                chatHistory.setText(chatHistory.getText() + msg.getText());
             } else if (message instanceof LobbyServerOverviewMessage) {
                 // a complete new overview, fill with data
             } else if (message instanceof LobbyServerUpdateMessage) {

@@ -54,6 +54,7 @@ public class NewLocalScenarioDialog extends UIDialog {
      */
     public NewLocalScenarioDialog() {
         super("Local Scenario");
+        
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
 
         // create a scanner for scenarios and scan

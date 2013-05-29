@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.ui.CommonElements;
 import org.iremake.client.ui.UIDialog;
 
 /**
@@ -35,25 +36,26 @@ public class EditorNewScenarioDialog extends UIDialog {
      * Setup.
      */
     public EditorNewScenarioDialog() {
+        // call super but change minimum size
         super("New Scenario");
-
-        JPanel content = new JPanel();
-
-        JTextField nameField = new JTextField();
-        JTextField nRows = new JTextField();
-        JTextField nColumns = new JTextField();
-        JButton create = new JButton("Create");
-
-        content.setLayout(new MigLayout("wrap 2", "[sizegroup a][sizegroup b, fill]"));
-        content.add(new JLabel("Scenario name"));
-        content.add(nameField, "wmin 100");
-        content.add(new JLabel("Width (columns)"));
-        content.add(nColumns);
-        content.add(new JLabel("Height (rows)"));
-        content.add(nRows);
-        content.add(create, "dock south");
-
         setMinimumSize(0, 0);
+        
+        // text fields and buttons
+        JTextField nameField = new JTextField("Title");
+        JTextField numberRowsField = new JTextField("60");
+        JTextField numberColumnsField = new JTextField("100");
+        JButton createButton = new JButton("Create");
+
+        JPanel content = new JPanel();        
+        content.setLayout(new MigLayout("wrap 2", "[sizegroup a][sizegroup b, fill]"));
+        content.add(CommonElements.createLabel("Scenario name"));
+        content.add(nameField, "wmin 100");
+        content.add(CommonElements.createLabel("Width (number of columns)"));
+        content.add(numberColumnsField);
+        content.add(CommonElements.createLabel("Height (number of rows)"));
+        content.add(numberRowsField);
+        content.add(createButton, "span 2, align center");
+
         setContent(content);
     }
 }

@@ -37,13 +37,13 @@ public class LoginHandler implements ServerHandler {
                 // set the new name
                 client.setName(msg.getClientName());
                 // send a LobbyOverviewMessage
-                client.getListener().sendLobbyOverview(client);
+                client.getContext().sendLobbyOverview(client);
                 // add some handlers
                 client.addHandler(new ChatHandler());
                 // put client in lobby
                 client.setState(ServerClientState.LOBBY);
                 // send others LobbyUpdateMessage
-                client.getListener().broadcastNewLobbyClient(client);
+                client.getContext().broadcastArrivingLobbyClient(client);
             } else {
                 // version different disconnect and LOG
                 client.disconnect("Client reported different version. Not compatible.");

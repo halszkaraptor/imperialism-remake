@@ -36,20 +36,20 @@ import org.iremake.common.network.messages.Message;
 /**
  * Fires up network connection for the client.
  */
-public class ClientManager {
+public class RemoteClient implements ClientContext {
 
     /* Timeout in ms for connection */
     private static final int TIMEOUT = 5000;
-    private static final Logger LOG = Logger.getLogger(ClientManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(RemoteClient.class.getName());
     /* Kryonet client */
     private Client kryoClient;
     /* The only instance */
-    public static final ClientManager NETWORK = new ClientManager();
+    public static final RemoteClient INSTANCE = new RemoteClient();
 
     /**
      * Avoid instantiation.
      */
-    private ClientManager() {
+    private RemoteClient() {
     }
 
     /**

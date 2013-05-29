@@ -16,23 +16,16 @@
  */
 package org.iremake.network;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
-import org.iremake.client.network.ClientManager;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.server.network.ServerManager;
 
 /**
- * Small brother of the console, not interactive. Tests the network capabilities.
+ *
  */
-public class ClientServerTest {
-
-    private static final Logger LOG = Logger.getLogger(ClientServerTest.class.getName());
+public class LocalClientServerTest {
 
     /**
      * @param args the command line arguments
@@ -48,27 +41,5 @@ public class ClientServerTest {
 
         // load options
         Option.load();
-
-        // start server
-        final ServerManager server = ServerManager.NETWORK;
-        server.start();
-
-        // start and connect client
-        final ClientManager client = ClientManager.NETWORK;
-        client.start("localhost");
-
-        client.send(new LobbyChatMessage("Anyone want to chat?"));
-
-        // in 5s stop everything
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                timer.cancel();
-                client.stop();
-                server.stop();
-            }
-        }, 5000);
-
     }
 }

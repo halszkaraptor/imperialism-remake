@@ -32,13 +32,13 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.client.network.ClientManager;
+import org.iremake.client.network.RemoteClient;
 import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
 import org.iremake.common.Settings;
-import org.iremake.server.network.ServerManager;
+import org.iremake.server.network.RemoteServerManager;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
 
@@ -136,15 +136,15 @@ public class StartClient {
 
         // if client is still running disconnect
 
-        if (ClientManager.NETWORK.isRunning()) {
+        if (RemoteClient.INSTANCE.isRunning()) {
             LOG.log(Level.INFO, "Client still running, shut down.");
-            ClientManager.NETWORK.stop();
+            RemoteClient.INSTANCE.stop();
         }
 
         // if server is still running shut down
-        if (ServerManager.NETWORK.isRunning()) {
+        if (RemoteServerManager.INSTANCE.isRunning()) {
             LOG.log(Level.INFO, "Server still running, shut down.");
-            ServerManager.NETWORK.stop();
+            RemoteServerManager.INSTANCE.stop();
         }
 
         // save options

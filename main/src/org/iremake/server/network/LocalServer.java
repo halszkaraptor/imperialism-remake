@@ -14,27 +14,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.handler;
+package org.iremake.server.network;
 
-import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.server.client.ServerClient;
 
 /**
  *
  */
-public class ChatHandler implements ServerHandler {
+public class LocalServer implements ServerContext {
 
-    private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
+    public static final LocalServer INSTANCE = new LocalServer();
+    private ServerClient client;
+
+    private LocalServer() {
+    }
+
+    public void reset() {
+        client = new ServerClient(null, this);
+    }
 
     @Override
-    public boolean process(Message message, ServerClient client) {
-        if (message instanceof LobbyChatMessage) {
-            LobbyChatMessage msg = (LobbyChatMessage) message;
-            client.getContext().broadcastNewChatMessage(msg.getText(), client);
-            return true;
-        }
-        return false;
+    public void sendLobbyOverview(ServerClient recipient) {
+    }
+
+    @Override
+    public void broadcastArrivingLobbyClient(ServerClient arriving) {
+    }
+
+    @Override
+    public void broadcastNewChatMessage(String text, ServerClient sender) {
+    }
+
+    @Override
+    public String getIP(Integer id) {
+        return "";
+    }
+
+    @Override
+    public void disconnect(Integer id) {
+    }
+
+    @Override
+    public void sendMessage(Integer id, Message message) {
+        // TODO, tell client
     }
 }

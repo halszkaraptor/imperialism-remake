@@ -17,6 +17,8 @@
 package org.iremake.client.ui.options;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.LinkedList;
@@ -31,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
 import org.iremake.client.io.IOManager;
@@ -39,7 +42,7 @@ import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.WindowClosingListener;
-import org.iremake.server.network.ServerManager;
+import org.iremake.server.network.RemoteServerManager;
 import org.tools.sound.SoundSystem;
 import org.tools.ui.PanelWithBackground;
 import org.tools.ui.SimpleComboBoxModel;
@@ -62,6 +65,7 @@ public class OptionsDialog extends UIDialog {
     private List<OptionsDialogItem> items = new LinkedList<>();
     /* additional item */
     private SimpleComboBoxModel<String> mixerModel;
+    private Timer serverStatusUpdateTimer;
 
     /**
      * Setup of the dialog, add the tabs to the tabbed pane.
@@ -82,6 +86,7 @@ public class OptionsDialog extends UIDialog {
         setClosingListener(new WindowClosingListener() {
             @Override
             public boolean closing() {
+                serverStatusUpdateTimer.stop();
                 if (isAnyModified()) {
                     if (JOptionPane.showConfirmDialog(null, "Save modified options?", "Modified options", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         updateOptions();
@@ -139,7 +144,7 @@ public class OptionsDialog extends UIDialog {
 
         // server toggle
         final JLabel serverStatus = new JLabel();
-        serverStatus.setText(ServerManager.NETWORK.getStatus());
+        serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
 
         final JToggleButton serverToggleButton = new JToggleButton("Start local server");
         serverToggleButton.addItemListener(new ItemListener() {
@@ -147,16 +152,24 @@ public class OptionsDialog extends UIDialog {
             public void itemStateChanged(ItemEvent itemEvent) {
                 int state = itemEvent.getStateChange();
                 if (state == ItemEvent.SELECTED) {
-                    ServerManager.NETWORK.start();
+                    RemoteServerManager.INSTANCE.start();
                     serverToggleButton.setText("Shutdown local server");
                 } else {
-                    ServerManager.NETWORK.stop();
+                    RemoteServerManager.INSTANCE.stop();
                     serverToggleButton.setText("Start local server");
                 }
-                // update status
-                serverStatus.setText(ServerManager.NETWORK.getStatus());
             }
         });
+
+        // poll the server status every second
+        serverStatusUpdateTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // update status
+                serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
+            }
+        });
+        serverStatusUpdateTimer.start();
 
         // components
         JTextField networkAlias = new JTextField();

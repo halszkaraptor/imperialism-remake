@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
-import org.iremake.client.network.ClientManager;
+import org.iremake.client.network.RemoteClient;
 import org.tools.ui.ButtonBar;
 
 /**
@@ -41,7 +41,7 @@ import org.tools.ui.ButtonBar;
  */
 public class NetworkDialog extends UIDialog {
 
-    private static final Logger LOG = Logger.getLogger(NetworkDialog.class.getName());    
+    private static final Logger LOG = Logger.getLogger(NetworkDialog.class.getName());
     private JTextField serverAddress;
     private JLabel clientStatus;
 
@@ -74,8 +74,8 @@ public class NetworkDialog extends UIDialog {
         serverStartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClientManager.NETWORK.start(serverAddress.getText());
-                clientStatus.setText(ClientManager.NETWORK.getStatus());
+                RemoteClient.INSTANCE.start(serverAddress.getText());
+                clientStatus.setText(RemoteClient.INSTANCE.getStatus());
             }
         });
 
@@ -84,8 +84,8 @@ public class NetworkDialog extends UIDialog {
         serverStopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClientManager.NETWORK.stop();
-                clientStatus.setText(ClientManager.NETWORK.getStatus());
+                RemoteClient.INSTANCE.stop();
+                clientStatus.setText(RemoteClient.INSTANCE.getStatus());
             }
         });
 
@@ -107,7 +107,7 @@ public class NetworkDialog extends UIDialog {
         panel.setBorder(BorderFactory.createTitledBorder("Login"));
 
         clientStatus = new JLabel();
-        clientStatus.setText(ClientManager.NETWORK.getStatus());
+        clientStatus.setText(RemoteClient.INSTANCE.getStatus());
 
         JTextField networkAlias = new JTextField(Option.Client_Alias.get());
 

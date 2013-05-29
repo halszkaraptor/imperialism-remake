@@ -14,27 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.handler;
-
-import java.util.logging.Logger;
-import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.server.client.ServerClient;
+package org.iremake.client.network;
 
 /**
  *
  */
-public class ChatHandler implements ServerHandler {
+public class LocalClient implements ClientContext {
 
-    private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
+    public static final LocalClient INSTANCE = new LocalClient();
+
+    private LocalClient() {
+    }
 
     @Override
-    public boolean process(Message message, ServerClient client) {
-        if (message instanceof LobbyChatMessage) {
-            LobbyChatMessage msg = (LobbyChatMessage) message;
-            client.getContext().broadcastNewChatMessage(msg.getText(), client);
-            return true;
-        }
-        return false;
+    public void disconnect(String error) {
     }
 }

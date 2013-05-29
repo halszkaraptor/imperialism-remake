@@ -16,20 +16,18 @@
  */
 package org.iremake.server.client;
 
-import com.esotericsoftware.kryonet.Connection;
-import java.net.InetSocketAddress;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import org.iremake.client.network.ClientManager;
+import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyClientEntry;
-import org.iremake.server.network.ServerListener;
+import org.iremake.server.network.ServerContext;
 import org.iremake.server.network.handler.LoginHandler;
 import org.iremake.server.network.handler.ServerHandler;
 
@@ -40,8 +38,8 @@ public class ServerClient {
 
     private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
-    private final Connection connection;
-    private final ServerListener listener;
+    private final Integer id;
+    private final ServerContext context;
     private LobbyClientEntry lobbyEntry = new LobbyClientEntry();
     private ServerClientState state = ServerClientState.UNIDENTIFIED;;
 
@@ -53,16 +51,14 @@ public class ServerClient {
      * @param root
      * @param connection
      */
-    public ServerClient(Connection connection, ServerListener listener) {
-        this.connection = connection;
-        this.listener = listener;
+    public ServerClient(Integer id, ServerContext context) {
+        this.id = id;
+        this.context = context;
 
         handlerList.add(new LoginHandler());
 
         // fill lobbyEntry
-        InetSocketAddress address = connection.getRemoteAddressTCP();
-        lobbyEntry.ip = address != null ? address.getHostString() : "";
-
+        lobbyEntry.ip = context.getIP(id);
         lobbyEntry.joined = new Date().toString();
     }
 
@@ -74,7 +70,7 @@ public class ServerClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                errorHandler.process(message, ClientManager.NETWORK);
+                errorHandler.process(message, RemoteClient.INSTANCE);
                 for (ServerHandler handler: handlerList) {
                     if (handler.process(message, ServerClient.this)) {
                         break;
@@ -92,7 +88,7 @@ public class ServerClient {
         if (error != null) {
             send(new ErrorMessage(error));
         }
-        connection.close();
+        context.disconnect(id);
     }
 
     /**
@@ -100,7 +96,7 @@ public class ServerClient {
      * @param message
      */
     public void send(Message message) {
-        connection.sendTCP(message);
+        context.sendMessage(id, message);
     }
 
     /**
@@ -130,8 +126,8 @@ public class ServerClient {
         return handlerList.remove(handler);
     }
 
-    public ServerListener getListener() {
-        return listener;
+    public ServerContext getContext() {
+        return context;
     }
 
     public LobbyClientEntry getLobbyEntry() {

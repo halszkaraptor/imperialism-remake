@@ -18,6 +18,7 @@ package org.iremake.server.network;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,33 +34,38 @@ import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.client.ServerClientState;
 
+// TODO throw out connections that do not make successful login within a certain time limit
 /**
  *
  */
-public class ServerListener extends Listener {
+public class RemoteServerListener extends Listener implements ServerContext {
 
-    private static final Logger LOG = Logger.getLogger(ServerListener.class.getName());
+    private static final Logger LOG = Logger.getLogger(RemoteServerListener.class.getName());
     private static final int MAX_CLIENTS = 100;
-    private Map<Integer, ServerClient> map = new HashMap<>(10);
+    private Map<Integer, ServerClient> clients = new HashMap<>(10);
+    private Map<Integer, Connection> connections = new HashMap<>(10);
 
     @Override
     public void connected(Connection connection) {
-        if (map.size() >= MAX_CLIENTS) {
+        if (clients.size() >= MAX_CLIENTS) {
             connection.sendTCP(new ErrorMessage(String.format("Too many connected clients. Max = %d", MAX_CLIENTS)));
             connection.close();
         } else {
             // initial handler chain for every connected client
-            ServerClient client = new ServerClient(connection, this);
-            map.put(connection.getID(), client);
+            Integer id = connection.getID();
+            ServerClient client = new ServerClient(id, this);
+            clients.put(id, client);
+            connections.put(id, connection);
         }
     }
 
     @Override
     public void disconnected(Connection connection) {
         LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
-        // whether it's there or not, we remove it
-        map.get(connection.getID()).shutdown();
-        map.remove(connection.getID());
+        if (clients.containsKey(connection.getID())) {
+            clients.get(connection.getID()).shutdown();
+            clients.remove(connection.getID());
+        }
     }
 
     @Override
@@ -68,29 +74,30 @@ public class ServerListener extends Listener {
             Message message = (Message) object;
             LOG.log(Level.FINER, "Received message: {0}", message.toString());
             Integer id = connection.getID();
-            if (!map.containsKey(id)) {
+            if (!clients.containsKey(id)) {
                 throw new RuntimeException("connection not registered. internal error.");
             }
-            map.get(id).process(message);
+            clients.get(id).process(message);
         } else {
             connection.close();
         }
     }
     private List<String> chatHistory = new LinkedList<>();
 
+    @Override
     public void sendLobbyOverview(ServerClient recipient) {
-        List<LobbyClientEntry> clients = new LinkedList<>();
-        for (ServerClient client : map.values()) {
+        List<LobbyClientEntry> overviewList = new LinkedList<>();
+        for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
-                clients.add(client.getLobbyEntry());
+                overviewList.add(client.getLobbyEntry());
             }
         }
-        recipient.send(new LobbyServerOverviewMessage(clients, combineChatHistory()));
+        recipient.send(new LobbyServerOverviewMessage(overviewList, combineChatHistory()));
     }
 
     private String combineChatHistory() {
         StringBuilder sb = new StringBuilder(1000);
-        for (String item: chatHistory) {
+        for (String item : chatHistory) {
             sb.append(item);
         }
         return sb.toString();
@@ -98,13 +105,14 @@ public class ServerListener extends Listener {
 
     /**
      * We send to all.
-     * 
+     *
      * @param text
      * @param sender
      */
-    public void newChatMessage(String text, ServerClient sender) {
+    @Override
+    public void broadcastNewChatMessage(String text, ServerClient sender) {
         String chatMessage = String.format("[%s] %s\n", sender.getLobbyEntry().name, text);
-        for (ServerClient client : map.values()) {
+        for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
                 client.send(new LobbyChatMessage(chatMessage));
             }
@@ -116,12 +124,30 @@ public class ServerListener extends Listener {
         }
     }
 
-    public void broadcastNewLobbyClient(ServerClient arriving) {
+    @Override
+    public void broadcastArrivingLobbyClient(ServerClient arriving) {
         LobbyServerUpdateMessage message = new LobbyServerUpdateMessage(arriving.getLobbyEntry(), null);
-        for (ServerClient client : map.values()) {
+        for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
                 client.send(message);
             }
         }
+    }
+
+    @Override
+    public String getIP(Integer id) {
+        Connection connection = connections.get(id);
+        InetSocketAddress address = connection.getRemoteAddressTCP();
+        return address != null ? address.getHostString() : "";
+    }
+
+    @Override
+    public void disconnect(Integer id) {
+        connections.get(id).close();
+    }
+
+    @Override
+    public void sendMessage(Integer id, Message message) {
+        connections.get(id).sendTCP(message);
     }
 }

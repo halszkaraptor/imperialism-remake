@@ -16,7 +16,7 @@
  */
 package org.iremake.client.network.handler;
 
-import org.iremake.client.network.ClientManager;
+import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyMessage;
@@ -29,7 +29,7 @@ import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 public class LobbyHandler implements ClientHandler {
 
     @Override
-    public boolean process(Message message, ClientManager manager) {
+    public boolean process(Message message, ClientContext context) {
         if (message instanceof LobbyMessage) {
             if (message instanceof LobbyChatMessage) {
                 // a new chat message, display it

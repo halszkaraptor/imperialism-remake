@@ -29,18 +29,17 @@ import org.iremake.common.network.messages.KryoRegistration;
 /**
  * Starts the server.
  */
-public class ServerManager {
+public class RemoteServerManager {
 
-    private static final Logger LOG = Logger.getLogger(ServerManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(RemoteServerManager.class.getName());
     /* port on which we listen to clients */
     private Server server;
-    
-    public static final ServerManager NETWORK = new ServerManager();
+    public static final RemoteServerManager INSTANCE = new RemoteServerManager();
 
     /**
      * Avoid instantiation
      */
-    private ServerManager() {
+    private RemoteServerManager() {
     }
 
     /**
@@ -53,7 +52,6 @@ public class ServerManager {
         if (server != null) {
             return false;
         }
-
         server = new Server();
 
         KryoRegistration.register(server.getKryo());
@@ -73,7 +71,7 @@ public class ServerManager {
 
         LOG.log(Level.FINE, "Bound to port.");
 
-        server.addListener(new ServerListener());
+        server.addListener(new RemoteServerListener());
 
         return true;
     }
@@ -93,7 +91,7 @@ public class ServerManager {
     public void stop() {
         if (server != null) {
             LOG.log(Level.FINE, "Will stop.");
-            for (Connection connection: server.getConnections()) {
+            for (Connection connection : server.getConnections()) {
                 connection.close();
             }
             server.stop();
@@ -107,17 +105,17 @@ public class ServerManager {
 
     public String getStatus() {
         if (server != null) {
-            // TODO other way to get connections
-            InetAddress address;
+            String ip;
             try {
-                address = InetAddress.getLocalHost();
+                InetAddress address = InetAddress.getLocalHost();
+                ip = address.getHostAddress();
             } catch (UnknownHostException ex) {
                 LOG.log(Level.SEVERE, null, ex);
-                return "Local server running. Cannot determine IP adress.";
+                ip = "unknown IP";
             }
-            return String.format("Local server running at %s with %d connections.", address.getHostAddress(), server.getConnections().length);
+            return String.format("Server running at %s with %d connected clients.", ip, server.getConnections().length);
         } else {
-            return "Local server not running.";
+            return "Server not running.";
         }
     }
 }

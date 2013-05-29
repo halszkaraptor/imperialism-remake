@@ -34,13 +34,13 @@ import org.iremake.common.network.messages.Message;
 public class ClientListener extends Listener {
 
     private static final Logger LOG = Logger.getLogger(ClientListener.class.getName());
-    private final ClientManager manager;
+    private final RemoteClient manager;
     private ExecutorService threadPool;
 
     /**
      * @param context Context to store.
      */
-    public ClientListener(ClientManager manager) {
+    public ClientListener(RemoteClient manager) {
         this.manager = manager;
     }
 

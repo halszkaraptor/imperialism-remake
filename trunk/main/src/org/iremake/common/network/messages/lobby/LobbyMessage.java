@@ -16,26 +16,11 @@
  */
 package org.iremake.common.network.messages.lobby;
 
+import org.iremake.common.network.messages.Message;
+
 /**
  *
  */
-public class LobbyChatMessage implements LobbyMessage {
+public interface LobbyMessage extends Message {
 
-    private String text;
-
-    private LobbyChatMessage() {
-    }
-
-    public LobbyChatMessage(String text) {
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("LobbyChatMessage [%s]", text);
-    }
 }

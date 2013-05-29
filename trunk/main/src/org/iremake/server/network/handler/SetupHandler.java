@@ -14,28 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.lobby;
+package org.iremake.server.network.handler;
+
+import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.setup.SetupMessage;
+import org.iremake.server.client.ServerClient;
 
 /**
  *
  */
-public class LobbyChatMessage implements LobbyMessage {
-
-    private String text;
-
-    private LobbyChatMessage() {
-    }
-
-    public LobbyChatMessage(String text) {
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
+public class SetupHandler implements ServerHandler {
 
     @Override
-    public String toString() {
-        return String.format("LobbyChatMessage [%s]", text);
+    public boolean process(Message message, ServerClient client) {
+        if (message instanceof SetupMessage) {
+
+            return true;
+        }
+        return false;
     }
+
 }

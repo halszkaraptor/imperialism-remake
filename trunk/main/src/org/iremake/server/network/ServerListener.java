@@ -29,6 +29,7 @@ import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyClientEntry;
 import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.client.ServerClientState;
 
@@ -75,7 +76,7 @@ public class ServerListener extends Listener {
             connection.close();
         }
     }
-    private StringBuilder chatHistory = new StringBuilder(1000);
+    private List<String> chatHistory = new LinkedList<>();
 
     public void sendLobbyOverview(ServerClient recipient) {
         List<LobbyClientEntry> clients = new LinkedList<>();
@@ -84,9 +85,23 @@ public class ServerListener extends Listener {
                 clients.add(client.getLobbyEntry());
             }
         }
-        recipient.send(new LobbyServerOverviewMessage(clients, chatHistory.toString()));
+        recipient.send(new LobbyServerOverviewMessage(clients, combineChatHistory()));
     }
 
+    private String combineChatHistory() {
+        StringBuilder sb = new StringBuilder(1000);
+        for (String item: chatHistory) {
+            sb.append(item);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * We send to all.
+     * 
+     * @param text
+     * @param sender
+     */
     public void newChatMessage(String text, ServerClient sender) {
         String chatMessage = String.format("[%s] %s\n", sender.getLobbyEntry().name, text);
         for (ServerClient client : map.values()) {
@@ -94,7 +109,19 @@ public class ServerListener extends Listener {
                 client.send(new LobbyChatMessage(chatMessage));
             }
         }
-        // add to history (prune history if neccessary
-        chatHistory.append(chatMessage);
+        // add to history (delete old entries if more than 20 entries)
+        chatHistory.add(text);
+        if (chatHistory.size() > 20) {
+            chatHistory.remove(0);
+        }
+    }
+
+    public void broadcastNewLobbyClient(ServerClient arriving) {
+        LobbyServerUpdateMessage message = new LobbyServerUpdateMessage(arriving.getLobbyEntry(), null);
+        for (ServerClient client : map.values()) {
+            if (ServerClientState.LOBBY.equals(client.getState())) {
+                client.send(message);
+            }
+        }
     }
 }

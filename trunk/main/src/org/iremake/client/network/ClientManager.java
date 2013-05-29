@@ -19,16 +19,14 @@ package org.iremake.client.network;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.client.network.handler.ErrorHandler;
+import org.iremake.client.network.handler.LobbyHandler;
 import org.iremake.common.Settings;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
@@ -83,6 +81,8 @@ public class ClientManager {
             stop();
             return false;
         }
+
+        addHandler(new LobbyHandler());
 
         // send login message
         send(new LoginMessage(Option.General_Version.get(), "client-name"));

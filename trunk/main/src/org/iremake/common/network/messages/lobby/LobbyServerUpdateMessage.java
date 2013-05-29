@@ -16,27 +16,23 @@
  */
 package org.iremake.common.network.messages.lobby;
 
-import org.iremake.common.network.messages.Message;
-
 /**
  *
  */
-public class LobbyServerUpdateMessage implements Message {
+public class LobbyServerUpdateMessage implements LobbyMessage {
 
     private LobbyClientEntry arrivingClient;
     private LobbyClientEntry leavingClient;
-    private String chatUpdate;
 
     private LobbyServerUpdateMessage() {
     }
 
-    public LobbyServerUpdateMessage(LobbyClientEntry arrivingClient, LobbyClientEntry leavingClient, String chatUpdate) {
-        if (arrivingClient == null && leavingClient == null && chatUpdate == null) {
+    public LobbyServerUpdateMessage(LobbyClientEntry arrivingClient, LobbyClientEntry leavingClient) {
+        if (arrivingClient == null && leavingClient == null) {
             throw new IllegalArgumentException("Not all arguments in a LobbyServerUpdate can be null!");
         }
         this.arrivingClient = arrivingClient;
         this.leavingClient = leavingClient;
-        this.chatUpdate = chatUpdate;
     }
 
     public LobbyClientEntry getArrivingClient() {
@@ -45,10 +41,6 @@ public class LobbyServerUpdateMessage implements Message {
 
     public LobbyClientEntry getLeavingClient() {
         return leavingClient;
-    }
-
-    public String getChatUpdate() {
-        return chatUpdate;
     }
 
     @Override

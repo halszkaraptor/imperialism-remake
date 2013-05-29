@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.model;
+package org.iremake.server.client;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import nu.xom.ParsingException;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.iremake.common.model.Scenario;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.xml.XMLHelper;

@@ -17,12 +17,11 @@
 package org.iremake.common.network.messages.lobby;
 
 import java.util.List;
-import org.iremake.common.network.messages.Message;
 
 /**
  *
  */
-public class LobbyServerOverviewMessage implements Message {
+public class LobbyServerOverviewMessage implements LobbyMessage {
 
     private List<LobbyClientEntry> clients;
     private String chatHistory;

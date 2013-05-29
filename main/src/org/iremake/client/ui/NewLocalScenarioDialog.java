@@ -34,7 +34,7 @@ import net.miginfocom.swing.MigLayout;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.ui.main.MainScreen;
-import org.iremake.common.model.ScenarioScanner;
+import org.iremake.server.client.ScenarioScanner;
 import org.tools.io.Resource;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.PanelWithBackground;

@@ -16,15 +16,21 @@
  */
 package org.iremake.server.network;
 
-import org.iremake.server.client.ServerClient;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.lobby.LobbyClientEntry;
+import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
+import org.iremake.server.client.ServerClient;
+import org.iremake.server.client.ServerClientState;
 
 /**
  *
@@ -69,40 +75,26 @@ public class ServerListener extends Listener {
             connection.close();
         }
     }
+    private StringBuilder chatHistory = new StringBuilder(1000);
 
-    public void disconnect(Integer id, String error) {
-        map.get(id).disconnect(error);
-    }
-
-    public void send(Integer id, Message message) {
-        map.get(id).send(message);
-    }
-
-    public void broadcast(Message message) {
-        for (ServerClient client: map.values()) {
-            client.send(message);
+    public void sendLobbyOverview(ServerClient recipient) {
+        List<LobbyClientEntry> clients = new LinkedList<>();
+        for (ServerClient client : map.values()) {
+            if (ServerClientState.LOBBY.equals(client.getState())) {
+                clients.add(client.getLobbyEntry());
+            }
         }
+        recipient.send(new LobbyServerOverviewMessage(clients, chatHistory.toString()));
     }
-/*
-    public void broadcast(Message message) {
-        for (ServerClient client: map.values()) {
-                client.send(message);
+
+    public void newChatMessage(String text, ServerClient sender) {
+        String chatMessage = String.format("[%s] %s\n", sender.getLobbyEntry().name, text);
+        for (ServerClient client : map.values()) {
+            if (ServerClientState.LOBBY.equals(client.getState())) {
+                client.send(new LobbyChatMessage(chatMessage));
+            }
         }
-    }*/
-
-    public void disconnect(String error) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void send(Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // add to history (prune history if neccessary
+        chatHistory.append(chatMessage);
     }
 }

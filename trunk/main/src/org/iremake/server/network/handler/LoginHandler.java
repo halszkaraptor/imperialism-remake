@@ -31,7 +31,7 @@ public class LoginHandler implements ServerHandler {
     public boolean process(Message message, ServerClient client) {
         if (message instanceof LoginMessage) {
             LoginMessage msg = (LoginMessage) message;
-            
+
             // test version
             if (Option.General_Version.get().equals(msg.getVersion())) {
                 // set the new name
@@ -41,15 +41,16 @@ public class LoginHandler implements ServerHandler {
                 // add some handlers
                 client.addHandler(new ChatHandler());
                 // send a LobbyOverviewMessage
+                client.getListener().sendLobbyOverview(client);
             } else {
                 // version different disconnect and LOG
                 client.disconnect("Client reported different version. Not compatible.");
             }
-            
+
             // no need to process further
             return true;
         }
         return false;
     }
-    
+
 }

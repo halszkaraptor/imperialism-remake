@@ -27,12 +27,12 @@ import org.iremake.server.client.ServerClient;
 public class ChatHandler implements ServerHandler {
 
     private static final Logger LOG = Logger.getLogger(ChatHandler.class.getName());
-    
+
     @Override
     public boolean process(Message message, ServerClient client) {
         if (message instanceof LobbyChatMessage) {
             LobbyChatMessage msg = (LobbyChatMessage) message;
-            
+            client.getListener().newChatMessage(msg.getText(), client);
             return true;
         }
         return false;

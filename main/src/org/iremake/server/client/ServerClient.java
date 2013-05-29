@@ -17,6 +17,8 @@
 package org.iremake.server.client;
 
 import com.esotericsoftware.kryonet.Connection;
+import java.net.InetSocketAddress;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -26,8 +28,8 @@ import org.iremake.client.network.ClientManager;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.lobby.LobbyClientEntry;
 import org.iremake.server.network.ServerListener;
-import org.iremake.server.network.handler.ChatHandler;
 import org.iremake.server.network.handler.LoginHandler;
 import org.iremake.server.network.handler.ServerHandler;
 
@@ -36,13 +38,13 @@ import org.iremake.server.network.handler.ServerHandler;
  */
 public class ServerClient {
 
-    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());    
+    private static final Logger LOG = Logger.getLogger(ServerClient.class.getName());
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final Connection connection;
     private final ServerListener listener;
-    private String name;
-    private ServerClientState state;
-    
+    private LobbyClientEntry lobbyEntry = new LobbyClientEntry();
+    private ServerClientState state = ServerClientState.UNIDENTIFIED;;
+
     private final ErrorHandler errorHandler = new ErrorHandler();
     private List<ServerHandler> handlerList = new LinkedList<>();
 
@@ -54,14 +56,14 @@ public class ServerClient {
     public ServerClient(Connection connection, ServerListener listener) {
         this.connection = connection;
         this.listener = listener;
-        
-        state = ServerClientState.UNIDENTIFIED;
+
         handlerList.add(new LoginHandler());
 
-        /*
+        // fill lobbyEntry
         InetSocketAddress address = connection.getRemoteAddressTCP();
-        name = String.format("[%d,%s]", connection.getID(), address != null ? address.getHostString() : "");
-        */
+        lobbyEntry.ip = address != null ? address.getHostString() : "";
+
+        lobbyEntry.joined = new Date().toString();
     }
 
     /**
@@ -109,17 +111,13 @@ public class ServerClient {
     }
 
     public void setName(String name) {
-        this.name = name;
+        lobbyEntry.name = name;
     }
-    
-    public String getName() {
-        return name;
-    }
-    
+
     public void setState(ServerClientState state) {
         this.state = state;
-    }    
-    
+    }
+
     public ServerClientState getState() {
         return state;
     }
@@ -127,10 +125,16 @@ public class ServerClient {
     public void addHandler(ServerHandler handler) {
         handlerList.add(handler);
     }
-    
+
     public boolean removeHandler(ServerHandler handler) {
         return handlerList.remove(handler);
     }
 
+    public ServerListener getListener() {
+        return listener;
+    }
 
+    public LobbyClientEntry getLobbyEntry() {
+        return lobbyEntry;
+    }
 }

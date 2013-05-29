@@ -84,8 +84,6 @@ public class ClientManager {
             return false;
         }
 
-        addHandler(new ErrorHandler());
-
         // send login message
         send(new LoginMessage(Option.General_Version.get(), "client-name"));
 
@@ -149,7 +147,7 @@ public class ClientManager {
             kryoClient.close();
         }
     }
-    private ErrorHandler errorHandler;
+    private ErrorHandler errorHandler = new ErrorHandler();;
     private List<ClientHandler> handlerList = new LinkedList<>();
 
     /**

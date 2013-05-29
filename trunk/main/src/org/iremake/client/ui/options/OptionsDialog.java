@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
@@ -96,6 +97,8 @@ public class OptionsDialog extends UIDialog {
                 return true;
             }
         });
+
+        serverStatusUpdateTimer.start();
     }
 
     /**
@@ -103,35 +106,37 @@ public class OptionsDialog extends UIDialog {
      */
     private Component createGeneralPanel() {
 
-        JPanel graphics = new JPanel();
-        graphics.setOpaque(false);
-        graphics.setBorder(BorderFactory.createTitledBorder("Graphics"));
+        // graphics area
+        JPanel graphicsArea = new JPanel();
+        graphicsArea.setOpaque(false);
+        graphicsArea.setBorder(BorderFactory.createTitledBorder("Graphics"));
 
-        // components
+        // items in graphics area
         JCheckBox fullScreen = new JCheckBox("Start in Full Screen");
         fullScreen.setOpaque(false);
         items.add(new OptionsDialogCheckBoxItem(fullScreen, Option.Graphics_FullScreenMode));
         if (!Option.isOSWindows) {
             fullScreen.setEnabled(false);
         }
-
         JCheckBox mainControlsRight = new JCheckBox("Main Screen controls on right side");
         mainControlsRight.setOpaque(false);
         items.add(new OptionsDialogCheckBoxItem(mainControlsRight, Option.Graphics_MainScreenControlsRight));
 
-        // graphics panel layout
-        graphics.setLayout(new MigLayout("flowy"));
-        graphics.add(fullScreen);
-        graphics.add(mainControlsRight);
+        // graphics area layout
+        graphicsArea.setLayout(new MigLayout("flowy"));
+        graphicsArea.add(fullScreen);
+        graphicsArea.add(mainControlsRight);
 
-        JPanel language = new JPanel();
-        language.setBorder(BorderFactory.createTitledBorder("Language"));
+        // laguage area
+        JPanel languageArea = new JPanel();
+        languageArea.setOpaque(false);
+        languageArea.setBorder(BorderFactory.createTitledBorder("Language"));
 
-        // layout
+        // create panel and set layout
         JPanel panel = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
         panel.setLayout(new MigLayout("flowy"));
-        panel.add(graphics, "sizegroupx");
-        panel.add(language, "sizegroupx");
+        panel.add(graphicsArea, "sizegroupx");
+        panel.add(languageArea, "sizegroupx");
 
         return panel;
     }
@@ -140,11 +145,25 @@ public class OptionsDialog extends UIDialog {
      * @return Server options tab.
      */
     private Component createServerPanel() {
-        JPanel panel = new JPanel();
-
-        // server toggle
+        // server status panel
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBorder(BorderFactory.createTitledBorder("Server status"));
+        statusPanel.setOpaque(false);
         final JLabel serverStatus = new JLabel();
-        serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
+        serverStatus.setHorizontalAlignment(SwingConstants.LEFT);
+
+        // poll the server status every second
+        serverStatusUpdateTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // update status
+                serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
+            }
+        });
+
+        statusPanel.setLayout(new MigLayout("fill"));
+        statusPanel.add(serverStatus, "growx");
+
 
         final JToggleButton serverToggleButton = new JToggleButton("Start local server");
         serverToggleButton.addItemListener(new ItemListener() {
@@ -175,12 +194,13 @@ public class OptionsDialog extends UIDialog {
         JTextField networkAlias = new JTextField();
         items.add(new OptionsDialogTextFieldItem(networkAlias, Option.Client_Alias));
 
-        // layout
+        // create panel and set layout
+        JPanel panel = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
         panel.setLayout(new MigLayout("wrap 2, fillx", "[][grow]"));
-        panel.add(serverStatus, "span 2");
+        panel.add(statusPanel, "span 2");
         panel.add(new JLabel("Start/stop local server"));
         panel.add(serverToggleButton);
-        panel.add(new JLabel("Default network alias"));
+        panel.add(new JLabel("Default network name"));
         panel.add(networkAlias, "wmin 200");
 
         return panel;
@@ -190,10 +210,7 @@ public class OptionsDialog extends UIDialog {
      * @return Music options tab.
      */
     private Component createMusicPanel() {
-        JPanel panel = new JPanel();
-
         // TODO use OptionsDialogComboBoxItem
-        // TODO only if there are some, otherwise disable
         JComboBox<String> mixerBox = new JComboBox<>();
         if (SoundSystem.hasActiveMixer()) {
             mixerModel = new SimpleComboBoxModel<>(SoundSystem.getAvailableMixerNames());
@@ -205,6 +222,7 @@ public class OptionsDialog extends UIDialog {
         }
 
         JCheckBox muteSound = new JCheckBox("Mute sound");
+        muteSound.setOpaque(false);
         items.add(new OptionsDialogCheckBoxItem(muteSound, Option.Music_Mute) {
             @Override
             public void updateOption() {
@@ -217,7 +235,8 @@ public class OptionsDialog extends UIDialog {
             }
         });
 
-        // layout
+        // create panel and set layout
+        JPanel panel = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
         panel.setLayout(new MigLayout("wrap 2"));
         panel.add(new JLabel("Available devices"));
         panel.add(mixerBox);

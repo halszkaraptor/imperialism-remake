@@ -142,7 +142,15 @@ public class UIDialog {
     protected void close() {
         if (dialog != null && (closingListener == null || closingListener.closing() == true)) {
             dialog.dispose();
+            dialog = null;
         }
+    }
+    
+    protected JDialog createSubDialog(String title, boolean modal) {
+        JDialog subDialog = new JDialog(dialog, title, modal);
+        subDialog.setLocationByPlatform(true);
+        subDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        return subDialog;
     }
 
     /**

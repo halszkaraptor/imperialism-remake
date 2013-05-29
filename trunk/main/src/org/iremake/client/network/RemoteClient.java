@@ -23,14 +23,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.client.Option;
 import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.client.network.handler.ErrorHandler;
-import org.iremake.client.network.handler.LobbyHandler;
 import org.iremake.common.Settings;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
-import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.Message;
 
 /**
@@ -39,7 +36,6 @@ import org.iremake.common.network.messages.Message;
 public class RemoteClient implements ClientContext {
 
     /* Timeout in ms for connection */
-    private static final int TIMEOUT = 5000;
     private static final Logger LOG = Logger.getLogger(RemoteClient.class.getName());
     /* Kryonet client */
     private Client kryoClient;
@@ -74,18 +70,13 @@ public class RemoteClient implements ClientContext {
         kryoClient.addListener(listener);
 
         try {
-            kryoClient.connect(TIMEOUT, host, Settings.NETWORK_PORT);
+            kryoClient.connect(60*60*1000, host, Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, "Client could not connect.");
             stop();
             return false;
         }
-
-        addHandler(new LobbyHandler());
-
-        // send login message
-        send(new LoginMessage(Option.General_Version.get(), "client-name"));
 
         return true;
     }
@@ -130,7 +121,7 @@ public class RemoteClient implements ClientContext {
     /**
      * @return True if running.
      */
-    public boolean isRunning() {
+    public boolean isConnected() {
         return kryoClient != null;
     }
 
@@ -139,6 +130,7 @@ public class RemoteClient implements ClientContext {
      *
      * @param error Error message, if null nothing is sent.
      */
+    @Override
     public void disconnect(String error) {
         if (kryoClient != null) {
             if (error != null) {

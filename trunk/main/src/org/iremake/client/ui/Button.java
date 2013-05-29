@@ -31,13 +31,6 @@ import org.tools.ui.ButtonFactory;
  */
 public enum Button {
 
-    // big buttons in the start menu
-    StartMenuScenario("start/start.button.scenario.png"),
-    StartMenuNetwork("start/start.button.network.png"),
-    StartMenuOptions("start/start.button.options.png"),
-    StartMenuHelp("start/start.button.help.png"),
-    StartMenuEditor("start/start.button.editor.png"),
-    StartMenuExit("start/start.button.exit.png"),
     // small sized buttons
     SmallAdd("misc/generic.button.add.png"),
     SmallDelete("misc/generic.button.delete.png"),

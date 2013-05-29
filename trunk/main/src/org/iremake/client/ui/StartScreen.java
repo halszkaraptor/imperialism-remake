@@ -66,14 +66,14 @@ public class StartScreen extends UIFrame {
         ImageMapLabel menuLabel = new ImageMapLabel();
         menuLabel.setIcon(IOManager.getAsIcon(Places.GraphicsStartup, "start.background.jpg"));    // set image
         // add all icons
-        ActionListener editor = new ActionListener() {
+        ActionListener editorAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIFrame frame = new EditorScreen();
                 frame.switchTo();
             }
         };
-        ActionListener help = new ActionListener() {
+        ActionListener helpAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 URL index = IOManager.getURL(Places.Help, "en_index.html");
@@ -81,11 +81,11 @@ public class StartScreen extends UIFrame {
                 UIDialog.make(browser, "Help");
             }
         };
-        menuLabel.addMapItem(new Rectangle(421, 459, 110, 90), new Point(421, 459), "Editor", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.throne.png"), editor);
-        menuLabel.addMapItem(new Rectangle(821, 60, 200, 375), new Point(821, 60), "New Scenario", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.map.png"), new UIDialogStartAction(NewLocalScenarioDialog.class));
+        menuLabel.addMapItem(new Rectangle(421, 459, 110, 90), new Point(421, 459), "Game Center", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.throne.png"), new UIDialogStartAction(GameCenterDialog.class));
+        menuLabel.addMapItem(new Rectangle(821, 60, 200, 375), new Point(821, 60), "Editor", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.map.png"), editorAction);
         menuLabel.addMapItem(new Rectangle(575, 412, 70, 140), new Point(575, 412), "Exit", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.door.right.png"), StartClient.ExitAction);
         menuLabel.addMapItem(new Rectangle(832, 505, 65, 130), new Point(832, 505), "Preferences", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.fireplace.png"), new UIDialogStartAction(OptionsDialog.class));
-        menuLabel.addMapItem(new Rectangle(127, 397, 130, 130), new Point(127, 397), "Help", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.window.left.png"), help);
+        menuLabel.addMapItem(new Rectangle(127, 397, 130, 130), new Point(127, 397), "Help", IOManager.getAsImage(Places.GraphicsStartup, "start.overlay.window.left.png"), helpAction);
 
         // Version label
         JLabel versionLabel = new JLabel("Version " + Option.General_Version.get());

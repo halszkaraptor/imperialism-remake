@@ -136,7 +136,7 @@ public class StartClient {
 
         // if client is still running disconnect
 
-        if (RemoteClient.INSTANCE.isRunning()) {
+        if (RemoteClient.INSTANCE.isConnected()) {
             LOG.log(Level.INFO, "Client still running, shut down.");
             RemoteClient.INSTANCE.stop();
         }

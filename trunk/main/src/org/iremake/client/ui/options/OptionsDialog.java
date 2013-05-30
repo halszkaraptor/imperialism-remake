@@ -38,6 +38,7 @@ import org.iremake.client.Option;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.sound.MusicManager;
+import org.iremake.client.ui.CommonElements;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.WindowClosingListener;
@@ -107,7 +108,7 @@ public class OptionsDialog extends UIDialog {
         // graphics area
         JPanel graphicsArea = new JPanel();
         graphicsArea.setOpaque(false);
-        graphicsArea.setBorder(BorderFactory.createTitledBorder("Graphics"));
+        graphicsArea.setBorder(CommonElements.createBorder("Graphics"));
 
         // items in graphics area
         JCheckBox fullScreen = new JCheckBox("Start in Full Screen");
@@ -128,7 +129,7 @@ public class OptionsDialog extends UIDialog {
         // laguage area
         JPanel languageArea = new JPanel();
         languageArea.setOpaque(false);
-        languageArea.setBorder(BorderFactory.createTitledBorder("Language"));
+        languageArea.setBorder(CommonElements.createBorder("Language"));
 
         // create panel and set layout
         JPanel panel = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
@@ -145,7 +146,7 @@ public class OptionsDialog extends UIDialog {
     private Component createServerPanel() {
         // server status panel
         JPanel statusPanel = new JPanel();
-        statusPanel.setBorder(BorderFactory.createTitledBorder("Server status"));
+        statusPanel.setBorder(CommonElements.createBorder("Server status"));
         statusPanel.setOpaque(false);
         final JLabel serverStatus = new JLabel();
         serverStatus.setHorizontalAlignment(SwingConstants.LEFT);

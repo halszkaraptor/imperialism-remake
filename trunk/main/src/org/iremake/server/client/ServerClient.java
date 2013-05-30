@@ -26,7 +26,7 @@ import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyClientEntry;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.ServerContext;
 import org.iremake.server.network.handler.LoginHandler;
 import org.iremake.server.network.handler.ServerHandler;
@@ -40,7 +40,7 @@ public class ServerClient {
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final Integer id;
     private final ServerContext context;
-    private LobbyClientEntry lobbyEntry = new LobbyClientEntry();
+    private LobbyListEntry lobbyEntry = new LobbyListEntry();
     private ServerClientState state = ServerClientState.UNIDENTIFIED;;
 
     private final ErrorHandler errorHandler = new ErrorHandler();
@@ -159,7 +159,7 @@ public class ServerClient {
      *
      * @return
      */
-    public LobbyClientEntry getLobbyEntry() {
+    public LobbyListEntry getLobbyEntry() {
         return lobbyEntry;
     }
 }

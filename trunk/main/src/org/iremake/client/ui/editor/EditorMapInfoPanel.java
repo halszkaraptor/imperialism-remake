@@ -17,10 +17,10 @@
 package org.iremake.client.ui.editor;
 
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
+import org.iremake.client.ui.CommonElements;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Scenario;
 import org.iremake.common.model.map.MapPosition;
@@ -44,7 +44,7 @@ public class EditorMapInfoPanel extends JPanel {
      * Setup of the panel and layout.
      */
     public EditorMapInfoPanel() {
-        setBorder(BorderFactory.createTitledBorder("Info"));
+        setBorder(CommonElements.createBorder("Info"));
 
         setLayout(new MigLayout("wrap 1"));
         add(tile);

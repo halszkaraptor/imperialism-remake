@@ -20,7 +20,7 @@ import com.esotericsoftware.kryo.Kryo;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.common.network.messages.lobby.LobbyClientEntry;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
@@ -49,7 +49,7 @@ public class KryoRegistration {
 
         // lobby
         kryo.register(LobbyMessage.class);
-        kryo.register(LobbyClientEntry.class);
+        kryo.register(LobbyListEntry.class);
         kryo.register(LobbyChatMessage.class);
         kryo.register(LobbyServerOverviewMessage.class);
         kryo.register(LobbyServerUpdateMessage.class);

@@ -16,35 +16,58 @@
  */
 package org.iremake.client.network.handler;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.JTextComponent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
+import org.tools.ui.SimpleListModel;
 
 /**
  *
  */
 public class LobbyHandler implements ClientHandler {
     
-    private JTextComponent chatHistory;
+    private Document chatHistory;
+    private SimpleListModel<LobbyListEntry> lobbyListModel;
     
-    public LobbyHandler(JTextComponent chatHistory) {
+    public LobbyHandler(Document chatHistory, SimpleListModel<LobbyListEntry> lobbyListModel) {
         // TODO cannot be null
         this.chatHistory = chatHistory;
+        this.lobbyListModel = lobbyListModel;
     }
 
     @Override
     public boolean process(Message message, ClientContext context) {
         if (message instanceof LobbyMessage) {
             if (message instanceof LobbyChatMessage) {
-                LobbyChatMessage msg = (LobbyChatMessage) message;
                 // a new chat message, display it
-                chatHistory.setText(chatHistory.getText() + msg.getText());
+                LobbyChatMessage msg = (LobbyChatMessage) message;
+                try {
+                    chatHistory.insertString(chatHistory.getLength(), msg.getText(), null);
+                } catch (BadLocationException ex) {
+                    // should not happen
+                }
             } else if (message instanceof LobbyServerOverviewMessage) {
+                LobbyServerOverviewMessage msg = (LobbyServerOverviewMessage) message;
+                
+                    // update chatHistory                
+                try {
+                    chatHistory.remove(0, chatHistory.getLength());
+                    chatHistory.insertString(0, msg.getChatHistory(), null);                    
+                } catch (BadLocationException ex) {
+                    // should not happen
+                }
+
+                // update lobby list
+                lobbyListModel.setFromList(msg.getClients());
+                
                 // a complete new overview, fill with data
             } else if (message instanceof LobbyServerUpdateMessage) {
                 // somebody arrived or left, update

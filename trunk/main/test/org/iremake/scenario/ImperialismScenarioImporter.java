@@ -194,7 +194,7 @@ public class ImperialismScenarioImporter extends JFrame {
         statusTextArea.setText("status");
         statusScrollPane.setViewportView(statusTextArea);
 
-        optionPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+        optionPanel.setBorder(CommonElements.createBorder("Options"));
 
         importmapTextField.setName("import-file"); // NOI18N
 

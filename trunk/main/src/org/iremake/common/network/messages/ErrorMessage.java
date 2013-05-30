@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -38,4 +40,5 @@ public class ErrorMessage implements Message {
     public String toString() {
         return String.format("ErrorMessage [%s]", text);
     }
+    private static final Logger LOG = Logger.getLogger(ErrorMessage.class.getName());
 }

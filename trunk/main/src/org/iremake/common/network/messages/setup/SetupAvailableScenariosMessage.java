@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages.setup;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -23,4 +25,5 @@ public class SetupAvailableScenariosMessage implements SetupMessage {
 
     private SetupAvailableScenariosMessage() {
     }
+    private static final Logger LOG = Logger.getLogger(SetupAvailableScenariosMessage.class.getName());
 }

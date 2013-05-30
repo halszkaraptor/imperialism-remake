@@ -57,7 +57,7 @@ public class RemoteClientServerTest {
         LOG.log(Level.INFO, server.getStatus());
 
         // start and connect client
-        final ClientContext client = RemoteClient.INSTANCE;
+        final ClientContext client = RemoteClient.CONTEXT;
         client.start("localhost");
 
         client.send(new LobbyChatMessage("Anyone want to chat?"));
@@ -71,7 +71,7 @@ public class RemoteClientServerTest {
                 client.stop();
                 server.stop();
             }
-        }, 5000);
+        }, 5_000);
 
     }
 }

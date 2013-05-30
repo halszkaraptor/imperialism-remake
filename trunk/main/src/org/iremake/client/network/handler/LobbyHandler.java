@@ -16,6 +16,7 @@
  */
 package org.iremake.client.network.handler;
 
+import java.util.logging.Logger;
 import javax.swing.text.JTextComponent;
 import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
@@ -52,4 +53,5 @@ public class LobbyHandler implements ClientHandler {
         }
         return false;
     }
+    private static final Logger LOG = Logger.getLogger(LobbyHandler.class.getName());
 }

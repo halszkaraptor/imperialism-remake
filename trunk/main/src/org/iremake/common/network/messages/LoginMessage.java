@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -47,4 +49,5 @@ public class LoginMessage implements Message {
     public String toString() {
         return String.format("LoginMessage [Version : %s, ClientName %s]", version, clientname);
     }
+    private static final Logger LOG = Logger.getLogger(LoginMessage.class.getName());
 }

@@ -45,11 +45,11 @@ public class KryonetSimpleSendReceiveTest {
     public static void main(String[] args) throws IOException {
         final Server server = new Server();
         server.start();
-        server.bind(12345);
+        server.bind(12_345);
 
         final Client client = new Client();
         client.start();
-        client.connect(5000, "localhost", 12345);
+        client.connect(5_000, "localhost", 12_345);
 
         client.addListener(new Listener() {
             @Override
@@ -83,6 +83,6 @@ public class KryonetSimpleSendReceiveTest {
                 server.stop();
                 timer2.cancel();
             }
-        }, 2000);
+        }, 2_000);
     }
 }

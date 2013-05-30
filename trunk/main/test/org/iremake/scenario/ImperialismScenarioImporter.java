@@ -51,9 +51,6 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.JTextComponent;
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Elements;
 import nu.xom.ParsingException;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
@@ -508,7 +505,7 @@ public class ImperialismScenarioImporter extends JFrame {
         }
 
         // detect provinces
-        Set<Integer> up = new HashSet<>(1000);
+        Set<Integer> up = new HashSet<>(1_000);
         for (int i = 0; i < chunk; i++) {
             if (terrain_underlay[i] != 5) {
                 up.add(provinces[i]);
@@ -527,8 +524,8 @@ public class ImperialismScenarioImporter extends JFrame {
         }
 
         // add provinces to scenario
-        Map<Integer, Province> ppmap = new HashMap<>(1000);
-        Set<Integer> processed = new HashSet<>(1000);
+        Map<Integer, Province> ppmap = new HashMap<>(1_000);
+        Set<Integer> processed = new HashSet<>(1_000);
         for (int i = 0; i < chunk; i++) {
             if (terrain_underlay[i] != 5) {
                 if (!processed.contains(provinces[i])) {

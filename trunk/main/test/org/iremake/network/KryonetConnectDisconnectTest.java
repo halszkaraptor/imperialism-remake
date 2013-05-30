@@ -64,14 +64,14 @@ public class KryonetConnectDisconnectTest {
         // start server and add listener
         final Server server = new Server();
         server.start();
-        server.bind(12345);
+        server.bind(12_345);
         LogListener listener = new LogListener();
         server.addListener(listener);
 
         // start and connect client
         final Client client = new Client();
         client.start();
-        client.connect(1000, "localhost", 12345);
+        client.connect(1_000, "localhost", 12_345);
 
         // send some messages
         client.sendTCP("hallo");
@@ -90,6 +90,6 @@ public class KryonetConnectDisconnectTest {
                 client.stop();
                 server.stop();
             }
-        }, 5000);
+        }, 5_000);
     }
 }

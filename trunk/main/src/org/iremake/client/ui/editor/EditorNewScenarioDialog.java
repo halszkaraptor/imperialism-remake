@@ -18,7 +18,6 @@ package org.iremake.client.ui.editor;
 
 import java.util.logging.Logger;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;

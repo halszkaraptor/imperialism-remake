@@ -205,9 +205,6 @@ public class EditorScreen extends UIFrame {
                         os = new FileOutputStream(f);
                         XMLHelper.write(os, xml);
                     } catch (IOException ex) {
-                        //LOG.log(Level.SEVERE, null, ex);
-                        //NotificationFactory.createInfoPane(TableEditorFrame.this, "Saving failed.");
-                        return;
                     }
                     //NotificationFactory.createInfoPane(TableEditorFrame.this, "Table saved.");
                 }

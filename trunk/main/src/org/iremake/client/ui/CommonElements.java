@@ -16,6 +16,7 @@
  */
 package org.iremake.client.ui;
 
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 
 /**
@@ -30,5 +31,6 @@ public class CommonElements {
         JLabel label = new JLabel(content);
         return label;
     }
+    private static final Logger LOG = Logger.getLogger(CommonElements.class.getName());
     
 }

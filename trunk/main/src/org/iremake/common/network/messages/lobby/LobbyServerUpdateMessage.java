@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages.lobby;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -47,4 +49,5 @@ public class LobbyServerUpdateMessage implements LobbyMessage {
     public String toString() {
         return String.format("LobbyServerUpdateMessage");
     }
+    private static final Logger LOG = Logger.getLogger(LobbyServerUpdateMessage.class.getName());
 }

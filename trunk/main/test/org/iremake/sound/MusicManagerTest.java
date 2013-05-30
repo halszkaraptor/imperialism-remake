@@ -30,7 +30,7 @@ public class MusicManagerTest {
     public static void main(String[] args) throws InterruptedException {
         MusicManager.setup();
         MusicManager.start();
-        Thread.sleep(5000);
+        Thread.sleep(5_000);
         MusicManager.cleanup();
     }
     private static final Logger LOG = Logger.getLogger(MusicManagerTest.class.getName());

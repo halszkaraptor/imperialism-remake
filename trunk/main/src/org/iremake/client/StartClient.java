@@ -49,6 +49,9 @@ import org.tools.ui.utils.LookAndFeel;
 public class StartClient {
 
     private static final Logger LOG = Logger.getLogger(StartClient.class.getName());
+    /**
+     *
+     */
     public static final ActionListener ExitAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -136,9 +139,9 @@ public class StartClient {
 
         // if client is still running disconnect
 
-        if (RemoteClient.INSTANCE.isConnected()) {
+        if (RemoteClient.CONTEXT.isConnected()) {
             LOG.log(Level.INFO, "Client still running, shut down.");
-            RemoteClient.INSTANCE.stop();
+            RemoteClient.CONTEXT.stop();
         }
 
         // if server is still running shut down

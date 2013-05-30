@@ -16,6 +16,7 @@
  */
 package org.iremake.server.network.handler;
 
+import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.Message;
@@ -54,5 +55,6 @@ public class LoginHandler implements ServerHandler {
         }
         return false;
     }
+    private static final Logger LOG = Logger.getLogger(LoginHandler.class.getName());
 
 }

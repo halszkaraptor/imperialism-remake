@@ -19,6 +19,7 @@ package org.iremake.client.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -63,13 +64,23 @@ public class GameCenterDialog extends UIDialog {
 
     private Component createMenuBar() {
         JButton localScenarioButton = Button.ScenarioStart.create();
+        localScenarioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // close this dialog
+                GameCenterDialog.this.close();
+                // open another one
+                UIDialog dialog = new NewLocalScenarioDialog();
+                dialog.start();
+            }
+        });
 
         JButton connectRemoteServerButton = Button.NetworkConnect.create();
         connectRemoteServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // if already connect, do nothing
-                if (RemoteClient.INSTANCE.isConnected()) {
+                if (RemoteClient.CONTEXT.isConnected()) {
                     FrameManager.getInstance().scheduleInfoMessage("Client already connect, disconnect first!");
                     return;
                 }
@@ -83,11 +94,11 @@ public class GameCenterDialog extends UIDialog {
                 connectButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (RemoteClient.INSTANCE.start(ipField.getText())) {
+                        if (RemoteClient.CONTEXT.start(ipField.getText())) {
                             // we connected
                             FrameManager.getInstance().scheduleInfoMessage("Connection successful");
-                            RemoteClient.INSTANCE.addHandler(new LobbyHandler(chatHistory));                            
-                            RemoteClient.INSTANCE.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));                            
+                            RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory));                            
+                            RemoteClient.CONTEXT.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));                            
                         } else {
                             // we couldn't connect
                             FrameManager.getInstance().scheduleInfoMessage("Could not connect!");
@@ -116,8 +127,8 @@ public class GameCenterDialog extends UIDialog {
         disconnectRemoteServerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (RemoteClient.INSTANCE.isConnected()) {
-                    RemoteClient.INSTANCE.disconnect("User request disconnection.");
+                if (RemoteClient.CONTEXT.isConnected()) {
+                    RemoteClient.CONTEXT.disconnect("User request disconnection.");
                 }
             }
         });
@@ -169,8 +180,8 @@ public class GameCenterDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // if we are connected and have some text send it
-                if (RemoteClient.INSTANCE.isConnected() && chatInput.getText().length() > 0) {
-                    RemoteClient.INSTANCE.send(new LobbyChatMessage(chatInput.getText()));
+                if (RemoteClient.CONTEXT.isConnected() && chatInput.getText().length() > 0) {
+                    RemoteClient.CONTEXT.send(new LobbyChatMessage(chatInput.getText()));
                 }
                 // in any case clear the text again
                 chatInput.setText("");
@@ -179,4 +190,5 @@ public class GameCenterDialog extends UIDialog {
 
         return chatInput;
     }
+    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());
 }

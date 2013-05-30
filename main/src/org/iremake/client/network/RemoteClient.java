@@ -17,10 +17,13 @@
 package org.iremake.client.network;
 
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.network.handler.ClientHandler;
@@ -33,14 +36,16 @@ import org.iremake.common.network.messages.Message;
 /**
  * Fires up network connection for the client.
  */
-public class RemoteClient implements ClientContext {
+public class RemoteClient extends Listener implements ClientContext {
 
     /* Timeout in ms for connection */
     private static final Logger LOG = Logger.getLogger(RemoteClient.class.getName());
     /* Kryonet client */
     private Client kryoClient;
     /* The only instance */
-    public static final RemoteClient INSTANCE = new RemoteClient();
+    public static final ClientContext INSTANCE = new RemoteClient();
+    private ErrorHandler errorHandler = new ErrorHandler();
+    private List<ClientHandler> handlerList = new LinkedList<>();
 
     /**
      * Avoid instantiation.
@@ -54,6 +59,7 @@ public class RemoteClient implements ClientContext {
      * @param host
      * @return
      */
+    @Override
     public boolean start(String host) {
         LOG.log(Level.FINE, "Client connection initiated.");
         if (kryoClient != null) {
@@ -65,12 +71,10 @@ public class RemoteClient implements ClientContext {
         KryoRegistration.register(kryoClient.getKryo());
 
         kryoClient.start();
-
-        Listener listener = new ClientListener(this);
-        kryoClient.addListener(listener);
+        kryoClient.addListener(this);
 
         try {
-            kryoClient.connect(60*60*1000, host, Settings.NETWORK_PORT);
+            kryoClient.connect(60 * 60 * 1000, host, Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, "Client could not connect.");
@@ -87,6 +91,7 @@ public class RemoteClient implements ClientContext {
      * @param message
      */
     // TODO do we need this here?
+    @Override
     public void send(Message message) {
         if (kryoClient != null && kryoClient.isConnected()) {
             LOG.log(Level.FINE, "Send message: {0}", message.toString());
@@ -97,6 +102,7 @@ public class RemoteClient implements ClientContext {
     /**
      * Stops the client.
      */
+    @Override
     public void stop() {
         // TODO what happens to operations being sent
         if (kryoClient != null) {
@@ -121,6 +127,7 @@ public class RemoteClient implements ClientContext {
     /**
      * @return True if running.
      */
+    @Override
     public boolean isConnected() {
         return kryoClient != null;
     }
@@ -139,14 +146,13 @@ public class RemoteClient implements ClientContext {
             kryoClient.close();
         }
     }
-    private ErrorHandler errorHandler = new ErrorHandler();;
-    private List<ClientHandler> handlerList = new LinkedList<>();
 
     /**
      *
      * @param channel
      * @param handler
      */
+    @Override
     public void addHandler(ClientHandler handler) {
         if (!handlerList.contains(handler)) {
             handlerList.add(handler);
@@ -178,6 +184,57 @@ public class RemoteClient implements ClientContext {
             if (handler.process(message, this)) {
                 break;
             }
+        }
+    }
+    private ExecutorService threadPool;
+
+    /**
+     * We connected to the server.
+     *
+     * @param connection Can be ignored, we already know the connection from the
+     * manager.
+     */
+    @Override
+    public void connected(Connection connection) {
+        LOG.log(Level.FINE, "Client has connected.");
+        // exactly one thread, so processing will be one by one
+        threadPool = Executors.newFixedThreadPool(1);
+    }
+
+    /**
+     * We disconnected from the server. Either the server disconnected us or we
+     * disconnected from him.
+     *
+     * @param connection Can be ignored, is also stored in the context.
+     */
+    @Override
+    public void disconnected(Connection connection) {
+        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
+        // TODO either we or somebody else disconnected, tell somebody about it
+        threadPool.shutdown();
+    }
+
+    /**
+     * We received a message from the server, first we make sure it's of type
+     * Message, then we schedule processing of this message in the
+     * ExecutorService.
+     *
+     * @param connection Used connection
+     * @param object Incoming object (message)
+     */
+    @Override
+    public void received(Connection connection, final Object object) {
+        // want only type Message, otherwise shut down
+        if (connection.isConnected() && object instanceof Message) {
+            // schedule for processing
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    process((Message) object);
+                }
+            });
+        } else {
+            connection.close();
         }
     }
 }

@@ -16,6 +16,7 @@
  */
 package org.iremake.server.network;
 
+import org.iremake.client.network.LocalClient;
 import org.iremake.common.network.messages.Message;
 import org.iremake.server.client.ServerClient;
 
@@ -24,7 +25,7 @@ import org.iremake.server.client.ServerClient;
  */
 public class LocalServer implements ServerContext {
 
-    public static final LocalServer INSTANCE = new LocalServer();
+    public static final ServerContext CONTEXT = new LocalServer();
     private ServerClient client;
 
     private LocalServer() {
@@ -57,6 +58,30 @@ public class LocalServer implements ServerContext {
 
     @Override
     public void sendMessage(Integer id, Message message) {
-        // TODO, tell client
+        LocalClient.CONTEXT.process(message);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public String getStatus() {
+        return "";
+    }
+
+    @Override
+    public boolean start() {
+        return false;
+    }
+
+    @Override
+    public void process(Integer id, Message message) {
+
     }
 }

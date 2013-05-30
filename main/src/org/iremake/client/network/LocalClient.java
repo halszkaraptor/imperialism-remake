@@ -16,17 +16,48 @@
  */
 package org.iremake.client.network;
 
+import org.iremake.client.network.handler.ClientHandler;
+import org.iremake.common.network.messages.Message;
+import org.iremake.server.network.LocalServer;
+
 /**
  *
  */
 public class LocalClient implements ClientContext {
 
-    public static final LocalClient INSTANCE = new LocalClient();
+    public static final ClientContext CONTEXT = new LocalClient();
 
     private LocalClient() {
     }
 
     @Override
     public void disconnect(String error) {
+    }
+
+    @Override
+    public boolean isConnected() {
+        return false;
+    }
+
+    @Override
+    public boolean start(String address) {
+        return false;
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public void addHandler(ClientHandler handler) {
+    }
+
+    @Override
+    public void send(Message message) {
+        LocalServer.CONTEXT.process(null, message);
+    }
+
+    @Override
+    public void process(Message message) {
     }
 }

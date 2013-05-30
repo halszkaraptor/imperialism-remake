@@ -23,9 +23,11 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.Option;
+import org.iremake.client.network.ClientContext;
 import org.iremake.client.network.RemoteClient;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.server.network.RemoteServerManager;
+import org.iremake.server.network.RemoteServer;
+import org.iremake.server.network.ServerContext;
 
 /**
  * Small brother of the console, not interactive. Tests the network capabilities.
@@ -50,12 +52,12 @@ public class RemoteClientServerTest {
         Option.load();
 
         // start server
-        final RemoteServerManager server = RemoteServerManager.INSTANCE;
+        final ServerContext server = RemoteServer.CONTEXT;
         server.start();
         LOG.log(Level.INFO, server.getStatus());
 
         // start and connect client
-        final RemoteClient client = RemoteClient.INSTANCE;
+        final ClientContext client = RemoteClient.INSTANCE;
         client.start("localhost");
 
         client.send(new LobbyChatMessage("Anyone want to chat?"));

@@ -16,6 +16,9 @@
  */
 package org.iremake.client.network;
 
+import org.iremake.client.network.handler.ClientHandler;
+import org.iremake.common.network.messages.Message;
+
 /**
  *
  */
@@ -23,4 +26,15 @@ public interface ClientContext {
 
     public void disconnect(String error);
 
+    public boolean isConnected();
+
+    public boolean start(String address);
+
+    public void stop();
+
+    public void addHandler(ClientHandler handler);
+
+    public void send(Message message);
+
+    public void process(Message message);
 }

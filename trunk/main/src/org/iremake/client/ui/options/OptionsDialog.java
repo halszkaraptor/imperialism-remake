@@ -43,7 +43,7 @@ import org.iremake.client.sound.MusicManager;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.UIDialog;
 import org.iremake.client.ui.WindowClosingListener;
-import org.iremake.server.network.RemoteServerManager;
+import org.iremake.server.network.RemoteServer;
 import org.tools.sound.SoundSystem;
 import org.tools.ui.PanelWithBackground;
 import org.tools.ui.SimpleComboBoxModel;
@@ -157,7 +157,7 @@ public class OptionsDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // update status
-                serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
+                serverStatus.setText(RemoteServer.CONTEXT.getStatus());
             }
         });
 
@@ -171,10 +171,10 @@ public class OptionsDialog extends UIDialog {
             public void itemStateChanged(ItemEvent itemEvent) {
                 int state = itemEvent.getStateChange();
                 if (state == ItemEvent.SELECTED) {
-                    RemoteServerManager.INSTANCE.start();
+                    RemoteServer.CONTEXT.start();
                     serverToggleButton.setText("Shutdown local server");
                 } else {
-                    RemoteServerManager.INSTANCE.stop();
+                    RemoteServer.CONTEXT.stop();
                     serverToggleButton.setText("Start local server");
                 }
             }
@@ -185,7 +185,7 @@ public class OptionsDialog extends UIDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // update status
-                serverStatus.setText(RemoteServerManager.INSTANCE.getStatus());
+                serverStatus.setText(RemoteServer.CONTEXT.getStatus());
             }
         });
         serverStatusUpdateTimer.start();

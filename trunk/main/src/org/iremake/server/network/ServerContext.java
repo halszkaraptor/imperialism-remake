@@ -34,4 +34,14 @@ public interface ServerContext {
     public void disconnect(Integer id);
 
     public void sendMessage(Integer id, Message message);
+
+    public boolean isRunning();
+
+    public void stop();
+
+    public String getStatus();
+
+    public boolean start();
+
+    public void process(Integer id, Message message);
 }

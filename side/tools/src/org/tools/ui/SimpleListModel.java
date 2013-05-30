@@ -16,6 +16,7 @@
  */
 package org.tools.ui;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.AbstractListModel;
@@ -24,17 +25,29 @@ import javax.swing.AbstractListModel;
  * A simple, generic, read-only ListModel implementation for JList components
  * based (naturally) on a List.
  */
+// TODO make copies if demanded
 public class SimpleListModel<E> extends AbstractListModel<E> {
-
+    
+    private static final Logger LOG = Logger.getLogger(SimpleListModel.class.getName());    
     private static final long serialVersionUID = 1L;
     private List<E> content;
+    
+    public SimpleListModel() {
+        content = new LinkedList<>();
+    }
 
     /**
      *
      * @param list
      */
     public SimpleListModel(List<E> list) {
-        content = list; // TODO make copy?
+        content = list;
+    }
+    
+    public void setFromList(List<E> list) {
+        fireIntervalRemoved(this, 0, content.size());
+        content = list;
+        fireIntervalAdded(this, 0, content.size());
     }
 
     @Override
@@ -46,5 +59,4 @@ public class SimpleListModel<E> extends AbstractListModel<E> {
     public E getElementAt(int index) {
         return content.get(index);
     }
-    private static final Logger LOG = Logger.getLogger(SimpleListModel.class.getName());
 }

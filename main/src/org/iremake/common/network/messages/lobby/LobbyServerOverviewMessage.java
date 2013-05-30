@@ -25,13 +25,13 @@ import java.util.logging.Logger;
  */
 public class LobbyServerOverviewMessage implements LobbyMessage {
 
-    private List<LobbyClientEntry> clients;
+    private List<LobbyListEntry> clients;
     private String chatHistory;
 
     private LobbyServerOverviewMessage() {
     }
 
-    public LobbyServerOverviewMessage(List<LobbyClientEntry> clients, String chatHistory) {
+    public LobbyServerOverviewMessage(List<LobbyListEntry> clients, String chatHistory) {
         if (clients == null) {
             throw new IllegalArgumentException("Arguments clients cannot be null!");
         }
@@ -40,7 +40,7 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
         this.chatHistory = chatHistory;
     }
 
-    public List<LobbyClientEntry> getClients() {
+    public List<LobbyListEntry> getClients() {
         return Collections.unmodifiableList(clients);
     }
 

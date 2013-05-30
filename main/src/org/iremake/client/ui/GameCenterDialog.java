@@ -19,9 +19,9 @@ package org.iremake.client.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -38,15 +38,21 @@ import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.LobbyHandler;
 import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
+import org.iremake.server.network.RemoteServer;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.PanelWithBackground;
+import org.tools.ui.SimpleListModel;
 
 /**
  *
  */
 public class GameCenterDialog extends UIDialog {
+
+    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());    
     
     private JTextArea chatHistory;
+    private SimpleListModel<LobbyListEntry> lobbyListModel;
 
     public GameCenterDialog() {
         super("Game Center");
@@ -89,6 +95,10 @@ public class GameCenterDialog extends UIDialog {
 
                 // text fields and buttons
                 final JTextField ipField = new JTextField();
+                if (RemoteServer.CONTEXT.isRunning()) {
+                    ipField.setText("localhost");
+                    ipField.setEditable(false);
+                }
                 final JTextField aliasField = new JTextField(Option.Client_Alias.get());
                 JButton connectButton = new JButton("Connect");
                 connectButton.addActionListener(new ActionListener() {
@@ -97,7 +107,7 @@ public class GameCenterDialog extends UIDialog {
                         if (RemoteClient.CONTEXT.start(ipField.getText())) {
                             // we connected
                             FrameManager.getInstance().scheduleInfoMessage("Connection successful");
-                            RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory));                            
+                            RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory.getDocument(), lobbyListModel));                            
                             RemoteClient.CONTEXT.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));                            
                         } else {
                             // we couldn't connect
@@ -140,14 +150,13 @@ public class GameCenterDialog extends UIDialog {
     }
 
     private Component createMemberList() {
-        JList<String> list = new JList<>();
-        list.setBorder(BorderFactory.createTitledBorder("Lobby"));
+        JList<LobbyListEntry> list = new JList<>();
+        list.setBorder(CommonElements.createBorder("Lobby"));
         list.setOpaque(false);
 
         // model
-        DefaultListModel<String> model = new DefaultListModel<>();
-        model.add(0, "Hallo");
-        list.setModel(model);
+        lobbyListModel = new SimpleListModel<>();
+        list.setModel(lobbyListModel);
 
         return list;
     }
@@ -162,10 +171,17 @@ public class GameCenterDialog extends UIDialog {
         JScrollPane chatPane = new JScrollPane();
         chatPane.setOpaque(false);
         chatPane.getViewport().setOpaque(false);
-        chatPane.setBorder(BorderFactory.createTitledBorder("Chat history"));
+        chatPane.setBorder(CommonElements.createBorder("Chat history"));
 
         chatPane.setViewportView(chatHistory);
         chatPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        chatPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {  
+                e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+            }
+        });  
 
         return chatPane;
     }
@@ -174,7 +190,7 @@ public class GameCenterDialog extends UIDialog {
         // chat input field
         final JTextField chatInput = new JTextField();
         chatInput.setOpaque(false);
-        chatInput.setBorder(BorderFactory.createTitledBorder("Send message"));
+        chatInput.setBorder(CommonElements.createBorder("Send message"));
         
         chatInput.addActionListener(new ActionListener() {
             @Override
@@ -190,5 +206,4 @@ public class GameCenterDialog extends UIDialog {
 
         return chatInput;
     }
-    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());
 }

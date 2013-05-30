@@ -117,7 +117,6 @@ public class FrameManager {
 
         // create panel with border
         panel = new JPanel();
-        // panel.setBorder(BorderFactory.createLineBorder(Color.black, 10));
         panel.setOpaque(false);
         // set layoutmanager
         panel.setLayout(new MigLayout("fill, gap 0, insets 0"));

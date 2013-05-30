@@ -63,7 +63,7 @@ public class NewLocalScenarioDialog extends UIDialog {
         // put them in a list
         final List<String> titles = scanner.getScenarios();
         JList<String> selectList = new JList<>();
-        selectList.setBorder(BorderFactory.createTitledBorder("Scenarios"));
+        selectList.setBorder(CommonElements.createBorder("Scenarios"));
         selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // setting up a JList model
         ListModel<String> model = new SimpleListModel<>(titles);
@@ -135,7 +135,7 @@ public class NewLocalScenarioDialog extends UIDialog {
      */
     private JPanel makeInfoPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createTitledBorder("Info"));
+        panel.setBorder(CommonElements.createBorder("Info"));
         return panel;
     }
 }

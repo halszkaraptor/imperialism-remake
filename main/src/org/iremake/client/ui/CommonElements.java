@@ -16,13 +16,18 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 /**
  *
  */
 public class CommonElements {
+    
+    private static final Logger LOG = Logger.getLogger(CommonElements.class.getName());    
     
     private CommonElements() {
     }
@@ -31,6 +36,10 @@ public class CommonElements {
         JLabel label = new JLabel(content);
         return label;
     }
-    private static final Logger LOG = Logger.getLogger(CommonElements.class.getName());
     
+    private static final Border lineBorder = BorderFactory.createLineBorder(Color.darkGray, 1, true);
+    
+    public static Border createBorder(String title) {
+        return BorderFactory.createTitledBorder(lineBorder, title);
+    }
 }

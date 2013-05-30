@@ -51,6 +51,7 @@ import nu.xom.ParsingException;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.ui.Button;
+import org.iremake.client.ui.CommonElements;
 import org.iremake.client.ui.FrameCloseListener;
 import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.ListSelectDialog;
@@ -247,7 +248,7 @@ public class EditorScreen extends UIFrame {
      */
     private JComponent createGeneralPropertiesPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createTitledBorder("General"));
+        panel.setBorder(CommonElements.createBorder("General"));
 
         scenarioTitle = new JTextField();
         scenarioTitle.addFocusListener(new FocusListener() {
@@ -275,7 +276,7 @@ public class EditorScreen extends UIFrame {
      */
     private JComponent createNationsPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createTitledBorder("Nations"));
+        panel.setBorder(CommonElements.createBorder("Nations"));
 
         // InfoLabel
         JLabel nationsInfoLabel = new JLabel("X Nations - Y Tiles without Nation");
@@ -366,7 +367,7 @@ public class EditorScreen extends UIFrame {
      */
     private JComponent createProvincesPanel() {
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createTitledBorder("Provinces"));
+        panel.setBorder(CommonElements.createBorder("Provinces"));
 
         // InfoLabel
         JLabel provinceInfoLabel = new JLabel("X Provinces");

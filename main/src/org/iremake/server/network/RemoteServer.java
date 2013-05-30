@@ -34,7 +34,7 @@ import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.common.network.messages.lobby.LobbyClientEntry;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 import org.iremake.server.client.ServerClient;
@@ -177,9 +177,8 @@ public class RemoteServer extends Listener implements ServerContext {
                 throw new RuntimeException("connection not registered. internal error.");
             }
             process(id, message);
-        } else {
-            connection.close();
         }
+        // if is wasn't a Message it might be a keepalive message
     }
 
     @Override
@@ -189,7 +188,7 @@ public class RemoteServer extends Listener implements ServerContext {
 
     @Override
     public void sendLobbyOverview(ServerClient recipient) {
-        List<LobbyClientEntry> overviewList = new LinkedList<>();
+        List<LobbyListEntry> overviewList = new LinkedList<>();
         for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
                 overviewList.add(client.getLobbyEntry());

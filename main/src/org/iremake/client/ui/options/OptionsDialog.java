@@ -19,12 +19,11 @@ package org.iremake.client.ui.options;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -32,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import net.miginfocom.swing.MigLayout;
@@ -153,7 +151,7 @@ public class OptionsDialog extends UIDialog {
         serverStatus.setHorizontalAlignment(SwingConstants.LEFT);
 
         // poll the server status every second
-        serverStatusUpdateTimer = new Timer(1000, new ActionListener() {
+        serverStatusUpdateTimer = new Timer(1_000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // update status
@@ -165,23 +163,28 @@ public class OptionsDialog extends UIDialog {
         statusPanel.add(serverStatus, "growx");
 
 
-        final JToggleButton serverToggleButton = new JToggleButton("Start local server");
-        serverToggleButton.addItemListener(new ItemListener() {
+        final JButton serverToggleButton = new JButton();
+        if (RemoteServer.CONTEXT.isRunning()) {
+            serverToggleButton.setText("Shutdown local server");
+        } else {
+            serverToggleButton.setText("Start local server");
+        }
+        serverToggleButton.addActionListener(new ActionListener() {
             @Override
-            public void itemStateChanged(ItemEvent itemEvent) {
-                int state = itemEvent.getStateChange();
-                if (state == ItemEvent.SELECTED) {
-                    RemoteServer.CONTEXT.start();
-                    serverToggleButton.setText("Shutdown local server");
-                } else {
+            public void actionPerformed(ActionEvent e) {
+                if (RemoteServer.CONTEXT.isRunning()) {
                     RemoteServer.CONTEXT.stop();
-                    serverToggleButton.setText("Start local server");
+                    serverToggleButton.setText("Start local server");                    
+                } else {
+                    RemoteServer.CONTEXT.start();
+                    serverToggleButton.setText("Shutdown local server");                    
                 }
+
             }
         });
-
+                
         // poll the server status every second
-        serverStatusUpdateTimer = new Timer(1000, new ActionListener() {
+        serverStatusUpdateTimer = new Timer(1_000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // update status

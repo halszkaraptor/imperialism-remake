@@ -90,7 +90,7 @@ public class FullFrame {
             cm.registerComponent(frame);
         }
 
-        final Timer timer = new Timer(2000, new ActionListener() {
+        final Timer timer = new Timer(2_000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println(frame.getBounds());

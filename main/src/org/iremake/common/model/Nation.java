@@ -22,7 +22,6 @@ import org.iremake.common.model.map.MapItem.MapItemType;
 import org.tools.xml.FullXMLable;
 import org.tools.xml.Node;
 import org.tools.xml.XList;
-import org.tools.xml.XMLHelper;
 import org.tools.xml.XProperty;
 
 /**

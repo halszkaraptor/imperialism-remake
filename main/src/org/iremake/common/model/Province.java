@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import org.iremake.common.model.map.MapPosition;
 import org.tools.xml.FullXMLable;
 import org.tools.xml.Node;
-import org.tools.xml.XMLHelper;
 
 /**
  * A province, currently with id, name and town position.
@@ -33,6 +32,9 @@ public class Province implements FullXMLable {
      *
      */
     public static final int NONE = 0;
+    /**
+     *
+     */
     public static final String XML_NAME = "Province";
     private int id;
     private String name;

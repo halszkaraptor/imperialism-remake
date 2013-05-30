@@ -70,7 +70,7 @@ public class ServerClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                errorHandler.process(message, RemoteClient.INSTANCE);
+                errorHandler.process(message, RemoteClient.CONTEXT);
                 for (ServerHandler handler: handlerList) {
                     if (handler.process(message, ServerClient.this)) {
                         break;
@@ -106,30 +106,59 @@ public class ServerClient {
         threadPool.shutdown();
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         lobbyEntry.name = name;
     }
 
+    /**
+     *
+     * @param state
+     */
     public void setState(ServerClientState state) {
         this.state = state;
     }
 
+    /**
+     *
+     * @return
+     */
     public ServerClientState getState() {
         return state;
     }
 
+    /**
+     *
+     * @param handler
+     */
     public void addHandler(ServerHandler handler) {
         handlerList.add(handler);
     }
 
+    /**
+     *
+     * @param handler
+     * @return
+     */
     public boolean removeHandler(ServerHandler handler) {
         return handlerList.remove(handler);
     }
 
+    /**
+     *
+     * @return
+     */
     public ServerContext getContext() {
         return context;
     }
 
+    /**
+     *
+     * @return
+     */
     public LobbyClientEntry getLobbyEntry() {
         return lobbyEntry;
     }

@@ -42,7 +42,7 @@ public class Settings {
 
     private static final Logger LOG = Logger.getLogger(Settings.class.getName());
     /* common port for the network communication */
-    public static final int NETWORK_PORT = 19357;
+    public static final int NETWORK_PORT = 19_357;
     /* mapping: id -> description of terrain types */
     private static Map<Integer, String> terrainNames;
     /* default terrain id */

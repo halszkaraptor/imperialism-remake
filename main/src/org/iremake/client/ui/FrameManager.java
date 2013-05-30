@@ -106,7 +106,7 @@ public class FrameManager {
         frame.setTitle("Imperialism Remake");
 
         // set minimum size (1024x768) according to specs
-        frame.setMinimumSize(new Dimension(1024, 768));
+        frame.setMinimumSize(new Dimension(1_024, 768));
 
         // set app icon
         frame.setIconImage(IOManager.getAsImage(Places.GraphicsIcons, "icon.app.png"));

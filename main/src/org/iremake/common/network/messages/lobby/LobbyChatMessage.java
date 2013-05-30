@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages.lobby;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -38,4 +40,5 @@ public class LobbyChatMessage implements LobbyMessage {
     public String toString() {
         return String.format("LobbyChatMessage [%s]", text);
     }
+    private static final Logger LOG = Logger.getLogger(LobbyChatMessage.class.getName());
 }

@@ -42,4 +42,5 @@ public class LocalClientServerTest {
         // load options
         Option.load();
     }
+    private static final Logger LOG = Logger.getLogger(LocalClientServerTest.class.getName());
 }

@@ -16,6 +16,7 @@
  */
 package org.iremake.server.network;
 
+import java.util.logging.Logger;
 import org.iremake.client.network.LocalClient;
 import org.iremake.common.network.messages.Message;
 import org.iremake.server.client.ServerClient;
@@ -84,4 +85,5 @@ public class LocalServer implements ServerContext {
     public void process(Integer id, Message message) {
 
     }
+    private static final Logger LOG = Logger.getLogger(LocalServer.class.getName());
 }

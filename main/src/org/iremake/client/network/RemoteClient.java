@@ -43,7 +43,10 @@ public class RemoteClient extends Listener implements ClientContext {
     /* Kryonet client */
     private Client kryoClient;
     /* The only instance */
-    public static final ClientContext INSTANCE = new RemoteClient();
+    /**
+     *
+     */
+    public static final ClientContext CONTEXT = new RemoteClient();
     private ErrorHandler errorHandler = new ErrorHandler();
     private List<ClientHandler> handlerList = new LinkedList<>();
 
@@ -74,7 +77,7 @@ public class RemoteClient extends Listener implements ClientContext {
         kryoClient.addListener(this);
 
         try {
-            kryoClient.connect(60 * 60 * 1000, host, Settings.NETWORK_PORT);
+            kryoClient.connect(60 * 60 * 1_000, host, Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
             LOG.log(Level.SEVERE, "Client could not connect.");
@@ -175,6 +178,7 @@ public class RemoteClient extends Listener implements ClientContext {
      *
      * @param message
      */
+    @Override
     public void process(Message message) {
 
         // we always check the error handler first

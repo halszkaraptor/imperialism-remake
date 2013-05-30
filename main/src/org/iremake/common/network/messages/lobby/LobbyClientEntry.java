@@ -16,6 +16,8 @@
  */
 package org.iremake.common.network.messages.lobby;
 
+import java.util.logging.Logger;
+
 /**
  *
  */
@@ -24,4 +26,5 @@ public class LobbyClientEntry {
     public String name;
     public String ip;
     public String joined;
+    private static final Logger LOG = Logger.getLogger(LobbyClientEntry.class.getName());
 }

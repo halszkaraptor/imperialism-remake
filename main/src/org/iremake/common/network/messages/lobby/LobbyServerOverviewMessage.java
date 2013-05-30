@@ -16,7 +16,9 @@
  */
 package org.iremake.common.network.messages.lobby;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,7 +41,7 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
     }
 
     public List<LobbyClientEntry> getClients() {
-        return clients;
+        return Collections.unmodifiableList(clients);
     }
 
     public String getChatHistory() {
@@ -50,4 +52,5 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
     public String toString() {
         return String.format("LobbyOverviewMessage [Clients : %d]", clients.size());
     }
+    private static final Logger LOG = Logger.getLogger(LobbyServerOverviewMessage.class.getName());
 }

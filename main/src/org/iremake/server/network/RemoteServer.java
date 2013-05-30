@@ -101,6 +101,7 @@ public class RemoteServer extends Listener implements ServerContext {
      *
      * @return True if it is running
      */
+    @Override
     public boolean isRunning() {
         return server != null;
     }
@@ -181,6 +182,7 @@ public class RemoteServer extends Listener implements ServerContext {
         }
     }
 
+    @Override
     public void process(Integer id, Message message) {
         clients.get(id).process(message);
     }
@@ -197,7 +199,7 @@ public class RemoteServer extends Listener implements ServerContext {
     }
 
     private String combineChatHistory() {
-        StringBuilder sb = new StringBuilder(1000);
+        StringBuilder sb = new StringBuilder(1_000);
         for (String item : chatHistory) {
             sb.append(item);
         }

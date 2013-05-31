@@ -39,6 +39,7 @@ import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.client.ServerClientState;
+import org.iremake.server.network.handler.LoginHandler;
 
 /**
  * Starts the server.
@@ -152,7 +153,9 @@ public class RemoteServer extends Listener implements ServerContext {
             Integer id = connection.getID();
             connections.put(id, connection);
             // we need the connection in the constructor of the serverclient already
-            clients.put(id, new ServerClient(id, this));
+            ServerClient sclient = new ServerClient(id, this);
+            sclient.addHandler(new LoginHandler());
+            clients.put(id, sclient);
         }
     }
 

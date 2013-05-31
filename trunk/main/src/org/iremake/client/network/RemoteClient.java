@@ -168,6 +168,7 @@ public class RemoteClient extends Listener implements ClientContext {
      * @param handler
      * @return
      */
+    @Override
     public boolean removeHandler(ClientHandler handler) {
         return handlerList.remove(handler);
     }

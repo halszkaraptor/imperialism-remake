@@ -16,16 +16,13 @@
  */
 package org.iremake.common.network.messages.lobby;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
  */
 public class LobbyServerOverviewMessage implements LobbyMessage {
 
-    private static final Logger LOG = Logger.getLogger(LobbyServerOverviewMessage.class.getName());
     private List<LobbyListEntry> clients;
     private String chatHistory;
 
@@ -42,7 +39,7 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
     }
 
     public List<LobbyListEntry> getClients() {
-        return Collections.unmodifiableList(clients);
+        return clients;
     }
 
     public String getChatHistory() {

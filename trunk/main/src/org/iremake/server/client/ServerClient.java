@@ -22,13 +22,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import org.iremake.client.network.RemoteClient;
-import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.ServerContext;
-import org.iremake.server.network.handler.LoginHandler;
+import org.iremake.server.network.handler.ErrorHandler;
 import org.iremake.server.network.handler.ServerHandler;
 
 /**
@@ -40,7 +38,8 @@ public class ServerClient {
     private final ExecutorService threadPool = Executors.newFixedThreadPool(1);
     private final Integer id;
     private final ServerContext context;
-    private LobbyListEntry lobbyEntry = new LobbyListEntry();
+    private String name;
+    private String joined;
     private ServerClientState state = ServerClientState.UNIDENTIFIED;;
 
     private final ErrorHandler errorHandler = new ErrorHandler();
@@ -54,12 +53,7 @@ public class ServerClient {
     public ServerClient(Integer id, ServerContext context) {
         this.id = id;
         this.context = context;
-
-        handlerList.add(new LoginHandler());
-
-        // fill lobbyEntry
-        lobbyEntry.ip = context.getIP(id);
-        lobbyEntry.joined = new Date().toString();
+        joined = new Date().toString();
     }
 
     /**
@@ -70,7 +64,7 @@ public class ServerClient {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                errorHandler.process(message, RemoteClient.CONTEXT);
+                errorHandler.process(message, ServerClient.this);
                 for (ServerHandler handler: handlerList) {
                     if (handler.process(message, ServerClient.this)) {
                         break;
@@ -111,7 +105,7 @@ public class ServerClient {
      * @param name
      */
     public void setName(String name) {
-        lobbyEntry.name = name;
+        this.name = name;
     }
 
     /**
@@ -160,6 +154,6 @@ public class ServerClient {
      * @return
      */
     public LobbyListEntry getLobbyEntry() {
-        return lobbyEntry;
+        return new LobbyListEntry(name, context.getIP(id), joined);
     }
 }

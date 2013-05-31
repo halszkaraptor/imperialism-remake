@@ -38,6 +38,7 @@ import org.iremake.client.ui.FrameManager;
 import org.iremake.client.ui.StartScreen;
 import org.iremake.client.ui.UIFrame;
 import org.iremake.common.Settings;
+import org.iremake.server.network.LocalServer;
 import org.iremake.server.network.RemoteServer;
 import org.tools.io.ResourceUtils;
 import org.tools.ui.utils.LookAndFeel;
@@ -148,6 +149,11 @@ public class StartClient {
         if (RemoteServer.CONTEXT.isRunning()) {
             LOG.log(Level.INFO, "Server still running, shut down.");
             RemoteServer.CONTEXT.stop();
+        }
+        
+        // if local server still running shut down
+        if (LocalServer.CONTEXT.isRunning()) {
+            LocalServer.CONTEXT.stop();
         }
 
         // save options

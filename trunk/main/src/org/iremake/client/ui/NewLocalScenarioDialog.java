@@ -58,6 +58,7 @@ public class NewLocalScenarioDialog extends UIDialog {
         LocalClient.CONTEXT.send(SetupActionMessage.GET_SCENARIOS);
 
         JList<TitleListEntry> titleList = new JList<>();
+        titleList.setOpaque(false);
         titleList.setBorder(CommonElements.createBorder("Scenarios"));
         titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         titleList.setModel(titleListModel);

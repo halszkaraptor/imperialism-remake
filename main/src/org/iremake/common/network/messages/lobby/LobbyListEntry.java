@@ -16,21 +16,34 @@
  */
 package org.iremake.common.network.messages.lobby;
 
-import java.util.logging.Logger;
-
 /**
  *
  */
-public class LobbyListEntry {
-
-    private static final Logger LOG = Logger.getLogger(LobbyListEntry.class.getName());
+public class LobbyListEntry implements Comparable {
 
     public String name;
     public String ip;
     public String joined;
+    
+    private LobbyListEntry() {
+    }
+    
+    public LobbyListEntry(String name, String ip, String joined) {
+        // TODO not null
+        this.name = name;
+        this.ip = ip;
+        this.joined = joined;
+    }
 
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        // TODO throw exception when compared to something else
+        LobbyListEntry other = (LobbyListEntry) o;
+        return name.compareTo(other.name);
     }
 }

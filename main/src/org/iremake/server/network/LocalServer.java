@@ -16,10 +16,10 @@
  */
 package org.iremake.server.network;
 
-import java.util.logging.Logger;
 import org.iremake.client.network.LocalClient;
 import org.iremake.common.network.messages.Message;
 import org.iremake.server.client.ServerClient;
+import org.iremake.server.network.handler.SetupHandler;
 
 /**
  *
@@ -27,13 +27,14 @@ import org.iremake.server.client.ServerClient;
 public class LocalServer implements ServerContext {
 
     public static final ServerContext CONTEXT = new LocalServer();
-    private ServerClient client;
+    private ServerClient sclient;
 
     private LocalServer() {
+        start();
     }
 
     public void reset() {
-        client = new ServerClient(null, this);
+        
     }
 
     @Override
@@ -64,11 +65,13 @@ public class LocalServer implements ServerContext {
 
     @Override
     public boolean isRunning() {
-        return false;
+        return sclient != null;
     }
 
     @Override
     public void stop() {
+        sclient.shutdown();
+        sclient = null;
     }
 
     @Override
@@ -78,12 +81,13 @@ public class LocalServer implements ServerContext {
 
     @Override
     public boolean start() {
-        return false;
+        sclient = new ServerClient(null, this);
+        sclient.addHandler(new SetupHandler());        
+        return true;
     }
 
     @Override
     public void process(Integer id, Message message) {
-
+        sclient.process(message);
     }
-    private static final Logger LOG = Logger.getLogger(LocalServer.class.getName());
 }

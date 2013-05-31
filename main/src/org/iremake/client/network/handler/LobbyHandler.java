@@ -65,7 +65,8 @@ public class LobbyHandler implements ClientHandler {
                 }
 
                 // update lobby list
-                lobbyListModel.setFromList(msg.getClients());
+                lobbyListModel.set(msg.getClients());
+                // lobbyListModel.sort();
 
                 // a complete new overview, fill with data
             } else if (message instanceof LobbyServerUpdateMessage) {

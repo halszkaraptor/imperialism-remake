@@ -16,7 +16,6 @@
  */
 package org.iremake.common.network.messages.game.setup;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,6 +33,6 @@ public class SetupTitlesMessage implements SetupMessage {
     }
 
     public List<TitleListEntry> getTitles() {
-        return Collections.unmodifiableList(titlesList);
+        return titlesList;
     }
 }

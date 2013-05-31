@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -29,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
@@ -48,8 +48,6 @@ import org.tools.ui.SimpleListModel;
  *
  */
 public class GameCenterDialog extends UIDialog {
-
-    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());
 
     private JTextArea chatHistory;
     private SimpleListModel<LobbyListEntry> lobbyListModel;
@@ -157,6 +155,14 @@ public class GameCenterDialog extends UIDialog {
         // model
         lobbyListModel = new SimpleListModel<>();
         list.setModel(lobbyListModel);
+        
+        // cell renderer
+        list.setCellRenderer(new ListCellRenderer<LobbyListEntry>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends LobbyListEntry> list, LobbyListEntry value, int index, boolean isSelected, boolean cellHasFocus) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
         return list;
     }

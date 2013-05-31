@@ -33,6 +33,8 @@ public interface ClientContext {
     public void stop();
 
     public void addHandler(ClientHandler handler);
+    
+    public boolean removeHandler(ClientHandler handler);
 
     public void send(Message message);
 

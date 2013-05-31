@@ -16,7 +16,6 @@
  */
 package org.iremake.server.network.handler;
 
-import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.common.network.messages.LoginMessage;
 import org.iremake.common.network.messages.Message;
@@ -37,12 +36,12 @@ public class LoginHandler implements ServerHandler {
             if (Option.General_Version.get().equals(msg.getVersion())) {
                 // set the new name
                 client.setName(msg.getClientName());
+                // add some handlers
+                client.addHandler(new ChatHandler());                
+                // put client in lobby
+                client.setState(ServerClientState.LOBBY);                
                 // send a LobbyOverviewMessage
                 client.getContext().sendLobbyOverview(client);
-                // add some handlers
-                client.addHandler(new ChatHandler());
-                // put client in lobby
-                client.setState(ServerClientState.LOBBY);
                 // send others LobbyUpdateMessage
                 client.getContext().broadcastArrivingLobbyClient(client);
             } else {
@@ -55,6 +54,4 @@ public class LoginHandler implements ServerHandler {
         }
         return false;
     }
-    private static final Logger LOG = Logger.getLogger(LoginHandler.class.getName());
-
 }

@@ -16,7 +16,6 @@
  */
 package org.iremake.server.network.handler;
 
-import java.util.List;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.SetupActionMessage;
 import org.iremake.common.network.messages.game.setup.SetupMessage;

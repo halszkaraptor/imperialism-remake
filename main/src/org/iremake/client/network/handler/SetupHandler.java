@@ -41,7 +41,8 @@ public class SetupHandler implements ClientHandler {
         if (message instanceof SetupMessage) {
             if (message instanceof SetupTitlesMessage) {
                 SetupTitlesMessage msg = (SetupTitlesMessage) message;
-                titleListModel.setFromList(msg.getTitles());
+                titleListModel.set(msg.getTitles());
+                titleListModel.sort();
             }
         }
         return false;

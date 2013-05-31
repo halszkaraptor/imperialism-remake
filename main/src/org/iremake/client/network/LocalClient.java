@@ -16,7 +16,8 @@
  */
 package org.iremake.client.network;
 
-import java.util.logging.Logger;
+import java.util.LinkedList;
+import java.util.List;
 import org.iremake.client.network.handler.ClientHandler;
 import org.iremake.common.network.messages.Message;
 import org.iremake.server.network.LocalServer;
@@ -27,6 +28,7 @@ import org.iremake.server.network.LocalServer;
 public class LocalClient implements ClientContext {
 
     public static final ClientContext CONTEXT = new LocalClient();
+    private List<ClientHandler> handlerList = new LinkedList();
 
     private LocalClient() {
     }
@@ -51,6 +53,20 @@ public class LocalClient implements ClientContext {
 
     @Override
     public void addHandler(ClientHandler handler) {
+        if (!handlerList.contains(handler)) {
+            handlerList.add(handler);
+        }
+    }
+
+    /**
+     *
+     * @param channel
+     * @param handler
+     * @return
+     */
+    @Override
+    public boolean removeHandler(ClientHandler handler) {
+        return handlerList.remove(handler);
     }
 
     @Override
@@ -60,6 +76,10 @@ public class LocalClient implements ClientContext {
 
     @Override
     public void process(Message message) {
+        for (ClientHandler handler: handlerList) {
+            if (handler.process(message, this)) {
+                break;
+            }
+        }
     }
-    private static final Logger LOG = Logger.getLogger(LocalClient.class.getName());
 }

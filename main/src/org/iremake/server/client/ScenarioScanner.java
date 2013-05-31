@@ -51,18 +51,20 @@ public class ScenarioScanner {
      * First looks at a specific directory for all files named scenario.XXX.xml, then loads them all and puts the scenario titles in a list.
      */
     public void doScan() {
-        Resource directory = null;
+        Resource directory;
         try {
             directory = ResourceUtils.asResource(IOManager.getPath(Places.Scenarios, ""));
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            return;
         }
 
-        List<Resource> files = null;
+        List<Resource> files;
         try {
             files = directory.list("scenario\\.[a-zA-z0-9]+\\.xml");
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            return;
         }
 
         int id = 0;

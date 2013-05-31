@@ -16,7 +16,6 @@
  */
 package org.iremake.client.network.handler;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -33,10 +32,10 @@ import org.tools.ui.SimpleListModel;
  *
  */
 public class LobbyHandler implements ClientHandler {
-    
+
     private Document chatHistory;
     private SimpleListModel<LobbyListEntry> lobbyListModel;
-    
+
     public LobbyHandler(Document chatHistory, SimpleListModel<LobbyListEntry> lobbyListModel) {
         // TODO cannot be null
         this.chatHistory = chatHistory;
@@ -56,18 +55,18 @@ public class LobbyHandler implements ClientHandler {
                 }
             } else if (message instanceof LobbyServerOverviewMessage) {
                 LobbyServerOverviewMessage msg = (LobbyServerOverviewMessage) message;
-                
-                    // update chatHistory                
+
+                    // update chatHistory
                 try {
                     chatHistory.remove(0, chatHistory.getLength());
-                    chatHistory.insertString(0, msg.getChatHistory(), null);                    
+                    chatHistory.insertString(0, msg.getChatHistory(), null);
                 } catch (BadLocationException ex) {
                     // should not happen
                 }
 
                 // update lobby list
                 lobbyListModel.setFromList(msg.getClients());
-                
+
                 // a complete new overview, fill with data
             } else if (message instanceof LobbyServerUpdateMessage) {
                 // somebody arrived or left, update

@@ -17,17 +17,20 @@
 package org.iremake.server.client;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.ParsingException;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.common.model.Scenario;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
+import org.tools.utils.Pair;
 import org.tools.xml.XMLHelper;
 
 /**
@@ -38,10 +41,8 @@ import org.tools.xml.XMLHelper;
 public class ScenarioScanner {
 
     private static final Logger LOG = Logger.getLogger(ScenarioScanner.class.getName());
-    /* list of resources for scenarios */
-    private List<Resource> scenarios = new LinkedList<>();
-    /* list of titles with equal length to list above */
-    private List<String> titles = new LinkedList<>();
+
+       private Map<Integer, Pair<Resource, String>> scenarios = new HashMap<>();
 
     public ScenarioScanner() {
     }
@@ -50,27 +51,28 @@ public class ScenarioScanner {
      * First looks at a specific directory for all files named scenario.XXX.xml, then loads them all and puts the scenario titles in a list.
      */
     public void doScan() {
-        Resource dir = null;
+        Resource directory = null;
         try {
-            dir = ResourceUtils.asResource(IOManager.getPath(Places.Scenarios, ""));
+            directory = ResourceUtils.asResource(IOManager.getPath(Places.Scenarios, ""));
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
 
-        scenarios.clear();
+        List<Resource> files = null;
         try {
-            scenarios = dir.list("scenario\\.[a-zA-z0-9]+\\.xml");
+            files = directory.list("scenario\\.[a-zA-z0-9]+\\.xml");
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
 
-        for (Resource resource : scenarios) {
+        int id = 0;
+        for (Resource resource : files) {
             try {
                 // load it completely
                 // TODO instead of loading and parsing completely there might be a simpler function that only loads the title
                 Scenario scenario = new Scenario();
                 XMLHelper.read(resource, scenario);
-                titles.add(scenario.getTitle());
+                scenarios.put(id++, new Pair<>(resource, scenario.getTitle()));
             } catch (IOException | ParsingException ex) {
                 LOG.log(Level.SEVERE, null, ex);
                 // TODO a scenario cannot be loaded, delete it from the list later on
@@ -83,8 +85,12 @@ public class ScenarioScanner {
      *
      * @return
      */
-    public List<String> getScenarios() {
-        return Collections.unmodifiableList(titles);
+    public List<TitleListEntry> getTitles() {
+        List<TitleListEntry> list = new ArrayList<>(scenarios.size());
+        for (Integer id: scenarios.keySet()) {
+            list.add(new TitleListEntry(id, scenarios.get(id).getB()));
+        }
+        return list;
     }
 
     /**
@@ -93,10 +99,11 @@ public class ScenarioScanner {
      * @param index
      * @return
      */
-    public Resource getScenarioResource(int index) {
-        if (index < 0 || index >= scenarios.size()) {
-            return null;
+    public Resource getResource(Integer id) {
+        if (!scenarios.containsKey(id)) {
+            // TODO error
+            throw new IllegalArgumentException("id is not a valid key of the scenarios map.");
         }
-        return scenarios.get(index);
+        return scenarios.get(id).getA();
     }
 }

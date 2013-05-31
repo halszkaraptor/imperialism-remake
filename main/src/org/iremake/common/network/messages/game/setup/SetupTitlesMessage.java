@@ -14,23 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.lobby;
+package org.iremake.common.network.messages.game.setup;
 
-import java.util.logging.Logger;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
  */
-public class LobbyListEntry {
+public class SetupTitlesMessage implements SetupMessage {
 
-    private static final Logger LOG = Logger.getLogger(LobbyListEntry.class.getName());
+    private List<TitleListEntry> titlesList;
 
-    public String name;
-    public String ip;
-    public String joined;
+    private SetupTitlesMessage() {
+    }
 
-    @Override
-    public String toString() {
-        return name;
+    public SetupTitlesMessage(List<TitleListEntry> titlesList) {
+        this.titlesList = titlesList;
+    }
+
+    public List<TitleListEntry> getTitles() {
+        return Collections.unmodifiableList(titlesList);
     }
 }

@@ -19,6 +19,9 @@ package org.iremake.common.network.messages;
 import com.esotericsoftware.kryo.Kryo;
 import java.util.LinkedList;
 import java.util.logging.Logger;
+import org.iremake.common.network.messages.game.setup.SetupActionMessage;
+import org.iremake.common.network.messages.game.setup.SetupMessage;
+import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyMessage;
@@ -43,6 +46,9 @@ public class KryoRegistration {
         // message and channel
         kryo.register(Message.class);
 
+        // standard java
+        kryo.register(LinkedList.class);
+
         // error and login
         kryo.register(ErrorMessage.class);
         kryo.register(LoginMessage.class);
@@ -54,8 +60,10 @@ public class KryoRegistration {
         kryo.register(LobbyServerOverviewMessage.class);
         kryo.register(LobbyServerUpdateMessage.class);
 
-        // standard java
-        kryo.register(LinkedList.class);
+        // setup
+        kryo.register(SetupMessage.class);
+        kryo.register(SetupActionMessage.class);
+        kryo.register(SetupTitlesMessage.class);
 
     }
 

@@ -14,23 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.lobby;
-
-import java.util.logging.Logger;
+package org.iremake.common.network.messages.game.setup;
 
 /**
  *
  */
-public class LobbyListEntry {
+public enum SetupActionMessage implements SetupMessage {
 
-    private static final Logger LOG = Logger.getLogger(LobbyListEntry.class.getName());
-
-    public String name;
-    public String ip;
-    public String joined;
-
-    @Override
-    public String toString() {
-        return name;
-    }
+    GET_SCENARIOS;
 }

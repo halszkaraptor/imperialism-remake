@@ -49,8 +49,8 @@ import org.tools.ui.SimpleListModel;
  */
 public class GameCenterDialog extends UIDialog {
 
-    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());    
-    
+    private static final Logger LOG = Logger.getLogger(GameCenterDialog.class.getName());
+
     private JTextArea chatHistory;
     private SimpleListModel<LobbyListEntry> lobbyListModel;
 
@@ -90,7 +90,7 @@ public class GameCenterDialog extends UIDialog {
                     FrameManager.getInstance().scheduleInfoMessage("Client already connect, disconnect first!");
                     return;
                 }
-                
+
                 final JDialog dialog = GameCenterDialog.this.createSubDialog("Connect to remote Server", true);
 
                 // text fields and buttons
@@ -107,8 +107,8 @@ public class GameCenterDialog extends UIDialog {
                         if (RemoteClient.CONTEXT.start(ipField.getText())) {
                             // we connected
                             FrameManager.getInstance().scheduleInfoMessage("Connection successful");
-                            RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory.getDocument(), lobbyListModel));                            
-                            RemoteClient.CONTEXT.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));                            
+                            RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory.getDocument(), lobbyListModel));
+                            RemoteClient.CONTEXT.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));
                         } else {
                             // we couldn't connect
                             FrameManager.getInstance().scheduleInfoMessage("Could not connect!");
@@ -151,8 +151,8 @@ public class GameCenterDialog extends UIDialog {
 
     private Component createMemberList() {
         JList<LobbyListEntry> list = new JList<>();
-        list.setBorder(CommonElements.createBorder("Lobby"));
         list.setOpaque(false);
+        list.setBorder(CommonElements.createBorder("Lobby"));
 
         // model
         lobbyListModel = new SimpleListModel<>();
@@ -163,9 +163,8 @@ public class GameCenterDialog extends UIDialog {
 
     private Component createChatPane() {
         // text area inside the chat pan
-        chatHistory = new JTextArea();
+        chatHistory = CommonElements.createTextArea();
         chatHistory.setEditable(false);
-        chatHistory.setOpaque(false);
 
         // chat pane
         JScrollPane chatPane = new JScrollPane();
@@ -175,23 +174,22 @@ public class GameCenterDialog extends UIDialog {
 
         chatPane.setViewportView(chatHistory);
         chatPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        chatPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+
+        chatPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {  
-                e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
             }
-        });  
+        });
 
         return chatPane;
     }
 
     private Component createChatInput() {
         // chat input field
-        final JTextField chatInput = new JTextField();
-        chatInput.setOpaque(false);
+        final JTextField chatInput = CommonElements.createTextField();
         chatInput.setBorder(CommonElements.createBorder("Send message"));
-        
+
         chatInput.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

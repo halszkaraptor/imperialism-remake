@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  */
 public class LobbyServerOverviewMessage implements LobbyMessage {
 
+    private static final Logger LOG = Logger.getLogger(LobbyServerOverviewMessage.class.getName());
     private List<LobbyListEntry> clients;
     private String chatHistory;
 
@@ -52,5 +53,4 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
     public String toString() {
         return String.format("LobbyOverviewMessage [Clients : %d]", clients.size());
     }
-    private static final Logger LOG = Logger.getLogger(LobbyServerOverviewMessage.class.getName());
 }

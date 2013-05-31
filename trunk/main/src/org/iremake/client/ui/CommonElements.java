@@ -17,29 +17,50 @@
 package org.iremake.client.ui;
 
 import java.awt.Color;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 /**
  *
  */
 public class CommonElements {
-    
-    private static final Logger LOG = Logger.getLogger(CommonElements.class.getName());    
-    
+
+    private static final Border lineBorder = BorderFactory.createLineBorder(Color.darkGray, 1, true);
+
     private CommonElements() {
     }
-    
+
     public static JLabel createLabel(String content) {
         JLabel label = new JLabel(content);
+        label.setHorizontalAlignment(SwingConstants.LEADING);
         return label;
     }
-    
-    private static final Border lineBorder = BorderFactory.createLineBorder(Color.darkGray, 1, true);
-    
+
     public static Border createBorder(String title) {
         return BorderFactory.createTitledBorder(lineBorder, title);
+    }
+
+    public static JPanel createPanel(String borderTitle) {
+        JPanel panel = new JPanel();
+        panel.setOpaque(false);
+        panel.setBorder(createBorder(borderTitle));
+        return panel;
+    }
+
+    public static JTextField createTextField() {
+        JTextField textField = new JTextField();
+        textField.setOpaque(false);
+        return textField;
+    }
+
+    public static JTextArea createTextArea() {
+        JTextArea textArea = new JTextArea();
+        textArea.setOpaque(false);
+        return textArea;
     }
 }

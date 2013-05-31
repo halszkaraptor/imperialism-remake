@@ -19,23 +19,22 @@ package org.iremake.client.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.iremake.client.network.LocalClient;
+import org.iremake.client.network.handler.SetupHandler;
 import org.iremake.client.ui.main.MainScreen;
-import org.iremake.server.client.ScenarioScanner;
-import org.tools.io.Resource;
+import org.iremake.common.network.messages.game.setup.SetupActionMessage;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.PanelWithBackground;
 import org.tools.ui.SimpleListModel;
@@ -45,48 +44,38 @@ import org.tools.ui.SimpleListModel;
  */
 public class NewLocalScenarioDialog extends UIDialog {
 
-    private static final Logger LOG = Logger.getLogger(NewLocalScenarioDialog.class.getName());
-    /* pointing to the selected scenario */
-    private Resource selectedScenario;
+    private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
 
     /**
      * Setup of the dialog. Also starts the scanner and searches for scenarios.
      */
     public NewLocalScenarioDialog() {
         super("Local Scenario");
-        
+
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
 
-        // create a scanner for scenarios and scan
-        final ScenarioScanner scanner = new ScenarioScanner();
-        scanner.doScan();
-        // put them in a list
-        final List<String> titles = scanner.getScenarios();
-        JList<String> selectList = new JList<>();
-        selectList.setBorder(CommonElements.createBorder("Scenarios"));
-        selectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // setting up a JList model
-        ListModel<String> model = new SimpleListModel<>(titles);
-        selectList.setModel(model);
+        LocalClient.CONTEXT.addHandler(new SetupHandler(titleListModel));
+        LocalClient.CONTEXT.send(SetupActionMessage.GET_SCENARIOS);
+
+        JList<TitleListEntry> titleList = new JList<>();
+        titleList.setBorder(CommonElements.createBorder("Scenarios"));
+        titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        titleList.setModel(titleListModel);
         // listen to the list and update the selected scenario upon selection
-        selectList.addListSelectionListener(new ListSelectionListener() {
+        titleList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    int index = e.getFirstIndex();
-                    selectedScenario = scanner.getScenarioResource(index);
-                    // TODO load and update info
+                    Integer id = titleListModel.getElementAt(e.getFirstIndex()).id;
+                    // LocalClient.CONTEXT.send(new SetupSelectionMessage(id));
                 }
             }
         });
 
-        // create menu bar and add to dialog
-        JComponent menuBar = makeMenuBar();
-
         // layout - selectTree fixed width, infoPanel fixed height
         content.setLayout(new MigLayout("wrap 1, fill", "", "[][fill, grow][]"));
-        content.add(menuBar);
-        content.add(selectList, "width 200!, split 2");
+        content.add(makeMenuBar());
+        content.add(titleList, "width 200!, split 2");
         content.add(makeMapPanel(), "grow");
         content.add(makeInfoPanel(), "height 200!, growx");
 
@@ -115,11 +104,9 @@ public class NewLocalScenarioDialog extends UIDialog {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (selectedScenario != null) {
                     close();
                     MainScreen frame = new MainScreen();
-                    frame.switchTo(selectedScenario);
-                }
+                    // frame.switchTo(selectedScenario);
             }
         });
 
@@ -134,8 +121,7 @@ public class NewLocalScenarioDialog extends UIDialog {
      * @return
      */
     private JPanel makeInfoPanel() {
-        JPanel panel = new JPanel();
-        panel.setBorder(CommonElements.createBorder("Info"));
+        JPanel panel = CommonElements.createPanel("Info");
         return panel;
     }
 }

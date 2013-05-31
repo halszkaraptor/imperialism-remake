@@ -14,37 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.server.network.handler;
+package org.iremake.client.network.handler;
 
-import java.util.List;
+import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.game.setup.SetupActionMessage;
 import org.iremake.common.network.messages.game.setup.SetupMessage;
 import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
-import org.iremake.server.client.ScenarioScanner;
-import org.iremake.server.client.ServerClient;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
+import org.tools.ui.SimpleListModel;
 
 /**
  *
  */
-public class SetupHandler implements ServerHandler {
+public class SetupHandler implements ClientHandler {
 
-    private ScenarioScanner scanner = new ScenarioScanner();
+    private SimpleListModel<TitleListEntry> titleListModel;
+
+    public SetupHandler(SimpleListModel<TitleListEntry> titleListModel) {
+        // TODO cannot be null
+        this.titleListModel = titleListModel;
+
+    }
 
     @Override
-    public boolean process(Message message, ServerClient client) {
+    public boolean process(Message message, ClientContext context) {
         if (message instanceof SetupMessage) {
-            if (message instanceof SetupActionMessage) {
-                switch ((SetupActionMessage) message) {
-                    case GET_SCENARIOS:
-                        // scan for scenarios
-                        scanner.doScan();
-                        client.send(new SetupTitlesMessage(scanner.getTitles()));
-                        return true;
-                }
+            if (message instanceof SetupTitlesMessage) {
+                SetupTitlesMessage msg = (SetupTitlesMessage) message;
+                titleListModel.setFromList(msg.getTitles());
             }
-
         }
         return false;
     }
+
 }

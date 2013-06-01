@@ -16,9 +16,11 @@
  */
 package org.iremake.common.model;
 
+import java.awt.Color;
 import java.util.logging.Logger;
 import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapItem.MapItemType;
+import org.tools.ui.utils.GraphicsUtils;
 import org.tools.xml.FullXMLable;
 import org.tools.xml.Node;
 import org.tools.xml.XList;
@@ -78,6 +80,10 @@ public class Nation implements FullXMLable {
      */
     public String getProperty(String key) {
         return properties.get(key);
+    }
+    
+    public Color getColor() {
+        return GraphicsUtils.convertHexToColor(getProperty(Nation.KEY_COLOR));
     }
 
     /**

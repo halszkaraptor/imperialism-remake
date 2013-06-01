@@ -16,9 +16,11 @@
  */
 package org.iremake.server.network.handler;
 
+import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.SetupActionMessage;
 import org.iremake.common.network.messages.game.setup.SetupMessage;
+import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
 import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
 import org.iremake.server.client.ScenarioScanner;
 import org.iremake.server.client.ServerClient;
@@ -41,8 +43,18 @@ public class SetupHandler implements ServerHandler {
                         client.send(new SetupTitlesMessage(scanner.getTitles()));
                         return true;
                 }
+            } else if (message instanceof SetupSelectionMessage) {
+                SetupSelectionMessage msg = (SetupSelectionMessage) message;
+                if (scanner.hasID(msg.id)) {
+                    // generate the requested scenario information and send the message back
+                    msg = scanner.getScenarioInformation(msg.id);
+                    client.send(msg);
+                } else {
+                    // we don't know the requested ID
+                    client.send(new ErrorMessage("Received unknown id in a SetupSelectionMessage"));
+                }
+                return true;
             }
-
         }
         return false;
     }

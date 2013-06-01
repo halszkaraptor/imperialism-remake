@@ -16,11 +16,13 @@
  */
 package org.iremake.client.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -137,6 +139,7 @@ public class GameCenterDialog extends UIDialog {
             public void actionPerformed(ActionEvent e) {
                 if (RemoteClient.CONTEXT.isConnected()) {
                     RemoteClient.CONTEXT.disconnect("User request disconnection.");
+                    FrameManager.getInstance().scheduleInfoMessage("Disconnection successful");
                 }
             }
         });
@@ -156,11 +159,20 @@ public class GameCenterDialog extends UIDialog {
         lobbyListModel = new SimpleListModel<>();
         list.setModel(lobbyListModel);
         
-        // cell renderer
-        list.setCellRenderer(new ListCellRenderer<LobbyListEntry>() {
+        // cell renderer (use defaultlistcellrenderer based on jlabel)
+        list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<? extends LobbyListEntry> list, LobbyListEntry value, int index, boolean isSelected, boolean cellHasFocus) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                // cast to LobbyListEntry, we know it's one
+                LobbyListEntry entry = (LobbyListEntry) value;
+                // background always transparent
+                this.setOpaque(false);
+                // textcolor always black
+                this.setForeground(Color.black);
+                // set tooltiptext
+                this.setToolTipText(String.format("origin: %s, joined: %s", entry.ip, entry.joined));
+                return this;
             }
         });
 

@@ -14,36 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.game.setup;
+package org.iremake.client.ui;
+
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
 
 /**
  *
  */
-public class TitleListEntry implements Comparable {
+public interface MinimalSetupDialog {
 
-    public int id;
-    public String title;
-    
-    private TitleListEntry() {
-    }
+    public void setTitles(List<TitleListEntry> titles);
 
-    public TitleListEntry(int id, String title) {
-        if (title == null) {
-            throw new IllegalArgumentException("Argument title cannot be null.");
-        }
-        this.id = id;
-        this.title = title;
-    }
+    public Dimension getMapSize();
 
-    @Override
-    public String toString() {
-        return title;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        // TODO other type
-        TitleListEntry other = (TitleListEntry) o;
-        return title.compareTo(other.title);
-    }
+    public void setMap(BufferedImage mapImage);
 }

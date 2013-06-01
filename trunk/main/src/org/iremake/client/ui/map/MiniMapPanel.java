@@ -228,7 +228,7 @@ public class MiniMapPanel extends JPanel {
                         int row = scenario.getNumberRows() * y / size.height;
                         Nation nation = scenario.getNationAt(new MapPosition(row, column));
                         if (nation != null) {
-                            Color color = GraphicsUtils.convertHexToColor(nation.getProperty(Nation.KEY_COLOR));
+                            Color color = nation.getColor();
                             buffer.setRGB(x, y, color.getRGB());
                         } else {
                             // TODO ocean color?

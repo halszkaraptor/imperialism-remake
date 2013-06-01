@@ -16,34 +16,20 @@
  */
 package org.iremake.common.network.messages.game.setup;
 
+import java.awt.Color;
+
 /**
  *
  */
-public class TitleListEntry implements Comparable {
-
-    public int id;
-    public String title;
+public class SetupSelectionMessage implements SetupMessage {
     
-    private TitleListEntry() {
-    }
+    public int id;
+    
+    public int[][] map;
+    public Color[] colors;
+    public String[] names;
 
-    public TitleListEntry(int id, String title) {
-        if (title == null) {
-            throw new IllegalArgumentException("Argument title cannot be null.");
-        }
+    public SetupSelectionMessage(int id) {
         this.id = id;
-        this.title = title;
-    }
-
-    @Override
-    public String toString() {
-        return title;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        // TODO other type
-        TitleListEntry other = (TitleListEntry) o;
-        return title.compareTo(other.title);
     }
 }

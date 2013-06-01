@@ -148,7 +148,7 @@ public class UIDialog {
     
     protected JDialog createSubDialog(String title, boolean modal) {
         JDialog subDialog = new JDialog(dialog, title, modal);
-        subDialog.setLocationByPlatform(true);
+        subDialog.setLocationRelativeTo(dialog);
         subDialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         return subDialog;
     }

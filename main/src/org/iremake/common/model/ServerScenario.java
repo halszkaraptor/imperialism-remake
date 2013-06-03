@@ -41,7 +41,7 @@ import org.tools.xml.XProperty;
  * isn't.
  */
 // TODO this class has not enough methods and therefore exposes local variables
-public class Scenario implements FullXMLable {
+public class ServerScenario implements FullXMLable {
 
     public static final int BITSIZE_TERRAINID = 5;
     public static final int BITSIZE_RESOURCEID = 5;
@@ -49,9 +49,9 @@ public class Scenario implements FullXMLable {
     public static final int BITSIZE_RAILROAD_CONFIG = 3;
     public static final int BITSIZE_RIVERID = 6;
     public static final int RIVERID_NONE = 63;
-    private static final String XML_NAME = "Scenario";
+    protected static final String XML_NAME = "Scenario";
     private static final String XML_NAME_NATIONS = "Nations";
-    private static final Logger LOG = Logger.getLogger(Scenario.class.getName());
+    private static final Logger LOG = Logger.getLogger(ServerScenario.class.getName());
     private int rows = 0;
     private int columns = 0;
     private Tile[][] map;

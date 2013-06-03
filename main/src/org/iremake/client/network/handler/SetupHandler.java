@@ -23,6 +23,7 @@ import org.iremake.client.network.ClientContext;
 import org.iremake.client.ui.MinimalSetupDialog;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.SetupMessage;
+import org.iremake.common.network.messages.game.setup.SetupScenarioInfoMessage;
 import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
 import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
 
@@ -48,17 +49,15 @@ public class SetupHandler implements ClientHandler {
                 SetupTitlesMessage msg = (SetupTitlesMessage) message;
                 dialog.setTitles(msg.getTitles());
                 return true;
-            } else if (message instanceof SetupSelectionMessage) {
-                SetupSelectionMessage msg = (SetupSelectionMessage) message;
+            } else if (message instanceof SetupScenarioInfoMessage) {
+                SetupScenarioInfoMessage msg = (SetupScenarioInfoMessage) message;
                 Dimension size = dialog.getMapSize();
-                Dimension mapSize = new Dimension(msg.map[0].length, msg.map.length);
                 BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
                 for (int x = 0; x < size.width; x++) {
                     for (int y = 0; y < size.height; y++) {
-                        int column = mapSize.width * x / size.width; // rounding down
-                        int row = mapSize.height * y / size.height;
-                        Color color = msg.colors[msg.map[row][column]];
-                        mapImage.setRGB(x, y, color.getRGB());
+                        int column = msg.getNumberColumns() * x / size.width; // rounding down
+                        int row = msg.getNumberRows() * y / size.height;
+                        mapImage.setRGB(x, y, msg.getColor(row, column));
                     }
                 }          
                 dialog.setMap(mapImage);

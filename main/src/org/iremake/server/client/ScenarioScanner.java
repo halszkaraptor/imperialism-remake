@@ -30,7 +30,8 @@ import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Nation;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
+import org.iremake.common.model.ScenarioTitleProvider;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
@@ -76,13 +77,13 @@ public class ScenarioScanner {
         }
 
         int id = 0;
+        ScenarioTitleProvider titleProvider = new ScenarioTitleProvider();
         for (Resource resource : files) {
             try {
                 // load it completely
                 // TODO instead of loading and parsing completely there might be a simpler function that only loads the title
-                Scenario scenario = new Scenario();
-                XMLHelper.read(resource, scenario);
-                scenarios.put(id++, new Pair<>(resource, scenario.getTitle()));
+                XMLHelper.read(resource, titleProvider);
+                scenarios.put(id++, new Pair<>(resource, titleProvider.getTitle()));
             } catch (IOException | ParsingException ex) {
                 LOG.log(Level.SEVERE, null, ex);
                 // TODO a scenario cannot be loaded, delete it from the list later on
@@ -121,51 +122,16 @@ public class ScenarioScanner {
         return scenarios.containsKey(id);
     }
 
-    public SetupSelectionMessage getScenarioInformation(int id) {
-
+    public ServerScenario getScenario(int id) {
         // load scenario (complete)
         Resource resource = scenarios.get(id).getA();
-        Scenario scenario = new Scenario();
+        ServerScenario scenario = new ServerScenario();
         try {
             XMLHelper.read(resource, scenario);
         } catch (IOException | ParsingException ex) {
             LOG.log(Level.SEVERE, null, ex);
+            return null;
         }
-
-        SetupSelectionMessage msg = new SetupSelectionMessage(id);
-
-        int columns = scenario.getNumberColumns();
-        int rows = scenario.getNumberRows();
-        int numberNations = scenario.getNations().getSize();
-        
-        Color[] colors = new Color[numberNations + 1];
-        colors[0] = new Color(128, 128, 255);
-        String[] nationNames = new String[numberNations + 1];
-
-        Map<Nation, Integer> nationIDs = new HashMap<>();
-        int nextID = 1;
-        int[][] map = new int[rows][columns];
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                Nation nation = scenario.getNationAt(new MapPosition(row, column));
-                if (nation != null) {
-                    if (!nationIDs.containsKey(nation)) {
-                        nationIDs.put(nation, nextID++);
-                    }                    
-                    map[row][column] = nationIDs.get(nation);
-                } else {
-                    map[row][column] = 0;
-                }
-            }
-        }
-        for (Entry<Nation, Integer> entry: nationIDs.entrySet()) {
-            colors[entry.getValue()] = entry.getKey().getColor();
-            nationNames[entry.getValue()] = entry.getKey().getProperty(Nation.KEY_NAME);
-        }
-        msg.map = map;
-        msg.colors = colors;
-        msg.names = nationNames;
-
-        return msg;
+        return scenario;
     }
 }

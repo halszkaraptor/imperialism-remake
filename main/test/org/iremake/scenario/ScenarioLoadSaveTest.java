@@ -21,7 +21,7 @@ import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
 
 /**
  *
@@ -34,7 +34,7 @@ public class ScenarioLoadSaveTest {
     public static void main(String[] args) {
 
         // create a new empty scenario
-        Scenario scenario = new Scenario();
+        ServerScenario scenario = new ServerScenario();
         scenario.createEmptyMap(60, 100);
         scenario.setTitle("Test Scenario");
 

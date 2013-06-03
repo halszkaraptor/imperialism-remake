@@ -54,7 +54,7 @@ import javax.swing.text.JTextComponent;
 import nu.xom.ParsingException;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.Province;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 import org.tools.io.FileResource;
@@ -103,7 +103,7 @@ public class ImperialismScenarioImporter extends JFrame {
         fileChooser.setFileFilter(ImportFileFilter);
 
         // river overlay IDs
-        riverIDs.put(0, Scenario.RIVERID_NONE);
+        riverIDs.put(0, ServerScenario.RIVERID_NONE);
 
         // connections
         riverIDs.put(11,1);
@@ -462,7 +462,7 @@ public class ImperialismScenarioImporter extends JFrame {
         }
 
         // create new scenario
-        Scenario scenario = new Scenario();
+        ServerScenario scenario = new ServerScenario();
         scenario.createEmptyMap(rows, columns);
         scenario.setTitle(titleTextField.getText());
 

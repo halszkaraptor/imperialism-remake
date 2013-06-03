@@ -20,11 +20,14 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import org.tools.ui.utils.GraphicsUtils;
 
 /**
  *
  */
 public class OurListCellRenderer extends DefaultListCellRenderer {
+    
+    private static final Color BG_NORMAL = new Color(196, 196, 196, 64);
 
     public static interface ListCellInfoProvider {
 
@@ -32,8 +35,11 @@ public class OurListCellRenderer extends DefaultListCellRenderer {
     }
     private ListCellInfoProvider infoProvider;
 
+    /**
+     * 
+     * @param infoProvider The info provider or null if not wanted.
+     */
     public OurListCellRenderer(ListCellInfoProvider infoProvider) {
-        // TODO not null
         this.infoProvider = infoProvider;
     }
 
@@ -41,14 +47,24 @@ public class OurListCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        // background always transparent
-        this.setOpaque(false);
-        // textcolor always black
-        this.setForeground(Color.black);
+        // not transparent, paint background
+        setOpaque(true);
+        
+        // textcolor is black
+        setForeground(Color.black);
+        
+        // set background
+        if (isSelected) {
+            setBackground(BG_NORMAL);
+        } else {
+            setBackground(GraphicsUtils.TRANSPARENT);
+        }
 
-        // set tooltiptext
-        this.setToolTipText(infoProvider.getToolTip(value));
-        // this.setToolTipText(String.format("origin: %s, joined: %s", entry.ip, entry.joined));
+        // set tooltiptext by provider if given
+        if (infoProvider != null) {
+            setToolTipText(infoProvider.getToolTip(value));
+        }
+        
         return this;
     }
 }

@@ -16,6 +16,7 @@
  */
 package org.tools.ui;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ import javax.swing.AbstractListModel;
  * based (naturally) on a List.
  */
 // TODO make copies if demanded
-public class SimpleListModel<E> extends AbstractListModel<E> {
+public class SimpleListModel<E extends Comparable> extends AbstractListModel<E> {
     
     private static final Logger LOG = Logger.getLogger(SimpleListModel.class.getName());    
     private static final long serialVersionUID = 1L;
@@ -44,10 +45,15 @@ public class SimpleListModel<E> extends AbstractListModel<E> {
         content = list;
     }
     
-    public void setFromList(List<E> list) {
+    public void set(List<E> list) {
         fireIntervalRemoved(this, 0, content.size());
         content = list;
         fireIntervalAdded(this, 0, content.size());
+    }
+    
+    public void sort() {
+        Collections.sort(content);
+        fireContentsChanged(this, 0, content.size());
     }
 
     @Override

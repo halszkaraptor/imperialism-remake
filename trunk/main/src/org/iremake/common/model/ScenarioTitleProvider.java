@@ -14,16 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.game.setup;
+package org.iremake.common.model;
+
+import org.tools.xml.Node;
+import org.tools.xml.ReadXMLable;
+import org.tools.xml.XProperty;
 
 /**
  *
  */
-public class SetupSelectionMessage implements SetupMessage {
+// TODO exception handling
+public class ScenarioTitleProvider implements ReadXMLable {
     
-    public int id;
+    String title;
     
-    public SetupSelectionMessage(int id) {
-        this.id = id;
+    public String getTitle() {
+        return title;
     }
+
+    @Override
+    public void fromXML(Node parent) {
+        
+        parent.checkNode(ServerScenario.XML_NAME);
+        
+        XProperty properties = new XProperty(10);
+        properties.fromXML(parent.getFirstChild(XProperty.XML_NAME));
+        title = properties.get("title");
+    }
+    
 }

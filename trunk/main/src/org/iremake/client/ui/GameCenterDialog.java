@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.ScrollPaneConstants;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.Option;
@@ -39,6 +38,7 @@ import org.iremake.client.io.Places;
 import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.LobbyHandler;
 import org.iremake.common.network.messages.LoginMessage;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.RemoteServer;
@@ -76,7 +76,7 @@ public class GameCenterDialog extends UIDialog {
                 // close this dialog
                 GameCenterDialog.this.close();
                 // open another one
-                UIDialog dialog = new NewLocalScenarioDialog();
+                UIDialog dialog = new LocalScenarioSetupDialog();
                 dialog.start();
             }
         });
@@ -158,23 +158,16 @@ public class GameCenterDialog extends UIDialog {
         // model
         lobbyListModel = new SimpleListModel<>();
         list.setModel(lobbyListModel);
-        
+
         // cell renderer (use defaultlistcellrenderer based on jlabel)
-        list.setCellRenderer(new DefaultListCellRenderer() {
+        list.setCellRenderer(new OurListCellRenderer(new OurListCellRenderer.ListCellInfoProvider() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                // cast to LobbyListEntry, we know it's one
+            public String getToolTip(Object value) {
+                // cast to TitleListEntry, we know it's one
                 LobbyListEntry entry = (LobbyListEntry) value;
-                // background always transparent
-                this.setOpaque(false);
-                // textcolor always black
-                this.setForeground(Color.black);
-                // set tooltiptext
-                this.setToolTipText(String.format("origin: %s, joined: %s", entry.ip, entry.joined));
-                return this;
+                return String.format("origin: %s, joined: %s", entry.ip, entry.joined);
             }
-        });
+        }));
 
         return list;
     }

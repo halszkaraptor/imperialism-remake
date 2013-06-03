@@ -19,7 +19,7 @@ package org.iremake.common.model.map;
 import java.util.logging.Logger;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Province;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
 
 /**
  * A tile holds the map together. A map is an array of tiles. More like a struct here.
@@ -52,7 +52,7 @@ public class Tile {
     /**
      *
      */
-    public int riverID = Scenario.RIVERID_NONE;
+    public int riverID = ServerScenario.RIVERID_NONE;
 
     /**
      *

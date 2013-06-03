@@ -47,7 +47,7 @@ import org.tools.ui.SimpleListModel;
  * Selecting and starting a local scenario (all players are AI and the server
  * runs locally).
  */
-public class NewLocalScenarioDialog extends UIDialog implements MinimalSetupDialog {
+public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDialog {
 
     private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
     private JLabel mapLabel;
@@ -55,7 +55,7 @@ public class NewLocalScenarioDialog extends UIDialog implements MinimalSetupDial
     /**
      * Setup of the dialog. Also starts the scanner and searches for scenarios.
      */
-    public NewLocalScenarioDialog() {
+    public LocalScenarioSetupDialog() {
         super("Local Scenario");
 
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));

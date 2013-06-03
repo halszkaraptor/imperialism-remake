@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.iremake.client.ui.CommonElements;
 import org.iremake.common.Settings;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
 
@@ -73,7 +73,7 @@ public class EditorMapInfoPanel extends JPanel {
      * @param p the map position
      * @param scenario the scenario
      */
-    public void update(MapPosition p, Scenario scenario) {
+    public void update(MapPosition p, ServerScenario scenario) {
         if (p.isOff()) {
             reset();
         } else {

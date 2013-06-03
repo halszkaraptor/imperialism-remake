@@ -28,23 +28,21 @@ import org.tools.xml.XProperty;
 
 /**
  * A nation. It has a property list and a list of provinces.
+ *
+ * If not identified by some other means the name must also always be a unique
+ * identifier, i.e. not two nations can have the same name property.
  */
 public class Nation implements FullXMLable {
 
     private static final Logger LOG = Logger.getLogger(Nation.class.getName());
-    /**
-     *
-     */
-    public static final String KEY_CAPITAL = "capital province";
-    /**
-     *
-     */
-    public static final String KEY_COLOR = "color";
-    /**
-     *
-     */
-    public static final String KEY_NAME = "name";
     private static final String XML_NAME = "Nation";
+    /* */
+    public static final String KEY_CAPITAL = "capital province";
+    /* */
+    public static final String KEY_COLOR = "color";
+    /* */
+    public static final String KEY_NAME = "name";
+
     /* property list */
     private XProperty properties = new XProperty(10);
     /* list of owned provinces */
@@ -81,7 +79,7 @@ public class Nation implements FullXMLable {
     public String getProperty(String key) {
         return properties.get(key);
     }
-    
+
     public Color getColor() {
         return GraphicsUtils.convertHexToColor(getProperty(Nation.KEY_COLOR));
     }

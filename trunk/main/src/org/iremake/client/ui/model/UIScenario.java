@@ -23,13 +23,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.common.model.Scenario;
+import org.iremake.common.model.ServerScenario;
 import org.iremake.common.model.map.MapPosition;
 
 /**
  * The client scenario extending the model scenario.
  */
-public class UIScenario extends Scenario {
+public class UIScenario extends ServerScenario {
 
     private static final Logger LOG = Logger.getLogger(UIScenario.class.getName());
     private TileGraphicsRepository repository = new TileGraphicsRepository();
@@ -109,7 +109,7 @@ public class UIScenario extends Scenario {
      */
     public Image getRiverOverlayAt(MapPosition p) {
         int id = getRiverIDAt(p);
-        if (id == Scenario.RIVERID_NONE) {
+        if (id == ServerScenario.RIVERID_NONE) {
             return null;
         }
         return repository.getRiverOverlay(id);

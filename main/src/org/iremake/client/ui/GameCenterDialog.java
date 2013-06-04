@@ -16,13 +16,11 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -38,8 +36,7 @@ import org.iremake.client.io.Places;
 import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.LobbyHandler;
 import org.iremake.common.network.messages.LoginData;
-import org.iremake.common.network.messages.game.setup.TitleListEntry;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.RemoteServer;
 import org.tools.ui.ButtonBar;
@@ -108,7 +105,7 @@ public class GameCenterDialog extends UIDialog {
                             // we connected
                             FrameManager.getInstance().scheduleInfoMessage("Connection successful");
                             RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory.getDocument(), lobbyListModel));
-                            RemoteClient.CONTEXT.send(new LoginData(Option.General_Version.get(), aliasField.getText()));
+                            RemoteClient.CONTEXT.send(Message.GEN_LOGIN.createNew(new LoginData(Option.General_Version.get(), aliasField.getText())));
                         } else {
                             // we couldn't connect
                             FrameManager.getInstance().scheduleInfoMessage("Could not connect!");
@@ -206,7 +203,7 @@ public class GameCenterDialog extends UIDialog {
             public void actionPerformed(ActionEvent e) {
                 // if we are connected and have some text send it
                 if (RemoteClient.CONTEXT.isConnected() && chatInput.getText().length() > 0) {
-                    RemoteClient.CONTEXT.send(new LobbyChatMessage(chatInput.getText()));
+                    RemoteClient.CONTEXT.send(Message.LOBBY_CHAT.createNew(chatInput.getText()));
                 }
                 // in any case clear the text again
                 chatInput.setText("");

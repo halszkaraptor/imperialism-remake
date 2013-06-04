@@ -27,11 +27,10 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.network.handler.ClientHandler;
-import org.iremake.client.network.handler.ErrorHandler;
 import org.iremake.common.Settings;
-import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 
 /**
  * Fires up network connection for the client.
@@ -40,17 +39,18 @@ public class RemoteClient extends Listener implements ClientContext {
 
     /* Timeout in ms for connection */
     private static final Logger LOG = Logger.getLogger(RemoteClient.class.getName());
+    public static final ClientContext CONTEXT = new RemoteClient();
+    
     /* Kryonet client */
     private Client kryoClient;
     /* The only instance */
     /**
      *
      */
-    public static final ClientContext CONTEXT = new RemoteClient();
-    private ErrorHandler errorHandler = new ErrorHandler();
-    private List<ClientHandler> handlerList = new LinkedList<>();
 
-    /**
+    private List<ClientHandler> handlerList = new LinkedList<>();
+    private ExecutorService threadPool;    
+   /**
      * Avoid instantiation.
      */
     private RemoteClient() {
@@ -95,7 +95,7 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     // TODO do we need this here?
     @Override
-    public void send(Message message) {
+    public void send(MessageContainer message) {
         if (kryoClient != null && kryoClient.isConnected()) {
             LOG.log(Level.FINE, "Send message: {0}", message.toString());
             kryoClient.sendTCP(message);
@@ -144,7 +144,7 @@ public class RemoteClient extends Listener implements ClientContext {
     public void disconnect(String error) {
         if (kryoClient != null) {
             if (error != null) {
-                send(new ErrorMessage(error));
+                send(Message.GEN_ERROR.createNew(error));
             }
             kryoClient.close();
         }
@@ -180,10 +180,8 @@ public class RemoteClient extends Listener implements ClientContext {
      * @param message
      */
     @Override
-    public void process(Message message) {
+    public void process(MessageContainer message) {
 
-        // we always check the error handler first
-        errorHandler.process(message, this);
 
         for (ClientHandler handler : handlerList) {
             if (handler.process(message, this)) {
@@ -191,7 +189,6 @@ public class RemoteClient extends Listener implements ClientContext {
             }
         }
     }
-    private ExecutorService threadPool;
 
     /**
      * We connected to the server.
@@ -230,12 +227,12 @@ public class RemoteClient extends Listener implements ClientContext {
     @Override
     public void received(Connection connection, final Object object) {
         // want only type Message, otherwise shut down
-        if (connection.isConnected() && object instanceof Message) {
+        if (connection.isConnected() && object instanceof MessageContainer) {
             // schedule for processing
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    process((Message) object);
+                    process((MessageContainer) object);
                 }
             });
         }

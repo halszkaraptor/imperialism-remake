@@ -23,10 +23,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.MessageType;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.ServerContext;
-import org.iremake.server.network.handler.ErrorHandler;
 import org.iremake.server.network.handler.ServerHandler;
 
 /**
@@ -42,7 +41,6 @@ public class ServerClient {
     private String joined;
     private ServerClientState state = ServerClientState.UNIDENTIFIED;;
 
-    private final ErrorHandler errorHandler = new ErrorHandler();
     private List<ServerHandler> handlerList = new LinkedList<>();
 
     /**
@@ -60,11 +58,10 @@ public class ServerClient {
      *
      * @param message
      */
-    public void process(final Message message) {
+    public void process(final MessageContainer message) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                errorHandler.process(message, ServerClient.this);
                 for (ServerHandler handler: handlerList) {
                     if (handler.process(message, ServerClient.this)) {
                         break;
@@ -80,7 +77,7 @@ public class ServerClient {
      */
     public void disconnect(String error) {
         if (error != null) {
-            send(new Message<>(error, MessageType.GEN_ERROR));
+            send(new MessageContainer<>(error, Message.GEN_ERROR));
         }
         context.disconnect(id);
     }
@@ -89,7 +86,7 @@ public class ServerClient {
      *
      * @param message
      */
-    public void send(Message message) {
+    public void send(MessageContainer message) {
         context.sendMessage(id, message);
     }
 

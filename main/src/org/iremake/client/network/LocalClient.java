@@ -19,7 +19,7 @@ package org.iremake.client.network;
 import java.util.LinkedList;
 import java.util.List;
 import org.iremake.client.network.handler.ClientHandler;
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.server.network.LocalServer;
 
 /**
@@ -28,7 +28,7 @@ import org.iremake.server.network.LocalServer;
 public class LocalClient implements ClientContext {
 
     public static final ClientContext CONTEXT = new LocalClient();
-    private List<ClientHandler> handlerList = new LinkedList();
+    private List<ClientHandler> handlerList = new LinkedList<>();
 
     private LocalClient() {
     }
@@ -70,12 +70,12 @@ public class LocalClient implements ClientContext {
     }
 
     @Override
-    public void send(Message message) {
+    public void send(MessageContainer message) {
         LocalServer.CONTEXT.process(null, message);
     }
 
     @Override
-    public void process(Message message) {
+    public void process(MessageContainer message) {
         for (ClientHandler handler: handlerList) {
             if (handler.process(message, this)) {
                 break;

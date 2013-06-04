@@ -17,7 +17,7 @@
 package org.iremake.client.network;
 
 import org.iremake.client.network.handler.ClientHandler;
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 
 /**
  *
@@ -36,7 +36,7 @@ public interface ClientContext {
     
     public boolean removeHandler(ClientHandler handler);
 
-    public void send(Message message);
+    public void send(MessageContainer message);
 
-    public void process(Message message);
+    public void process(MessageContainer message);
 }

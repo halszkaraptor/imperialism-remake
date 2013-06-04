@@ -19,32 +19,31 @@ package org.iremake.client.network.handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.network.ClientContext;
-import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 
 /**
- * This is the first handler in every processing tree. It filters out error
- * messages, logs them and disconnect. All other messages are propagated.
+ *
  */
-public class ErrorHandler implements ClientHandler {
+public class GeneralHandler implements ClientHandler {
 
-    private static final Logger LOG = Logger.getLogger(ErrorHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(GeneralHandler.class.getName());
 
-    /**
-     * Eat all the Error TextMessages.
-     *
-     * @param message
-     * @param context
-     * @return
-     */
     @Override
-    public boolean process(Message message, ClientContext context) {
-        if (message instanceof ErrorMessage) {
-            ErrorMessage msg = (ErrorMessage) message;
-            LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
-            context.disconnect(null);
-            return true;
+    public boolean process(MessageContainer message, ClientContext context) {
+        // filter, we only work on general messages
+        if (!message.getType().isKindOf(Message.GENERAL)) {
+            return false;
         }
+        // go through each message and do something
+        switch (message.getType()) {
+            case GEN_ERROR:
+                // an error was received, disconnect                
+                LOG.log(Level.SEVERE, "Received error message: {0}", (String) message.getAttachment());
+                context.disconnect(null);
+                return true;
+        }
+        // still here, then it has nothing to do with us
         return false;
     }
 }

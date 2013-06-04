@@ -16,7 +16,7 @@
  */
 package org.iremake.server.network;
 
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.server.client.ServerClient;
 
 /**
@@ -33,7 +33,7 @@ public interface ServerContext {
 
     public void disconnect(Integer id);
 
-    public void sendMessage(Integer id, Message message);
+    public void sendMessage(Integer id, MessageContainer message);
 
     public boolean isRunning();
 
@@ -43,5 +43,5 @@ public interface ServerContext {
 
     public boolean start();
 
-    public void process(Integer id, Message message);
+    public void process(Integer id, MessageContainer message);
 }

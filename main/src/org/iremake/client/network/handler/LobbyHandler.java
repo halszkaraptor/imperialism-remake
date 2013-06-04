@@ -16,16 +16,13 @@
  */
 package org.iremake.client.network.handler;
 
-import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.iremake.client.network.ClientContext;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
-import org.iremake.common.network.messages.lobby.LobbyMessage;
 import org.iremake.common.network.messages.lobby.LobbyServerOverview;
-import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
 import org.tools.ui.SimpleListModel;
 
 /**
@@ -43,38 +40,44 @@ public class LobbyHandler implements ClientHandler {
     }
 
     @Override
-    public boolean process(Message message, ClientContext context) {
-        if (message instanceof LobbyMessage) {
-            if (message instanceof LobbyChatMessage) {
-                // a new chat message, display it
-                LobbyChatMessage msg = (LobbyChatMessage) message;
+    public boolean process(MessageContainer message, ClientContext context) {
+        // filter, we only work on lobby messages
+        if (!message.getType().isKindOf(Message.LOBBY)) {
+            return false;
+        }
+        // go through each message and do something        
+        switch (message.getType()) {
+            case LOBBY_CHAT:
                 try {
-                    chatHistory.insertString(chatHistory.getLength(), msg.getText(), null);
+                    chatHistory.insertString(chatHistory.getLength(), (String) message.getAttachment(), null);
                 } catch (BadLocationException ex) {
                     // should not happen
                 }
-            } else if (message instanceof LobbyServerOverview) {
-                LobbyServerOverview msg = (LobbyServerOverview) message;
+                return true;
 
-                    // update chatHistory
+            case LOBBY_OVERVIEW:
+                // a complete overview has been sent
+                LobbyServerOverview serverOverview = (LobbyServerOverview) message.getAttachment();
+
+                // update chatHistory
                 try {
                     chatHistory.remove(0, chatHistory.getLength());
-                    chatHistory.insertString(0, msg.getChatHistory(), null);
+                    chatHistory.insertString(0, serverOverview.getChatHistory(), null);
                 } catch (BadLocationException ex) {
                     // should not happen
                 }
 
                 // update lobby list
-                lobbyListModel.set(msg.getClients());
-                // lobbyListModel.sort();
+                lobbyListModel.set(serverOverview.getClients());
 
-                // a complete new overview, fill with data
-            } else if (message instanceof LobbyServerUpdate) {
-                // somebody arrived or left, update
-            }
-            return true;
+                return true;
+
+            case LOBBY_UPDATE:
+                // something changed
+                return true;
         }
+
+        // still here, then it has nothing to do with us                
         return false;
     }
-    private static final Logger LOG = Logger.getLogger(LobbyHandler.class.getName());
 }

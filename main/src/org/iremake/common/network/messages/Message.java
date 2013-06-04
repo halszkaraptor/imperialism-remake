@@ -16,30 +16,73 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.List;
+import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
+import org.iremake.common.network.messages.lobby.LobbyServerOverview;
+
 /**
  *
  */
-public class Message<T> {
-    
-    private T content;
-    private MessageType type;
-    
-    public Message(T content, MessageType type) {
-        if (type == null) {
-            throw new RuntimeException("Argument type cannot be null.");
+public enum Message {
+
+    // general messages
+    GENERAL(0, null),
+    GEN_ERROR(0, String.class),
+    GEN_LOGIN(0, LoginData.class),
+
+    // lobby messages
+    LOBBY(1, null),
+    LOBBY_OVERVIEW(1, LobbyServerOverview.class),
+    LOBBY_CHAT(1, String.class),
+    LOBBY_UPDATE(1, null),
+
+    // setup area messages
+    SETUP(2, null),
+    SETUP_GET_SCENARIOS_LIST(2, null),
+    SETUP_SCENARIOS_LIST(2, List.class),
+    SETUP_GET_SCENARIO_INFO(2, Integer.class),
+    SETUP_SCENARIO_INFO(2, ClientScenarioInfo.class),
+
+    // game area message
+    GAME(3, null);
+
+
+    private int category;
+    private Class clazz;
+
+    Message(int category, Class clazz) {
+        this.category = category;
+        this.clazz = clazz;
+    }
+
+    public boolean isKindOf(Message type) {
+        return category == type.category;
+    }
+
+    public boolean checkClass(Object object) {
+        if (clazz != null) {
+            return clazz.isInstance(object);
         }
-        if (!type.checkClass(content)) {
-            throw new RuntimeException("Runtime class of argument content disagrees with information from MessageType type.");
-        }
-        this.content = content;
-        this.type = type;
+        return false;
+    }
+
+    /**
+     * With attachment.
+     * 
+     * @param <T>
+     * @param content
+     * @return 
+     */
+    public <T> MessageContainer<T> createNew(T content) {
+        return new MessageContainer<>(content, this);
     }
     
-    public T getContent() {
-        return content;
-    }
-    
-    public MessageType getType() {
-        return type;
-    }
+    /**
+     * Without attachment.
+     * 
+     * @return 
+     */
+    public MessageContainer createNew() {
+        return new MessageContainer(this);
+    }    
 }

@@ -16,14 +16,13 @@
  */
 package org.iremake.client.network.handler;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
+import java.util.List;
 import org.iremake.client.network.ClientContext;
 import org.iremake.client.ui.MinimalSetupDialog;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.game.setup.SetupMessage;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
-import org.iremake.common.network.messages.game.setup.SetupTitlesList;
+import org.iremake.common.network.messages.game.setup.TitleListEntry;
 
 /**
  *
@@ -31,7 +30,6 @@ import org.iremake.common.network.messages.game.setup.SetupTitlesList;
 public class SetupHandler implements ClientHandler {
 
     private MinimalSetupDialog dialog;
-
 
     public SetupHandler(MinimalSetupDialog dialog) {
         if (dialog == null) {
@@ -41,27 +39,27 @@ public class SetupHandler implements ClientHandler {
     }
 
     @Override
-    public boolean process(Message message, ClientContext context) {
-        if (message instanceof SetupMessage) {
-            if (message instanceof SetupTitlesList) {
-                SetupTitlesList msg = (SetupTitlesList) message;
-                dialog.setTitles(msg.getTitles());
-                return true;
-            } else if (message instanceof ClientScenarioInfo) {
-                ClientScenarioInfo msg = (ClientScenarioInfo) message;
-                Dimension size = dialog.getMapSize();
-                BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-                for (int x = 0; x < size.width; x++) {
-                    for (int y = 0; y < size.height; y++) {
-                        int column = msg.getNumberColumns() * x / size.width; // rounding down
-                        int row = msg.getNumberRows() * y / size.height;
-                        mapImage.setRGB(x, y, msg.getColor(row, column));
-                    }
-                }
-                dialog.setMap(mapImage);
-            }
+    public boolean process(MessageContainer message, ClientContext context) {
+        // filter, we only work on general messages
+        if (!message.getType().isKindOf(Message.SETUP)) {
+            return false;
         }
+        // go through each message and do something        
+        switch (message.getType()) {
+            case SETUP_SCENARIOS_LIST:
+
+                @SuppressWarnings("unchecked") // we only cast to List, but we know/are fairly sure it will be okay
+                List<TitleListEntry> titles = (List<TitleListEntry>) message.getAttachment();
+                dialog.setTitles(titles);
+                return true;
+
+            case SETUP_SCENARIO_INFO:
+
+                dialog.setInfo((ClientScenarioInfo) message.getAttachment());
+                return true;
+        }
+
+        // still here, then it has nothing to do with us        
         return false;
     }
-
 }

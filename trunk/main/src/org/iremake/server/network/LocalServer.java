@@ -17,7 +17,7 @@
 package org.iremake.server.network;
 
 import org.iremake.client.network.LocalClient;
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.network.handler.SetupHandler;
 
@@ -59,7 +59,7 @@ public class LocalServer implements ServerContext {
     }
 
     @Override
-    public void sendMessage(Integer id, Message message) {
+    public void sendMessage(Integer id, MessageContainer message) {
         LocalClient.CONTEXT.process(message);
     }
 
@@ -87,7 +87,7 @@ public class LocalServer implements ServerContext {
     }
 
     @Override
-    public void process(Integer id, Message message) {
+    public void process(Integer id, MessageContainer message) {
         sclient.process(message);
     }
 }

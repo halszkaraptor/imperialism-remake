@@ -19,7 +19,7 @@ package org.iremake.common.network.messages.game.setup;
 /**
  *
  */
-public class TitleListEntry implements Comparable {
+public class TitleListEntry implements Comparable<TitleListEntry> {
 
     public int id;
     public String title;
@@ -41,9 +41,7 @@ public class TitleListEntry implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        // TODO other type
-        TitleListEntry other = (TitleListEntry) o;
+    public int compareTo(TitleListEntry other) {
         return title.compareTo(other.title);
     }
 }

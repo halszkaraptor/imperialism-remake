@@ -38,7 +38,6 @@ import org.iremake.client.ui.model.UIScenario;
 import org.iremake.common.Settings;
 import org.iremake.common.model.Nation;
 import org.iremake.common.model.map.MapPosition;
-import org.tools.ui.utils.GraphicsUtils;
 
 /**
  * Mini map panel. Provides overview maps and can change the view of the main

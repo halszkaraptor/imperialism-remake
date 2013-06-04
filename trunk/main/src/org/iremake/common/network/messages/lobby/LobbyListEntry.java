@@ -19,7 +19,7 @@ package org.iremake.common.network.messages.lobby;
 /**
  *
  */
-public class LobbyListEntry implements Comparable {
+public class LobbyListEntry implements Comparable<LobbyListEntry> {
 
     public String name;
     public String ip;
@@ -41,9 +41,7 @@ public class LobbyListEntry implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        // TODO throw exception when compared to something else
-        LobbyListEntry other = (LobbyListEntry) o;
+    public int compareTo(LobbyListEntry other) {
         return name.compareTo(other.name);
     }
 }

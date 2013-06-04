@@ -16,7 +16,7 @@
  */
 package org.iremake.server.network.handler;
 
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.server.client.ServerClient;
 
 /**
@@ -29,6 +29,6 @@ public interface ServerHandler {
      * @param message
      * @param context
      */
-    public abstract boolean process(Message message, ServerClient client);
+    public abstract boolean process(MessageContainer message, ServerClient client);
    
 }

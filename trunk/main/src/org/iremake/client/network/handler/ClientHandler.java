@@ -17,7 +17,7 @@
 package org.iremake.client.network.handler;
 
 import org.iremake.client.network.ClientContext;
-import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 
 /**
  * A client handler can process a message and if the message is of a certain
@@ -35,5 +35,5 @@ public interface ClientHandler {
      * @param message Message to be processed.
      * @param context Context for what we can do.
      */
-    public boolean process(Message message, ClientContext context);
+    public boolean process(MessageContainer message, ClientContext context);
 }

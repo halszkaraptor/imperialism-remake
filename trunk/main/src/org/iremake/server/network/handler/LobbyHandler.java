@@ -17,6 +17,7 @@
 package org.iremake.server.network.handler;
 
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageContainer;
 import org.iremake.server.client.ServerClient;
 
 /**
@@ -25,13 +26,19 @@ import org.iremake.server.client.ServerClient;
 public class LobbyHandler implements ServerHandler {
 
     @Override
-    public boolean process(Message message, ServerClient client) {
+    public boolean process(MessageContainer message, ServerClient client) {
+        // filter, we only work on lobby messages
+        if (!message.getType().isKindOf(Message.LOBBY)) {
+            return false;
+        }
+        // go through each message and do something        
         switch (message.getType()) {
             case LOBBY_CHAT:
-            client.getContext().broadcastNewChatMessage((String) message.getContent(), client);
-            return true;
+                // a chat message arrived, broadcast it too all clients in the lobby
+                client.getContext().broadcastNewChatMessage((String) message.getAttachment(), client);
+                return true;
         }
+        // still here, then it has nothing to do with us        
         return false;
     }
-
 }

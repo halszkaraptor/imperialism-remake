@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -519,7 +518,7 @@ public class EditorScreen extends UIFrame {
 
     private JComponent createNationTab() {
 
-        JComboBox nationSelectBox = new JComboBox(scenario.getNations());
+        JComboBox nationSelectBox = new JComboBox<>(scenario.getNations());
         nationSelectBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

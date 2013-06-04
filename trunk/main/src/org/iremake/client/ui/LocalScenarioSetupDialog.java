@@ -39,8 +39,8 @@ import org.iremake.client.io.Places;
 import org.iremake.client.network.LocalClient;
 import org.iremake.client.network.handler.SetupHandler;
 import org.iremake.client.ui.main.MainScreen;
-import org.iremake.common.network.messages.game.setup.SetupActionMessage;
-import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
+import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.tools.ui.ButtonBar;
 import org.tools.ui.PanelWithBackground;
@@ -51,7 +51,7 @@ import org.tools.ui.SimpleListModel;
  * runs locally).
  */
 public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDialog {
-
+    
     private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
     private JLabel mapLabel;
     private SetupHandler handler = new SetupHandler(this);
@@ -61,18 +61,18 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
      */
     public LocalScenarioSetupDialog() {
         super("Local Scenario");
-
+        
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
-
+        
         LocalClient.CONTEXT.addHandler(handler);
-        LocalClient.CONTEXT.send(SetupActionMessage.GET_SCENARIOS);
-
+        LocalClient.CONTEXT.send(Message.SETUP_GET_SCENARIOS_LIST.createNew());
+        
         JList<TitleListEntry> titleList = new JList<>();
         titleList.setOpaque(false);
         titleList.setBorder(CommonElements.createBorder("Scenarios"));
         titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         titleList.setModel(titleListModel);
-
+        
         titleList.setCellRenderer(new OurListCellRenderer(new OurListCellRenderer.ListCellInfoProvider() {
             @Override
             public String getToolTip(Object value) {
@@ -88,7 +88,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     Integer id = titleListModel.getElementAt(e.getFirstIndex()).id;
-                    LocalClient.CONTEXT.send(new SetupSelectionMessage(id));
+                    LocalClient.CONTEXT.send(Message.SETUP_GET_SCENARIO_INFO.createNew(id));
                 }
             }
         });
@@ -99,10 +99,10 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
         content.add(titleList, "width 200!, split 2");
         content.add(makeMapPanel(), "grow");
         content.add(makeInfoPanel(), "height 200!, growx");
-
+        
         setContent(content);
     }
-    
+
     /**
      * Menu bar holding all possible actions.
      *
@@ -119,12 +119,12 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
                 // frame.switchTo(selectedScenario);
             }
         });
-
+        
         ButtonBar bar = new ButtonBar();
         bar.add(startButton);
-
+        
         return bar.get();
-    }    
+    }
 
     /**
      * Map panel.
@@ -143,7 +143,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
         
         panel.setLayout(new MigLayout("fill, insets 0"));
         panel.add(mapLabel, "grow");
-
+        
         return panel;
     }
 
@@ -156,21 +156,25 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
         JPanel panel = CommonElements.createPanel("Info");
         return panel;
     }
-
+    
     @Override
     public void setTitles(List<TitleListEntry> titles) {
         titleListModel.set(titles);
         titleListModel.sort();
         // TODO clear other displays
     }
-
+    
     @Override
-    public Dimension getMapSize() {
-        return mapLabel.getSize();
-    }
-
-    @Override
-    public void setMap(BufferedImage mapImage) {
+    public void setInfo(ClientScenarioInfo scenarioInfo) {
+        Dimension size = mapLabel.getSize();
+        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < size.width; x++) {
+            for (int y = 0; y < size.height; y++) {
+                int column = scenarioInfo.getNumberColumns() * x / size.width; // rounding down
+                int row = scenarioInfo.getNumberRows() * y / size.height;
+                mapImage.setRGB(x, y, scenarioInfo.getColor(row, column));
+            }
+        }        
         mapLabel.setIcon(new ImageIcon(mapImage));
     }
 }

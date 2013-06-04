@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.iremake.client.network.ClientContext;
 import org.iremake.client.network.RemoteClient;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.Message;
 import org.iremake.server.network.RemoteServer;
 import org.iremake.server.network.ServerContext;
 
@@ -60,7 +60,7 @@ public class RemoteClientServerTest {
         final ClientContext client = RemoteClient.CONTEXT;
         client.start("localhost");
 
-        client.send(new LobbyChatMessage("Anyone want to chat?"));
+        client.send(Message.LOBBY_CHAT.createNew("Anyone wants to chat?"));
 
         // in 5s stop everything
         final Timer timer = new Timer();

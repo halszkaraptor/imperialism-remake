@@ -30,13 +30,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.common.Settings;
-import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.KryoRegistration;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
-import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
-import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
+import org.iremake.common.network.messages.lobby.LobbyServerOverview;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.client.ServerClientState;
 import org.iremake.server.network.handler.LoginHandler;
@@ -146,7 +145,7 @@ public class RemoteServer extends Listener implements ServerContext {
     @Override
     public void connected(Connection connection) {
         if (clients.size() >= MAX_CLIENTS) {
-            connection.sendTCP(new ErrorMessage(String.format("Too many connected clients. Max = %d", MAX_CLIENTS)));
+            connection.sendTCP(new Message<>(String.format("Too many connected clients. Max = %d", MAX_CLIENTS), MessageType.GEN_ERROR));
             connection.close();
         } else {
             // initial handler chain for every connected client
@@ -197,7 +196,7 @@ public class RemoteServer extends Listener implements ServerContext {
                 overviewList.add(client.getLobbyEntry());
             }
         }
-        recipient.send(new LobbyServerOverviewMessage(overviewList, combineChatHistory()));
+        recipient.send(new Message<>(new LobbyServerOverview(overviewList, combineChatHistory()), MessageType.LOBBY_OVERVIEW));
     }
 
     private String combineChatHistory() {
@@ -219,7 +218,7 @@ public class RemoteServer extends Listener implements ServerContext {
         String chatMessage = String.format("[%s] %s\n", sender.getLobbyEntry().name, text);
         for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
-                client.send(new LobbyChatMessage(chatMessage));
+                client.send(new Message<>(chatMessage, MessageType.LOBBY_CHAT));
             }
         }
         // add to history (delete old entries if more than 20 entries)
@@ -231,10 +230,10 @@ public class RemoteServer extends Listener implements ServerContext {
 
     @Override
     public void broadcastArrivingLobbyClient(ServerClient arriving) {
-        LobbyServerUpdateMessage message = new LobbyServerUpdateMessage(arriving.getLobbyEntry(), null);
+        LobbyServerUpdate update = new LobbyServerUpdate(arriving.getLobbyEntry(), null);
         for (ServerClient client : clients.values()) {
             if (ServerClientState.LOBBY.equals(client.getState())) {
-                client.send(message);
+                client.send(new Message<>(update, MessageType.LOBBY_UPDATE));
             }
         }
     }

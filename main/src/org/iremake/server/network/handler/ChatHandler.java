@@ -18,7 +18,7 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Logger;
 import org.iremake.common.network.messages.Message;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.client.ServerClient;
 
 /**
@@ -30,9 +30,8 @@ public class ChatHandler implements ServerHandler {
 
     @Override
     public boolean process(Message message, ServerClient client) {
-        if (message instanceof LobbyChatMessage) {
-            LobbyChatMessage msg = (LobbyChatMessage) message;
-            client.getContext().broadcastNewChatMessage(msg.getText(), client);
+        if (MessageType.LOBBY_CHAT.equals(message)) {
+            client.getContext().broadcastNewChatMessage((String) message.getContent(), client);
             return true;
         }
         return false;

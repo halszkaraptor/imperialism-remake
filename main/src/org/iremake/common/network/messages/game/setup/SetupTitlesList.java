@@ -16,14 +16,23 @@
  */
 package org.iremake.common.network.messages.game.setup;
 
+import java.util.List;
+
 /**
  *
  */
-public class SetupSelectionMessage implements SetupMessage {
-    
-    public int id;
-    
-    public SetupSelectionMessage(int id) {
-        this.id = id;
+public class SetupTitlesList {
+
+    private List<TitleListEntry> titlesList;
+
+    private SetupTitlesList() {
+    }
+
+    public SetupTitlesList(List<TitleListEntry> titlesList) {
+        this.titlesList = titlesList;
+    }
+
+    public List<TitleListEntry> getTitles() {
+        return titlesList;
     }
 }

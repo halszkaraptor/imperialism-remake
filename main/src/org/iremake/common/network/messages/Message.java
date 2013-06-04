@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trilarion
+ * Copyright (C) 2013 Trilarion
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,29 @@
 package org.iremake.common.network.messages;
 
 /**
- * Marker interface for Objects being sent over the network by the Kryonet
- * library.
+ *
  */
-public interface Message {
-
+public class Message<T> {
+    
+    private T content;
+    private MessageType type;
+    
+    public Message(T content, MessageType type) {
+        if (type == null) {
+            throw new RuntimeException("Argument type cannot be null.");
+        }
+        if (!type.checkClass(content)) {
+            throw new RuntimeException("Runtime class of argument content disagrees with information from MessageType type.");
+        }
+        this.content = content;
+        this.type = type;
+    }
+    
+    public T getContent() {
+        return content;
+    }
+    
+    public MessageType getType() {
+        return type;
+    }
 }

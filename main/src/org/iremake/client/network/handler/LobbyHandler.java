@@ -24,8 +24,8 @@ import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyMessage;
-import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
-import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
+import org.iremake.common.network.messages.lobby.LobbyServerOverview;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
 import org.tools.ui.SimpleListModel;
 
 /**
@@ -53,8 +53,8 @@ public class LobbyHandler implements ClientHandler {
                 } catch (BadLocationException ex) {
                     // should not happen
                 }
-            } else if (message instanceof LobbyServerOverviewMessage) {
-                LobbyServerOverviewMessage msg = (LobbyServerOverviewMessage) message;
+            } else if (message instanceof LobbyServerOverview) {
+                LobbyServerOverview msg = (LobbyServerOverview) message;
 
                     // update chatHistory
                 try {
@@ -69,7 +69,7 @@ public class LobbyHandler implements ClientHandler {
                 // lobbyListModel.sort();
 
                 // a complete new overview, fill with data
-            } else if (message instanceof LobbyServerUpdateMessage) {
+            } else if (message instanceof LobbyServerUpdate) {
                 // somebody arrived or left, update
             }
             return true;

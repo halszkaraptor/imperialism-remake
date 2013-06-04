@@ -19,15 +19,6 @@ package org.iremake.common.network.messages;
 import com.esotericsoftware.kryo.Kryo;
 import java.util.LinkedList;
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.game.setup.SetupActionMessage;
-import org.iremake.common.network.messages.game.setup.SetupMessage;
-import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
-import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
-import org.iremake.common.network.messages.lobby.LobbyChatMessage;
-import org.iremake.common.network.messages.lobby.LobbyListEntry;
-import org.iremake.common.network.messages.lobby.LobbyMessage;
-import org.iremake.common.network.messages.lobby.LobbyServerOverviewMessage;
-import org.iremake.common.network.messages.lobby.LobbyServerUpdateMessage;
 
 /**
  * Registration of Message classes to the Kryo serializer. All objects that are
@@ -49,24 +40,6 @@ public class KryoRegistration {
 
         // standard java
         kryo.register(LinkedList.class);
-
-        // error and login
-        kryo.register(ErrorMessage.class);
-        kryo.register(LoginMessage.class);
-
-        // lobby
-        kryo.register(LobbyMessage.class);
-        kryo.register(LobbyListEntry.class);
-        kryo.register(LobbyChatMessage.class);
-        kryo.register(LobbyServerOverviewMessage.class);
-        kryo.register(LobbyServerUpdateMessage.class);
-
-        // setup
-        kryo.register(SetupMessage.class);
-        kryo.register(SetupActionMessage.class);
-        kryo.register(SetupTitlesMessage.class);
-        kryo.register(SetupSelectionMessage.class);
-
     }
 
     private KryoRegistration() {

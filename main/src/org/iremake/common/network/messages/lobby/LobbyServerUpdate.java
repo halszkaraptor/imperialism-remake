@@ -21,15 +21,15 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class LobbyServerUpdateMessage implements LobbyMessage {
+public class LobbyServerUpdate {
 
     private LobbyListEntry arrivingClient;
     private LobbyListEntry leavingClient;
 
-    private LobbyServerUpdateMessage() {
+    private LobbyServerUpdate() {
     }
 
-    public LobbyServerUpdateMessage(LobbyListEntry arrivingClient, LobbyListEntry leavingClient) {
+    public LobbyServerUpdate(LobbyListEntry arrivingClient, LobbyListEntry leavingClient) {
         if (arrivingClient == null && leavingClient == null) {
             throw new IllegalArgumentException("Not all arguments in a LobbyServerUpdate can be null!");
         }
@@ -49,5 +49,5 @@ public class LobbyServerUpdateMessage implements LobbyMessage {
     public String toString() {
         return String.format("LobbyServerUpdateMessage");
     }
-    private static final Logger LOG = Logger.getLogger(LobbyServerUpdateMessage.class.getName());
+    private static final Logger LOG = Logger.getLogger(LobbyServerUpdate.class.getName());
 }

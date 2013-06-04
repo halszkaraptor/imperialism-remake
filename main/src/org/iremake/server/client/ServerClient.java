@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.server.network.ServerContext;
 import org.iremake.server.network.handler.ErrorHandler;
@@ -80,7 +80,7 @@ public class ServerClient {
      */
     public void disconnect(String error) {
         if (error != null) {
-            send(new ErrorMessage(error));
+            send(new Message<>(error, MessageType.GEN_ERROR));
         }
         context.disconnect(id);
     }

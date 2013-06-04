@@ -16,9 +16,8 @@
  */
 package org.iremake.client.ui;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.util.List;
+import org.iremake.common.network.messages.game.setup.SetupScenarioInfo;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
 
 /**
@@ -28,7 +27,5 @@ public interface MinimalSetupDialog {
 
     public void setTitles(List<TitleListEntry> titles);
 
-    public Dimension getMapSize();
-
-    public void setMap(BufferedImage mapImage);
+    public void setInfo(SetupScenarioInfo scenarioInfo);
 }

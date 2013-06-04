@@ -16,46 +16,55 @@
  */
 package org.iremake.common.network.messages;
 
+import java.util.List;
+import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
+
 /**
  *
  */
 public enum MessageType {
-    
+
     // general messages
     GENERAL(0, null),
     GEN_ERROR(0, String.class),
     GEN_LOGIN(0, LoginData.class),
-    
+
     // lobby messages
     LOBBY(1, null),
     LOBBY_OVERVIEW(1, null),
     LOBBY_CHAT(1, null),
     LOBBY_UPDATE(1, null),
-    
+
     // setup area messages
     SETUP(2, null),
-    SETUP_GET_SCENARIOS(2, null),
-    
+    SETUP_GET_SCENARIOS_LIST(2, List.class),
+    SETUP_GET_SCENARIO_INFO(2, Integer.class),
+    SETUP_SCENARIO_INFO(2, ClientScenarioInfo.class),
+
     // game area message
     GAME(3, null);
-    
-    
+
+
     private int category;
     private Class clazz;
-    
+
     MessageType(int category, Class clazz) {
         this.category = category;
         this.clazz = clazz;
     }
-    
+
     public boolean isKindOf(MessageType type) {
         return category == type.category;
     }
-    
+
     public boolean checkClass(Object object) {
         if (clazz != null) {
             return clazz.equals(object.getClass());
         }
         return false;
+    }
+
+    public <T> Message<T> createMessage(T content) {
+        return new Message<>(content, this);
     }
 }

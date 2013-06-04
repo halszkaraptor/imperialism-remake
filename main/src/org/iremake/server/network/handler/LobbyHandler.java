@@ -14,18 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.client.ui;
+package org.iremake.server.network.handler;
 
-import java.util.List;
-import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
-import org.iremake.common.network.messages.game.setup.TitleListEntry;
+import org.iremake.common.network.messages.Message;
+import org.iremake.server.client.ServerClient;
 
 /**
  *
  */
-public interface MinimalSetupDialog {
+public class LobbyHandler implements ServerHandler {
 
-    public void setTitles(List<TitleListEntry> titles);
+    @Override
+    public boolean process(Message message, ServerClient client) {
+        switch (message.getType()) {
+            case LOBBY_CHAT:
+            client.getContext().broadcastNewChatMessage((String) message.getContent(), client);
+            return true;
+        }
+        return false;
+    }
 
-    public void setInfo(ClientScenarioInfo scenarioInfo);
 }

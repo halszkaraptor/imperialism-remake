@@ -37,9 +37,9 @@ public class LoginHandler implements ServerHandler {
                 // set the new name
                 client.setName(data.getClientName());
                 // add some handlers
-                client.addHandler(new ChatHandler());                
+                client.addHandler(new LobbyHandler());
                 // put client in lobby
-                client.setState(ServerClientState.LOBBY);                
+                client.setState(ServerClientState.LOBBY);
                 // send a LobbyOverviewMessage
                 client.getContext().sendLobbyOverview(client);
                 // send others LobbyUpdateMessage

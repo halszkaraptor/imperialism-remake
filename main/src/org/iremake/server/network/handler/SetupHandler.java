@@ -18,7 +18,7 @@ package org.iremake.server.network.handler;
 
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.MessageType;
-import org.iremake.common.network.messages.game.setup.SetupScenarioInfo;
+import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.game.setup.SetupTitlesList;
 import org.iremake.server.client.ScenarioScanner;
 import org.iremake.server.client.ServerClient;
@@ -32,32 +32,23 @@ public class SetupHandler implements ServerHandler {
 
     @Override
     public boolean process(Message message, ServerClient client) {
-        if (message.getType().isKindOf(MessageType.SETUP)) {
-            switch(message.getType()) {
-                case SETUP_GET_SCENARIOS:
-                    break;
-            }
-            
-
-            if (message instanceof SetupActionMessage) {
-                switch ((SetupActionMessage) message) {
-                    case GET_SCENARIOS:
-                        // scan for scenarios
-                        scanner.doScan();
-                        client.send(new SetupTitlesList(scanner.getTitles()));
-                        return true;
-                }
-            } else if (message instanceof SetupSelectionMessage) {
-                SetupSelectionMessage msg = (SetupSelectionMessage) message;
-                if (scanner.hasID(msg.id)) {
+        switch (message.getType()) {
+            case SETUP_GET_SCENARIOS_LIST:
+                // scan for scenarios
+                scanner.doScan();
+                client.send(MessageType.SETUP_GET_SCENARIOS_LIST.createMessage(scanner.getTitles()));
+                return true;
+            case SETUP_GET_SCENARIO_INFO:
+                Integer ID = (Integer) message.getContent();
+                if (scanner.hasID(ID)) {
                     // generate the requested scenario information and send the message back
-                    client.send(new SetupScenarioInfo(scanner.getScenario(msg.id)));
+                    ClientScenarioInfo scenarioInfo = new ClientScenarioInfo(scanner.getScenario(ID));
+                    client.send(MessageType.SETUP_SCENARIO_INFO.createMessage(scenarioInfo));
                 } else {
                     // we don't know the requested ID
-                    client.send(new ErrorMessage("Received unknown id in a SetupSelectionMessage"));
+                    client.send(MessageType.GEN_ERROR.createMessage("Received unknown id in a SetupSelectionMessage"));
                 }
                 return true;
-            }
         }
         return false;
     }

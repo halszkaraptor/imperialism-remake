@@ -22,14 +22,14 @@ import org.iremake.client.network.ClientContext;
 import org.iremake.client.ui.MinimalSetupDialog;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.SetupMessage;
-import org.iremake.common.network.messages.game.setup.SetupScenarioInfo;
+import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.game.setup.SetupTitlesList;
 
 /**
  *
  */
 public class SetupHandler implements ClientHandler {
-    
+
     private MinimalSetupDialog dialog;
 
 
@@ -47,8 +47,8 @@ public class SetupHandler implements ClientHandler {
                 SetupTitlesList msg = (SetupTitlesList) message;
                 dialog.setTitles(msg.getTitles());
                 return true;
-            } else if (message instanceof SetupScenarioInfo) {
-                SetupScenarioInfo msg = (SetupScenarioInfo) message;
+            } else if (message instanceof ClientScenarioInfo) {
+                ClientScenarioInfo msg = (ClientScenarioInfo) message;
                 Dimension size = dialog.getMapSize();
                 BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
                 for (int x = 0; x < size.width; x++) {
@@ -57,7 +57,7 @@ public class SetupHandler implements ClientHandler {
                         int row = msg.getNumberRows() * y / size.height;
                         mapImage.setRGB(x, y, msg.getColor(row, column));
                     }
-                }          
+                }
                 dialog.setMap(mapImage);
             }
         }

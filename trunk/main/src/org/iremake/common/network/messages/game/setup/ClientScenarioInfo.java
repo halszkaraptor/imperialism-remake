@@ -27,7 +27,7 @@ import org.tools.xml.XList;
 /**
  *
  */
-public class SetupScenarioInfo {
+public class ClientScenarioInfo {
 
     private int rows;
     private int columns;
@@ -35,7 +35,7 @@ public class SetupScenarioInfo {
     private int[] colors;
     private String[] names;
 
-    public SetupScenarioInfo(ServerScenario scenario) {
+    public ClientScenarioInfo(ServerScenario scenario) {
         // get map dimension and create political map
         rows = scenario.getNumberRows();
         columns = scenario.getNumberColumns();

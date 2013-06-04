@@ -37,7 +37,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileFilter;
 import net.miginfocom.swing.MigLayout;
-import nu.xom.Element;
 import nu.xom.ParsingException;
 import org.tools.ui.utils.BasicFrame;
 import org.tools.xml.Node;

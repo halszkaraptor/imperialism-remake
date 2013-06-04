@@ -14,13 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.common.network.messages.lobby;
-
-import org.iremake.common.network.messages.Message;
+package org.iremake.common.network.messages;
 
 /**
  *
  */
-public interface LobbyMessage extends Message {
+public class LoginData {
 
+    private String version;
+    private String clientname;
+
+    private LoginData() {
+    }
+
+    public LoginData(String version, String clientname) {
+        if (version == null || clientname == null) {
+            throw new IllegalArgumentException("Arguments cannot be null.");
+        }
+        this.version = version;
+        this.clientname = clientname;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getClientName() {
+        return clientname;
+    }
 }

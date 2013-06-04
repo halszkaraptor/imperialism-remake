@@ -16,16 +16,14 @@
  */
 package org.iremake.client.network.handler;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import org.iremake.client.network.ClientContext;
 import org.iremake.client.ui.MinimalSetupDialog;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.SetupMessage;
-import org.iremake.common.network.messages.game.setup.SetupScenarioInfoMessage;
-import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
-import org.iremake.common.network.messages.game.setup.SetupTitlesMessage;
+import org.iremake.common.network.messages.game.setup.SetupScenarioInfo;
+import org.iremake.common.network.messages.game.setup.SetupTitlesList;
 
 /**
  *
@@ -45,12 +43,12 @@ public class SetupHandler implements ClientHandler {
     @Override
     public boolean process(Message message, ClientContext context) {
         if (message instanceof SetupMessage) {
-            if (message instanceof SetupTitlesMessage) {
-                SetupTitlesMessage msg = (SetupTitlesMessage) message;
+            if (message instanceof SetupTitlesList) {
+                SetupTitlesList msg = (SetupTitlesList) message;
                 dialog.setTitles(msg.getTitles());
                 return true;
-            } else if (message instanceof SetupScenarioInfoMessage) {
-                SetupScenarioInfoMessage msg = (SetupScenarioInfoMessage) message;
+            } else if (message instanceof SetupScenarioInfo) {
+                SetupScenarioInfo msg = (SetupScenarioInfo) message;
                 Dimension size = dialog.getMapSize();
                 BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
                 for (int x = 0; x < size.width; x++) {

@@ -21,15 +21,15 @@ import java.util.List;
 /**
  *
  */
-public class LobbyServerOverviewMessage implements LobbyMessage {
+public class LobbyServerOverview {
 
     private List<LobbyListEntry> clients;
     private String chatHistory;
 
-    private LobbyServerOverviewMessage() {
+    private LobbyServerOverview() {
     }
 
-    public LobbyServerOverviewMessage(List<LobbyListEntry> clients, String chatHistory) {
+    public LobbyServerOverview(List<LobbyListEntry> clients, String chatHistory) {
         if (clients == null) {
             throw new IllegalArgumentException("Arguments clients cannot be null!");
         }
@@ -44,10 +44,5 @@ public class LobbyServerOverviewMessage implements LobbyMessage {
 
     public String getChatHistory() {
         return chatHistory;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("LobbyOverviewMessage [Clients : %d]", clients.size());
     }
 }

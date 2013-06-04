@@ -16,24 +16,18 @@
  */
 package org.iremake.server.client;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nu.xom.ParsingException;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
-import org.iremake.common.Settings;
-import org.iremake.common.model.Nation;
 import org.iremake.common.model.ServerScenario;
 import org.iremake.common.model.ScenarioTitleProvider;
-import org.iremake.common.model.map.MapPosition;
-import org.iremake.common.network.messages.game.setup.SetupSelectionMessage;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;

@@ -37,7 +37,7 @@ import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.network.RemoteClient;
 import org.iremake.client.network.handler.LobbyHandler;
-import org.iremake.common.network.messages.LoginMessage;
+import org.iremake.common.network.messages.LoginData;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
 import org.iremake.common.network.messages.lobby.LobbyChatMessage;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
@@ -108,7 +108,7 @@ public class GameCenterDialog extends UIDialog {
                             // we connected
                             FrameManager.getInstance().scheduleInfoMessage("Connection successful");
                             RemoteClient.CONTEXT.addHandler(new LobbyHandler(chatHistory.getDocument(), lobbyListModel));
-                            RemoteClient.CONTEXT.send(new LoginMessage(Option.General_Version.get(), aliasField.getText()));
+                            RemoteClient.CONTEXT.send(new LoginData(Option.General_Version.get(), aliasField.getText()));
                         } else {
                             // we couldn't connect
                             FrameManager.getInstance().scheduleInfoMessage("Could not connect!");

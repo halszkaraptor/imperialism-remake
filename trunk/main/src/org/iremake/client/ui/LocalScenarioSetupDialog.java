@@ -19,6 +19,9 @@ package org.iremake.client.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -51,6 +54,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
 
     private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
     private JLabel mapLabel;
+    private SetupHandler handler = new SetupHandler(this);
 
     /**
      * Setup of the dialog. Also starts the scanner and searches for scenarios.
@@ -60,7 +64,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
 
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
 
-        LocalClient.CONTEXT.addHandler(new SetupHandler(this));
+        LocalClient.CONTEXT.addHandler(handler);
         LocalClient.CONTEXT.send(SetupActionMessage.GET_SCENARIOS);
 
         JList<TitleListEntry> titleList = new JList<>();
@@ -130,6 +134,12 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
     private JPanel makeMapPanel() {
         JPanel panel = CommonElements.createPanel("Map");
         mapLabel = new JLabel();
+        mapLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Point2D.Float point = new Point2D.Float((float) e.getX() / mapLabel.getWidth(), (float) e.getY() / mapLabel.getHeight());
+            }
+        });
         
         panel.setLayout(new MigLayout("fill, insets 0"));
         panel.add(mapLabel, "grow");

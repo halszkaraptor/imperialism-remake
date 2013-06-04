@@ -17,8 +17,9 @@
 package org.iremake.server.network.handler;
 
 import org.iremake.client.Option;
-import org.iremake.common.network.messages.LoginMessage;
+import org.iremake.common.network.messages.LoginData;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.client.ServerClient;
 import org.iremake.server.client.ServerClientState;
 
@@ -29,13 +30,12 @@ public class LoginHandler implements ServerHandler {
 
     @Override
     public boolean process(Message message, ServerClient client) {
-        if (message instanceof LoginMessage) {
-            LoginMessage msg = (LoginMessage) message;
-
+        if (MessageType.GEN_LOGIN.equals(message.getType())) {
+            LoginData data = (LoginData) message.getContent();
             // test version
-            if (Option.General_Version.get().equals(msg.getVersion())) {
+            if (Option.General_Version.get().equals(data.getVersion())) {
                 // set the new name
-                client.setName(msg.getClientName());
+                client.setName(data.getClientName());
                 // add some handlers
                 client.addHandler(new ChatHandler());                
                 // put client in lobby

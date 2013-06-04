@@ -18,8 +18,8 @@ package org.iremake.server.network.handler;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.iremake.common.network.messages.ErrorMessage;
 import org.iremake.common.network.messages.Message;
+import org.iremake.common.network.messages.MessageType;
 import org.iremake.server.client.ServerClient;
 
 /**
@@ -31,9 +31,8 @@ public class ErrorHandler implements ServerHandler {
     
     @Override
     public boolean process(Message message, ServerClient client) {
-        if (message instanceof ErrorMessage) {
-            ErrorMessage msg = (ErrorMessage) message;
-            LOG.log(Level.SEVERE, "Received error message: {0}", msg.getText());
+        if (MessageType.GEN_ERROR.equals(message.getType())) {
+            LOG.log(Level.SEVERE, "Received error message: {0}", (String) message.getContent());
             client.disconnect(null);
             return true;
         }

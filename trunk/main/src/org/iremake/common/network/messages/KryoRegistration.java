@@ -18,6 +18,8 @@ package org.iremake.common.network.messages;
 
 import com.esotericsoftware.kryo.Kryo;
 import java.util.LinkedList;
+import org.iremake.common.network.messages.lobby.LobbyListEntry;
+import org.iremake.common.network.messages.lobby.LobbyServerOverview;
 
 /**
  * Registration of Message classes to the Kryo serializer. All objects that are
@@ -35,14 +37,16 @@ public class KryoRegistration {
      */
     public static void register(Kryo kryo) {
         // message and container
-        kryo.register(Message.class);        
+        kryo.register(Message.class);
         kryo.register(MessageContainer.class);
 
         // standard java
         kryo.register(LinkedList.class);
-        
-        // 
+
+        // message specific data
         kryo.register(LoginData.class);
+        kryo.register(LobbyServerOverview.class);
+        kryo.register(LobbyListEntry.class);
     }
 
     private KryoRegistration() {

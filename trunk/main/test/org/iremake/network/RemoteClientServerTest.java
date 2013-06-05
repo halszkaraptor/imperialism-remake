@@ -30,7 +30,8 @@ import org.iremake.server.network.RemoteServer;
 import org.iremake.server.network.ServerContext;
 
 /**
- * Small brother of the console, not interactive. Tests the network capabilities.
+ * Small brother of the console, not interactive. Tests the network
+ * capabilities.
  */
 public class RemoteClientServerTest {
 
@@ -43,10 +44,17 @@ public class RemoteClientServerTest {
 
         // setup logger
         System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s [%2$s]%n");
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.FINER);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.FINER);
+        Handler ourHandler = new ConsoleHandler();
+        ourHandler.setLevel(Level.ALL);
+
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] oldHandlers = rootLogger.getHandlers();
+        if (oldHandlers.length > 0) {
+            rootLogger.removeHandler(oldHandlers[0]);
+        }
+        rootLogger.addHandler(ourHandler);
+        rootLogger.setLevel(Level.ALL);
+
 
         // load options
         Option.load();

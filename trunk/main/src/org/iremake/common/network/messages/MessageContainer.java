@@ -20,17 +20,20 @@ package org.iremake.common.network.messages;
  *
  */
 public class MessageContainer<T> {
-    
+
     private T attachment;
     private Message type;
-    
+
+    private MessageContainer() {
+    }
+
     public MessageContainer(Message type) {
         if (type == null) {
             throw new RuntimeException("Argument type cannot be null.");
-        }        
-        this.type = type;        
+        }
+        this.type = type;
     }
-    
+
     public MessageContainer(T attachment, Message type) {
         if (type == null) {
             throw new RuntimeException("Argument type cannot be null.");
@@ -41,11 +44,11 @@ public class MessageContainer<T> {
         this.attachment = attachment;
         this.type = type;
     }
-    
+
     public T getAttachment() {
         return attachment;
     }
-    
+
     public Message getType() {
         return type;
     }

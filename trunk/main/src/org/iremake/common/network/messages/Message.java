@@ -19,6 +19,7 @@ package org.iremake.common.network.messages;
 import java.util.List;
 import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.lobby.LobbyServerOverview;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
 
 /**
  *
@@ -34,7 +35,7 @@ public enum Message {
     LOBBY(1, null),
     LOBBY_OVERVIEW(1, LobbyServerOverview.class),
     LOBBY_CHAT(1, String.class),
-    LOBBY_UPDATE(1, null),
+    LOBBY_UPDATE(1, LobbyServerUpdate.class),
 
     // setup area messages
     SETUP(2, null),
@@ -47,7 +48,9 @@ public enum Message {
     GAME(3, null);
 
 
+    /* A category (integer) to have a "same kind" relationship. */
     private int category;
+    /* Type of the argument, we store it, so we can check it at runtime. */
     private Class clazz;
 
     Message(int category, Class clazz) {
@@ -55,10 +58,21 @@ public enum Message {
         this.clazz = clazz;
     }
 
-    public boolean isKindOf(Message type) {
-        return category == type.category;
+    /**
+     * Tests if two objects of this enum have the same category.
+     *
+     * @param other Other object.
+     * @return True if the category is the same, if they are of the "same kind".
+     */
+    public boolean isKindOf(Message other) {
+        return category == other.category;
     }
 
+    /**
+     *
+     * @param object
+     * @return
+     */
     public boolean checkClass(Object object) {
         if (clazz != null) {
             return clazz.isInstance(object);
@@ -68,21 +82,21 @@ public enum Message {
 
     /**
      * With attachment.
-     * 
+     *
      * @param <T>
      * @param content
-     * @return 
+     * @return
      */
     public <T> MessageContainer<T> createNew(T content) {
         return new MessageContainer<>(content, this);
     }
-    
+
     /**
      * Without attachment.
-     * 
-     * @return 
+     *
+     * @return
      */
     public MessageContainer createNew() {
         return new MessageContainer(this);
-    }    
+    }
 }

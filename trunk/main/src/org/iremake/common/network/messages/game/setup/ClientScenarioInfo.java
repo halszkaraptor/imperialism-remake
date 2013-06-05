@@ -17,6 +17,7 @@
 package org.iremake.common.network.messages.game.setup;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Map;
 import org.iremake.common.model.Nation;
@@ -85,5 +86,15 @@ public class ClientScenarioInfo {
             return Color.WHITE.getRGB();
         }
         return colors[id];
+    }
+
+    public String getNationAt(Point2D.Float point) {
+        int column = (int)(point.x * columns);
+        int row = (int)(point.y * rows);
+        Integer nation = politicalMap[row][column];
+        if (nation == Integer.MAX_VALUE) {
+            return null;
+        }
+        return names[nation];
     }
 }

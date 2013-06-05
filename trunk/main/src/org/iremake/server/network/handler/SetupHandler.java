@@ -16,11 +16,15 @@
  */
 package org.iremake.server.network.handler;
 
+import org.iremake.common.model.ServerScenario;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.MessageContainer;
+import org.iremake.common.network.messages.game.setup.ClientScenario;
+import org.iremake.common.network.messages.game.setup.ClientScenarioChoice;
 import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
-import org.iremake.server.client.ScenarioScanner;
+import org.iremake.server.client.ScenarioLoader;
 import org.iremake.server.client.ServerClient;
+import org.iremake.server.client.ServerClientState;
 
 /**
  *
@@ -28,7 +32,7 @@ import org.iremake.server.client.ServerClient;
 public class SetupHandler implements ServerHandler {
 
     /* Gives information about stored scenarios */
-    private ScenarioScanner scanner = new ScenarioScanner();
+    private ScenarioLoader scanner = new ScenarioLoader();
 
     @Override
     public boolean process(MessageContainer message, ServerClient client) {
@@ -56,6 +60,17 @@ public class SetupHandler implements ServerHandler {
                     client.send(Message.GEN_ERROR.createNew("Received unknown id in a SetupSelectionMessage"));
                 }
                 return true;
+                
+            case SETUP_START_SCENARIO:
+                // has decided upon a certain scenario and a certain nation and wants to start
+                ClientScenarioChoice scenarioChoice = (ClientScenarioChoice) message.getAttachment();
+                
+                ServerScenario scenario = scanner.getScenario(scenarioChoice.getScenarioID());
+                ClientScenario clientScenario = new ClientScenario();
+                
+                client.setState(ServerClientState.INGAME);
+                client.send(Message.GAME_START.createNew(clientScenario));
+                client.addHandler(new GameHandler());
         }
         // still here, then it has nothing to do with us
         return false;

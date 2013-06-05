@@ -39,12 +39,12 @@ import org.tools.xml.XMLHelper;
  * and corresponding titles.
  */
 // TODO smarter loading of scenarios (partly for title, ...)
-public class ScenarioScanner {
+public class ScenarioLoader {
 
-    private static final Logger LOG = Logger.getLogger(ScenarioScanner.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScenarioLoader.class.getName());
     private Map<Integer, Pair<Resource, String>> scenarios = new HashMap<>();
 
-    public ScenarioScanner() {
+    public ScenarioLoader() {
     }
 
     /**

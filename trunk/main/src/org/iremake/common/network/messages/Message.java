@@ -17,6 +17,8 @@
 package org.iremake.common.network.messages;
 
 import java.util.List;
+import org.iremake.common.network.messages.game.setup.ClientScenario;
+import org.iremake.common.network.messages.game.setup.ClientScenarioChoice;
 import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.lobby.LobbyServerOverview;
 import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
@@ -43,9 +45,11 @@ public enum Message {
     SETUP_SCENARIOS_LIST(2, List.class),
     SETUP_GET_SCENARIO_INFO(2, Integer.class),
     SETUP_SCENARIO_INFO(2, ClientScenarioInfo.class),
+    SETUP_START_SCENARIO(2, ClientScenarioChoice.class),
 
     // game area message
-    GAME(3, null);
+    GAME(3, null),
+    GAME_START(3, ClientScenario.class);
 
 
     /* A category (integer) to have a "same kind" relationship. */

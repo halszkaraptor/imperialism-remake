@@ -141,18 +141,19 @@ public class StartClient {
         // if client is still running disconnect
 
         if (RemoteClient.CONTEXT.isConnected()) {
-            LOG.log(Level.INFO, "Client still running, shut down.");
+            LOG.log(Level.INFO, "Remote client still running, shut down.");
             RemoteClient.CONTEXT.stop();
         }
 
         // if server is still running shut down
         if (RemoteServer.CONTEXT.isRunning()) {
-            LOG.log(Level.INFO, "Server still running, shut down.");
+            LOG.log(Level.INFO, "Remote server still running, shut down.");
             RemoteServer.CONTEXT.stop();
         }
-        
+
         // if local server still running shut down
         if (LocalServer.CONTEXT.isRunning()) {
+            LOG.log(Level.INFO, "Local server still running, shut down.");
             LocalServer.CONTEXT.stop();
         }
 
@@ -173,16 +174,23 @@ public class StartClient {
      */
     private static void setupLogger() throws IOException {
 
-        IOManager.createDirectory(Places.Log);
         // if log directory not yet existing, create it
+        IOManager.createDirectory(Places.Log);
 
         // setup of the logger
-        Handler handler = new FileHandler(IOManager.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
-        handler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way, set by command line, from a file?
-        handler.setLevel(Level.INFO);
-        Logger.getGlobal().addHandler(handler);
+        Handler ourHandler = new FileHandler(IOManager.getPath(Places.Log, "remake%g.log"), (int) 1e5, 10, false);
+        ourHandler.setFormatter(new SimpleFormatter()); // TODO is using the default (system specific) a good way?
+        ourHandler.setLevel(Level.INFO);
+
+        Logger rootLogger = Logger.getLogger("");
+        Handler[] oldHandlers = rootLogger.getHandlers();
+        if (oldHandlers.length > 0) {
+            rootLogger.removeHandler(oldHandlers[0]);
+        }
+        rootLogger.addHandler(ourHandler);
+        rootLogger.setLevel(Level.INFO); // TODO set to warning after version 1.0
 
         // our first log message (just to get the date and time)
-        LOG.log(Level.INFO, "Logger is setup");
+        LOG.log(Level.INFO, "Logger initialized.");
     }
 }

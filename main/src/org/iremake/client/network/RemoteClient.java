@@ -39,8 +39,9 @@ public class RemoteClient extends Listener implements ClientContext {
 
     /* Timeout in ms for connection */
     private static final Logger LOG = Logger.getLogger(RemoteClient.class.getName());
+
     public static final ClientContext CONTEXT = new RemoteClient();
-    
+
     /* Kryonet client */
     private Client kryoClient;
     /* The only instance */
@@ -49,7 +50,7 @@ public class RemoteClient extends Listener implements ClientContext {
      */
 
     private List<ClientHandler> handlerList = new LinkedList<>();
-    private ExecutorService threadPool;    
+    private ExecutorService threadPool;
    /**
      * Avoid instantiation.
      */
@@ -64,7 +65,7 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public boolean start(String host) {
-        LOG.log(Level.FINE, "Client connection initiated.");
+        LOG.log(Level.INFO, "[CLIENT] Client connection initiated.");
         if (kryoClient != null) {
             return false;
         }
@@ -80,10 +81,11 @@ public class RemoteClient extends Listener implements ClientContext {
             kryoClient.connect(5_000, host, Settings.NETWORK_PORT);
         } catch (IOException ex) {
             // LOG.log(Level.SEVERE, null, ex);
-            LOG.log(Level.SEVERE, "Client could not connect.");
+            LOG.log(Level.SEVERE, "[CLIENT] Client could not connect.");
             stop();
             return false;
         }
+        LOG.log(Level.INFO, "[CLIENT] Client connection successful.");
 
         return true;
     }
@@ -97,7 +99,7 @@ public class RemoteClient extends Listener implements ClientContext {
     @Override
     public void send(MessageContainer message) {
         if (kryoClient != null && kryoClient.isConnected()) {
-            LOG.log(Level.FINE, "Send message: {0}", message.toString());
+            LOG.log(Level.INFO, "[CLIENT] Send message of type {0}", message.getType().name());
             kryoClient.sendTCP(message);
         }
     }
@@ -107,9 +109,9 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public void stop() {
-        // TODO what happens to operations being sent
+        // TODO what happens to operations being sent?
         if (kryoClient != null) {
-            LOG.log(Level.FINE, "Will stop.");
+            LOG.log(Level.INFO, "[CLIENT] Client will shutdown.");
             kryoClient.close();
             kryoClient.stop();
             kryoClient = null;
@@ -121,9 +123,9 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     public String getStatus() {
         if (kryoClient != null) {
-            return String.format("Connected to server at %s.", kryoClient.getRemoteAddressTCP().getHostString());
+            return String.format("[CLIENT] Connected to server at %s.", kryoClient.getRemoteAddressTCP().getHostString());
         } else {
-            return "Not connected.";
+            return "[CLIENT] Not connected.";
         }
     }
 
@@ -143,6 +145,7 @@ public class RemoteClient extends Listener implements ClientContext {
     @Override
     public void disconnect(String error) {
         if (kryoClient != null) {
+            LOG.log(Level.INFO, "[CLIENT] We want to disconnect.");
             if (error != null) {
                 send(Message.GEN_ERROR.createNew(error));
             }
@@ -182,8 +185,7 @@ public class RemoteClient extends Listener implements ClientContext {
     @Override
     public void process(MessageContainer message) {
 
-
-        for (ClientHandler handler : handlerList) {
+       for (ClientHandler handler : handlerList) {
             if (handler.process(message, this)) {
                 break;
             }
@@ -198,7 +200,7 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public void connected(Connection connection) {
-        LOG.log(Level.FINE, "Client has connected.");
+        LOG.log(Level.INFO, "[CLIENT] Client has connected.");
         // exactly one thread, so processing will be one by one
         threadPool = Executors.newFixedThreadPool(1);
     }
@@ -211,8 +213,8 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public void disconnected(Connection connection) {
-        LOG.log(Level.FINE, "Connection {0} disconnected.", connection.getID());
-        // TODO either we or somebody else disconnected, tell somebody about it
+        LOG.log(Level.INFO, "[CLIENT] Our client was/has disconnected.");
+        // TODO either we or somebody else disconnected, do something or tell somebody about it
         threadPool.shutdown();
     }
 
@@ -226,15 +228,17 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public void received(Connection connection, final Object object) {
-        // want only type Message, otherwise shut down
         if (connection.isConnected() && object instanceof MessageContainer) {
+            final MessageContainer message = (MessageContainer) object;
+            LOG.log(Level.INFO, "[CLIENT] Received message of type {0}", message.getType().name());
             // schedule for processing
             threadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    process((MessageContainer) object);
+                    process(message);
                 }
             });
         }
+        // if it was another message, it could have been a keepalive message from the framework
     }
 }

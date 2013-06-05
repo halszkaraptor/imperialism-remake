@@ -68,7 +68,7 @@ public class RemoteServer extends Listener implements ServerContext {
      */
     @Override
     public boolean start() {
-        LOG.log(Level.FINE, "Server start initiated.");
+        LOG.log(Level.INFO, "[SERVER] Server startup initiated.");
         if (server != null) {
             return false;
         }
@@ -82,15 +82,14 @@ public class RemoteServer extends Listener implements ServerContext {
             server.bind(Settings.NETWORK_PORT);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
-            LOG.log(Level.INFO, "Could not start.");
+            LOG.log(Level.INFO, "[SERVER] Server could not start.");
 
             stop();
 
             return false;
         }
 
-        LOG.log(Level.FINE, "Bound to port.");
-
+        LOG.log(Level.INFO, "[SERVER] Server started successful, now listening on port.");
         server.addListener(this);
 
         return true;
@@ -112,7 +111,7 @@ public class RemoteServer extends Listener implements ServerContext {
     @Override
     public void stop() {
         if (server != null) {
-            LOG.log(Level.FINE, "Will stop.");
+            LOG.log(Level.INFO, "[SERVER] Server will shutdown.");
             for (Connection connection : server.getConnections()) {
                 connection.close();
             }
@@ -121,7 +120,7 @@ public class RemoteServer extends Listener implements ServerContext {
 
             // fireStatusChanged("Server not running.");
         } else {
-            LOG.log(Level.FINE, "Already stopped.");
+            LOG.log(Level.INFO, "[SERVER] Already stopped.");
         }
     }
 
@@ -149,23 +148,29 @@ public class RemoteServer extends Listener implements ServerContext {
             connection.close();
         } else {
             // initial handler chain for every connected client
-            Integer id = connection.getID();
-            connections.put(id, connection);
+            Integer ID = connection.getID();
+            LOG.log(Level.INFO, "[SERVER] Client (ID={0}) has connected.", ID);
+            connections.put(ID, connection);
             // we need the connection in the constructor of the serverclient already
-            ServerClient sclient = new ServerClient(id, this);
+            ServerClient sclient = new ServerClient(ID, this);
             sclient.addHandler(new GeneralHandler());
-            clients.put(id, sclient);
+            clients.put(ID, sclient);
         }
     }
 
+    /**
+     * A disconnection event occurred.
+     *
+     * @param connection
+     */
     @Override
     public void disconnected(Connection connection) {
-        Integer id = connection.getID();
-        LOG.log(Level.FINE, "Connection {0} disconnected.", id);
-        if (clients.containsKey(id)) {
-            clients.get(id).shutdown();
-            clients.remove(id);
-            connections.remove(id);
+        Integer ID = connection.getID();
+        LOG.log(Level.INFO, "[SERVER] Client (ID={0}) was/has disconnected.", ID);
+        if (clients.containsKey(ID)) {
+            clients.get(ID).shutdown();
+            clients.remove(ID);
+            connections.remove(ID);
         }
     }
 
@@ -173,14 +178,14 @@ public class RemoteServer extends Listener implements ServerContext {
     public void received(Connection connection, Object object) {
         if (connection.isConnected() && object instanceof MessageContainer) {
             MessageContainer message = (MessageContainer) object;
-            LOG.log(Level.FINER, "Received message: {0}", message.toString());
+            LOG.log(Level.INFO, "[SERVER] Received message of type {0}", message.getType().name());
             Integer id = connection.getID();
             if (!clients.containsKey(id)) {
-                throw new RuntimeException("connection not registered. internal error.");
+                throw new RuntimeException("[SERVER] ID not registered. Internal failure.");
             }
             process(id, message);
         }
-        // if is wasn't a MessageContainer it might have been a keepalive message
+        // if is wasn't a MessageContainer it might have been a keepalive message, so we just let it pass
     }
 
     @Override
@@ -249,12 +254,14 @@ public class RemoteServer extends Listener implements ServerContext {
     }
 
     @Override
-    public void disconnect(Integer id) {
-        connections.get(id).close();
+    public void disconnect(Integer ID) {
+        LOG.log(Level.INFO, "[SERVER] We want to disconnect client (ID={0}).", ID);
+        connections.get(ID).close();
     }
 
     @Override
-    public void sendMessage(Integer id, MessageContainer message) {
-        connections.get(id).sendTCP(message);
+    public void sendMessage(Integer ID, MessageContainer message) {
+        LOG.log(Level.INFO, "[SERVER] Send message of type {0} to client {1}.", new Object[]{message.getType().name(), ID});
+        connections.get(ID).sendTCP(message);
     }
 }

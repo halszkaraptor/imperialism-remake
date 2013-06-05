@@ -20,6 +20,7 @@ import com.esotericsoftware.kryo.Kryo;
 import java.util.LinkedList;
 import org.iremake.common.network.messages.lobby.LobbyListEntry;
 import org.iremake.common.network.messages.lobby.LobbyServerOverview;
+import org.iremake.common.network.messages.lobby.LobbyServerUpdate;
 
 /**
  * Registration of Message classes to the Kryo serializer. All objects that are
@@ -47,6 +48,7 @@ public class KryoRegistration {
         kryo.register(LoginData.class);
         kryo.register(LobbyServerOverview.class);
         kryo.register(LobbyListEntry.class);
+        kryo.register(LobbyServerUpdate.class);
     }
 
     private KryoRegistration() {

@@ -38,7 +38,6 @@ import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.iremake.client.network.LocalClient;
 import org.iremake.client.network.handler.SetupHandler;
-import org.iremake.client.ui.main.MainScreen;
 import org.iremake.common.network.messages.Message;
 import org.iremake.common.network.messages.game.setup.ClientScenarioInfo;
 import org.iremake.common.network.messages.game.setup.TitleListEntry;
@@ -54,7 +53,10 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
     
     private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
     private JLabel mapLabel;
+    private JLabel selectedNationLabel;
+    private Integer selectedNationID;
     private SetupHandler handler = new SetupHandler(this);
+    private ClientScenarioInfo scenarioInfo;
 
     /**
      * Setup of the dialog. Also starts the scanner and searches for scenarios.
@@ -114,8 +116,12 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // is a scenario and a nation selected?
+                
+                // send message to server and close
+                LocalClient.CONTEXT.send(Message.SETUP_START_SCENARIO.createNew(selectedNationID));
                 close();
-                MainScreen frame = new MainScreen();
+                // MainScreen frame = new MainScreen();
                 // frame.switchTo(selectedScenario);
             }
         });
@@ -138,6 +144,8 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
             @Override
             public void mousePressed(MouseEvent e) {
                 Point2D.Float point = new Point2D.Float((float) e.getX() / mapLabel.getWidth(), (float) e.getY() / mapLabel.getHeight());
+                String nation = scenarioInfo.getNationAt(point);
+                    selectedNationLabel.setText(nation);
             }
         });
         
@@ -154,6 +162,12 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
      */
     private JPanel makeInfoPanel() {
         JPanel panel = CommonElements.createPanel("Info");
+        
+        selectedNationLabel = new JLabel();
+        
+        panel.setLayout(new MigLayout());
+        panel.add(new JLabel("Nation"), "alignx right");
+        panel.add(selectedNationLabel);
         return panel;
     }
     
@@ -166,6 +180,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
     
     @Override
     public void setInfo(ClientScenarioInfo scenarioInfo) {
+        this.scenarioInfo = scenarioInfo;
         Dimension size = mapLabel.getSize();
         BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < size.width; x++) {

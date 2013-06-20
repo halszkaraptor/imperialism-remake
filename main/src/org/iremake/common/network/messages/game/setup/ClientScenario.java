@@ -16,9 +16,15 @@
  */
 package org.iremake.common.network.messages.game.setup;
 
+import org.iremake.common.model.ServerScenario;
+
 /**
  *
  */
 public class ClientScenario {
-    
+
+    public ClientScenario(ClientScenarioChoice scenarioChoice, ServerScenario scenario) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }

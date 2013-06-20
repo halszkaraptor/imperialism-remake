@@ -40,7 +40,7 @@ public class SetupHandler implements ServerHandler {
         if (!message.getType().isKindOf(Message.SETUP)) {
             return false;
         }
-        // go through each message and do something        
+        // go through each message and do something
         switch (message.getType()) {
             case SETUP_GET_SCENARIOS_LIST:
                 // wants available scenarios, scan for scenarios
@@ -60,16 +60,21 @@ public class SetupHandler implements ServerHandler {
                     client.send(Message.GEN_ERROR.createNew("Received unknown id in a SetupSelectionMessage"));
                 }
                 return true;
-                
+
             case SETUP_START_SCENARIO:
                 // has decided upon a certain scenario and a certain nation and wants to start
                 ClientScenarioChoice scenarioChoice = (ClientScenarioChoice) message.getAttachment();
-                
+
                 ServerScenario scenario = scanner.getScenario(scenarioChoice.getScenarioID());
-                ClientScenario clientScenario = new ClientScenario();
-                
+                ClientScenario clientScenario = new ClientScenario(scenarioChoice, scenario);
+
+                // set state to ingame
                 client.setState(ServerClientState.INGAME);
+
+                // send message to client
                 client.send(Message.GAME_START.createNew(clientScenario));
+
+                // add a new game handler
                 client.addHandler(new GameHandler());
         }
         // still here, then it has nothing to do with us

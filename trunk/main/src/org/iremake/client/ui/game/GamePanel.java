@@ -80,6 +80,6 @@ public enum GamePanel {
      * @return button for each panel.
      */
     public JButton getButton() {
-        return Button.create("game/game.button." + name + ".png");
+        return Button.create("game/game.button." + name + ".png", "");
     }
 }

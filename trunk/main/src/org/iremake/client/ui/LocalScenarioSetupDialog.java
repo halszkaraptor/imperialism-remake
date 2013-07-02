@@ -50,7 +50,7 @@ import org.tools.ui.SimpleListModel;
  * runs locally).
  */
 public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDialog {
-    
+
     private SimpleListModel<TitleListEntry> titleListModel = new SimpleListModel<>();
     private JLabel mapLabel;
     private JLabel selectedNationLabel;
@@ -63,18 +63,18 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
      */
     public LocalScenarioSetupDialog() {
         super("Local Scenario");
-        
+
         JPanel content = new PanelWithBackground(IOManager.getAsImage(Places.GraphicsIcons, "misc/dialog.background.png"));
-        
+
         LocalClient.CONTEXT.addHandler(handler);
         LocalClient.CONTEXT.send(Message.SETUP_GET_SCENARIOS_LIST.createNew());
-        
+
         JList<TitleListEntry> titleList = new JList<>();
         titleList.setOpaque(false);
         titleList.setBorder(CommonElements.createBorder("Scenarios"));
         titleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         titleList.setModel(titleListModel);
-        
+
         titleList.setCellRenderer(new OurListCellRenderer(new OurListCellRenderer.ListCellInfoProvider() {
             @Override
             public String getToolTip(Object value) {
@@ -101,7 +101,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
         content.add(titleList, "width 200!, split 2");
         content.add(makeMapPanel(), "grow");
         content.add(makeInfoPanel(), "height 200!, growx");
-        
+
         setContent(content);
     }
 
@@ -117,18 +117,18 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
             @Override
             public void actionPerformed(ActionEvent e) {
                 // is a scenario and a nation selected?
-                
+
                 // send message to server and close
-                LocalClient.CONTEXT.send(Message.SETUP_START_SCENARIO.createNew(selectedNationID));
+                // LocalClient.CONTEXT.send(Message.SETUP_START_SCENARIO.createNew(selectedNationID));
                 close();
                 // MainScreen frame = new MainScreen();
                 // frame.switchTo(selectedScenario);
             }
         });
-        
+
         ButtonBar bar = new ButtonBar();
         bar.add(startButton);
-        
+
         return bar.get();
     }
 
@@ -148,10 +148,10 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
                     selectedNationLabel.setText(nation);
             }
         });
-        
+
         panel.setLayout(new MigLayout("fill, insets 0"));
         panel.add(mapLabel, "grow");
-        
+
         return panel;
     }
 
@@ -162,22 +162,22 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
      */
     private JPanel makeInfoPanel() {
         JPanel panel = CommonElements.createPanel("Info");
-        
+
         selectedNationLabel = new JLabel();
-        
+
         panel.setLayout(new MigLayout());
         panel.add(new JLabel("Nation"), "alignx right");
         panel.add(selectedNationLabel);
         return panel;
     }
-    
+
     @Override
     public void setTitles(List<TitleListEntry> titles) {
         titleListModel.set(titles);
         titleListModel.sort();
         // TODO clear other displays
     }
-    
+
     @Override
     public void setInfo(ClientScenarioInfo scenarioInfo) {
         this.scenarioInfo = scenarioInfo;
@@ -189,7 +189,7 @@ public class LocalScenarioSetupDialog extends UIDialog implements MinimalSetupDi
                 int row = scenarioInfo.getNumberRows() * y / size.height;
                 mapImage.setRGB(x, y, scenarioInfo.getColor(row, column));
             }
-        }        
+        }
         mapLabel.setIcon(new ImageIcon(mapImage));
     }
 }

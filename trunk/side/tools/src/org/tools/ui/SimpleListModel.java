@@ -22,15 +22,15 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 /**
- * A simple, generic, read-only ListModel implementation for JList components
+ * A simple, generic, (read-only) ListModel implementation for JList components
  * based (naturally) on a List.
  */
 // TODO make copies if demanded
 public class SimpleListModel<E extends Comparable<? super E>> extends AbstractListModel<E> {
-    
+
     private static final long serialVersionUID = 1L;
     private List<E> content;
-    
+
     public SimpleListModel() {
         content = new LinkedList<>();
     }
@@ -42,16 +42,21 @@ public class SimpleListModel<E extends Comparable<? super E>> extends AbstractLi
     public SimpleListModel(List<E> list) {
         content = list;
     }
-    
+
     public void set(List<E> list) {
         fireIntervalRemoved(this, 0, content.size());
         content = list;
         fireIntervalAdded(this, 0, content.size());
     }
-    
+
     public void sort() {
         Collections.sort(content);
         fireContentsChanged(this, 0, content.size());
+    }
+
+    public void clear() {
+        fireIntervalRemoved(this, 0, content.size());
+        content.clear();
     }
 
     @Override

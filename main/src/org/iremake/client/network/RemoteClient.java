@@ -134,7 +134,7 @@ public class RemoteClient extends Listener implements ClientContext {
      */
     @Override
     public boolean isConnected() {
-        return kryoClient != null;
+        return kryoClient != null && kryoClient.isConnected();
     }
 
     /**
@@ -216,6 +216,7 @@ public class RemoteClient extends Listener implements ClientContext {
         LOG.log(Level.INFO, "[CLIENT] Our client was/has disconnected.");
         // TODO either we or somebody else disconnected, do something or tell somebody about it
         threadPool.shutdown();
+        kryoClient = null;
     }
 
     /**

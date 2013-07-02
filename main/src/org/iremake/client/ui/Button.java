@@ -32,39 +32,43 @@ import org.tools.ui.ButtonFactory;
 public enum Button {
 
     // small sized buttons
-    SmallAdd("misc/generic.button.add.png"),
-    SmallDelete("misc/generic.button.delete.png"),
-    SmallEdit("misc/generic.button.edit.png"),
-    SmallExit("misc/generic.button.exit.png"),
+    SmallAdd("misc/generic.button.add.png", "Add"),
+    SmallDelete("misc/generic.button.delete.png", "Delete"),
+    SmallEdit("misc/generic.button.edit.png", "Edit"),
+    SmallExit("misc/generic.button.exit.png", "Exit"),
     // small sized minimap button
-    MiniMapGeographical("map/map.mini.icon.geographical.png"),
-    MiniMapPolitical("map/map.mini.icon.political.png"),
+    MiniMapGeographical("map/map.mini.icon.geographical.png", "Geographical"),
+    MiniMapPolitical("map/map.mini.icon.political.png", "Political"),
     // normal sized buttons used everywhere
-    NormalExit("misc/main.button.exit.png"),
-    NormalHelp("misc/main.button.help.png"),
+    NormalExit("misc/main.button.exit.png", "Exit"),
+    NormalHelp("misc/main.button.help.png", "Help"),
     // normal sized buttons used in the editor
-    EditorTerrain("editor/editor.button.terrain.png"),
-    EditorNation("editor/editor.button.nation.png"),
-    EditorProvince("editor/editor.button.province.png"),
+    EditorTerrain("editor/editor.button.terrain.png", "Terrain"),
+    EditorNation("editor/editor.button.nation.png", "Nation"),
+    EditorProvince("editor/editor.button.province.png", "Province"),
     // normal size buttons used in the network dialog
-    NetworkConnect("misc/network.button.connect.png"),
-    NetworkDisconnect("misc/network.button.connect.png"),
+    NetworkConnect("misc/network.button.connect.png", "Connect"),
+    NetworkDisconnect("misc/network.button.disconnect.png", "Disconnect"),
+    // normal sized buttons
+    GameCenterSingle("misc/game.single.player.png", "Single player"),
     // normal sized buttons with general options for a scenario
-    ScenarioLoad("misc/scenario.button.load.png"),
-    ScenarioStart("misc/scenario.button.start.png"),
-    ScenarioNew("misc/scenario.button.new.png"),
-    ScenarioSave("misc/scenario.button.save.png");
+    ScenarioLoad("misc/scenario.button.load.png", "Load"),
+    ScenarioStart("misc/scenario.button.start.png", "Start"),
+    ScenarioNew("misc/scenario.button.new.png", "New"),
+    ScenarioSave("misc/scenario.button.save.png", "Save");
 
     /* Location of the button icon. */
     private String location;
+    private String tooltip;
 
     /**
      * Sets the location.
      *
      * @param location
      */
-    Button(String location) {
+    Button(String location, String tooltip) {
         this.location = location;
+        this.tooltip = tooltip;
     }
 
     /**
@@ -73,7 +77,7 @@ public enum Button {
      * @return
      */
     public JButton create() {
-        return Button.create(location);
+        return Button.create(location, tooltip);
     }
 
     /**
@@ -82,8 +86,8 @@ public enum Button {
      * @param location
      * @return
      */
-    public static JButton create(String location) {
+    public static JButton create(String location, String tooltip) {
         // TODO set tooltip automatically from a description
-        return ButtonFactory.create(IOManager.getAsIcon(Places.GraphicsIcons, location), "");
+        return ButtonFactory.create(IOManager.getAsIcon(Places.GraphicsIcons, location), tooltip);
     }
 }

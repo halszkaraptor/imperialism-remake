@@ -17,6 +17,8 @@
 package org.iremake.client;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
 import org.tools.xml.XProperty;
@@ -39,6 +41,7 @@ public enum Option {
     // client options
     Client_Alias("client.network.alias"); // this option does not need to be existing in the default options xml file, it will be added automatically
 
+    private static final Logger LOG = Logger.getLogger(Option.class.getName());
     /* OS name */
     public static final boolean isOSWindows = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH).startsWith("windows");
     /* Holds the options */
@@ -113,6 +116,7 @@ public enum Option {
             IOManager.setFromXML(Places.Common, name, options);
         }
         // TODO no option should be null, test
+        LOG.log(Level.INFO, "Running version {0}", General_Version.get());
     }
 
     /**

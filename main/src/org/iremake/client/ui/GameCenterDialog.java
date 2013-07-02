@@ -50,7 +50,11 @@ public class GameCenterDialog extends UIDialog {
 
     private JTextArea chatHistory;
     private SimpleListModel<LobbyListEntry> lobbyListModel;
+    private JTextField chatInput;
 
+    /**
+     *
+     */
     public GameCenterDialog() {
         super("Game Center");
 
@@ -65,8 +69,13 @@ public class GameCenterDialog extends UIDialog {
         setContent(content);
     }
 
+    /**
+     *
+     * @return
+     */
     private Component createMenuBar() {
-        JButton localScenarioButton = Button.ScenarioStart.create();
+        // single player / local scenario dialog
+        JButton localScenarioButton = Button.GameCenterSingle.create();
         localScenarioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,6 +87,7 @@ public class GameCenterDialog extends UIDialog {
             }
         });
 
+        // connect to client
         JButton connectRemoteServerButton = Button.NetworkConnect.create();
         connectRemoteServerButton.addActionListener(new ActionListener() {
             @Override
@@ -97,7 +107,9 @@ public class GameCenterDialog extends UIDialog {
                     ipField.setEditable(false);
                 }
                 final JTextField aliasField = new JTextField(Option.Client_Alias.get());
-                JButton connectButton = new JButton("Connect");
+
+                // try to connect now
+                JButton connectButton = Button.NetworkConnect.create();
                 connectButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -130,6 +142,7 @@ public class GameCenterDialog extends UIDialog {
             }
         });
 
+        // disconnection from any server
         JButton disconnectRemoteServerButton = Button.NetworkDisconnect.create();
         disconnectRemoteServerButton.addActionListener(new ActionListener() {
             @Override
@@ -137,6 +150,11 @@ public class GameCenterDialog extends UIDialog {
                 if (RemoteClient.CONTEXT.isConnected()) {
                     RemoteClient.CONTEXT.disconnect("User request disconnection.");
                     FrameManager.getInstance().scheduleInfoMessage("Disconnection successful");
+
+                    // clean up
+                    chatInput.setText("");
+                    chatHistory.setText("");
+                    lobbyListModel.clear();
                 }
             }
         });
@@ -147,6 +165,10 @@ public class GameCenterDialog extends UIDialog {
         return bar.get();
     }
 
+    /**
+     *
+     * @return
+     */
     private Component createMemberList() {
         JList<LobbyListEntry> list = new JList<>();
         list.setOpaque(false);
@@ -169,6 +191,10 @@ public class GameCenterDialog extends UIDialog {
         return list;
     }
 
+    /**
+     *
+     * @return
+     */
     private Component createChatPane() {
         // text area inside the chat pan
         chatHistory = CommonElements.createTextArea();
@@ -193,9 +219,13 @@ public class GameCenterDialog extends UIDialog {
         return chatPane;
     }
 
+    /**
+     *
+     * @return
+     */
     private Component createChatInput() {
         // chat input field
-        final JTextField chatInput = CommonElements.createTextField();
+        chatInput = CommonElements.createTextField();
         chatInput.setBorder(CommonElements.createBorder("Send message"));
 
         chatInput.addActionListener(new ActionListener() {

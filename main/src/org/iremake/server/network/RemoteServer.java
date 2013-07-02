@@ -49,7 +49,6 @@ public class RemoteServer extends Listener implements ServerContext {
     /* port on which we listen to clients */
     private Server server;
     public static final ServerContext CONTEXT = new RemoteServer();
-
     private static final int MAX_CLIENTS = 100;
     private Map<Integer, ServerClient> clients = new HashMap<>(10);
     private Map<Integer, Connection> connections = new HashMap<>(10);
@@ -256,12 +255,20 @@ public class RemoteServer extends Listener implements ServerContext {
     @Override
     public void disconnect(Integer ID) {
         LOG.log(Level.INFO, "[SERVER] We want to disconnect client (ID={0}).", ID);
-        connections.get(ID).close();
+        if (connections.containsKey(ID)) {
+            connections.get(ID).close();
+        } else {
+            LOG.log(Level.INFO, "[SERVER] Client (ID={0}) was already disconnected.", ID);
+        }
     }
 
     @Override
     public void sendMessage(Integer ID, MessageContainer message) {
         LOG.log(Level.INFO, "[SERVER] Send message of type {0} to client {1}.", new Object[]{message.getType().name(), ID});
-        connections.get(ID).sendTCP(message);
+        if (connections.containsKey(ID)) {
+            connections.get(ID).sendTCP(message);
+        } else {
+            LOG.log(Level.INFO, "[SERVER] Cannot send message, client {1} has disconnected.", ID);
+        }
     }
 }

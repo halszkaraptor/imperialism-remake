@@ -17,7 +17,6 @@
 package org.iremake.xml;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.xml.Node;
@@ -47,6 +46,7 @@ public class MusicDatabaseXMLGenerator {
         Node parent = new Node("Background");
         parent.addAttribute("base", "background");
         parent.appendChild(addPiece("01-Imperialism.ogg"));
+        parent.appendChild(addPiece("02-Silent Ashes.ogg"));
         return parent;
     }
 
@@ -60,5 +60,4 @@ public class MusicDatabaseXMLGenerator {
         child.appendChild(file);
         return child;
     }
-    private static final Logger LOG = Logger.getLogger(MusicDatabaseXMLGenerator.class.getName());
 }

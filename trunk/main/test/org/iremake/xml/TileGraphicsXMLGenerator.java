@@ -17,7 +17,6 @@
 package org.iremake.xml;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
 import org.tools.xml.Node;
@@ -115,17 +114,17 @@ public class TileGraphicsXMLGenerator {
     public static Node createResources() {
         Node parent = new Node("Resource-Overlays");
         parent.addAttribute("base", "resources");
-        parent.appendChild(addResourceOverlay(1, "resource.grain.png"));
-        parent.appendChild(addResourceOverlay(2, "resource.orchard.png"));
-        parent.appendChild(addResourceOverlay(3, "resource.buffalo.png"));
-        parent.appendChild(addResourceOverlay(4, "resource.cotton.png"));
-        parent.appendChild(addResourceOverlay(5, "resource.sheep.png"));
-        parent.appendChild(addResourceOverlay(6, "resource.forest.png"));
-        parent.appendChild(addResourceOverlay(7, "resource.scrubforest.png"));
-        parent.appendChild(addResourceOverlay(8, "resource.oil.png"));
-        parent.appendChild(addResourceOverlay(9, "resource.coal.png"));
-        parent.appendChild(addResourceOverlay(10, "resource.ore.png"));
-        parent.appendChild(addResourceOverlay(11, "resource.horse.png"));        
+        parent.appendChild(addResourceOverlay(1, "resource.grain.inner.png", "resource.grain.outer.png"));
+        parent.appendChild(addResourceOverlay(2, "resource.orchard.inner.png", "resource.orchard.outer.png"));
+        parent.appendChild(addResourceOverlay(3, "resource.buffalo.inner.png", "resource.buffalo.outer.png"));
+        parent.appendChild(addResourceOverlay(4, "resource.cotton.inner.png", "resource.cotton.outer.png"));
+        parent.appendChild(addResourceOverlay(5, "resource.sheep.inner.png", "resource.sheep.outer.png"));
+        parent.appendChild(addResourceOverlay(6, "resource.forest.inner.png", "resource.forest.outer.png"));
+        parent.appendChild(addResourceOverlay(7, "resource.scrubforest.inner.png", "resource.scrubforest.outer.png"));
+        parent.appendChild(addResourceOverlay(8, "resource.oil.inner.png", "resource.oil.outer.png"));
+        parent.appendChild(addResourceOverlay(9, "resource.coal.png", null));
+        parent.appendChild(addResourceOverlay(10, "resource.ore.png", null));
+        parent.appendChild(addResourceOverlay(11, "resource.horse.png", null));
         return parent;
     }
 
@@ -136,10 +135,13 @@ public class TileGraphicsXMLGenerator {
      * @param visible
      * @return
      */
-    public static Node addResourceOverlay(int id, String location) {
+    public static Node addResourceOverlay(int id, String inner, String outer) {
         Node child = new Node("Overlay");
         child.addAttribute("id", String.valueOf(id));
-        child.addAttribute("location", location);
+        child.addAttribute("inner", inner);
+        if (outer != null) {
+            child.addAttribute("outer", outer);
+        }
         return child;
     }
 
@@ -150,13 +152,13 @@ public class TileGraphicsXMLGenerator {
     public static Node createTerrain() {
         Node parent = new Node("Terrain-Tiles");
         parent.addAttribute("base", "terrains");
-        parent.appendChild(addTerrainTile(1, "terrain.sea.png", "80a0e0"));
-        parent.appendChild(addTerrainTile(2, "terrain.plains.png", "d0f0a0"));
-        parent.appendChild(addTerrainTile(3, "terrain.hills.png", "604020"));
-        parent.appendChild(addTerrainTile(4, "terrain.mountains.png", "909090"));
-        parent.appendChild(addTerrainTile(5, "terrain.tundra.png", "c0c0c0"));
-        parent.appendChild(addTerrainTile(6, "terrain.swamp.png", "309030"));
-        parent.appendChild(addTerrainTile(7, "terrain.desert.png", "c0c0a0"));
+        parent.appendChild(addTerrainTile(1, "terrain.sea.png", null,  "80a0e0"));
+        parent.appendChild(addTerrainTile(2, "terrain.plains.png", null, "d0f0a0"));
+        parent.appendChild(addTerrainTile(3, "terrain.hills.inner.png", "terrain.hills.outer.png", "604020"));
+        parent.appendChild(addTerrainTile(4, "terrain.mountains.inner.png", "terrain.mountains.outer.png", "909090"));
+        parent.appendChild(addTerrainTile(5, "terrain.tundra.inner.png", "terrain.tundra.outer.png", "c0c0c0"));
+        parent.appendChild(addTerrainTile(6, "terrain.swamp.inner.png", "terrain.swamp.outer.png", "309030"));
+        parent.appendChild(addTerrainTile(7, "terrain.desert.inner.png", "terrain.desert.outer.png", "c0c0a0"));
         return parent;
     }
 
@@ -167,12 +169,14 @@ public class TileGraphicsXMLGenerator {
      * @param color
      * @return
      */
-    public static Node addTerrainTile(int id, String location, String color) {
+    public static Node addTerrainTile(int id, String inner, String outer, String color) {
         Node child = new Node("Tile");
         child.addAttribute("id", String.valueOf(id));
-        child.addAttribute("location", location);
+        child.addAttribute("inner", inner);
+        if (outer != null) {
+            child.addAttribute("outer", outer);
+        }
         child.addAttribute("color", color);
         return child;
     }
-    private static final Logger LOG = Logger.getLogger(TileGraphicsXMLGenerator.class.getName());
 }

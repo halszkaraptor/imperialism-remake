@@ -17,7 +17,6 @@
 package org.iremake.xml;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import org.iremake.client.Option;
 import org.tools.io.Resource;
 import org.tools.io.ResourceUtils;
@@ -29,7 +28,6 @@ import org.tools.xml.XProperty;
  */
 public class DefaultOptionsXMLGenerator {
 
-    private static final Logger LOG = Logger.getLogger(DefaultOptionsXMLGenerator.class.getName());
     /**
      * @param args the command line arguments
      */

@@ -419,7 +419,7 @@ public class GraphicsUtils {
      */
     public static void transparentFillPolygon(BufferedImage image, int[] xi, int[] yi) {
         if (xi == null || yi == null || xi.length != yi.length) {
-            // TODO throw runtime exception
+            throw new RuntimeException("xi or yi are null or they have not the same length!");
         }
         Graphics2D g2d = image.createGraphics();
         g2d.setColor(TRANSPARENT);

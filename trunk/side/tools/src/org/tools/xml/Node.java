@@ -183,6 +183,10 @@ public class Node {
     public void addAttribute(String key, String value) {
         element.addAttribute(new Attribute(key, value));
     }
+    
+    public boolean hasAttribute(String key) {
+        return element.getAttribute(key) != null;
+    }
 
     public String getAttributeValue(String key) {
         String value = element.getAttributeValue(key);

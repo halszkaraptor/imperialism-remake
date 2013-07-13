@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.iremake.client.ui.map.EnhancedTile;
 import org.iremake.common.model.ServerScenario;
 import org.iremake.common.model.map.MapPosition;
 
@@ -70,7 +71,7 @@ public class UIScenario extends ServerScenario {
      * @param p the tile position
      * @return the image or null if position is outside of the map
      */
-    public Image getTerrainTileAt(MapPosition p) {
+    public EnhancedTile getTerrainTileAt(MapPosition p) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;

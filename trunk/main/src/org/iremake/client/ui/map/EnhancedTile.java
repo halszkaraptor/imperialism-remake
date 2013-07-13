@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.iremake.ctt;
+package org.iremake.client.ui.map;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -24,6 +24,9 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import org.iremake.common.model.map.TilesTransition;
 import org.tools.ui.utils.GraphicsUtils;
 import org.tools.utils.Pair;
 
@@ -45,8 +48,9 @@ public class EnhancedTile {
         }
     }
     
-    private Map<TilesTransition, Part> library = new HashMap<>();
+    private Map<TilesTransition, Part> library = new HashMap<>();    
     private Dimension size;
+    private Image outer;
 
     /**
      *
@@ -55,6 +59,7 @@ public class EnhancedTile {
      */
     public EnhancedTile(Image inner, Image outer) {
         // check that have same size
+        this.outer = outer;
         size = new Dimension(inner.getWidth(null), inner.getHeight(null));
         if (size.width != outer.getWidth(null) || size.height != outer.getHeight(null)) {
             throw new RuntimeException("Dimensions of inner and outer image must be equal!");
@@ -132,25 +137,19 @@ public class EnhancedTile {
         return result;
     }
 
-    /**
-     *
-     * @param g2d
-     * @param x0
-     * @param y0
-     * @param surrounding
-     */
-    public void paint(Graphics2D g2d, int x0, int y0, TilesTransition transition, boolean outer) {
-        Part part = library.get(transition);
-        if (outer) {
-            g2d.drawImage(part.outer, x0 + part.x, y0 + part.y, null);
-        } else {
-            g2d.drawImage(part.inner, x0 + part.x, y0 + part.y, null);
-        }
-    }
-
-    public void paintMany(Graphics2D g2d, int x0, int y0, List<Pair<TilesTransition, Boolean>> list) {
+    public void paint(Graphics2D g2d, int x0, int y0, List<Pair<TilesTransition, Boolean>> list) {
         for (Pair<TilesTransition, Boolean> item : list) {
-            paint(g2d, x0, y0, item.getA(), item.getB());
+            Part part = library.get(item.getA());
+            Image image = item.getB() ? part.outer : part.inner;
+            g2d.drawImage(image, x0 + part.x, y0 + part.y, null);
         }
     }
+    
+    public Icon getAsIcon() {
+        return new ImageIcon(outer);
+    }    
+    
+    public Image getOuter() {
+        return outer;
+    }    
 }

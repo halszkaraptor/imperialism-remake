@@ -308,6 +308,20 @@ public class ServerScenario implements FullXMLable {
             row = p.row;
             column = p.column + 1;
             break;
+        case West:
+            row = p.row;
+            column = p.column - 1;
+            break;
+        case NorthWest:
+            row = p.row - 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column - shift;
+            break;
+        case NorthEast:
+            row = p.row - 1;
+            shift = p.row % 2 == 0 ? 1 : 0;
+            column = p.column + 1 - shift;
+            break;
         case SouthEast:
             row = p.row + 1;
             shift = p.row % 2 == 0 ? 1 : 0;
@@ -323,6 +337,14 @@ public class ServerScenario implements FullXMLable {
             column = -1;
         }
         return new MapPosition(row, column);
+    }
+    
+    public boolean isSameTerrain(MapPosition p, TilesTransition t) {
+        MapPosition q = getNeighbourPosition(p, t);
+        if (containsPosition(p) && containsPosition(q) && map[p.row][p.column].terrainID == map[q.row][q.column].terrainID) {
+            return true;
+        }
+        return false;
     }
 
     /**

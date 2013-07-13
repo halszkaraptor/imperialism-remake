@@ -74,7 +74,7 @@ public class EditorSelectTerrainDialog extends UIDialog {
         // add a button for each terrain tile and set tooltip text and name accordingly
         for (Integer id : IDs) {
             JButton button = new JButton();
-            button.setIcon(new ImageIcon(repository.getTerrainTile(id)));
+            button.setIcon(repository.getTerrainTile(id).getAsIcon());
             button.setMargin(new Insets(0, 0, 0, 0));
             button.setName(id.toString());
             button.setFocusable(false);

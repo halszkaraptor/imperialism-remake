@@ -40,6 +40,7 @@ import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.TilesBorder;
 import org.iremake.common.model.map.TilesTransition;
+import org.tools.utils.Pair;
 
 /**
  * The Main map display, currently used in the editor.
@@ -233,12 +234,17 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
         // draw all terrain tiles
         for (ScreenPosition r : fulldrawn) {
-            drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
+                            List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
+                            for (TilesTransition transition : TilesTransition.values()) {
+                                list.add(new Pair<TilesTransition, Boolean>(transition, scenario.isSameTerrain(r.p, transition)));
+                            }            
+            scenario.getTerrainTileAt(r.p).paint(g2d, r.x, r.y, list);
+            // drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
         // draw terrain tiles for outside areas
         for (ScreenPosition r : outside) {
-            drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
+            drawImageCentered(g2d, scenario.getTerrainTileAt(r.p).getOuter(), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
 
         // draw resources

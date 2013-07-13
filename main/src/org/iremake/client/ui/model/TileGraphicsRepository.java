@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.iremake.client.io.IOManager;
 import org.iremake.client.io.Places;
+import org.iremake.client.ui.map.EnhancedTile;
 import org.tools.ui.utils.GraphicsUtils;
 import org.tools.xml.Node;
 import org.tools.xml.ReadXMLable;
@@ -69,9 +70,9 @@ public class TileGraphicsRepository implements ReadXMLable {
      * @param id terrain id
      * @return an image
      */
-    public Image getTerrainTile(Integer id) {
+    public EnhancedTile getTerrainTile(Integer id) {
         checkTerrainID(id);
-        return terrainTiles.get(id).image;
+        return terrainTiles.get(id).content;
     }
 
     /**
@@ -155,12 +156,12 @@ public class TileGraphicsRepository implements ReadXMLable {
      */
     private static class Tile {
 
-        public Image image;
+        public EnhancedTile content;
         public Color color;
 
         @Override
         public int hashCode() {
-            return image.hashCode() * 13 + color.hashCode();
+            return content.hashCode() * 13 + color.hashCode();
         }
 
         @Override
@@ -172,7 +173,7 @@ public class TileGraphicsRepository implements ReadXMLable {
                 return false;
             }
             final Tile other = (Tile) obj;
-            if (!Objects.equals(this.image, other.image)) {
+            if (!Objects.equals(this.content, other.content)) {
                 return false;
             }
             if (!Objects.equals(this.color, other.color)) {
@@ -204,17 +205,22 @@ public class TileGraphicsRepository implements ReadXMLable {
             child.checkNode("Tile");
 
             Integer id = child.getAttributeValueAsInt("id");
-            String location = child.getAttributeValue("location");
             Tile tile = new Tile();
-            tile.image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
+
+            Image inner = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + child.getAttributeValue("inner"));
+            Image outer = inner;
+            if (child.hasAttribute("outer")) {
+                outer = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + child.getAttributeValue("outer"));
+            }            
+            tile.content = new EnhancedTile(inner, outer);
             tile.color = GraphicsUtils.convertHexToColor(child.getAttributeValue("color"));
+
+            
             terrainTiles.put(id, tile);
         }
 
         for (Tile tile : terrainTiles.values()) {
-            width = tile.image.getWidth(null);
-            height = tile.image.getHeight(null);
-            Dimension size = new Dimension(width, height);
+            Dimension size = tile.content.getSize();
             if (!tileSize.equals(size)) {
                 RuntimeException ex = new RuntimeException("Terrain tiles differ in size");
                 LOG.log(Level.SEVERE, null, ex);
@@ -254,8 +260,9 @@ public class TileGraphicsRepository implements ReadXMLable {
             child.checkNode("Overlay");
 
             Integer id = child.getAttributeValueAsInt("id");
-            String location = child.getAttributeValue("location");
+            String location = child.getAttributeValue("inner");
             Image image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
+            // TODO what if images cannot be loaded because they aren't there, image == null, check
             resourceOverlays.put(id, image);
         }
 

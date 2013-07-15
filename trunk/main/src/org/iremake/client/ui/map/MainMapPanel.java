@@ -234,10 +234,10 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
 
         // draw all terrain tiles
         for (ScreenPosition r : fulldrawn) {
-                            List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
-                            for (TilesTransition transition : TilesTransition.values()) {
-                                list.add(new Pair<TilesTransition, Boolean>(transition, scenario.isSameTerrain(r.p, transition)));
-                            }            
+            List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
+            for (TilesTransition transition : TilesTransition.values()) {
+                list.add(new Pair<TilesTransition, Boolean>(transition, scenario.isSameTerrain(r.p, transition)));
+            }
             scenario.getTerrainTileAt(r.p).paint(g2d, r.x, r.y, list);
             // drawImageCentered(g2d, scenario.getTerrainTileAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
         }
@@ -250,7 +250,12 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         // draw resources
         for (ScreenPosition r : fulldrawn) {
             if (scenario.isResourceVisibleAt(r.p)) {
-                drawImageCentered(g2d, scenario.getResourceOverlayAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
+                List<Pair<TilesTransition, Boolean>> list = new ArrayList<>(6);
+                for (TilesTransition transition : TilesTransition.values()) {
+                    list.add(new Pair<TilesTransition, Boolean>(transition, scenario.isSameResource(r.p, transition)));
+                }
+                scenario.getResourceOverlayAt(r.p).paint(g2d, r.x, r.y, list);
+                // drawImageCentered(g2d, scenario.getResourceOverlayAt(r.p), r.x + tileSize.width / 2, r.y + tileSize.height / 2);
             }
         }
 

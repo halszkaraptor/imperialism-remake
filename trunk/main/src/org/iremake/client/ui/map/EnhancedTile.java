@@ -140,7 +140,7 @@ public class EnhancedTile {
     public void paint(Graphics2D g2d, int x0, int y0, List<Pair<TilesTransition, Boolean>> list) {
         for (Pair<TilesTransition, Boolean> item : list) {
             Part part = library.get(item.getA());
-            Image image = item.getB() ? part.outer : part.inner;
+            Image image = item.getB() ? part.inner : part.outer;
             g2d.drawImage(image, x0 + part.x, y0 + part.y, null);
         }
     }

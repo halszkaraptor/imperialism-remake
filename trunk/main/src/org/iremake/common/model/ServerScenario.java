@@ -22,6 +22,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.iremake.common.Settings;
 import org.iremake.common.model.map.MapItem;
 import org.iremake.common.model.map.MapPosition;
 import org.iremake.common.model.map.Tile;
@@ -346,6 +347,14 @@ public class ServerScenario implements FullXMLable {
         }
         return false;
     }
+    
+    public boolean isSameResource(MapPosition p, TilesTransition t) {
+        MapPosition q = getNeighbourPosition(p, t);
+        if (containsPosition(p) && containsPosition(q) && map[p.row][p.column].resourceID != Settings.RESOURCE_NONE && map[p.row][p.column].resourceID == map[q.row][q.column].resourceID) {
+            return true;
+        }
+        return false;
+    }    
 
     /**
      * Returns the border for a given position and a given tile transition.

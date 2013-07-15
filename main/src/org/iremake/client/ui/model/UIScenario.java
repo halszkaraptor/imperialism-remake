@@ -57,7 +57,7 @@ public class UIScenario extends ServerScenario {
      * @param p the tile position
      * @return the image or null if position is outside of the map
      */
-    public Image getResourceOverlayAt(MapPosition p) {
+    public EnhancedTile getResourceOverlayAt(MapPosition p) {
         if (!containsPosition(p)) {
             LOG.log(Level.INFO, "Terrain position outside of map.");
             return null;

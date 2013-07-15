@@ -46,7 +46,7 @@ public class TileGraphicsRepository implements ReadXMLable {
     /* the map storing the ui tile information for each terrain id */
     private Map<Integer, Tile> terrainTiles = new HashMap<>();
     /* the map storing the ui overlay image for each id */
-    private Map<Integer, Image> resourceOverlays = new HashMap<>();
+    private Map<Integer, EnhancedTile> resourceOverlays = new HashMap<>();
     /* */
     private Map<String, Image> miscOverlays = new HashMap<>();
     /* */
@@ -110,7 +110,7 @@ public class TileGraphicsRepository implements ReadXMLable {
      * @param id id
      * @return an image or null if id not existing
      */
-    public Image getResourceOverlay(Integer id) {
+    public EnhancedTile getResourceOverlay(Integer id) {
         return resourceOverlays.get(id);
     }
 
@@ -211,7 +211,7 @@ public class TileGraphicsRepository implements ReadXMLable {
             Image outer = inner;
             if (child.hasAttribute("outer")) {
                 outer = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + child.getAttributeValue("outer"));
-            }            
+            }
             tile.content = new EnhancedTile(inner, outer);
             tile.color = GraphicsUtils.convertHexToColor(child.getAttributeValue("color"));
 
@@ -260,10 +260,13 @@ public class TileGraphicsRepository implements ReadXMLable {
             child.checkNode("Overlay");
 
             Integer id = child.getAttributeValueAsInt("id");
-            String location = child.getAttributeValue("inner");
-            Image image = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + location);
             // TODO what if images cannot be loaded because they aren't there, image == null, check
-            resourceOverlays.put(id, image);
+            Image inner = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + child.getAttributeValue("inner"));
+            Image outer = inner;
+            if (child.hasAttribute("outer")) {
+                outer = IOManager.getAsImage(Places.GraphicsScenario, base + "/" + child.getAttributeValue("outer"));
+            }            
+            resourceOverlays.put(id, new EnhancedTile(inner, outer));
         }
 
         // import misc overlays

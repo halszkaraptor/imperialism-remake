@@ -26,6 +26,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -173,16 +174,21 @@ public class ImageMapLabel extends JLabel {
             // draw tooltiptext
             Dimension size = getSize();
             Font font = UIManager.getFont("Label.font");
+            // font = font.deriveFont(Font.BOLD, 16);
+            font = font.deriveFont(14f);
             Rectangle bounds = font.getStringBounds(active.tooltiptext, g2d.getFontRenderContext()).getBounds();
-        Insets insets = new Insets(3, 6, 3, 6);
+            Insets insets = new Insets(3, 6, 3, 6);
 
             // draw rectangle
-            g2d.setColor(new Color(164, 164, 164, 240));
-            g2d.fill3DRect(size.width / 2  - insets.left - bounds.width / 2, size.height - insets.top - insets.bottom - bounds.height - 10, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
+            g2d.setColor(new Color(0, 0, 0, 200));
+            // g2d.fill3DRect(size.width / 2 - insets.left - bounds.width / 2, size.height - insets.top - insets.bottom - bounds.height - 10, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
+            g2d.fillRoundRect(size.width / 2 - insets.left - bounds.width / 2, size.height - insets.top - insets.bottom - bounds.height - 10, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, 8, 8);
 
             // draw string
-            g2d.setColor(Color.black);
-            g2d.drawString(active.tooltiptext, size.width / 2 - bounds.x - bounds.width / 2, size.height - insets.bottom + bounds.y); // TODO antialiased
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2d.setColor(Color.white);
+            g2d.setFont(font);
+            g2d.drawString(active.tooltiptext, size.width / 2 - bounds.x - bounds.width / 2, size.height - bounds.y - insets.bottom - bounds.height - 10); // TODO antialiased
         }
     }
 }

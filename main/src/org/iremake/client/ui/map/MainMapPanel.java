@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -72,8 +73,9 @@ public class MainMapPanel extends JPanel implements MiniMapFocusChangedListener 
         g2d.fill3DRect(x - insets.left - bounds.width / 2, y, bounds.width + insets.left + insets.right, bounds.height + insets.top + insets.bottom, true);
 
         // draw string
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setColor(Color.black);
-        g2d.drawString(name, x - bounds.x - bounds.width / 2, y + insets.top - bounds.y); // TODO antialiased
+        g2d.drawString(name, x - bounds.x - bounds.width / 2, y - bounds.y + insets.top); // TODO antialiased?
     }
 
     private void drawImageCentered(Graphics2D g2d, Image image, int x, int y) {

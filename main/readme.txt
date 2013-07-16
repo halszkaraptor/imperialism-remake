@@ -1,7 +1,7 @@
 Imperialism Remake
 
 
-  Version 0.1.4 (2013-07-06)
+  Version 0.1.4 (2013-07-16)
   ChangeLog: http://remake.twelvepm.de/forum/viewtopic.php?f=2&t=1045
 
 

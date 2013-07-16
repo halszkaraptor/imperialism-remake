@@ -20,7 +20,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputDir="."
-OutputBaseFilename="ImperialismRemake-0.1.3-Setup"
+OutputBaseFilename="ImperialismRemake-0.1.4-Setup"
 SetupIconFile="icon.ico"
 Compression=lzma/ultra64
 SolidCompression=yes
@@ -33,6 +33,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\..\main\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[InstallDelete]
+; delete old options file
+Type: files; Name: "{app}\data\game\common\options.xml"
 
 [Dirs]
 Name: "{app}"; Permissions: users-modify

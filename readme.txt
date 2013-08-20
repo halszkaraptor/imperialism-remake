@@ -8,6 +8,4 @@ Imperialism remake
 
 - Instructions on setup of main project: http://remake.twelvepm.de/forum/viewtopic.php?f=10&t=1029#p1075
 
-- Design Specifications: "design" subfolder
-
 - Python tools: "tools" subfolder
